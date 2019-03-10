@@ -22,7 +22,7 @@ public class Start extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (v.getContext(),Main.class);
+                Intent intent = new Intent (v.getContext(),BookPageActivity.class);
                 startActivity(intent);
             }
         });

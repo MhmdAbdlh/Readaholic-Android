@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,142 +7,170 @@
     android:orientation="vertical"
     tools:context=".BookPageActivity">
 
-    <ImageView
-        android:id="@+id/bookimageui"
-        android:layout_width="match_parent"
-        android:layout_height="239dp"
-        app:srcCompat="@drawable/defaultimage" />
-
-    <TextView
-        android:id="@+id/tiltetxtui"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="4dp"
-        android:text="Name not found"
-        android:textColor="@color/colorBlack"
-        android:textSize="24sp" />
-
-    <TextView
-        android:id="@+id/authornametxtui"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingBottom="3dp"
-        android:text="authornotfound" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:background="@color/colorPrimaryDark"
-        android:paddingBottom="3dp" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <RatingBar
-            android:id="@+id/ratingui"
-            style="?android:attr/ratingBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:isIndicator="true"
-            android:numStars="5"
-            android:paddingLeft="6dp"
-            android:paddingTop="3dp"
-            android:stepSize="0.1" />
+        <ImageView
+            android:id="@+id/bookimageui"
+            android:layout_width="match_parent"
+            android:layout_height="239dp"
+            app:srcCompat="@drawable/defaultimage" />
 
         <TextView
-            android:id="@+id/ratingavgtxtui"
-            android:layout_width="wrap_content"
+            android:id="@+id/tiltetxtui"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="3dp"
-            android:text="ratingavg" />
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="Name not found"
+            android:textColor="@color/colorBlack"
+            android:textSize="24sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorPrimaryDark"
+            android:paddingBottom="3dp" />
 
         <TextView
-            android:id="@+id/ratingcounttxtui"
-            android:layout_width="wrap_content"
+            android:id="@+id/authornametxtui"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="3dp"
-            android:text="ratingcount" />
-    </LinearLayout>
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:background="@color/colorPrimaryDark"
-        android:paddingBottom="3dp" />
+            android:gravity="center"
+            android:paddingBottom="3dp"
+            android:text="authornotfound" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="80dp"
-        android:layout_marginRight="80dp"
-        android:orientation="horizontal"
-        android:paddingTop="8dp"
-        android:paddingBottom="12dp">
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/bookbottonshape"
-            android:text="Want to Read"
-            android:textColor="@color/colorPrimary" />
+            android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/imageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <RatingBar
+                android:id="@+id/ratingui"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:paddingLeft="6dp"
+                android:paddingTop="3dp"
+                android:stepSize="0.1" />
+
+            <TextView
+                android:id="@+id/ratingavgtxtui"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:text="ratingavg" />
+
+            <TextView
+                android:id="@+id/ratingcounttxtui"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="3dp"
+                android:text="ratingcount" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorPrimaryDark"
+            android:paddingBottom="3dp" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0"
-            android:background="@drawable/bookbottonshape"
-            app:srcCompat="@drawable/downbtn" />
+            android:gravity="center"
+            android:text="Rate it" />
+
+        <TextView
+            android:id="@+id/bookdesctxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:paddingBottom="5dp"
+            android:text="BOOK DESCRIPTION"
+            android:textColor="@color/colorBlack"
+            android:textSize="24sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:background="@color/colorPrimaryDark"
+            android:paddingBottom="3dp" />
+
+        <TextView
+            android:id="@+id/bookdesctxtui"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:text="empty descreption" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:paddingBottom="12dp">
+
+            <Button
+                android:id="@+id/bookreadbtnui"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bookbottonshape"
+                android:text="Want to Read"
+                android:textColor="@color/colorPrimary" />
+
+            <ImageButton
+                android:id="@+id/downarowui"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:background="@drawable/bookbottonshape"
+                app:srcCompat="@drawable/downbtn" />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+
+            android:background="@color/colorPrimaryDark"
+            android:paddingBottom="3dp" />
+
+        <TextView
+            android:id="@+id/boojsideinfotxtui"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="TextView" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorPrimaryDark"
+            android:paddingBottom="3dp" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:gravity="center"
-        android:text="Rate it" />
 
-    <TextView
-        android:id="@+id/bookdesctxt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingTop="20dp"
-        android:paddingBottom="5dp"
-        android:text="BOOK DESCRIPTION"
-        android:textColor="@color/colorBlack"
-        android:textSize="24sp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginRight="80dp"
-        android:background="@color/colorPrimaryDark"
-        android:paddingBottom="3dp" />
-
-    <TextView
-        android:id="@+id/bookdesctxtui"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:text="empty descreption" />
-
-</LinearLayout>
+</ScrollView>
