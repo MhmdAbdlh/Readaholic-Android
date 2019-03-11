@@ -1,32 +1,59 @@
 package com.example.android.readaholic
 
+import android.content.Intent
+import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.view.ViewGroup
+import android.widget.BaseAdapter
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.android.readaholic.R.id.tiltetxtui
 import fr.arnaudguyon.xmltojsonlib.XmlToJson
 import kotlinx.android.synthetic.main.activity_book_page.*
+import kotlinx.android.synthetic.main.bookreview.view.*
 import org.json.JSONObject
+import android.view.MotionEvent
+import android.widget.ListView
+import kotlin.math.min
+
 
 class BookPageActivity : AppCompatActivity() {
 var xmlString:String?=null
 var bookinfo:BookPageInfo?=null
 var jsonString:JSONObject?=null
+var bookr:ArrayList<BookReview>?=null
+var adapter:ReviewAdabterlist?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_page)
         bookinfo=BookPageInfo()
         feedUrlFromApi()
+
         bookreadbtnui.setOnClickListener {
             Toast.makeText(this,"Am i A joke to you ??",Toast.LENGTH_SHORT).show()
         }
         downarowui.setOnClickListener {
             Toast.makeText(this,"Am i A joke to you ??>>>>",Toast.LENGTH_SHORT).show()
         }
+        seeallreviewstxtui.setOnClickListener {
+            seeallreviewstxtui.setTextColor(Color.GREEN)
+            Toast.makeText(this,"w3w3w3w3",Toast.LENGTH_SHORT).show()
+            var intent=Intent(this,BookReviewsActivity::class.java)
+            startActivity(intent)
+        }
+
+        bookr= ArrayList()
+        bookr!!.add(BookReview("sadfas"))
+        bookr!!.add(BookReview("sadfas"))
+
+
+        adapter=ReviewAdabterlist()
+        reviewlistui.adapter=adapter
+
     }
 
     fun feedUrlFromApi()
@@ -94,4 +121,33 @@ var jsonString:JSONObject?=null
         boojsideinfotxtui.text=bookinfo!!.num_pages.toString()+" . First published "+bookinfo!!.publication_month+
                 " "+bookinfo!!.publication_day+" , "+bookinfo!!.publication_year+" ISBN13 "+bookinfo!!.isbn
      }
+
+    inner class ReviewAdabterlist(): BaseAdapter()
+    {
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+            var myview=layoutInflater.inflate(R.layout.bookreview,null)
+            var currentreview= bookr!![position]
+            myview.reviwernametxtui.text=currentreview.name
+            myview.readmoretxtui.setOnClickListener {
+                Toast.makeText(applicationContext,"Read More ??>>>>",Toast.LENGTH_SHORT).show()
+
+            }
+            return myview
+        }
+
+        override fun getItem(position: Int): Any {
+            return  bookr!![position]
+        }
+
+        override fun getItemId(position: Int): Long {
+            return position.toLong()
+        }
+
+        override fun getCount(): Int {
+            return bookr!!.size
+        }
+
+
+    }
 }
