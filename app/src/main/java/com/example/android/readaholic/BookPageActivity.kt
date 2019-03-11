@@ -16,9 +16,6 @@ import fr.arnaudguyon.xmltojsonlib.XmlToJson
 import kotlinx.android.synthetic.main.activity_book_page.*
 import kotlinx.android.synthetic.main.bookreview.view.*
 import org.json.JSONObject
-import android.view.MotionEvent
-import android.widget.ListView
-import kotlin.math.min
 
 
 class BookPageActivity : AppCompatActivity() {
@@ -115,7 +112,7 @@ var adapter:ReviewAdabterlist?=null
     {
         tiltetxtui.text= bookinfo!!.book_title
         authornametxtui.text= bookinfo!!.author_name
-        ratingavgtxtui.text= bookinfo!!.average_rating.toString()
+        ratinginfotxtui.text= bookinfo!!.average_rating.toString()+"."+bookinfo!!.ratings_count.toString()+" ratings "
         ratingui.rating=bookinfo!!.average_rating
         bookdesctxtui.text=bookinfo!!.description
         boojsideinfotxtui.text=bookinfo!!.num_pages.toString()+" . First published "+bookinfo!!.publication_month+
@@ -124,7 +121,6 @@ var adapter:ReviewAdabterlist?=null
 
     inner class ReviewAdabterlist(): BaseAdapter()
     {
-
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             var myview=layoutInflater.inflate(R.layout.bookreview,null)
             var currentreview= bookr!![position]
@@ -147,7 +143,6 @@ var adapter:ReviewAdabterlist?=null
         override fun getCount(): Int {
             return bookr!!.size
         }
-
 
     }
 }

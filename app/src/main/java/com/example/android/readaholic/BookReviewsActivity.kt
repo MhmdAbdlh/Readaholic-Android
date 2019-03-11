@@ -1,5 +1,6 @@
 package com.example.android.readaholic
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -59,8 +60,9 @@ class BookReviewsActivity : AppCompatActivity() {
             var myview=layoutInflater.inflate(R.layout.bookreview,null)
             var currentreview= bookr!![position]
             myview.reviwernametxtui.text=currentreview.name
-            myview.readmoretxtui.setOnClickListener {
-                Toast.makeText(applicationContext,"Read More ??>>>>", Toast.LENGTH_SHORT).show()
+            myview.commentreviewtxtui.setOnClickListener {
+               var intent= Intent(baseContext,ReviewActivity::class.java)
+                startActivity(intent)
             }
             return myview
         }
