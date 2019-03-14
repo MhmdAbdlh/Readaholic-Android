@@ -1,4 +1,4 @@
-package com.example.android.readaholic
+package com.example.android.readaholic.books
 
 import android.content.Intent
 import android.graphics.Color
@@ -6,53 +6,74 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.android.readaholic.R
 import fr.arnaudguyon.xmltojsonlib.XmlToJson
 import kotlinx.android.synthetic.main.activity_book_page.*
 import kotlinx.android.synthetic.main.bookreview.view.*
 import org.json.JSONObject
 
 
-class BookPageActivity : AppCompatActivity() {
-var xmlString:String?=null
-var bookinfo:BookPageInfo?=null
-var jsonString:JSONObject?=null
-var bookr:ArrayList<BookReview>?=null
-var adapter:ReviewAdabterlist?=null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_book_page)
-        bookinfo=BookPageInfo()
-        feedUrlFromApi()
-
-        bookreadbtnui.setOnClickListener {
-            Toast.makeText(this,"Am i A joke to you ??",Toast.LENGTH_SHORT).show()
-        }
-        downarowui.setOnClickListener {
-            Toast.makeText(this,"Am i A joke to you ??>>>>",Toast.LENGTH_SHORT).show()
-        }
-        seeallreviewstxtui.setOnClickListener {
-            seeallreviewstxtui.setTextColor(Color.GREEN)
-            Toast.makeText(this,"w3w3w3w3",Toast.LENGTH_SHORT).show()
-            var intent=Intent(this,BookReviewsActivity::class.java)
-            startActivity(intent)
-        }
-
-        bookr= ArrayList()
-        bookr!!.add(BookReview("sadfas"))
-        bookr!!.add(BookReview("sadfas"))
+class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener {
 
 
-        adapter=ReviewAdabterlist()
-        reviewlistui.adapter=adapter
+    override fun onNothingSelected(parent: AdapterView<*>?) {
 
     }
 
+    /**
+     * Handling the book btn ui between cuurently reading ,read and want to read
+     *
+
+     */
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        var SS:String=parent!!.getItemAtPosition(position).toString()
+        bookreadbtnui.text=SS
+        if(position!=0)
+        {
+            bookreadbtnui.setBackgroundColor(Color.WHITE); // From android.graphics.Color
+            bookreadbtnui.setTextColor(Color.BLACK)
+        }
+
+    }
+
+    var xmlString:String?=null
+    var bookinfo: BookPageInfo?=null
+    var jsonString:JSONObject?=null
+    var bookreview:ArrayList<BookReview>?=null
+    var adapter: ReviewAdabterlist?=null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_book_page)
+        bookinfo= BookPageInfo()
+        var spinneradapter:ArrayAdapter<CharSequence> =ArrayAdapter.createFromResource(this, R.array.Shelves,android.R.layout.simple_spinner_item)
+        spinneradapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        activitybook_sheleve_spinner.adapter=spinneradapter
+        activitybook_sheleve_spinner.onItemSelectedListener=this
+        seeallreviewstxtui.setOnClickListener {
+            seeallreviewstxtui.setTextColor(Color.GREEN)
+            Toast.makeText(this,"w3w3w3w3",Toast.LENGTH_SHORT).show()
+            var intent=Intent(this, BookReviewsActivity::class.java)
+            startActivity(intent)
+        }
+        bookreview= ArrayList()
+        bookreview!!.add(BookReview("sadfas"))
+        bookreview!!.add(BookReview("sadfas"))
+        adapter=ReviewAdabterlist()
+        reviewlistui.adapter=adapter
+        feedUrlFromApi()
+    }
+
+    /**
+     * get the book info from the url as a json file or show error messege in failiar case     *
+     */
     fun feedUrlFromApi()
     {
         val queue = Volley.newRequestQueue(this)
@@ -86,28 +107,40 @@ var adapter:ReviewAdabterlist?=null
 
                    feedFromDummey(jsonString!!)
                 })
+
+
         queue.add(stringRequest)
 
     }
-    fun feedFromDummey(dummyjson:JSONObject)
+
+    /**
+     * fitch the bookobject info from the jsonobject
+     * @param jsonobject
+     */
+    fun feedFromDummey(jsonobject:JSONObject)
     {
-        bookinfo!!.book_title =dummyjson.getString("book_title")
-        bookinfo!!.author_name =dummyjson.getString("author_name")
-        bookinfo!!.author_id =dummyjson.getString("author_id").toInt()
-        bookinfo!!.description =dummyjson.getString("description")
-        bookinfo!!.genre =dummyjson.getString("genre")
-        bookinfo!!.image_url =dummyjson.getString("image_url")
-        bookinfo!!.isbn =dummyjson.getString("isbn").toInt()
-        bookinfo!!.average_rating =dummyjson.getString("average_rating").toFloat()
-        bookinfo!!.publication_day =dummyjson.getString("publication_day").toInt()
-        bookinfo!!.publication_month =dummyjson.getString("publication_month").toInt()
-        bookinfo!!.publisher =dummyjson.getString("publisher")
-        bookinfo!!.ratings_count =dummyjson.getString("ratings_count").toInt()
-        bookinfo!!.small_image_url=dummyjson.getString("small_image_url")
-        bookinfo!!.publication_year=dummyjson.getString("publication_year").toInt()
-        bookinfo!!.num_pages=dummyjson.getString("num_pages").toInt()
+        bookinfo!!.book_title =jsonobject.getString("book_title")
+        bookinfo!!.author_name =jsonobject.getString("author_name")
+        bookinfo!!.author_id =jsonobject.getString("author_id").toInt()
+        bookinfo!!.description =jsonobject.getString("description")
+        bookinfo!!.genre =jsonobject.getString("genre")
+        bookinfo!!.image_url =jsonobject.getString("image_url")
+        bookinfo!!.isbn =jsonobject.getString("isbn").toInt()
+        bookinfo!!.average_rating =jsonobject.getString("average_rating").toFloat()
+        bookinfo!!.publication_day =jsonobject.getString("publication_day").toInt()
+        bookinfo!!.publication_month =jsonobject.getString("publication_month").toInt()
+        bookinfo!!.publisher =jsonobject.getString("publisher")
+        bookinfo!!.ratings_count =jsonobject.getString("ratings_count").toInt()
+        bookinfo!!.small_image_url=jsonobject.getString("small_image_url")
+        bookinfo!!.publication_year=jsonobject.getString("publication_year").toInt()
+        bookinfo!!.num_pages=jsonobject.getString("num_pages").toInt()
         feedBookUi()
     }
+
+    /**
+     * fetch book info into the UI
+     *
+     */
     fun feedBookUi()
     {
         tiltetxtui.text= bookinfo!!.book_title
@@ -119,21 +152,30 @@ var adapter:ReviewAdabterlist?=null
                 " "+bookinfo!!.publication_day+" , "+bookinfo!!.publication_year+" ISBN13 "+bookinfo!!.isbn
      }
 
+    /**
+     * inner class Adapter for fill the list of books
+     */
+
+
     inner class ReviewAdabterlist(): BaseAdapter()
     {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             var myview=layoutInflater.inflate(R.layout.bookreview,null)
-            var currentreview= bookr!![position]
+            var currentreview= bookreview!![position]
             myview.reviwernametxtui.text=currentreview.name
             myview.readmoretxtui.setOnClickListener {
-                Toast.makeText(applicationContext,"Read More ??>>>>",Toast.LENGTH_SHORT).show()
-
+                var intent=Intent(baseContext, ReviewActivity::class.java)
+                startActivity(intent)
+            }
+            myview.commentreviewtxtui.setOnClickListener {
+                var intent=Intent(baseContext, ReviewActivity::class.java)
+                startActivity(intent)
             }
             return myview
         }
 
         override fun getItem(position: Int): Any {
-            return  bookr!![position]
+            return  bookreview!![position]
         }
 
         override fun getItemId(position: Int): Long {
@@ -141,7 +183,7 @@ var adapter:ReviewAdabterlist?=null
         }
 
         override fun getCount(): Int {
-            return bookr!!.size
+            return bookreview!!.size
         }
 
     }

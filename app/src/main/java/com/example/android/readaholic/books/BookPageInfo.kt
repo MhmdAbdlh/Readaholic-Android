@@ -1,4 +1,4 @@
-package com.example.android.readaholic
+package com.example.android.readaholic.books
 
 class  BookPageInfo(var book_title:String="unknown",var isbn:Int=0,var image_url:String="unknown",var small_image_url:String="unknown"
 ,var num_pages:Int=0,var publisher:String="unknown",var publication_day:Int=0,var publication_year:Int=0

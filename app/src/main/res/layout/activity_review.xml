@@ -126,7 +126,7 @@
                     android:textColor="@color/colorPrimary" />
 
                 <ImageButton
-                    android:id="@+id/downarowui"
+                    android:id="@+id/activitybook_sheleve_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="0"

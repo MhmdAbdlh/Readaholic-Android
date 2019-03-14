@@ -1,46 +1,44 @@
-package com.example.android.readaholic
+package com.example.android.readaholic.books
 
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import kotlinx.android.synthetic.main.activity_book_reviews.*
+import com.example.android.readaholic.R
 import kotlinx.android.synthetic.main.activity_review.*
 import kotlinx.android.synthetic.main.bookreview.view.*
 
 class ReviewActivity : AppCompatActivity() {
-    var bookr:ArrayList<CommentInfo>?=null
-    var adapter: CommentsAdabterlist1?=null
+    var CommentList:ArrayList<CommentInfo>?=null
+    var commentadapter: CommentsAdabterlist?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_review)
-        bookr= ArrayList()
-        bookr!!.add(CommentInfo("sadfas"))
-        bookr!!.add(CommentInfo("sadfas"))
-        bookr!!.add(CommentInfo("sadfas"))
-        bookr!!.add(CommentInfo("sadfas"))
-        bookr!!.add(CommentInfo("sadfas"))
-        bookr!!.add(CommentInfo("sadfas"))
-        bookr!!.add(CommentInfo("sadfas"))
-        adapter= CommentsAdabterlist1()
-        commentlist.adapter=adapter
+        CommentList= ArrayList()
+        CommentList!!.add(CommentInfo("sadfas"))
+        CommentList!!.add(CommentInfo("sadfas"))
+        CommentList!!.add(CommentInfo("sadfas"))
+        CommentList!!.add(CommentInfo("sadfas"))
+        CommentList!!.add(CommentInfo("sadfas"))
+        CommentList!!.add(CommentInfo("sadfas"))
+        CommentList!!.add(CommentInfo("sadfas"))
+        commentadapter= CommentsAdabterlist()
+        commentlist.adapter=commentadapter
     }
 
-    inner class CommentsAdabterlist1(): BaseAdapter()
+    inner class CommentsAdabterlist(): BaseAdapter()
     {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             var myview=layoutInflater.inflate(R.layout.commentticket,null)
-            var currentreview= bookr!![position]
-            myview.reviwernametxtui.text=currentreview.name
-
+            var currentcomment= CommentList!![position]
+            myview.reviwernametxtui.text=currentcomment.name
             return myview
         }
 
         override fun getItem(position: Int): Any {
-            return  bookr!![position]
+            return  CommentList!![position]
         }
 
         override fun getItemId(position: Int): Long {
@@ -48,7 +46,7 @@ class ReviewActivity : AppCompatActivity() {
         }
 
         override fun getCount(): Int {
-            return bookr!!.size
+            return CommentList!!.size
         }
 
 

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".BookReviewsActivity">
+    tools:context=".books.BookReviewsActivity">
 
     <TextView
         android:id="@+id/textView"
