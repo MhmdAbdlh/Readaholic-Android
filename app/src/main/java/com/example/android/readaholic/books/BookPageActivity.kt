@@ -15,6 +15,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.android.readaholic.R
+import com.squareup.picasso.Picasso
 import fr.arnaudguyon.xmltojsonlib.XmlToJson
 import kotlinx.android.synthetic.main.activity_book_page.*
 import kotlinx.android.synthetic.main.bookreview.view.*
@@ -22,8 +23,6 @@ import org.json.JSONObject
 
 
 class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener {
-
-
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
     }
@@ -44,7 +43,6 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
 
     }
 
-    var xmlString:String?=null
     var bookinfo: BookPageInfo?=null
     var jsonString:JSONObject?=null
     var bookreview:ArrayList<BookReview>?=null
@@ -53,64 +51,59 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_page)
         bookinfo= BookPageInfo()
+
+        //this to get the passed book id from the other activities
+        var intent:Intent= Intent()
+        bookinfo!!.bookid=intent.getIntExtra("BookId",0)
+        ////
+        //this code to  hundle the button spinner thing (want to read /read /currently reading)
         var spinneradapter:ArrayAdapter<CharSequence> =ArrayAdapter.createFromResource(this, R.array.Shelves,android.R.layout.simple_spinner_item)
         spinneradapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         activitybook_sheleve_spinner.adapter=spinneradapter
         activitybook_sheleve_spinner.onItemSelectedListener=this
+        ////
+        //Here to go to the list of reviews and send important info to them
         seeallreviewstxtui.setOnClickListener {
             seeallreviewstxtui.setTextColor(Color.GREEN)
-            Toast.makeText(this,"w3w3w3w3",Toast.LENGTH_SHORT).show()
             var intent=Intent(this, BookReviewsActivity::class.java)
+            intent.putExtra("BookId",bookinfo!!.bookid)
+            intent.putExtra("BookName",bookinfo!!.book_title)
+            intent.putExtra("BookImage",bookinfo!!.small_image_url)
+            intent.putExtra("BookAuthor",bookinfo!!.author_name)
             startActivity(intent)
         }
+
         bookreview= ArrayList()
-        bookreview!!.add(BookReview("sadfas"))
-        bookreview!!.add(BookReview("sadfas"))
+      //  bookreview!!.add(BookReview("sadfas"))
         adapter=ReviewAdabterlist()
         reviewlistui.adapter=adapter
-        feedUrlFromApi()
+        feedUrlFromApi(bookinfo!!.bookid)
     }
 
     /**
      * get the book info from the url as a json file or show error messege in failiar case     *
      */
-    fun feedUrlFromApi()
+    fun feedUrlFromApi(BookId:Int)
     {
         val queue = Volley.newRequestQueue(this)
-        val url = "https://www.goodreads.com/search/index.xml?key=ER4R6YnUGeoLQICR10aKQ&q=0439554934&search=ISN"
-
-        val stringRequest = StringRequest(Request.Method.GET, url,
+        val urlgoodreads = "https://www.goodreads.com/search/index.xml?key=ER4R6YnUGeoLQICR10aKQ&q=0439554934&search=ISN"
+        var url="httpp:://locallhost/api/books/show/?id="+BookId.toString()
+        var urltry="https://api.myjson.com/bins/9wd7q"
+        val stringRequest = StringRequest(Request.Method.GET, urltry,
                 Response.Listener<String> { response ->
-                    var xmltojson= XmlToJson.Builder(response).build()
-                    var jsonob= JSONObject(xmltojson.toString())
-                    var jsnoob1=jsonob.getJSONObject("GoodreadsResponse").getJSONObject("search")
-                            .getJSONObject("results").getJSONObject("work").getJSONObject("best_book").getString("title")
-                    tiltetxtui.text = jsnoob1.toString()
+                    var jsonresponse=JSONObject(response)
+                    feedFromDummey(jsonresponse)
                 },
-                Response.ErrorListener {  jsonString = JSONObject("{\n" +
-                        " \"book_title\": \"Would you die for me?\",\n" +
-                        " \"isbn\": \"1234\",\n" +
-                        " \"image_url\": \"lookdown.jpg\",\n" +
-                        " \"small_image_url\": \"xyz.com\\/images\\/uvw.jpg\",\n" +
-                        " \"num_pages\": \"1000\",\n" +
-                        " \"publisher\": \"dummyMan\",\n" +
-                        " \"publication_day\": 13,\n" +
-                        " \"publication_year\": 1932,\n" +
-                        " \"publication_month\": 10,\n" +
-                        " \"average_rating\": 3.532,\n" +
-                        " \"ratings_count\": 1,\n" +
-                        " \"description\": \"dummyasfhaDJKFHJKADGFJKGADSKHFGADJSKHFJKAhsfjhadjkfhsdjkhf\",\n" +
-                        " \"author_id\": 1,\n" +
-                        " \"author_name\": \"author\",\n" +
-                        " \"genre\": \"action\"\n" +
-                        "}\n")
+                Response.ErrorListener {
 
-                   feedFromDummey(jsonString!!)
+
                 })
-
-
         queue.add(stringRequest)
-
+    }
+    //get the book image from the url
+    fun importImage()
+    {
+        Picasso.get().load(bookinfo!!.image_url).into(bookimageui)
     }
 
     /**
@@ -135,8 +128,8 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         bookinfo!!.publication_year=jsonobject.getString("publication_year").toInt()
         bookinfo!!.num_pages=jsonobject.getString("num_pages").toInt()
         feedBookUi()
+        importImage()
     }
-
     /**
      * fetch book info into the UI
      *
@@ -151,18 +144,15 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         boojsideinfotxtui.text=bookinfo!!.num_pages.toString()+" . First published "+bookinfo!!.publication_month+
                 " "+bookinfo!!.publication_day+" , "+bookinfo!!.publication_year+" ISBN13 "+bookinfo!!.isbn
      }
-
     /**
      * inner class Adapter for fill the list of books
      */
-
-
     inner class ReviewAdabterlist(): BaseAdapter()
     {
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             var myview=layoutInflater.inflate(R.layout.bookreview,null)
             var currentreview= bookreview!![position]
-            myview.reviwernametxtui.text=currentreview.name
+            myview.reviwernametxtui.text=""
             myview.readmoretxtui.setOnClickListener {
                 var intent=Intent(baseContext, ReviewActivity::class.java)
                 startActivity(intent)
