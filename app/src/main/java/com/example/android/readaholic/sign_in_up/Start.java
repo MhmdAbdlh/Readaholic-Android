@@ -9,6 +9,7 @@ import android.widget.Button;
 import com.example.android.readaholic.BookPageActivity;
 import com.example.android.readaholic.Main;
 import com.example.android.readaholic.R;
+import com.example.android.readaholic.profile_and_profile_settings.Profile;
 
 public class Start extends AppCompatActivity {
 
@@ -23,6 +24,16 @@ public class Start extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent (v.getContext(),Main.class);
+                startActivity(intent);
+            }
+        });
+
+        Button signUP = (Button)findViewById(R.id.Start_signUp_btn);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (v.getContext(), Profile.class);
                 startActivity(intent);
             }
         });

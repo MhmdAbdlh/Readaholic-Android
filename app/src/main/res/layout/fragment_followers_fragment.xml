@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:orientation="vertical"
+    tools:context=".profile_and_profile_settings.Followers_fragment">
+
+    <TextView
+        android:id="@+id/FollowersFragment_Header_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="follwers and followings"
+        android:textAlignment="textStart"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <View
+        style="@style/HeaderDivider"
+        android:layout_alignBottom="@+id/FollowersFragment_Header_TextView"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"></View>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/FollowersFragment_FollowersList_RecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/NotAvaliableTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="8dp"
+        android:text="You haven't any followings yet." />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/FollowersFragment_FollowersNumber_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_toLeftOf="@+id/FollowersFragment_FollowingNumber_TextView"
+            android:clickable="true"
+            android:drawableTint="@color/colorGreen"
+            android:gravity="clip_horizontal"
+            android:text="0 Followers"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorGreen"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/FollowersFragment_FollowingNumber_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="false"
+            android:layout_marginLeft="20dp"
+            android:clickable="true"
+            android:drawableTint="@color/colorGreen"
+            android:text="0 Following"
+            android:textAlignment="textStart"
+            android:textAllCaps="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorGreen"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+</RelativeLayout>
