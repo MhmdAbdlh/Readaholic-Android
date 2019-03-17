@@ -46,6 +46,40 @@ public class Followers_fragment extends Fragment {
     private ImageLoader mImageLoader;
     private RequestQueue mRequestQueue;
     private View view;
+    private String FollowesResponse = "{\n" +
+            "  \"GoodreadsResponse\": {\n" +
+            "    \"Request\": {\n" +
+            "      \"authentication\": \"false\",\n" +
+            "      \"method\": \"\"\n" +
+            "    },\n" +
+            "    \"following\": {\n" +
+            "      \"-start\": \"1\",\n" +
+            "      \"-end\": \"2\",\n" +
+            "      \"-total\": \"2\",\n" +
+            "      \"user\": [\n" +
+            "        {\n" +
+            "          \"id\": \"27948863\",\n" +
+            "          \"name\": \"Ahmed Mahmoud\",\n" +
+            "          \"link\": \"https://www.goodreads.com/user/show/27948863-ahmed-mahmoud\",\n" +
+            "          \"image_url\": \"https://images.gr-assets.com/users/1551035887p3/27948863.jpg\",\n" +
+            "          \"small_image_url\": \"https://images.gr-assets.com/users/1551035887p2/27948863.jpg\",\n" +
+            "          \"friends_count\": \"27\",\n" +
+            "          \"reviews_count\": \"8\",\n" +
+            "          \"created_at\": \"Thu Mar 14 11:30:28 -0700 2019\"\n" +
+            "        },\n" +
+            "        {\n" +
+            "          \"id\": \"7004371\",\n" +
+            "          \"name\": \"Kevin Emerson\",\n" +
+            "          \"link\": \"https://www.goodreads.com/user/show/7004371-kevin-emerson\",\n" +
+            "          \"image_url\": \"https://images.gr-assets.com/users/1507144891p3/7004371.jpg\",\n" +
+            "          \"small_image_url\": \"https://images.gr-assets.com/users/1507144891p2/7004371.jpg\",\n" +
+            "          \"friends_count\": \"361\",\n" +
+            "          \"reviews_count\": \"72\"\n" +
+            "        }\n" +
+            "      ]\n" +
+            "    }\n" +
+            "  }\n" +
+            "}";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

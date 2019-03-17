@@ -36,6 +36,169 @@ public class Profile extends AppCompatActivity {
     private ImageView mUserImage;
     private TextView mUserName;
     private TextView mUserBookNumber;
+
+    private String profileResponse = "{\n" +
+            "  \"GoodreadsResponse\": {\n" +
+            "    \"Request\": {\n" +
+            "      \"authentication\": \"true\",\n" +
+            "      \"key\": \"FLPIgg7i8q6SY3V8asRdw\",\n" +
+            "      \"method\": \"user_show \"\n" +
+            "    },\n" +
+            "    \"user\": {\n" +
+            "      \"id\": \"93870694\",\n" +
+            "      \"name\": \"Hossam Ahmed\",\n" +
+            "      \"link\": \"https://www.goodreads.com/user/show/93870694-hossam-ahmed\",\n" +
+            "      \"image_url\": \"https://s.gr-assets.com/assets/nophoto/user/u_111x148-9394ebedbb3c6c218f64be9549657029.png\",\n" +
+            "      \"small_image_url\": \"https://s.gr-assets.com/assets/nophoto/user/u_50x66-632230dc9882b4352d753eedf9396530.png\",\n" +
+            "      \"location\": \"Cairo, 11, Egypt\",\n" +
+            "      \"joined\": \"02/2019\",\n" +
+            "      \"last_active\": \"03/2019\",\n" +
+            "      \"favorite_authors\": \" \",\n" +
+            "      \"updates_rss_url\": \"https://www.goodreads.com/user/updates_rss/93870694?key=QENImMDqYjOB3wjlwfRE2PZJVae1YU7fcLMoS_cd4keaZ6sM\",\n" +
+            "      \"reviews_rss_url\": \"https://www.goodreads.com/review/list_rss/93870694?key=QENImMDqYjOB3wjlwfRE2PZJVae1YU7fcLMoS_cd4keaZ6sM&shelf=%23ALL%23\",\n" +
+            "      \"friends_count\": {\n" +
+            "        \"-type\": \"integer\",\n" +
+            "        \"#text\": \"0\"\n" +
+            "      },\n" +
+            "      \"groups_count\": \"0\",\n" +
+            "      \"reviews_count\": {\n" +
+            "        \"-type\": \"integer\",\n" +
+            "        \"#text\": \"7\"\n" +
+            "      },\n" +
+            "      \"user_shelves\": {\n" +
+            "        \"-type\": \"array\",\n" +
+            "        \"user_shelf\": [\n" +
+            "          {\n" +
+            "            \"id\": {\n" +
+            "              \"-type\": \"integer\",\n" +
+            "              \"#text\": \"305076705\"\n" +
+            "            },\n" +
+            "            \"name\": \"read\",\n" +
+            "            \"book_count\": {\n" +
+            "              \"-type\": \"integer\",\n" +
+            "              \"#text\": \"2\"\n" +
+            "            },\n" +
+            "            \"exclusive_flag\": {\n" +
+            "              \"-type\": \"boolean\",\n" +
+            "              \"#text\": \"true\"\n" +
+            "            },\n" +
+            "            \"description\": {\n" +
+            "              \"-nil\": \"true\"\n" +
+            "            },\n" +
+            "            \"sort\": {\n" +
+            "              \"-nil\": \"true\"\n" +
+            "            },\n" +
+            "            \"order\": {\n" +
+            "              \"-nil\": \"true\"\n" +
+            "            },\n" +
+            "            \"per_page\": {\n" +
+            "              \"-type\": \"integer\",\n" +
+            "              \"-nil\": \"true\"\n" +
+            "            },\n" +
+            "            \"featured\": {\n" +
+            "              \"-type\": \"boolean\",\n" +
+            "              \"#text\": \"true\"\n" +
+            "            },\n" +
+            "            \"recommend_for\": {\n" +
+            "              \"-type\": \"boolean\",\n" +
+            "              \"#text\": \"false\"\n" +
+            "            },\n" +
+            "            \"sticky\": {\n" +
+            "              \"-type\": \"boolean\",\n" +
+            "              \"-nil\": \"true\"\n" +
+            "            }\n" +
+            "          },\n" +
+            "          {\n" +
+            "            \"id\": {\n" +
+            "              \"-type\": \"integer\",\n" +
+            "              \"#text\": \"305076703\"\n" +
+            "            },\n" +
+            "            \"name\": \"currently-reading\",\n" +
+            "            \"book_count\": {\n" +
+            "              \"-type\": \"integer\",\n" +
+            "              \"#text\": \"2\"\n" +
+            "            },\n" +
+            "            \"exclusive_flag\": {\n" +
+            "              \"-type\": \"boolean\",\n" +
+            "              \"#text\": \"true\"\n" +
+            "            },\n" +
+            "            \"description\": {\n" +
+            "              \"-nil\": \"true\"\n" +
+            "            },\n" +
+            "            \"sort\": {\n" +
+            "              \"-nil\": \"true\"\n" +
+            "            },\n" +
+            "            \"order\": {\n" +
+            "              \"-nil\": \"true\"\n" +
+            "            },\n" +
+            "            \"per_page\": {\n" +
+            "              \"-type\": \"integer\",\n" +
+            "              \"-nil\": \"true\"\n" +
+            "            },\n" +
+            "            \"featured\": {\n" +
+            "              \"-type\": \"boolean\",\n" +
+            "              \"#text\": \"false\"\n" +
+            "            },\n" +
+            "            \"recommend_for\": {\n" +
+            "              \"-type\": \"boolean\",\n" +
+            "              \"#text\": \"false\"\n" +
+            "            },\n" +
+            "            \"sticky\": {\n" +
+            "              \"-type\": \"boolean\",\n" +
+            "              \"-nil\": \"true\"\n" +
+            "            }\n" +
+            "          },\n" +
+            "          {\n" +
+            "            \"id\": {\n" +
+            "              \"-type\": \"integer\",\n" +
+            "              \"#text\": \"305076701\"\n" +
+            "            },\n" +
+            "            \"name\": \"to-read\",\n" +
+            "            \"book_count\": {\n" +
+            "              \"-type\": \"integer\",\n" +
+            "              \"#text\": \"3\"\n" +
+            "            },\n" +
+            "            \"exclusive_flag\": {\n" +
+            "              \"-type\": \"boolean\",\n" +
+            "              \"#text\": \"true\"\n" +
+            "            },\n" +
+            "            \"description\": {\n" +
+            "              \"-nil\": \"true\"\n" +
+            "            },\n" +
+            "            \"sort\": {\n" +
+            "              \"-nil\": \"true\"\n" +
+            "            },\n" +
+            "            \"order\": {\n" +
+            "              \"-nil\": \"true\"\n" +
+            "            },\n" +
+            "            \"per_page\": {\n" +
+            "              \"-type\": \"integer\",\n" +
+            "              \"-nil\": \"true\"\n" +
+            "            },\n" +
+            "            \"featured\": {\n" +
+            "              \"-type\": \"boolean\",\n" +
+            "              \"#text\": \"false\"\n" +
+            "            },\n" +
+            "            \"recommend_for\": {\n" +
+            "              \"-type\": \"boolean\",\n" +
+            "              \"#text\": \"true\"\n" +
+            "            },\n" +
+            "            \"sticky\": {\n" +
+            "              \"-type\": \"boolean\",\n" +
+            "              \"-nil\": \"true\"\n" +
+            "            }\n" +
+            "          }\n" +
+            "        ]\n" +
+            "      },\n" +
+            "      \"updates\": {\n" +
+            "        \"-type\": \"array\",\n" +
+            "        \"#text\": \"...\"\n" +
+            "      },\n" +
+            "      \"user_statuses\": \" \"\n" +
+            "    }\n" +
+            "  }\n" +
+            "}";
+
     @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
