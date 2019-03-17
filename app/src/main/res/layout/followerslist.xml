@@ -6,8 +6,8 @@
     android:layout_margin="8dp"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/FollowersList_Readerimage_ImageView"
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/FollowersList_ReaderImage_ImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

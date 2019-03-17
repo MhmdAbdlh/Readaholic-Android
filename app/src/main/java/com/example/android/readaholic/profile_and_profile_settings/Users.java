@@ -1,5 +1,6 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
+import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 public class Users {
@@ -8,6 +9,36 @@ public class Users {
     private String mUserImageUrl;
     private int mNumberOfFollowers;
     private int getmNumberOfFolloweings;
+    private ArrayList<UserUpdate> mUpdates;
+
+
+    private ArrayList<String> mCurrentlyReadingImageUrl;
+    private ArrayList<String> mWantToReadImageUrl;
+    private ArrayList<String> mReadImageUrl;
+
+    public ArrayList<String> getmCurrentlyReadingImageUrl() {
+        return mCurrentlyReadingImageUrl;
+    }
+
+    public ArrayList<String> getmReadImageUrl() {
+        return mReadImageUrl;
+    }
+
+    public ArrayList<String> getmWantToReadImageUrl() {
+        return mWantToReadImageUrl;
+    }
+
+    public void setmCurrentlyReadingImageUrl(ArrayList<String> mCurrentlyReadingImageUrl) {
+        this.mCurrentlyReadingImageUrl = mCurrentlyReadingImageUrl;
+    }
+
+    public void setmReadImageUrl(ArrayList<String> mReadImageUrl) {
+        this.mReadImageUrl = mReadImageUrl;
+    }
+
+    public void setmWantToReadImageUrl(ArrayList<String> mWantToReadImageUrl) {
+        this.mWantToReadImageUrl = mWantToReadImageUrl;
+    }
 
     public int getGetmNumberOfFolloweings() {
         return getmNumberOfFolloweings;
@@ -51,12 +82,17 @@ public class Users {
     }
 
 
-    public Users(String Name, int NumberOfFolloweings,int NumberOfFollowers,String Image,int UsernumberOfBooks)
+    public Users(String Name, int NumberOfFolloweings,int NumberOfFollowers,String Image,int UsernumberOfBooks,
+                 ArrayList<String> mCurrentlyReadingImageUrl,ArrayList<String>mReadImageUrl,ArrayList<String>mWantToReadImageUrl)
     {
         setGetmNumberOfFolloweings(NumberOfFolloweings);
         setmNumberOfFollowers(NumberOfFollowers);
         setmUserImageUrl(Image);
         setmUserName(Name);
         setmUsernumberOfBooks(UsernumberOfBooks);
+        setmWantToReadImageUrl(mWantToReadImageUrl);
+        setmReadImageUrl(mReadImageUrl);
+        setmCurrentlyReadingImageUrl(mCurrentlyReadingImageUrl);
     }
+    public Users(){};
 }

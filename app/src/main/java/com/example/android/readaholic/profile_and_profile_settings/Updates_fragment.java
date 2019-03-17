@@ -38,6 +38,7 @@ public class Updates_fragment extends Fragment {
         // specify an adapter
         mAdapter = new FollowersAdapter(mUsers);
         recyclerView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
 */
         return view;
 

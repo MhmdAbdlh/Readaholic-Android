@@ -45,43 +45,85 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="18sp" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/BookFragment_CurrentlyReading_RecyclerView"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="15dp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_height="150dp"
+                android:layout_marginBottom="8dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/BookFragment_CurrentlyReading_RecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/BookFragment_CurrentlyReadingNotAvaliable_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="You havn't any currently reading books yet." />
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/BookFragment_WantToRead_TextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:text="Want To Read"
                 android:textAlignment="textStart"
                 android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="18sp" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/BookFragment_WantToRead_RecyclerView"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="15dp"
-                android:layout_marginBottom="8dp" />
+                android:layout_height="150dp"
+                android:layout_marginBottom="8dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/BookFragment_WantToRead_RecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/BookFragment_WantToReadngNotAvaliable_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="You havn't any want to read books yet." />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/BookFragment_Read_TextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:text="Read"
                 android:textAlignment="textStart"
                 android:textAllCaps="true"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textSize="18sp" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/BookFragment_Read_RecyclerView"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="15dp"
-                android:layout_marginBottom="8dp" />
+                android:layout_height="150dp"
+                android:layout_marginBottom="16dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/BookFragment_Read_RecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/BookFragment_ReadNotAvaliable_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="You havn't any read books yet." />
+            </RelativeLayout>
 
             <FrameLayout
                 android:id="@+id/BookFragment_SeeMore_FrameLayout"
