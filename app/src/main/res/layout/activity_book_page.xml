@@ -64,14 +64,6 @@
             android:background="@color/colorPrimaryDark"
             android:paddingBottom="8dp" />
 
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:gravity="center"
-            android:text="Rate it" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -139,6 +131,36 @@
 
         </LinearLayout>
 
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="@style/Widget.AppCompat.RatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:numStars="5"
+            android:rating="0"
+            android:stepSize="1" />
+
+        <TextView
+            android:id="@+id/rateittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:text="Rate it"
+            android:textSize="30sp" />
+
+        <Button
+            android:id="@+id/writeareviewbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_vertical|center_horizontal|center"
+            android:background="@color/colorWhite"
+            android:foregroundGravity="center_horizontal|fill_horizontal|center"
+            android:gravity="center_horizontal|center"
+            android:text="Write a Review"
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/bookdesctxt"
             android:layout_width="match_parent"
@@ -192,40 +214,6 @@
             android:layout_height="2dp"
             android:background="@color/colorPrimaryDark"
             android:paddingBottom="10dp" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:paddingBottom="5dp"
-            android:text="COMMUNETY REVIEWS"
-            android:textSize="24sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
-            android:background="@color/colorPrimaryDark"
-            android:paddingBottom="100dp" />
-
-        <ListView
-            android:id="@+id/reviewlistui"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:scrollbars="none">
-
-        </ListView>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/colorPrimaryDark"
-            android:paddingBottom="100dp" />
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -26,12 +26,13 @@ class BookReviewsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_reviews)
         bookreviews= ArrayList()
-        var intent=Intent()
-        var bookid=intent.extras.getInt("BookId")
-        var bookname=intent.extras.getString("BookName")
-        var bookimage=intent.extras.getString("BookImage")
-        var bookauthor=intent.extras.getString("BookAuthor")
-        feedReviewDataFromURL(bookid)
+      //  var intent=Intent()
+       // var bookid=intent.extras.getInt("BookId")
+       // var bookname=intent.extras.getString("BookName")
+       // var bookimage=intent.extras.getString("BookImage")
+       // var bookauthor=intent.extras.getString("BookAuthor")
+         var bookid=5
+       feedReviewDataFromURL(bookid)
         adapter= ReviewAdabterlist1()
         booklistui.adapter=adapter
     }
@@ -59,14 +60,12 @@ fun feedReviewDataFromURL(bookid:Int)
     fun feedFromDummey(jsonarray:JSONArray)
     {
 
-
       for( i in 0..jsonarray.length()-1)
         {
            var jsonobject=jsonarray.getJSONObject(i)
            bookreviews!!.add(BookReview(jsonobject.getString("id").toInt(),jsonobject.getString("userId").toInt(),jsonobject.getString("bookId").toInt(),
                    jsonobject.getString("body"),jsonobject.getString("rating").toInt(),jsonobject.getString("lastUpdate"),jsonobject.getString("numberLikes").toInt()
                    ,jsonobject.getString("numberComments").toInt(),jsonobject.getString("username"),jsonobject.getString("userimagelink")))
-
         }
 
     }
@@ -85,9 +84,18 @@ fun feedReviewDataFromURL(bookid:Int)
             myview.descriptionreviewui.text=currentreview.reviewbody
             myview.numberoflikesreviewtxtui.text=currentreview.numberoflikes.toString()
             myview.numberofcommentreviewtxtui.text=currentreview.numberofcomments.toString()
-            Picasso.get().load("https://i.ytimg.com/vi/ooQjm35VRrE/maxresdefault.jpg").into(myview.profile_image1)
+            Picasso.get().load("https://i.ytimg.com/vi/3nmoffllWTw/hqdefault.jpg").into(myview.profile_image1)
             myview.commentreviewtxtui.setOnClickListener {
                var intent= Intent(baseContext, ReviewActivity::class.java)
+                Creviewdata.numberoflikes=currentreview.numberoflikes
+                Creviewdata.lastupdate=currentreview.lastupdate
+                Creviewdata.rating=currentreview.rating
+                Creviewdata.numberofcomments=currentreview.numberofcomments
+                Creviewdata.reviewid=currentreview.reviewid
+                Creviewdata.userId=currentreview.userId
+                Creviewdata.username=currentreview.username
+                Creviewdata.userimageurl=currentreview.userimageurl
+                Creviewdata.reviewbody=currentreview.reviewbody
                 startActivity(intent)
             }
             myview.likereviewtxtui.setOnClickListener {

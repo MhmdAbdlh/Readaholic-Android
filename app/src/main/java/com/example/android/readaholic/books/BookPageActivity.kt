@@ -2,6 +2,7 @@ package com.example.android.readaholic.books
 
 import android.content.Intent
 import android.graphics.Color
+import android.opengl.Visibility
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -15,6 +16,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.android.readaholic.R
+
 import com.squareup.picasso.Picasso
 import fr.arnaudguyon.xmltojsonlib.XmlToJson
 import kotlinx.android.synthetic.main.activity_book_page.*
@@ -46,7 +48,6 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     var bookinfo: BookPageInfo?=null
     var jsonString:JSONObject?=null
     var bookreview:ArrayList<BookReview>?=null
-    var adapter: ReviewAdabterlist?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_page)
@@ -66,18 +67,22 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         seeallreviewstxtui.setOnClickListener {
             seeallreviewstxtui.setTextColor(Color.GREEN)
             var intent=Intent(this, BookReviewsActivity::class.java)
-            intent.putExtra("BookId",bookinfo!!.bookid)
-            intent.putExtra("BookName",bookinfo!!.book_title)
-            intent.putExtra("BookImage",bookinfo!!.small_image_url)
-            intent.putExtra("BookAuthor",bookinfo!!.author_name)
+            Cbookdata.author_name=bookinfo!!.author_name
+            Cbookdata.book_title=bookinfo!!.book_title
+            Cbookdata.bookid=bookinfo!!.bookid
+            Cbookdata.image_url=bookinfo!!.small_image_url
             startActivity(intent)
         }
 
         bookreview= ArrayList()
       //  bookreview!!.add(BookReview("sadfas"))
-        adapter=ReviewAdabterlist()
-        reviewlistui.adapter=adapter
+
         feedUrlFromApi(bookinfo!!.bookid)
+
+
+        rateittext.setOnClickListener {
+            writeareviewbtn.visibility=View.VISIBLE
+        }
     }
 
     /**
@@ -144,37 +149,5 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         boojsideinfotxtui.text=bookinfo!!.num_pages.toString()+" . First published "+bookinfo!!.publication_month+
                 " "+bookinfo!!.publication_day+" , "+bookinfo!!.publication_year+" ISBN13 "+bookinfo!!.isbn
      }
-    /**
-     * inner class Adapter for fill the list of books
-     */
-    inner class ReviewAdabterlist(): BaseAdapter()
-    {
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            var myview=layoutInflater.inflate(R.layout.bookreview,null)
-            var currentreview= bookreview!![position]
-            myview.reviwernametxtui.text=""
-            myview.readmoretxtui.setOnClickListener {
-                var intent=Intent(baseContext, ReviewActivity::class.java)
-                startActivity(intent)
-            }
-            myview.commentreviewtxtui.setOnClickListener {
-                var intent=Intent(baseContext, ReviewActivity::class.java)
-                startActivity(intent)
-            }
-            return myview
-        }
 
-        override fun getItem(position: Int): Any {
-            return  bookreview!![position]
-        }
-
-        override fun getItemId(position: Int): Long {
-            return position.toLong()
-        }
-
-        override fun getCount(): Int {
-            return bookreview!!.size
-        }
-
-    }
 }

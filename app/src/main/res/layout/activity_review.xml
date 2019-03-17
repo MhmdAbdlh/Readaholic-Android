@@ -13,9 +13,9 @@
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/profile_image1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:id="@+id/reviewerimage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_weight="0"
             android:src="@drawable/profileicon"
             app:civ_border_color="#FF000000"
@@ -84,9 +84,9 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/bookimage"
             android:layout_width="70dp"
-            android:layout_height="match_parent"
+            android:layout_height="70dp"
             android:layout_weight="0"
             app:srcCompat="@drawable/defaultimage" />
 
@@ -98,7 +98,7 @@
             android:paddingLeft="30dp">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/booktitleui"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Book Title"
@@ -106,36 +106,14 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/authornameui"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/bookreadbtnui"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/bookbottonshape"
-                    android:text="Want to Read"
-                    android:textColor="@color/colorPrimary" />
-
-                <ImageButton
-                    android:id="@+id/activitybook_sheleve_spinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0"
-                    android:background="@drawable/bookbottonshape"
-                    app:srcCompat="@drawable/downbtn" />
-
-            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
     <TextView
         android:id="@+id/descriptionreviewui"
         android:layout_width="match_parent"
