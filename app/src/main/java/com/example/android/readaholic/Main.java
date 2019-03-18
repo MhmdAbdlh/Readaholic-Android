@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.android.readaholic.home.HomeFragment;
+import com.example.android.readaholic.myshelves.ShelvesFragment;
 import com.example.android.readaholic.profile_and_profile_settings.SettingFragment;
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -60,6 +61,13 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
                         new MyBooksFragment()).commit();
                 break;
+
+            case R.id.draw_Myshelves_menu:
+                getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
+                        new ShelvesFragment()).commit();
+                break;
+
+
 
         }
 

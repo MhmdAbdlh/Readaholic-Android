@@ -26,7 +26,9 @@
         <activity
             android:name=".Main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".BookPageActivity" />
+        <activity android:name=".books.BookPageActivity" />
+        <activity android:name=".books.BookReviewsActivity" />
+        <activity android:name=".books.ReviewActivity"></activity>
     </application>
 
 </manifest>

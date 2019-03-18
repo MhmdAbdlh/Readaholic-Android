@@ -8,4 +8,5 @@
     <color name="colorNearBlack">#333333</color>
     <color name="colorGray">#90918f</color>
     <color name="colorGreen">#229954</color>
+    <color name="colorBackgroundWhite">#FAFAFA</color>
 </resources>
