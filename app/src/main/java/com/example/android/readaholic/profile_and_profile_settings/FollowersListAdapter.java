@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.example.android.readaholic.CircleTransform;
 import com.example.android.readaholic.R;
 import com.squareup.picasso.Picasso;
 
@@ -47,7 +48,7 @@ public class FollowersListAdapter extends RecyclerView.Adapter<FollowersListAdap
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             // create a new view
             View v =  LayoutInflater.from(mcontext)
-                    .inflate(R.layout.followerslist, parent, false);
+                    .inflate(R.layout.followers_list, parent, false);
 
             return new MyViewHolder(v);
         }
@@ -60,7 +61,7 @@ public class FollowersListAdapter extends RecyclerView.Adapter<FollowersListAdap
                 myViewHolder.userImageView.setImageResource(R.drawable.reader);
             }
             else {
-                //Picasso.get().load(mUsers.get(i).getmUserImageUrl()).into(myViewHolder.userImageView);
+                Picasso.get().load(mUsers.get(i).getmUserImageUrl()).transform(new CircleTransform()).into(myViewHolder.userImageView);
             }
             myViewHolder.userNameTextView.setText( mUsers.get(i).getmUserName());
             myViewHolder.userBooksNumberTextView.setText( mUsers.get(i).getmNumberOfFollowers()+" Books");

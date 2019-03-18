@@ -32,7 +32,7 @@ public class FollowersTab_Fragment extends Fragment {
         mNotAvaliableTextView = (TextView) view.findViewById(R.id.FollowersTab_fragment_NotAvaliable_TextView);
         mNotAvaliableTextView.setVisibility(View.INVISIBLE);
 
-/*
+
         if(followers==null)
         {
             mNotAvaliableTextView.setVisibility(View.VISIBLE);
@@ -52,7 +52,7 @@ public class FollowersTab_Fragment extends Fragment {
             mRecyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
         }
-*/
+
         return view;
     }
 

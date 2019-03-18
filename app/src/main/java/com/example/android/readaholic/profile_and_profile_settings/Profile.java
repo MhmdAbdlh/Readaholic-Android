@@ -19,6 +19,7 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.android.readaholic.CircleTransform;
 import com.example.android.readaholic.R;
 import com.squareup.picasso.Picasso;
 
@@ -237,7 +238,7 @@ public class Profile extends AppCompatActivity {
                 Log.e("number of book "," "+numberOfBooks);
                 mProfileUser.setmUsernumberOfBooks(numberOfBooks);
 
-                    Picasso.get().load(mProfileUser.getmUserImageUrl()).into(mUserImage);
+                    Picasso.get().load(mProfileUser.getmUserImageUrl()).transform(new CircleTransform()).into(mUserImage);
                     mUserBookNumber.setText(mProfileUser.getmUsernumberOfBooks()+" Books");
                     mUserName.setText(mProfileUser.getmUserName());
 

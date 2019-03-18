@@ -84,16 +84,6 @@ public class Followers_fragment extends Fragment {
             "  }\n" +
             "}";
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mUsers = new ArrayList<>();
-        for (int i=1;i<=5;i++) {
-            mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        }
-
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,6 +91,7 @@ public class Followers_fragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_followers_fragment, container, false);
         //make the TextView of not available message at first invisible.
+
         mNotAvaliable =(TextView)view.findViewById(R.id.NotAvaliableTextView);
         mNotAvaliable.setVisibility(View.INVISIBLE);
 
@@ -172,15 +163,16 @@ public class Followers_fragment extends Fragment {
 
         if(mUsers==null)
         {
-         mNotAvaliable.setVisibility(View.VISIBLE);
+            mNotAvaliable.setVisibility(View.VISIBLE);
         }
         else {
-            recyclerView = (RecyclerView) view.findViewById(R.id.FollowersFragment_FollowersList_RecyclerView);
 
-            //recyclerView.setHasFixedSize(true);
-        // use a linear layout manager
+            recyclerView = (RecyclerView) view.findViewById(R.id.FollowersFragment_FollowersList_RecyclerView);
+            // use a linear layout manager
             layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
             recyclerView.setLayoutManager(layoutManager);
+
+     //       recyclerView.setHasFixedSize(true);
 
             // specify an adapter
             mAdapter = new FollowersAdapter(getActivity(),mUsers);
@@ -189,6 +181,25 @@ public class Followers_fragment extends Fragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mUsers = new ArrayList<>();
+
+        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
+        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
+        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
+        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
+        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
+        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
+        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
+        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
+        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
+        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
+        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
+
     }
 
 

@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.android.readaholic.CircleTransform;
 import com.example.android.readaholic.R;
 import com.squareup.picasso.Picasso;
 
@@ -55,7 +56,7 @@ public class FollowingLiastAdapter extends RecyclerView.Adapter<FollowingLiastAd
             myViewHolder.userImageView.setImageResource(R.drawable.reader);
         }
         else {
-            Picasso.get().load(mUsers.get(i).getmUserImageUrl()).into(myViewHolder.userImageView);
+            Picasso.get().load(mUsers.get(i).getmUserImageUrl()).transform(new CircleTransform()).into(myViewHolder.userImageView);
         }
         myViewHolder.userNameTextView.setText( mUsers.get(i).getmUserName());
         myViewHolder.userBooksNumberTextView.setText( mUsers.get(i).getmNumberOfFollowers()+" Books");

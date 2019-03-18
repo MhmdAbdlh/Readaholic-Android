@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.readaholic.CircleTransform;
 import com.example.android.readaholic.R;
 import com.squareup.picasso.Picasso;
 
@@ -27,11 +28,12 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.MyVi
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         private ImageView UserImageView;
+        ViewGroup viewGroup;
 
         public MyViewHolder(View v) {
             super(v);
              UserImageView= (ImageView)v.findViewById(R.id.FollowersList_ReaderImage_ImageView);
-
+            viewGroup = (ViewGroup)itemView;
         }
 
 
@@ -58,9 +60,11 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.MyVi
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from my dataset at this position
         // - replace the contents of the view with that element
+        holder.viewGroup.removeAllViews();
 
-        Picasso.get().load(mUsers.get(position)).resize(50,50).into(holder.UserImageView);
+        Picasso.get().load(mUsers.get(position)).transform(new CircleTransform()).into(holder.UserImageView);
         //((MyViewHolder)holder).UserImageView.setImageResource(R.drawable.reader);
+        holder.viewGroup.addView(holder.UserImageView);
     }
 
     @Override

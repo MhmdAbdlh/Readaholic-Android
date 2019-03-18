@@ -48,7 +48,7 @@ public class books extends Fragment {
         mNotAvaliableReadTextView.setVisibility(View.INVISIBLE);
         mNotAvaliableWantToReadTextView.setVisibility(View.INVISIBLE);
 
-        if(mCurrentlyReadingImageUrl==null)
+        /*if(mCurrentlyReadingImageUrl==null)
         {
             mNotAvaliableCurrentlyReadingTextView.setVisibility(View.VISIBLE);
         }
@@ -110,7 +110,7 @@ public class books extends Fragment {
             mReadAdapter.notifyDataSetChanged();
         }
 
-
+*/
 
         return mView;
     }
