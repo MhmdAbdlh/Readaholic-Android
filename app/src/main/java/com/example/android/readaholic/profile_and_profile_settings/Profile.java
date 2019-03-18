@@ -23,6 +23,7 @@ import com.example.android.readaholic.R;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class Profile extends AppCompatActivity {
     private JSONObject mJsonObject;
     private String mRequestUrl;
     private int mUser_Id;
-    private Users mUser;
+    private Users mProfileUser;
     private ImageView mUserImage;
     private TextView mUserName;
     private TextView mUserBookNumber;
@@ -211,25 +212,21 @@ public class Profile extends AppCompatActivity {
             mUserName =(TextView)findViewById(R.id.ProfileActivity_UserName_TextView);
             mUserBookNumber = (TextView)findViewById(R.id.ProfileActivity_UserBooksNumber_TextView);
             mRequestUrl = "https://api.myjson.com/bins/1dujwm";
-            HTTPRequest(mRequestUrl);
-       // Picasso.get().load(mUser.getmUserImageUrl()).into(mUserImage);
-        mUserBookNumber.setText(mUser.getmUsernumberOfBooks()+" Books");
-        mUserName.setText(mUser.getmUserName());
+            //HTTPRequest(mRequestUrl,mProfileUser);
 
-/*
-            mUser = new Users();
-            DiskBasedCache cache = new DiskBasedCache(getCacheDir(),1024*1024);
-            BasicNetwork network = new BasicNetwork(new HurlStack());
-            mRequestQueue = new RequestQueue(cache,network);
-            mRequestQueue.start();
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null, new com.android.volley.Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                JSONObject GoodReadsResponse = response.optJSONObject("GoodreadsResponse");
+
+            mProfileUser = new Users();
+        JSONObject response = null;
+        try {
+            response = new JSONObject(profileResponse);
+        } catch (JSONException e) {
+            Log.e("First JSON OBj","Error in first json object");
+        }
+        JSONObject GoodReadsResponse = response.optJSONObject("GoodreadsResponse");
                 JSONObject User = GoodReadsResponse.optJSONObject("user");
-                mUser.setmUserName(User.optString("name"));
-                Log.e("Test" ,mUser.getmUserName());
-                mUser.setmUserImageUrl(User.optString("image_url"));
+                mProfileUser.setmUserName(User.optString("name"));
+                Log.e("Test" ,mProfileUser.getmUserName());
+                mProfileUser.setmUserImageUrl(User.optString("image_url"));
                 JSONObject user_shelves = User.optJSONObject("user_shelves");
                 JSONArray user_shelf = user_shelves.optJSONArray("user_shelf");
                 int numberOfBooks = 0;
@@ -238,22 +235,11 @@ public class Profile extends AppCompatActivity {
                     numberOfBooks += user_shelf.optJSONObject(i).optJSONObject("book_count").optInt("#text");
                 }
                 Log.e("number of book "," "+numberOfBooks);
-                mUser.setmUsernumberOfBooks(numberOfBooks);
+                mProfileUser.setmUsernumberOfBooks(numberOfBooks);
 
-
-
-                mRequestQueue.stop();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                mJsonObject = null;
-                mRequestQueue.stop();
-            }
-        });
-        mRequestQueue.add(jsonObjectRequest);
-
-*/
+                    Picasso.get().load(mProfileUser.getmUserImageUrl()).into(mUserImage);
+                    mUserBookNumber.setText(mProfileUser.getmUsernumberOfBooks()+" Books");
+                    mUserName.setText(mProfileUser.getmUserName());
 
 
 
@@ -282,7 +268,7 @@ public class Profile extends AppCompatActivity {
      * @param url string url to determine the endpoint.
      *
      */
-    private void HTTPRequest(String url)
+    private void HTTPRequest(String url, final Users Muser)
     {
 
         DiskBasedCache cache = new DiskBasedCache(getCacheDir(),1024*1024);
@@ -292,14 +278,14 @@ public class Profile extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new com.android.volley.Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-               ExtractUser(response);
+               ExtractUser(response,Muser);
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mJsonObject = null;
-                Log.e("Volly ERROR","Error in volley request");
+                Log.e("Volley ERROR","Error in volley request");
 
             }
         });
@@ -312,7 +298,7 @@ public class Profile extends AppCompatActivity {
      * @param Response json object to root tree that contain the user data
      *
      */
-    private void ExtractUser(JSONObject Response)
+    private void ExtractUser(JSONObject Response,Users mUser)
     {
          mUser = new Users();
         JSONObject GoodReadsResponse = Response.optJSONObject("GoodreadsResponse");

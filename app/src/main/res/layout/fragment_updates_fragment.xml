@@ -28,7 +28,8 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/Upadtes_Fragment_UpdatesList_RecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" />
 
 
 </LinearLayout>

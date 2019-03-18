@@ -1,11 +1,13 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,15 +17,17 @@ import com.example.android.readaholic.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
- public class FollowersListAdapter extends RecyclerView.Adapter<FollowersListAdapter.MyViewHolder> {
-        private ArrayList<Users> mUsers;
+import java.util.List;
+
+public class FollowersListAdapter extends RecyclerView.Adapter<FollowersListAdapter.MyViewHolder> {
+        private List<Users> mUsers;
         private Context mcontext;
         public static class MyViewHolder extends RecyclerView.ViewHolder {
             // each data item is just a string in this case
-            public ImageView userImageView;
-            public TextView userNameTextView;
-            public TextView userBooksNumberTextView;
-            public Button userFollowingStatusButton;
+            private ImageView userImageView;
+            private TextView userNameTextView;
+            private TextView userBooksNumberTextView;
+            private Button userFollowingStatusButton;
             public MyViewHolder(View v) {
                 super(v);
                 userNameTextView = (TextView) v.findViewById(R.id.FollowersList_UserIName_TextView);
@@ -33,15 +37,16 @@ import java.util.ArrayList;
             }
         }
 
-        public FollowersListAdapter(Context context, ArrayList<Users> users) {
+
+        public FollowersListAdapter(Context context, List<Users> users) {
             mUsers = users;
             mcontext = context;
         }
 
         @Override
-        public FollowersListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             // create a new view
-            ImageView v = (ImageView) LayoutInflater.from(parent.getContext())
+            View v =  LayoutInflater.from(mcontext)
                     .inflate(R.layout.followerslist, parent, false);
 
             return new MyViewHolder(v);
@@ -52,10 +57,10 @@ import java.util.ArrayList;
         public void onBindViewHolder(@NonNull FollowersListAdapter.MyViewHolder myViewHolder, int i) {
             if(mUsers.get(i).getmUserImageUrl() == null)
             {
-             myViewHolder.userImageView.setImageResource(R.drawable.reader);
+                myViewHolder.userImageView.setImageResource(R.drawable.reader);
             }
             else {
-                Picasso.get().load(mUsers.get(i).getmUserImageUrl()).into(myViewHolder.userImageView);
+                //Picasso.get().load(mUsers.get(i).getmUserImageUrl()).into(myViewHolder.userImageView);
             }
             myViewHolder.userNameTextView.setText( mUsers.get(i).getmUserName());
             myViewHolder.userBooksNumberTextView.setText( mUsers.get(i).getmNumberOfFollowers()+" Books");
@@ -63,11 +68,9 @@ import java.util.ArrayList;
         }
 
 
-        @Override
+    @Override
         public int getItemCount() {
-            if(mUsers ==null)
-                return 0;
-            else return mUsers.size();
+         return mUsers.size();
         }
 
     }

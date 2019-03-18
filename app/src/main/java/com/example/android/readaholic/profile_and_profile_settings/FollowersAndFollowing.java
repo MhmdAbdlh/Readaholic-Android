@@ -23,6 +23,9 @@ import android.widget.Toast;
 
 import com.example.android.readaholic.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FollowersAndFollowing extends AppCompatActivity {
 
     /**
@@ -37,7 +40,7 @@ public class FollowersAndFollowing extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
-private int mSectionNumber;
+    private int mSectionNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +60,7 @@ private int mSectionNumber;
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(mSectionNumber);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-
+        //tabLayout.setupWithViewPager(mViewPager);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
@@ -76,7 +79,7 @@ private int mSectionNumber;
      * one of the sections/tabs/pages.
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
+        List<Fragment> ListFragments = new ArrayList<>();
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }

@@ -15,27 +15,27 @@
     >
 
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="8dp"
         android:background="@color/colorWhite"
         android:gravity="center"
+        android:orientation="vertical"
         android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
         <ImageView
             android:id="@+id/profileActivity_ProfilePic_ImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:srcCompat="@drawable/profileicon" />
+            android:layout_marginBottom="8dp" />
 
         <TextView
             android:id="@+id/ProfileActivity_UserName_TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/profileActivity_ProfilePic_ImageView"
             android:layout_marginBottom="8dp"
             android:text="TextView" />
 
@@ -43,11 +43,10 @@
             android:id="@+id/ProfileActivity_UserBooksNumber_TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ProfileActivity_UserName_TextView"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="TextView" />
-    </RelativeLayout>
+    </LinearLayout>
 
     <View
         style="@style/Divider"

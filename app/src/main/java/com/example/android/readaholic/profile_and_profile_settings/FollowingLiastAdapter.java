@@ -14,15 +14,17 @@ import com.example.android.readaholic.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FollowingLiastAdapter extends RecyclerView.Adapter<FollowingLiastAdapter.MyViewHolder> {
-    private ArrayList<Users> mUsers;
+    private List<Users> mUsers;
     private Context mcontext;
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public ImageView userImageView;
-        public TextView userNameTextView;
-        public TextView userBooksNumberTextView;
+        private ImageView userImageView;
+        private TextView userNameTextView;
+        private TextView userBooksNumberTextView;
         public MyViewHolder(View v) {
             super(v);
             userNameTextView = (TextView) v.findViewById(R.id.FollowingList_UserIName_TextView);
@@ -31,15 +33,15 @@ public class FollowingLiastAdapter extends RecyclerView.Adapter<FollowingLiastAd
         }
     }
 
-    public FollowingLiastAdapter(Context context, ArrayList<Users> users) {
+    public FollowingLiastAdapter(Context context, List<Users> users) {
         mUsers = users;
         mcontext = context;
     }
 
     @Override
-    public FollowingLiastAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-        ImageView v = (ImageView) LayoutInflater.from(parent.getContext())
+        View v =  LayoutInflater.from(mcontext)
                 .inflate(R.layout.following_list, parent, false);
 
         return new MyViewHolder(v);
@@ -63,9 +65,7 @@ public class FollowingLiastAdapter extends RecyclerView.Adapter<FollowingLiastAd
 
     @Override
     public int getItemCount() {
-        if(mUsers ==null)
-            return 0;
-        else return mUsers.size();
+         return mUsers.size();
     }
 
 }

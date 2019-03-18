@@ -7,6 +7,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.net.sip.SipSession;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,22 +32,24 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.example.android.readaholic.R;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class Followers_fragment extends Fragment {
 
-    private RecyclerView recyclerView;
-    private FollowersAdapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<String> mUsers;
-    private TextView mNotAvaliable ;
-    private ImageLoader mImageLoader;
-    private RequestQueue mRequestQueue;
-    private View view;
-    private String FollowesResponse = "{\n" +
+     RecyclerView recyclerView;
+     FollowersAdapter mAdapter;
+     RecyclerView.LayoutManager layoutManager;
+     List<String> mUsers;
+     TextView mNotAvaliable ;
+     ImageLoader mImageLoader;
+     RequestQueue mRequestQueue;
+     View view;
+     String FollowesResponse = "{\n" +
             "  \"GoodreadsResponse\": {\n" +
             "    \"Request\": {\n" +
             "      \"authentication\": \"false\",\n" +
@@ -80,6 +83,18 @@ public class Followers_fragment extends Fragment {
             "    }\n" +
             "  }\n" +
             "}";
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mUsers = new ArrayList<>();
+        for (int i=1;i<=5;i++) {
+            mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
+        }
+
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -89,11 +104,44 @@ public class Followers_fragment extends Fragment {
         mNotAvaliable =(TextView)view.findViewById(R.id.NotAvaliableTextView);
         mNotAvaliable.setVisibility(View.INVISIBLE);
 
+/*
         String url = "https://api.myjson.com/bins/fjksu";
-        HTTPRequest(url);
+       // HTTPRequest(url);
+        JSONObject response = null;
+        try {
+            response = new JSONObject(FollowesResponse);
+        } catch (JSONException e) {
+            Log.e("First JSON OBj","Error in first json object");
+        }
+        JSONObject GoodReadsResponse = response.optJSONObject("GoodreadsResponse");
+        JSONObject Following = GoodReadsResponse.optJSONObject("following");
+        JSONArray User = null;
+        try {
+            User = Following.getJSONArray("user");
+        } catch (JSONException e) {
+            Log.e("JsonARRRAY ERROR","error in json array user");
+        }
+        mUsers = new ArrayList<String>(User.length());
+        try {
+            User.getJSONObject(0).optString("image_url");
+        } catch (JSONException e) {
+            Log.e("User Error","ERRRRRRRORRRRRRRRRRRRRR");
+        }
 
+        if(User.length()!=0) {
+            for (int i = 0; i < User.length(); i++) {
+                JSONObject user = null;
+                try {
+                    user = User.getJSONObject(i);
+                } catch (JSONException e) {
+                    Log.e("ELement of array", "error in json array elements extraction");
+                }
+                mUsers.set(i, user.optString("image_url"));
+                Log.e("FollowersFragment", mUsers.get(i));
+            }
 
-
+        }
+*/
         TextView followersTextView = (TextView) view.findViewById(R.id.FollowersFragment_FollowersNumber_TextView);
         followersTextView.setOnClickListener(new View.OnClickListener()
         {
@@ -129,14 +177,13 @@ public class Followers_fragment extends Fragment {
         else {
             recyclerView = (RecyclerView) view.findViewById(R.id.FollowersFragment_FollowersList_RecyclerView);
 
-            recyclerView.setHasFixedSize(true);
-
-            // use a linear layout manager
-            layoutManager = new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false);
+            //recyclerView.setHasFixedSize(true);
+        // use a linear layout manager
+            layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
             recyclerView.setLayoutManager(layoutManager);
 
             // specify an adapter
-            mAdapter = new FollowersAdapter(view.getContext(),mUsers);
+            mAdapter = new FollowersAdapter(getActivity(),mUsers);
             recyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
         }
