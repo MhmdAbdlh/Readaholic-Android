@@ -10,8 +10,13 @@
     <color name="colorNearBlack">#333333</color>
     <color name="colorGray">#90918f</color>
     <color name="colorGreen">#229954</color>
+<<<<<<< HEAD
     <color name="brownish">#c99b69</color>
     <color name="brown">#5c3f23</color>
     <color name="middlegrey">#bababa</color>
 
+||||||| merged common ancestors
+=======
+    <color name="colorBackgroundWhite">#FAFAFA</color>
+>>>>>>> 1b7798fd2c2ac0ccd43cc86489d95fd12c508848
 </resources>

@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.android.readaholic.BookPageActivity;
 import com.example.android.readaholic.Main;
 import com.example.android.readaholic.R;
+import com.example.android.readaholic.profile_and_profile_settings.Profile;
+import com.example.android.readaholic.books.BookPageActivity;
+import com.example.android.readaholic.books.BookReviewsActivity;
 
 public class Start extends AppCompatActivity {
 
@@ -36,6 +38,16 @@ public class Start extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent (v.getContext(),SignUp.class);
+                startActivity(intent);
+            }
+        });
+
+        Button signUP = (Button)findViewById(R.id.Start_signUp_btn);
+
+        signUP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (v.getContext(), Profile.class);
                 startActivity(intent);
             }
         });

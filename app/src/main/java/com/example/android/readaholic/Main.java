@@ -23,9 +23,11 @@ import com.android.volley.toolbox.HttpResponse;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.home.HomeFragment;
+
 import com.example.android.readaholic.sign_in_up.Start;
 import com.example.android.readaholic.sign_in_up.UserInfo;
 
+import com.example.android.readaholic.myshelves.ShelvesFragment;
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -76,6 +78,13 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             case R.id.draw_logout_menu:
                 logoutrequest();
                 break;
+
+            case R.id.draw_Myshelves_menu:
+                getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
+                        new ShelvesFragment()).commit();
+                break;
+
+
 
         }
 

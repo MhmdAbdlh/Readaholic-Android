@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <group android:checkableBehavior="single">
         <item
@@ -11,10 +12,24 @@
             android:icon="@drawable/ic_group"
             android:title="Followers" />
         <item
+<<<<<<< HEAD
             android:id="@+id/draw_explore_menu"
             android:icon="@drawable/ic_explore"
             android:title="Explore" />
 
+||||||| merged common ancestors
+            android:id="@+id/draw_settings_menu"
+            android:icon="@drawable/ic_settings"
+            android:title="Settings" />
+=======
+            android:id="@+id/draw_settings_menu"
+            android:icon="@drawable/ic_settings"
+            android:title="Settings" />
+        <item
+            android:id="@+id/draw_Myshelves_menu"
+            android:icon="@drawable/bookshelves"
+            android:title="Shelves" />
+>>>>>>> 1b7798fd2c2ac0ccd43cc86489d95fd12c508848
 
     </group>
     <item android:title="Settings and support" >
@@ -31,5 +46,6 @@
 
         </menu>
     </item>
+
 
 </menu>
