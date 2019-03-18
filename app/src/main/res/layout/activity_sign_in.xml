@@ -1,9 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".sign_in_up.SignIn">
 
-</android.support.constraint.ConstraintLayout>
+    <ProgressBar
+        android:id="@+id/SignIn_loading_progbar"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        />
+
+
+    <ScrollView
+        android:id="@+id/SignIn_scroll_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+
+        >
+
+        <LinearLayout
+            android:id="@+id/SignIn_layout_linearlayout"
+            android:focusableInTouchMode="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+           android:layout_marginTop="90dp"
+            android:orientation="vertical">
+
+
+            <EditText
+                android:id="@+id/SignIn_email_edittext"
+                style="@style/EditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:hint="Email"
+                android:maxLines="1" />
+
+            <EditText
+                android:id="@+id/SignIn_password_edittext"
+                style="@style/EditTextStyle"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:maxLines="1" />
+
+
+            <Button
+                android:id="@+id/SignIn_signin_btn"
+                style="@style/Button"
+                android:background="@drawable/button_rounded_corners_brownish"
+                android:text="Login" />
+
+            <TextView
+                android:id="@+id/SignIn_error_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:layout_gravity="center"
+                android:textColor="@color/red"
+                android:visibility="gone"
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

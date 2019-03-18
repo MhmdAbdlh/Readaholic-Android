@@ -11,5 +11,6 @@ public class SignUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        getWindow().setBackgroundDrawableResource(R.drawable.books_shelfes);
     }
 }

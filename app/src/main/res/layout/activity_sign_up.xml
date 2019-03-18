@@ -1,9 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".sign_in_up.SignUp">
 
-</android.support.constraint.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="30dp"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/SignUp_email_edittext"
+                    android:inputType="textEmailAddress"
+                    style="@style/EditTextStyle"
+                    android:layout_width="260dp"
+                    android:hint="Email"
+                    android:maxLines="1" />
+
+                <LinearLayout
+                    android:layout_width="260dp"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/SignUp_firstName_edittext"
+                        style="@style/EditTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="First Name"
+                        android:maxLines="1" />
+
+                    <EditText
+                        android:id="@+id/SignUp_lastName_edittext"
+                        style="@style/EditTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:hint="Last Name"
+                        android:maxLines="1" />
+
+                </LinearLayout>
+                <EditText
+                    android:id="@+id/SignUp_midName_edittext"
+                    style="@style/EditTextStyle"
+                    android:layout_width="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:hint="Middle Name"
+                    android:layout_gravity="center_horizontal"
+                    android:maxLines="1" />
+
+                <EditText
+                    android:id="@+id/SignUp_Pass_edittext"
+                    style="@style/EditTextStyle"
+                    android:layout_width="260dp"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:maxLines="1" />
+
+                <EditText
+                    android:id="@+id/SignUp_rePass_edittext"
+                    style="@style/EditTextStyle"
+                    android:layout_width="260dp"
+                    android:hint="Re-enter Password"
+                    android:inputType="textPassword"
+                    android:maxLines="1" />
+
+                <Button
+                    android:id="@+id/SignUp_signUp_btn"
+                    style="@style/Button"
+                    android:background="@drawable/button_rounded_corners_brownish"
+                    android:text="Sign Up" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+    <ProgressBar
+        android:id="@+id/SignUP_loading_ProgBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
