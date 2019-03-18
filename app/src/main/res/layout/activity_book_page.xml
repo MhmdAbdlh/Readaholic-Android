@@ -46,7 +46,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:text="by" />
+                android:text="by"
+                android:textColor="@color/colorBlack" />
 
             <TextView
                 android:id="@+id/authornametxtui"
@@ -60,15 +61,17 @@
 
         <View
             android:layout_width="fill_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:background="@color/colorPrimaryDark"
-            android:paddingBottom="8dp" />
+            android:paddingBottom="15dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp">
 
             <Space
                 android:layout_width="wrap_content"
@@ -98,13 +101,14 @@
 
         <View
             android:layout_width="fill_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:background="@color/colorPrimaryDark"
+            android:paddingTop="15dp"
             android:paddingBottom="3dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_marginLeft="80dp"
             android:layout_marginRight="80dp"
             android:orientation="horizontal"
@@ -131,16 +135,6 @@
 
         </LinearLayout>
 
-        <RatingBar
-            android:id="@+id/ratingBar"
-            style="@style/Widget.AppCompat.RatingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:numStars="5"
-            android:rating="0"
-            android:stepSize="1" />
-
         <TextView
             android:id="@+id/rateittext"
             android:layout_width="match_parent"
@@ -148,14 +142,24 @@
             android:layout_weight="0"
             android:gravity="center"
             android:text="Rate it"
-            android:textSize="30sp" />
+            android:textSize="18sp" />
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:numStars="5"
+            android:progressTint="@color/colorGoled"
+            android:rating="0"
+            android:stepSize="1" />
 
         <Button
             android:id="@+id/writeareviewbtn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="fill_vertical|center_horizontal|center"
-            android:background="@color/colorWhite"
+            android:background="@drawable/btnselectedshape"
             android:foregroundGravity="center_horizontal|fill_horizontal|center"
             android:gravity="center_horizontal|center"
             android:text="Write a Review"
@@ -225,8 +229,7 @@
                 android:id="@+id/seeallreviewstxtui"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="See List of reviews"
-                android:textColor="@color/colorGreen"
+                android:textColor="@color/colorPrimaryDark"
                 android:textSize="24sp" />
 
             <ImageView

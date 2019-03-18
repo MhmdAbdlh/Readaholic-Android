@@ -9,4 +9,6 @@
     <color name="colorGray">#90918f</color>
     <color name="colorGreen">#229954</color>
     <color name="colorBackgroundWhite">#FAFAFA</color>
+    <color name="colorRed">#FF0000</color>
+    <color name="colorGoled">#FFD700</color>
 </resources>

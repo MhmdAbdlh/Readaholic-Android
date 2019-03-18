@@ -29,13 +29,19 @@ class ReviewActivity : AppCompatActivity() {
         feedBookData()
         feedReviewDate()
         feedCommentsDataFromURL(2)
+
+        swiperefreshcomment.setOnRefreshListener {
+            CommentList!!.clear()
+            feedCommentsDataFromURL(4)
+            swiperefreshcomment.isRefreshing=false
+        }
     }
 
     fun feedBookData()
     {
         booktitleui.text=Cbookdata.book_title
         authornameui.text=Cbookdata.author_name
-        Picasso.get().load("https://i.ytimg.com/vi/3nmoffllWTw/hqdefault.jpg").into(bookimage)
+      //  Picasso.get().load("https://i.ytimg.com/vi/3nmoffllWTw/hqdefault.jpg").into(bookimage)
 
     }
     fun feedReviewDate()
@@ -46,7 +52,7 @@ class ReviewActivity : AppCompatActivity() {
         descriptionreviewui.text=Creviewdata.reviewbody
         numberoflikesreviewtxtui.text=Creviewdata.numberoflikes.toString()
         numberofcommentreviewtxtui.text=Creviewdata.numberofcomments.toString()
-        Picasso.get().load("https://i.ytimg.com/vi/3nmoffllWTw/hqdefault.jpg").into(reviewerimage)
+       // Picasso.get().load("https://i.ytimg.com/vi/3nmoffllWTw/hqdefault.jpg").into(reviewerimage)
     }
 
     fun feedCommentsDataFromURL(bookid:Int)
@@ -77,7 +83,7 @@ class ReviewActivity : AppCompatActivity() {
             CommentList!!.add(CommentInfo(jsonobject.getString("id").toInt(),jsonobject.getJSONObject("user").getString("id").toInt(),jsonobject.getJSONObject("user").getString("name")
             ,jsonobject.getJSONObject("user").getString("image_url"),jsonobject.getString("body")))
         }
-            Toast.makeText(this,"dfsdf",Toast.LENGTH_SHORT).show()
+           // Toast.makeText(this,"dfsdf",Toast.LENGTH_SHORT).show()
     }
 
     inner class CommentsAdabterlist(): BaseAdapter()
@@ -89,7 +95,7 @@ class ReviewActivity : AppCompatActivity() {
             myview.reviwernametxtui.text=currentcomment.username
             myview.dateofreviewtxtui.text=currentcomment.commentdate
             myview.descriptionreviewui.text=currentcomment.commentbody
-            Picasso.get().load("https://i.ytimg.com/vi/3nmoffllWTw/hqdefault.jpg").into(myview.usercommentimage)
+          //  Picasso.get().load("https://i.ytimg.com/vi/3nmoffllWTw/hqdefault.jpg").into(myview.usercommentimage)
             return myview
         }
 

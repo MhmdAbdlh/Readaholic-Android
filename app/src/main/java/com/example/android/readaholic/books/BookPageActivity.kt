@@ -39,7 +39,7 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         bookreadbtnui.text=SS
         if(position!=0)
         {
-            bookreadbtnui.setBackgroundColor(Color.WHITE); // From android.graphics.Color
+            bookreadbtnui.setBackgroundResource(R.drawable.btnselectedshape); // From android.graphics.Color
             bookreadbtnui.setTextColor(Color.BLACK)
         }
 
@@ -65,7 +65,7 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         ////
         //Here to go to the list of reviews and send important info to them
         seeallreviewstxtui.setOnClickListener {
-            seeallreviewstxtui.setTextColor(Color.GREEN)
+
             var intent=Intent(this, BookReviewsActivity::class.java)
             Cbookdata.author_name=bookinfo!!.author_name
             Cbookdata.book_title=bookinfo!!.book_title
@@ -83,6 +83,13 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         rateittext.setOnClickListener {
             writeareviewbtn.visibility=View.VISIBLE
         }
+        ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+            writeareviewbtn.visibility=View.VISIBLE
+            rateittext.text="My Rating"
+            bookreadbtnui.text="READ"
+            bookreadbtnui.setBackgroundResource(R.drawable.btnselectedshape); // From android.graphics.Color
+            bookreadbtnui.setTextColor(Color.BLACK)
+        }
     }
 
     /**
@@ -93,7 +100,7 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         val queue = Volley.newRequestQueue(this)
         val urlgoodreads = "https://www.goodreads.com/search/index.xml?key=ER4R6YnUGeoLQICR10aKQ&q=0439554934&search=ISN"
         var url="httpp:://locallhost/api/books/show/?id="+BookId.toString()
-        var urltry="https://api.myjson.com/bins/9wd7q"
+        var urltry="https://api.myjson.com/bins/bkpcy"
         val stringRequest = StringRequest(Request.Method.GET, urltry,
                 Response.Listener<String> { response ->
                     var jsonresponse=JSONObject(response)
@@ -108,7 +115,7 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     //get the book image from the url
     fun importImage()
     {
-        Picasso.get().load(bookinfo!!.image_url).into(bookimageui)
+       // Picasso.get().load(bookinfo!!.image_url).into(bookimageui)
     }
 
     /**
@@ -132,6 +139,7 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         bookinfo!!.small_image_url=jsonobject.getString("small_image_url")
         bookinfo!!.publication_year=jsonobject.getString("publication_year").toInt()
         bookinfo!!.num_pages=jsonobject.getString("num_pages").toInt()
+        bookinfo!!.reviewscount=jsonobject.getString("reviews_count").toInt()
         feedBookUi()
         importImage()
     }
@@ -143,11 +151,12 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     {
         tiltetxtui.text= bookinfo!!.book_title
         authornametxtui.text= bookinfo!!.author_name
-        ratinginfotxtui.text= bookinfo!!.average_rating.toString()+"."+bookinfo!!.ratings_count.toString()+" ratings "
+        ratinginfotxtui.text= bookinfo!!.average_rating.toString()+"     "+bookinfo!!.ratings_count.toString()+" ratings "
         ratingui.rating=bookinfo!!.average_rating
         bookdesctxtui.text=bookinfo!!.description
         boojsideinfotxtui.text=bookinfo!!.num_pages.toString()+" . First published "+bookinfo!!.publication_month+
                 " "+bookinfo!!.publication_day+" , "+bookinfo!!.publication_year+" ISBN13 "+bookinfo!!.isbn
+        seeallreviewstxtui.text=bookinfo!!.reviewscount.toString()+" other community reviews"
      }
 
 }

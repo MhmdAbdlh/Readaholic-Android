@@ -26,15 +26,15 @@ class BookReviewsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_reviews)
         bookreviews= ArrayList()
-      //  var intent=Intent()
-       // var bookid=intent.extras.getInt("BookId")
-       // var bookname=intent.extras.getString("BookName")
-       // var bookimage=intent.extras.getString("BookImage")
-       // var bookauthor=intent.extras.getString("BookAuthor")
          var bookid=5
        feedReviewDataFromURL(bookid)
         adapter= ReviewAdabterlist1()
-        booklistui.adapter=adapter
+        list.adapter=adapter
+        swiperefresh.setOnRefreshListener {
+            bookreviews!!.clear()
+            feedReviewDataFromURL(4)
+            swiperefresh.isRefreshing=false
+        }
     }
 
 fun feedReviewDataFromURL(bookid:Int)
@@ -84,7 +84,7 @@ fun feedReviewDataFromURL(bookid:Int)
             myview.descriptionreviewui.text=currentreview.reviewbody
             myview.numberoflikesreviewtxtui.text=currentreview.numberoflikes.toString()
             myview.numberofcommentreviewtxtui.text=currentreview.numberofcomments.toString()
-            Picasso.get().load("https://i.ytimg.com/vi/3nmoffllWTw/hqdefault.jpg").into(myview.profile_image1)
+           // Picasso.get().load("https://i.ytimg.com/vi/3nmoffllWTw/hqdefault.jpg").into(myview.profile_image1)
             myview.commentreviewtxtui.setOnClickListener {
                var intent= Intent(baseContext, ReviewActivity::class.java)
                 Creviewdata.numberoflikes=currentreview.numberoflikes
@@ -98,14 +98,35 @@ fun feedReviewDataFromURL(bookid:Int)
                 Creviewdata.reviewbody=currentreview.reviewbody
                 startActivity(intent)
             }
+
+            myview.readmoretxtui.setOnClickListener {
+
+                var intent= Intent(baseContext, ReviewActivity::class.java)
+                Creviewdata.numberoflikes=currentreview.numberoflikes
+                Creviewdata.lastupdate=currentreview.lastupdate
+                Creviewdata.rating=currentreview.rating
+                Creviewdata.numberofcomments=currentreview.numberofcomments
+                Creviewdata.reviewid=currentreview.reviewid
+                Creviewdata.userId=currentreview.userId
+                Creviewdata.username=currentreview.username
+                Creviewdata.userimageurl=currentreview.userimageurl
+                Creviewdata.reviewbody=currentreview.reviewbody
+                startActivity(intent)
+
+            }
             myview.likereviewtxtui.setOnClickListener {
+                var likes:Int=myview.numberoflikesreviewtxtui.text.toString().toInt()
                 if( myview.likereviewtxtui.text=="like")
                 {
+                    likes+=1
                     myview.likereviewtxtui.text="unlike"
                 }
                 else{
+                    likes-=1
                     myview.likereviewtxtui.text="like"
+
                 }
+                myview.numberoflikesreviewtxtui.text=likes.toString()
 
             }
             return myview
