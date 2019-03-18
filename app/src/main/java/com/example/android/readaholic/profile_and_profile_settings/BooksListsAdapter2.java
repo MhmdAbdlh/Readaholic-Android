@@ -1,21 +1,19 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
+
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.android.readaholic.CircleTransform;
 import com.example.android.readaholic.R;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class BooksListsAdapter extends RecyclerView.Adapter<BooksListsAdapter.MyViewHolder> {
+public class BooksListsAdapter2 extends RecyclerView.Adapter<BooksListsAdapter2.MyViewHolder> {
     private List<String> mUsers;
     private Context mcontext;
     // Provide a reference to the views for each data item
@@ -28,7 +26,7 @@ public class BooksListsAdapter extends RecyclerView.Adapter<BooksListsAdapter.My
 
         public MyViewHolder(View v) {
             super(v);
-            UserImageView= (ImageView)v.findViewById(R.id.ReadList_ReadBook_ImageView);
+            UserImageView= (ImageView)v.findViewById(R.id.WantToReadList_WantToReadBook_ImageView);
             viewGroup = (ViewGroup)itemView;
         }
 
@@ -36,24 +34,24 @@ public class BooksListsAdapter extends RecyclerView.Adapter<BooksListsAdapter.My
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public BooksListsAdapter(Context context,List<String> users) {
+    public BooksListsAdapter2(Context context,List<String> users) {
         mUsers=users;
         mcontext = context;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public BooksListsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                            int viewType) {
+    public BooksListsAdapter2.MyViewHolder onCreateViewHolder(ViewGroup parent,
+                                                             int viewType) {
         // create a new view
-        View v =  LayoutInflater.from(mcontext).inflate(R.layout.readlist, parent, false);
+        View v =  LayoutInflater.from(mcontext).inflate(R.layout.wanttoreadlist, parent, false);
         return new MyViewHolder(v);
 
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(BooksListsAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(BooksListsAdapter2.MyViewHolder holder, int position) {
         // - get element from my dataset at this position
         // - replace the contents of the view with that element
         holder.viewGroup.removeAllViews();
@@ -69,6 +67,4 @@ public class BooksListsAdapter extends RecyclerView.Adapter<BooksListsAdapter.My
     }
 
 }
-
-
 

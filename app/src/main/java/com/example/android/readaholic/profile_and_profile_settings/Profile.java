@@ -38,6 +38,7 @@ public class Profile extends AppCompatActivity {
     private ImageView mUserImage;
     private TextView mUserName;
     private TextView mUserBookNumber;
+    public static int UserNumberofBooks;
 
     private String profileResponse = "{\n" +
             "  \"GoodreadsResponse\": {\n" +
@@ -205,9 +206,6 @@ public class Profile extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity__profile);
-            loadFragment(new books(),findViewById(R.id.Profile_Books_Fragment).getId());
-            loadFragment(new Followers_fragment(),findViewById(R.id.Profile_Friends_Fragment).getId());
-            loadFragment(new Updates_fragment(),findViewById(R.id.Profile_Updates_Fragment).getId());
 
             mUserImage = (ImageView)findViewById(R.id.profileActivity_ProfilePic_ImageView);
             mUserName =(TextView)findViewById(R.id.ProfileActivity_UserName_TextView);
@@ -217,6 +215,7 @@ public class Profile extends AppCompatActivity {
 
 
             mProfileUser = new Users();
+
         JSONObject response = null;
         try {
             response = new JSONObject(profileResponse);
@@ -242,11 +241,26 @@ public class Profile extends AppCompatActivity {
                     mUserBookNumber.setText(mProfileUser.getmUsernumberOfBooks()+" Books");
                     mUserName.setText(mProfileUser.getmUserName());
 
+        loadFragment(new books(),findViewById(R.id.Profile_Books_Fragment).getId());
+        loadFragment(new Followers_fragment(),findViewById(R.id.Profile_Friends_Fragment).getId());
+        loadFragment(new Updates_fragment(),findViewById(R.id.Profile_Updates_Fragment).getId());
 
 
+
+    }
+
+
+
+    public final class QueryUtils
+    {
+        public QueryUtils(){}
+
+        public  int getBooksNumber()
+        {
+            return UserNumberofBooks;
         }
 
-
+    }
         /**
          * loadFragment function to initialize the Fragment
          * @param fragment Fragment object to contain the layout.
