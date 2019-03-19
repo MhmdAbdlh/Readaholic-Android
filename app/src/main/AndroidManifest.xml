@@ -9,6 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".UpdatePage"></activity>
+        <activity android:name=".home.UpdatesActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".home.UpdatePage">
+        <intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
         <activity android:name=".sign_in_up.Start">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,8 +31,10 @@
         <activity android:name=".sign_in_up.SignUp" />
         <activity
             android:name=".Main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".BookPageActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".BookPageActivity" />
+        <!--suppress AndroidDomInspection -->
+        <activity android:name=".HomeFragment" />
     </application>
 
 </manifest>

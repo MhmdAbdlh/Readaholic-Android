@@ -2,4 +2,10 @@
     <string name="app_name">Readaholic</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_updates">UpdatesActivity</string>
+    <string-array name="Shelves">
+        <item>WANT TO READ</item>
+        <item>CURRENTLY READING</item>
+        <item>READ</item>
+    </string-array>
 </resources>

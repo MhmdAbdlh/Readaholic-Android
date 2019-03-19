@@ -7,5 +7,8 @@
     <color name="colorWhite">#ffffff</color>
     <color name="colorNearBlack">#333333</color>
     <color name="colorGray">#90918f</color>
-    <color name="colorGreen">#229954</color>
+    <color name="colorGreen">#44825e</color>
+    <color name="colorBackgroundWhite">#FAFAFA</color>
+    <color name="colorUserNameGreen">#00635d</color>
+    <color name="colorBookTitle">#333336</color>
 </resources>
