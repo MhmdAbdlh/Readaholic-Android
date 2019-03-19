@@ -4,11 +4,23 @@
     <color name="colorPrimaryDark">#B9AE9C</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorBlack">#000000</color>
+    <color name="background">#e1e1e1</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="red">#ff0000</color>
     <color name="colorNearBlack">#333333</color>
     <color name="colorGray">#90918f</color>
-    <color name="colorGreen">#44825e</color>
-    <color name="colorBackgroundWhite">#FAFAFA</color>
+
+   
+   
     <color name="colorUserNameGreen">#00635d</color>
     <color name="colorBookTitle">#333336</color>
+
+    <color name="colorGreen">#229954</color>
+    <color name="brownish">#c99b69</color>
+    <color name="brown">#5c3f23</color>
+    <color name="middlegrey">#bababa</color>
+    <color name="colorBackgroundWhite">#FAFAFA</color>
+    <color name="colorRed">#FF0000</color>
+    <color name="colorGoled">#FFD700</color>
+
 </resources>

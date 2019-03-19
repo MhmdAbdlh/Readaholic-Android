@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.readaholic">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,18 +14,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UpdatePage"></activity>
-        <activity android:name=".home.UpdatesActivity">
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".home.UpdatePage">
-        <intent-filter>
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
-        <activity android:name=".sign_in_up.Start">
+       <activity android:name=".UpdatePage"></activity>
+       <activity android:name=".home.UpdatesActivity"></activity>
+
+        <activity android:name=".Main"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".profile_and_profile_settings.Profile" />
+        <activity android:name=".profile_and_profile_settings.FollowersAndFollowing" />
+        <activity  android:name=".sign_in_up.Start">
+            android:theme="@style/AppTheme.NoActionBar" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,12 +31,16 @@
         </activity>
         <activity android:name=".sign_in_up.SignIn" />
         <activity android:name=".sign_in_up.SignUp" />
-        <activity
-            android:name=".Main"
-            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".BookPageActivity" />
         <!--suppress AndroidDomInspection -->
-        <activity android:name=".HomeFragment" />
+       
+
+       <activity android:name=".HomeFragment" />
+        <activity android:name=".books.BookPageActivity" />
+        <activity android:name=".books.BookReviewsActivity" />
+        <activity android:name=".books.ReviewActivity"></activity>
+
     </application>
 
 </manifest>

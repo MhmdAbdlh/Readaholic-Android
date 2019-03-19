@@ -6,19 +6,60 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorWhite"
     tools:context=".sign_in_up.Start">
 
-    <Button
-        android:id="@+id/Start_signIn_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sign in"
-        />
-    <Button
-        android:id="@+id/Start_signUp_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="sign up"
-        />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="250dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:src="@drawable/goodreads"  />
+
+            <TextView
+                style="@style/EditTextTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not a member?" />
+
+            <Button
+                android:id="@+id/Start_signUp_btn"
+                style="@style/Button"
+                android:layout_width="220dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/button_rounded_corners_brownish"
+                android:text="Sign up"
+                android:textStyle="bold" />
+
+            <TextView
+                style="@style/EditTextTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Already a member?" />
+
+            <Button
+                android:id="@+id/Start_signIn_btn"
+                style="@style/Button"
+                android:layout_width="220dp"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/button_rounded_corners_brown"
+                android:text="Log in" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.android.readaholic;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -8,12 +9,34 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+
 
 import com.example.android.readaholic.profile_and_profile_settings.SettingFragment;
 
+import android.widget.Toast;
+
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpResponse;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.android.readaholic.home.HomeFragment;
+
+import com.example.android.readaholic.sign_in_up.Start;
+import com.example.android.readaholic.sign_in_up.UserInfo;
+
+import com.example.android.readaholic.myshelves.ShelvesFragment;
+
+
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private long mBackPressedTime;
     private DrawerLayout drawer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,15 +72,23 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
                 break;
 
-            case R.id.draw_settings_menu:
-                getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
-                        new SettingFragment()).commit();
-                break;
-
             case R.id.draw_followers_menu:
                 getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
                         new MyBooksFragment()).commit();
                 break;
+            case R.id.draw_settings_menu:
+
+                break;
+            case R.id.draw_logout_menu:
+                logoutrequest();
+                break;
+
+            case R.id.draw_Myshelves_menu:
+                getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
+                        new ShelvesFragment()).commit();
+                break;
+
+
 
         }
 
@@ -67,12 +98,50 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
     @Override
     public void onBackPressed() {
-        if(drawer.isDrawerOpen(GravityCompat.START)){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else{
-            super.onBackPressed();
-        }
+        } else {
+            if (mBackPressedTime + 2000 > System.currentTimeMillis()) {
+                super.onBackPressed();
+                return;
+            } else {
+                Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+            }
+            mBackPressedTime = System.currentTimeMillis();
 
-        super.onBackPressed();
+        }
     }
+
+        private void logoutrequest() {
+                RequestQueue queue = Volley.newRequestQueue(this);
+                String url ="https://api.myjson.com/bins/1hdk";
+                int statusCode;
+                // Request a string response from the provided URL.
+
+            StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                    url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            UserInfo.removeUserInfo();
+                            Intent intent = new Intent(getBaseContext(),Start.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(Main.this, "Connection error", Toast.LENGTH_SHORT).show();
+                        }
+                    }) ;
+
+            // Add the request to the RequestQueue.
+                queue.add(stringRequest);
+
+            }
+
+
+
+
 }
