@@ -14,6 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+       <activity android:name=".UpdatePage"></activity>
+       <activity android:name=".home.UpdatesActivity"></activity>
+
         <activity android:name=".Main"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".profile_and_profile_settings.Profile" />
@@ -28,9 +31,16 @@
         </activity>
         <activity android:name=".sign_in_up.SignIn" />
         <activity android:name=".sign_in_up.SignUp" />
+
+        <activity android:name=".BookPageActivity" />
+        <!--suppress AndroidDomInspection -->
+       
+
+       <activity android:name=".HomeFragment" />
         <activity android:name=".books.BookPageActivity" />
         <activity android:name=".books.BookReviewsActivity" />
         <activity android:name=".books.ReviewActivity"></activity>
+
     </application>
 
 </manifest>

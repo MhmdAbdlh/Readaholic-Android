@@ -11,6 +11,10 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+
+
+import com.example.android.readaholic.profile_and_profile_settings.SettingFragment;
+
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -28,6 +32,7 @@ import com.example.android.readaholic.sign_in_up.Start;
 import com.example.android.readaholic.sign_in_up.UserInfo;
 
 import com.example.android.readaholic.myshelves.ShelvesFragment;
+
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -51,8 +56,6 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         toggle.syncState();
 
         if(savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
-                    new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.draw_home_menu);
         }
 
@@ -66,6 +69,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             case R.id.draw_home_menu:
                 getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
                         new HomeFragment()).commit();
+
                 break;
 
             case R.id.draw_followers_menu:
