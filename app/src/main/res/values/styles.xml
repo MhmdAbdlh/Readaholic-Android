@@ -13,7 +13,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-<<<<<<< HEAD
     <style name="Button" parent="@android:style/Widget.Button">
         <item name="android:layout_gravity">center</item>
         <item name="android:layout_width">120dp</item>
@@ -52,11 +51,6 @@
         <item name="android:layout_width">wrap_content</item>
     </style>
 
-
-
-
-||||||| merged common ancestors
-=======
     <style name="Divider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">2dp</item>
@@ -71,5 +65,5 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
->>>>>>> 1b7798fd2c2ac0ccd43cc86489d95fd12c508848
+
 </resources>

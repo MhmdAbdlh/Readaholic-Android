@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.readaholic">
-<<<<<<< HEAD
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-||||||| merged common ancestors
 
-=======
-<uses-permission android:name="android.permission.INTERNET"></uses-permission>
->>>>>>> 1b7798fd2c2ac0ccd43cc86489d95fd12c508848
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,19 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-<<<<<<< HEAD
-        <activity android:name=".sign_in_up.Start"
-            android:theme="@style/AppTheme.NoActionBar">
-||||||| merged common ancestors
-        <activity android:name=".sign_in_up.Start">
-=======
-        <activity
-            android:name=".profile_and_profile_settings.FollowersAndFollowing"
-            android:label="@string/title_activity_followers_and_following"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Main"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".profile_and_profile_settings.Profile" />
-        <activity android:name=".sign_in_up.Start">
->>>>>>> 1b7798fd2c2ac0ccd43cc86489d95fd12c508848
+        <activity android:name=".profile_and_profile_settings.FollowersAndFollowing" />
+        <activity  android:name=".sign_in_up.Start">
+            android:theme="@style/AppTheme.NoActionBar" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,9 +28,6 @@
         </activity>
         <activity android:name=".sign_in_up.SignIn" />
         <activity android:name=".sign_in_up.SignUp" />
-        <activity
-            android:name=".Main"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".books.BookPageActivity" />
         <activity android:name=".books.BookReviewsActivity" />
         <activity android:name=".books.ReviewActivity"></activity>

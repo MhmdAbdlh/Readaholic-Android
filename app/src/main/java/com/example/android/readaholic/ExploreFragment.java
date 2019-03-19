@@ -1,5 +1,5 @@
 package com.example.android.readaholic;
-
+import com.example.android.readaholic.R;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

@@ -49,7 +49,20 @@ public class FollowersAndFollowing extends AppCompatActivity {
         mSectionNumber = getIntent().getIntExtra("section_number",0);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.FollowersAndFollowingActivity_ToolBar);
-        setSupportActionBar(toolbar);
+
+
+
+
+
+
+//        setSupportActionBar(toolbar); commented by Ahmed Abdelfattah
+
+
+
+
+
+
+
         // Create the adapter that will return a fragment for each of the two
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
