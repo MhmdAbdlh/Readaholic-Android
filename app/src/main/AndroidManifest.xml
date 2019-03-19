@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-       <activity android:name=".UpdatePage"></activity>
+       <activity android:name=".home.UpdatePage"></activity>
        <activity android:name=".home.UpdatesActivity"></activity>
 
         <activity android:name=".Main"
@@ -32,7 +32,6 @@
         <activity android:name=".sign_in_up.SignIn" />
         <activity android:name=".sign_in_up.SignUp" />
 
-        <activity android:name=".BookPageActivity" />
         <!--suppress AndroidDomInspection -->
        
 

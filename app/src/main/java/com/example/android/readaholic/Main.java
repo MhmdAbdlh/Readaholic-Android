@@ -13,7 +13,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 
-import com.example.android.readaholic.profile_and_profile_settings.SettingFragment;
+
 
 import android.widget.Toast;
 
@@ -26,7 +26,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpResponse;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.android.readaholic.home.HomeFragment;
+import com.example.android.readaholic.HomeFragment;
 
 import com.example.android.readaholic.sign_in_up.Start;
 import com.example.android.readaholic.sign_in_up.UserInfo;

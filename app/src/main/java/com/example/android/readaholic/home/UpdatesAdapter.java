@@ -14,7 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.example.android.readaholic.BookPageActivity;
+import com.example.android.readaholic.books.BookPageActivity;
+
 import com.example.android.readaholic.R;
 
 import java.util.ArrayList;

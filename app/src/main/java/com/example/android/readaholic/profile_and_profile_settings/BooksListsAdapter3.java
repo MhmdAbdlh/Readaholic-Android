@@ -55,7 +55,7 @@ public class BooksListsAdapter3 extends RecyclerView.Adapter<BooksListsAdapter3.
         // - replace the contents of the view with that element
         holder.viewGroup.removeAllViews();
 
-        Picasso.get().load(mUsers.get(position)).into(holder.UserImageView);
+      //  Picasso.get().load(mUsers.get(position)).into(holder.UserImageView);
         //((MyViewHolder)holder).UserImageView.setImageResource(R.drawable.reader);
         holder.viewGroup.addView(holder.UserImageView);
     }

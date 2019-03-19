@@ -237,7 +237,7 @@ public class Profile extends AppCompatActivity {
                 Log.e("number of book "," "+numberOfBooks);
                 mProfileUser.setmUsernumberOfBooks(numberOfBooks);
 
-                    Picasso.get().load(mProfileUser.getmUserImageUrl()).transform(new CircleTransform()).into(mUserImage);
+                 //   Picasso.get().load(mProfileUser.getmUserImageUrl()).transform(new CircleTransform()).into(mUserImage);
                     mUserBookNumber.setText(mProfileUser.getmUsernumberOfBooks()+" Books");
                     mUserName.setText(mProfileUser.getmUserName());
 
