@@ -12,15 +12,37 @@
             android:icon="@drawable/ic_group"
             android:title="Followers" />
         <item
+
+            android:id="@+id/draw_explore_menu"
+            android:icon="@drawable/ic_explore"
+            android:title="Explore" />
+
+
             android:id="@+id/draw_settings_menu"
             android:icon="@drawable/ic_settings"
             android:title="Settings" />
+
+
         <item
             android:id="@+id/draw_Myshelves_menu"
             android:icon="@drawable/bookshelves"
             android:title="Shelves" />
 
     </group>
+    <item android:title="Settings and support" >
+        <menu>
+            <item
+                android:id="@+id/draw_settings_menu"
+                android:icon="@drawable/ic_settings"
+                android:title="Settings" />
+            <item
+                android:id="@+id/draw_logout_menu"
+                android:icon="@drawable/ic_log_out"
+                android:title="Logout"/>
+
+
+        </menu>
+    </item>
 
 
 </menu>

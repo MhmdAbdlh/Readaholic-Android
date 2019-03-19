@@ -17,7 +17,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.android.readaholic.R
 import com.squareup.picasso.Picasso
-import fr.arnaudguyon.xmltojsonlib.XmlToJson
+
 import kotlinx.android.synthetic.main.activity_book_page.*
 import kotlinx.android.synthetic.main.bookreview.view.*
 import org.json.JSONObject
