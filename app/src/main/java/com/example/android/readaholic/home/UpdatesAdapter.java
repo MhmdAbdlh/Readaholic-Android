@@ -1,12 +1,8 @@
 package com.example.android.readaholic.home;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +16,9 @@ import android.widget.TextView;
 
 import com.example.android.readaholic.BookPageActivity;
 import com.example.android.readaholic.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
+
 public class UpdatesAdapter extends ArrayAdapter<Updates> {
     private Context activity;
     static LinearLayout likedpost;
@@ -73,7 +68,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
         ImageView bookImage = (ImageView) ListItemView.findViewById(R.id.UpdatesActivity_bookimage_imageview);
 
         Name.setText(Item.getmNameOfUser());
-        date.setText(Item.getmDateOfUpdates());ddddf
+        date.setText(Item.getmDateOfUpdates());
         numOfLike.setText( Integer.toString(Item.getmNumOfLikes()));
         numOfComment.setText(Integer.toString(Item.getmNumOfComments()));
 
