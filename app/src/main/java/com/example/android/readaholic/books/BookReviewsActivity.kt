@@ -6,15 +6,13 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.android.readaholic.R
-import com.squareup.picasso.Picasso
+import com.example.android.readaholic.profile_and_profile_settings.Profile
 import kotlinx.android.synthetic.main.activity_book_reviews.*
-import kotlinx.android.synthetic.main.bookreview.*
 import kotlinx.android.synthetic.main.bookreview.view.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -37,6 +35,12 @@ class BookReviewsActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * git the list of reviews as a json string from the end point url
+     *
+     * @param bookid
+     */
+
 fun feedReviewDataFromURL(bookid:Int)
 {
 
@@ -45,7 +49,7 @@ fun feedReviewDataFromURL(bookid:Int)
     val stringRequest = StringRequest(Request.Method.GET,urltry,
             Response.Listener<String> { response ->
                 var  jsonresponse= JSONObject(response)
-                feedFromDummey(jsonresponse!!.getJSONArray("pages"))
+                feedReviewsFromJson(jsonresponse!!.getJSONArray("pages"))
 
                 adapter!!.notifyDataSetChanged()
             },
@@ -57,7 +61,13 @@ fun feedReviewDataFromURL(bookid:Int)
     queue.add(stringRequest)
 
 }
-    fun feedFromDummey(jsonarray:JSONArray)
+
+    /**
+     * TODO
+     * extract the Reviews data from the json array
+     * @param jsonarray
+     */
+    fun feedReviewsFromJson(jsonarray:JSONArray)
     {
 
       for( i in 0..jsonarray.length()-1)
@@ -98,7 +108,12 @@ fun feedReviewDataFromURL(bookid:Int)
                 Creviewdata.reviewbody=currentreview.reviewbody
                 startActivity(intent)
             }
+            myview.reviewerimage.setOnClickListener {
 
+                var intent= Intent(baseContext, Profile::class.java)
+                startActivity(intent)
+
+            }
             myview.readmoretxtui.setOnClickListener {
 
                 var intent= Intent(baseContext, ReviewActivity::class.java)
@@ -143,7 +158,6 @@ fun feedReviewDataFromURL(bookid:Int)
         override fun getCount(): Int {
             return bookreviews!!.size
         }
-
 
     }
 }

@@ -25,7 +25,7 @@
 
         <item
             android:id="@+id/draw_Myshelves_menu"
-            android:icon="@drawable/bookshelves"
+            android:icon="@drawable/bookshelvesicon"
             android:title="Shelves" />
 
     </group>

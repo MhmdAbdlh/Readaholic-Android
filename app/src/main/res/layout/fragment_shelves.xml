@@ -106,4 +106,13 @@
             android:background="@color/colorWhite"
             android:src="@drawable/rightarrowbrown" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/booknavbtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bookbottonshape"
+        android:text="GO TO BOOK PAGE"
+        android:textColor="@color/colorBackgroundWhite" />
+
 </LinearLayout>
