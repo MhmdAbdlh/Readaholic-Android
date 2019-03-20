@@ -22,7 +22,6 @@
         <activity android:name=".profile_and_profile_settings.Profile" />
         <activity android:name=".profile_and_profile_settings.FollowersAndFollowing" />
         <activity  android:name=".sign_in_up.Start">
-            android:theme="@style/AppTheme.NoActionBar" />
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

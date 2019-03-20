@@ -179,14 +179,15 @@
                             android:stepSize="0.1" />
 
                         <TextView
+                            android:id="@+id/UpdatesActivity_followername_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:maxLines="3"
                             android:paddingLeft="4dp"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
                             android:text="Salma"
-                            android:textSize="15sp"
-                            android:id="@+id/UpdatesActivity_followername_textview"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@color/colorUserNameGreen"
+                            android:textSize="15sp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -267,16 +268,6 @@
                     android:orientation="horizontal"
                     android:background="@color/colorPrimary">
 
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:id="@+id/UpdatesActivity_check_imageview"
-                        android:src="@drawable/check"
-                        android:background="@color/colorPrimary"
-                        android:padding="10dp"
-                        android:visibility="gone"
-                        android:cropToPadding="true" />
-
                     <Button
                         android:id="@+id/UpdateActivity_wanttoread_button"
                         android:layout_width="120dp"
@@ -286,21 +277,13 @@
                         android:textColor="@color/colorPrimary"
                         android:clickable="true" />
 
-                    <ImageView
+                    <Spinner
+                        android:id="@+id/activitybook_sheleve_spinner"
                         android:layout_width="40dp"
                         android:layout_height="match_parent"
-                        android:id="@+id/UpdatesAcrivity_downArrow_imageview"
-                        android:background="@color/colorPrimary"
-                        android:src="@drawable/check"
-                        android:padding="12dp"
-                        android:visibility="gone" />
+                        android:layout_weight="0">
 
-                    <ImageButton
-                        android:id="@+id/UpdatesActivity_arrowtobookstatus_imagebutton"
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bookbottonshape"
-                        android:src="@drawable/downbtn" />
+                    </Spinner>
 
                 </LinearLayout>
 

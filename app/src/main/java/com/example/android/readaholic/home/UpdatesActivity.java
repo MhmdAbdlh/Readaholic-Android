@@ -22,34 +22,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class UpdatesActivity extends Activity {
+
+    final String[] jsonFile = new String[1];
+    final ArrayList<Updates> arrayOfUpadates = new ArrayList<Updates>();
+    final UpdatesAdapter adapter = new UpdatesAdapter(this, arrayOfUpadates);
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_updates);
 
-        final String[] jsonFile = new String[1];
-        final ArrayList<Updates> arrayOfUpadates = new ArrayList<Updates>();
-        final UpdatesAdapter adapter = new UpdatesAdapter(this, arrayOfUpadates);
-       /* RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://api.myjson.com/bins/typ2m";
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        jsonFile[0] = response;
-                        adapter.notifyDataSetChanged();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                return;
-            }
-        });
-
-// Add the request to the RequestQueue.
-        queue.add(stringRequest);
-*/
-      jsonFile[0] = "{\n" +
+     /* jsonFile[0] = "{\n" +
                 "   \"updates\":{\n" +
                 "      \"update\":[\n" +
                 "         {\n" +
@@ -310,15 +293,48 @@ public class UpdatesActivity extends Activity {
                 "      ],\n" +
                 "      \"_type\":\"array\"\n" +
                 "   }\n" +
-                "}";
+                "}";*/
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+
+        return true;
+    }
+
+    public void request(){
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "https://api.myjson.com/bins/11hzcq";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        onResposeAction(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                return;
+            }
+        });
+
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
+    }
+
+    public void onResposeAction(String response){
         JSONObject root = null;
         String name = "hh";
         JSONArray updatesArray  = null;
 
         try {
-            root = new JSONObject(jsonFile[0]);
+            root = new JSONObject(response);
             JSONObject update = root.getJSONObject("updates");
             updatesArray = update.getJSONArray("update");
         } catch (JSONException e) {
@@ -334,7 +350,7 @@ public class UpdatesActivity extends Activity {
 
                 Updates updateItem = new Updates(action.getInt("type"), actor.getString("name"),updateItemJson.getString("updated_at"),updateItemJson.getInt("numLikes"),updateItemJson.getInt("numComments"));
                 switch (updateItem.getmTypeOfUpdates()){
-                        case 0:
+                    case 0:
                         JSONObject book = action.getJSONObject("book");
                         updateItem.setmBookName(book.getString("title"));
                         updateItem.setmRatingValue(action.getInt("rating"));
@@ -344,19 +360,19 @@ public class UpdatesActivity extends Activity {
                         }
                         break;
 
-                        case 1:
-                            JSONObject book1 = action.getJSONObject("book");
-                            updateItem.setmBookName(book1.getString("title"));
-                            updateItem.setmAuthorName(book1.getString("author"));
-                            updateItem.setmNameofFollow(action.getString("shelf"));//shelf
-                            break;
+                    case 1:
+                        JSONObject book1 = action.getJSONObject("book");
+                        updateItem.setmBookName(book1.getString("title"));
+                        updateItem.setmAuthorName(book1.getString("author"));
+                        updateItem.setmNameofFollow(action.getString("shelf"));//shelf
+                        break;
 
-                        case 2:
+                    case 2:
                         JSONObject user = action.getJSONObject("user");
                         updateItem.setmNameofFollow(user.getString("name"));
                         break;
 
-                        case 3: case 4:
+                    case 3: case 4:
                         JSONObject innerupdate = action.getJSONObject("update");
                         JSONObject inneraction = innerupdate.getJSONObject("action");
                         JSONObject inneractor = innerupdate.getJSONObject("actor");
@@ -401,13 +417,6 @@ public class UpdatesActivity extends Activity {
 
         adapter.notifyDataSetChanged();
         listUpadtes.setAdapter(adapter);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu);
-
-        return true;
     }
 }
