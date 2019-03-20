@@ -1,5 +1,4 @@
 package com.example.android.readaholic.sign_in_up;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -22,7 +20,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.Main;
 import com.example.android.readaholic.R;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 

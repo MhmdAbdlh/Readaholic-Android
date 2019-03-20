@@ -20,7 +20,7 @@
             android:id="@+id/bookimageui"
             android:layout_width="match_parent"
             android:layout_height="239dp"
-            app:srcCompat="@drawable/defaultimage" />
+            app:srcCompat="@drawable/bookcover" />
 
         <TextView
             android:id="@+id/tiltetxtui"
@@ -178,7 +178,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:layout_marginLeft="80dp"
             android:layout_marginRight="80dp"
             android:background="@color/colorPrimaryDark"
@@ -195,10 +195,9 @@
             android:text="empty descreption" />
 
 
-
         <View
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
 
             android:background="@color/colorPrimaryDark"
             android:paddingBottom="3dp" />
@@ -215,7 +214,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:background="@color/colorPrimaryDark"
             android:paddingBottom="10dp" />
 
@@ -229,7 +228,7 @@
                 android:id="@+id/seeallreviewstxtui"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorGreen"
                 android:textSize="24sp" />
 
             <ImageView

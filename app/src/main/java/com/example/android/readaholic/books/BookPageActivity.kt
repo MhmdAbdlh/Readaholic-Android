@@ -9,19 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import com.example.android.readaholic.R
 import android.widget.BaseAdapter
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.android.readaholic.R
+import com.example.android.readaholic.URLS
 import com.squareup.picasso.Picasso
-
 import kotlinx.android.synthetic.main.activity_book_page.*
 import kotlinx.android.synthetic.main.bookreview.view.*
 import org.json.JSONObject
-
 
 class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener {
     override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -97,9 +96,8 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     fun feedUrlFromApi(BookId:Int)
     {
         val queue = Volley.newRequestQueue(this)
-        val urlgoodreads = "https://www.goodreads.com/search/index.xml?key=ER4R6YnUGeoLQICR10aKQ&q=0439554934&search=ISN"
-        var url="httpp:://locallhost/api/books/show/?id="+BookId.toString()
-        var urltry="https://api.myjson.com/bins/bkpcy"
+        var url=URLS.BookPageURL+BookId.toString()
+        var urltry="https://api.myjson.com/bins/howtu"
         val stringRequest = StringRequest(Request.Method.GET, urltry,
                 Response.Listener<String> { response ->
                     var jsonresponse=JSONObject(response)
@@ -107,14 +105,13 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
                 },
                 Response.ErrorListener {
 
-
                 })
         queue.add(stringRequest)
     }
     //get the book image from the url
     fun importImage()
     {
-       // Picasso.get().load(bookinfo!!.image_url).into(bookimageui)
+       Picasso.get().load(bookinfo!!.image_url).into(bookimageui)
     }
 
     /**
