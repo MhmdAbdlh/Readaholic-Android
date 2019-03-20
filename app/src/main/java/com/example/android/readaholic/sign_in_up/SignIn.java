@@ -43,14 +43,14 @@ public class SignIn extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        getWindow().setBackgroundDrawableResource(R.drawable.open_book);
+
 
         //setting Signin button clicklistener
         Button signIn = (Button) findViewById(R.id.SignIn_signin_btn);
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                fillDummyData();
                 Intent intent = new Intent(v.getContext(),Main.class);
                 startActivity(intent);
                 finish();
@@ -65,6 +65,12 @@ public class SignIn extends AppCompatActivity {
         });
 
 
+    }
+
+    private void fillDummyData()
+    {
+        UserInfo.addUserInfo("Ahmed","Ahmed Nassar"
+                ,"https://unsplash.com/photos/HUBofEFQ6CA","1234567");
     }
 
     //region request
@@ -211,16 +217,6 @@ public class SignIn extends AppCompatActivity {
     }
 
     //endregion
-
-    /**
-     * it checks if the user is connected to the internet
-     * @return true if the user is connected, false if not connected
-     */
-  //  private boolean isNetworkConnected() {
-  //      ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-    //    return cm.getActiveNetworkInfo() != null;
-  //  }
 
 
 }

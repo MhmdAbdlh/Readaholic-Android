@@ -79,6 +79,7 @@ public class HomeFragment extends Fragment {
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
 */
+
        jsonFile[0] = "{\n" +
                 "   \"updates\":{\n" +
                 "      \"update\":[\n" +
@@ -350,7 +351,7 @@ public class HomeFragment extends Fragment {
 
     public void request(){
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "https://www.goodreads.com/search.xml?key=G286OeJ175Ak7ZumACl13A&q=Ender%27s+Game";
+        String url = "https://api.myjson.com/bins/kfxn6";
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                         new Response.Listener<String>() {
