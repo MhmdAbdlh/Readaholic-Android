@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@color/colorWhite"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+        <ImageView
+            android:id="@+id/profileActivity_ProfilePic_ImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/ProfileActivity_UserName_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="TextView"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/ProfileActivity_UserBooksNumber_TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="TextView"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp"
+            android:visibility="visible" />
+
+
+        <View
+            style="@style/Divider"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:id="@+id/Profile_Settings_ImageView"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="false"
+                android:layout_marginTop="10dp"
+                android:layout_toLeftOf="@+id/Profile_Settings_TextView"
+                android:contextClickable="true"
+                android:paddingRight="3dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/edit"
+
+                android:tint="@color/colorGreen" />
+
+            <TextView
+                android:id="@+id/Profile_Settings_TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="8dp"
+                android:contextClickable="true"
+                android:text="SETTINGS"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@color/colorGreen"
+                android:textSize="18sp" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <View style="@style/Divider" />
+
+    <FrameLayout
+        android:id="@+id/Profile_Books_Fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" />
+
+    <View style="@style/Divider" />
+
+    <FrameLayout
+        android:id="@+id/Profile_Friends_Fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <View style="@style/Divider" />
+
+    <FrameLayout
+        android:id="@+id/Profile_Updates_Fragment"
+        android:layout_width="match_parent"
+        android:layout_height="150dp" />
+</LinearLayout>
+</ScrollView>

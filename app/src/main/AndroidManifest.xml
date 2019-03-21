@@ -20,8 +20,10 @@
         <activity android:name=".Main"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".profile_and_profile_settings.Profile" />
-        <activity android:name=".profile_and_profile_settings.FollowersAndFollowing" />
         <activity  android:name=".sign_in_up.Start"   android:theme="@style/AppTheme.NoActionBar">
+
+
+
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +36,6 @@
 
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".sign_in_up.SignUp" />
-       <activity android:name=".HomeFragment" />
         <activity android:name=".books.BookPageActivity" />
         <activity android:name=".books.BookReviewsActivity" />
         <activity android:name=".books.ReviewActivity"></activity>
