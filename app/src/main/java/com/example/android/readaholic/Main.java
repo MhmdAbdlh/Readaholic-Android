@@ -70,6 +70,10 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
         if(savedInstanceState == null) {
             navigationView.setCheckedItem(R.id.draw_home_menu);
+            getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
+                    new HomeFragment()).commit();
+
+
         }
 
 
@@ -115,7 +119,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             drawer.closeDrawer(GravityCompat.START);
         } else {
             if (mBackPressedTime + 2000 > System.currentTimeMillis()) {
-                super.onBackPressed();
+                this.finishAffinity();
                 return;
             } else {
                 Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();

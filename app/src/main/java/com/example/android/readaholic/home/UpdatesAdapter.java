@@ -57,10 +57,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
         final TextView likeButton = (TextView) ListItemView.findViewById(R.id.UpdatesActivity_likebutton_textveie);
         final TextView commentButton = (TextView) ListItemView.findViewById(R.id.UpdatesActivity_commentbutton_textveie);
         final Button wantToRead = (Button) ListItemView.findViewById(R.id.UpdateActivity_wanttoread_button);
-        final ImageView image1 = (ImageView)ListItemView.findViewById(R.id.UpdatesAcrivity_downArrow_imageview);
-        final ImageView image2 = (ImageView)ListItemView.findViewById(R.id.UpdatesActivity_check_imageview);
-        final ImageButton image3 = (ImageButton)ListItemView.findViewById(R.id.UpdatesActivity_arrowtobookstatus_imagebutton);
-        TextView numOfLike = (TextView)ListItemView.findViewById(R.id.UpdatesActivity_numberoflikes_textview);
+         TextView numOfLike = (TextView)ListItemView.findViewById(R.id.UpdatesActivity_numberoflikes_textview);
         TextView numOfComment = (TextView)ListItemView.findViewById(R.id.UpdatesActivity_numberofcomments_textview);
         TextView userLikedPost = (TextView) ListItemView.findViewById(R.id.UpdatesActivity_namelikedpost_textview);
         TextView followerLikedPost = (TextView) ListItemView.findViewById(R.id.UpdatesActivity_followernamelikedpost_textview);
@@ -75,9 +72,6 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
 
         //Picasso.get().load("https://images.gr-assets.com/users/1489660298p2/65993249.jpg").into(bookImage);
         commentView.setVisibility(View.GONE);
-        image1.setVisibility(View.GONE);
-        image2.setVisibility(View.GONE);
-        image3.setVisibility(View.VISIBLE);
         wantToRead.setBackgroundResource(R.color.colorGreen);
         wantToRead.setTextColor(Color.parseColor("#F4F1EC"));
 
@@ -188,9 +182,6 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
             public void onClick(View v){
                 wantToRead.setBackgroundResource(R.color.colorPrimary);
                 wantToRead.setTextColor(Color.BLACK);
-                image1.setVisibility(View.VISIBLE);
-                image2.setVisibility(View.VISIBLE);
-                image3.setVisibility(View.GONE);
 
             }
         });

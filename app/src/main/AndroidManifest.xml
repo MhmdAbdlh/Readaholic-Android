@@ -20,21 +20,22 @@
         <activity android:name=".Main"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".profile_and_profile_settings.Profile" />
-        <activity  android:name=".sign_in_up.Start"
-            android:theme="@style/AppTheme.NoActionBar" >
+        <activity  android:name=".sign_in_up.Start"   android:theme="@style/AppTheme.NoActionBar">
+
+
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".sign_in_up.SignIn" />
+        <activity android:name=".sign_in_up.SignIn"
+            android:windowSoftInputMode="stateVisible|adjustPan"
+
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".sign_in_up.SignUp" />
-
-        <!--suppress AndroidDomInspection -->
-       
-
-       <activity android:name=".HomeFragment" />
         <activity android:name=".books.BookPageActivity" />
         <activity android:name=".books.BookReviewsActivity" />
         <activity android:name=".books.ReviewActivity"></activity>

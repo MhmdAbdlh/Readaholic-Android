@@ -11,6 +11,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.android.readaholic.R
+import com.example.android.readaholic.URLS
 import com.example.android.readaholic.profile_and_profile_settings.Profile
 import kotlinx.android.synthetic.main.activity_book_reviews.*
 import kotlinx.android.synthetic.main.bookreview.view.*
@@ -46,6 +47,7 @@ fun feedReviewDataFromURL(bookid:Int)
 
     val queue = Volley.newRequestQueue(this)
     var urltry="https://api.myjson.com/bins/128tbq"
+    var urlactual=URLS.Listofreviewsofabook+Cbookdata.book_title
     val stringRequest = StringRequest(Request.Method.GET,urltry,
             Response.Listener<String> { response ->
                 var  jsonresponse= JSONObject(response)
