@@ -22,6 +22,10 @@ import kotlinx.android.synthetic.main.activity_book_page.*
 import kotlinx.android.synthetic.main.bookreview.view.*
 import org.json.JSONObject
 
+/**
+ * This Activity is for showing book information
+ *
+ */
 class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener {
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
@@ -30,7 +34,6 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     /**
      * Handling the book btn ui between cuurently reading ,read and want to read
      *
-
      */
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         var SS:String=parent!!.getItemAtPosition(position).toString()
@@ -44,7 +47,6 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     }
 
     var bookinfo: BookPageInfo?=null
-    var jsonString:JSONObject?=null
     var bookreview:ArrayList<BookReview>?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +75,7 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         }
 
         bookreview= ArrayList()
-      //  bookreview!!.add(BookReview("sadfas"))
+
 
         feedUrlFromApi(bookinfo!!.bookid)
 
@@ -96,21 +98,30 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     fun feedUrlFromApi(BookId:Int)
     {
         val queue = Volley.newRequestQueue(this)
-        var url=URLS.BookPageURL+BookId.toString()
+        //var url=URLS.BookPageURL+BookId.toString()
+      //  var url = "http://"+"localhost"+":8000/api/books/show?book_id=1";
         var urltry="https://api.myjson.com/bins/howtu"
         val stringRequest = StringRequest(Request.Method.GET, urltry,
                 Response.Listener<String> { response ->
                     var jsonresponse=JSONObject(response)
                     feedFromDummey(jsonresponse)
+                    Toast.makeText(this,response,Toast.LENGTH_LONG).show()
                 },
                 Response.ErrorListener {
                     var mocresponse=getdummyjson()
                     feedFromDummey(mocresponse)
 
-                })
+                }
+
+        )
+
         queue.add(stringRequest)
     }
-    //get the book image from the url
+
+    /**
+     * get the book image from the url
+     *
+     */
     fun importImage()
     {
        Picasso.get().load(bookinfo!!.image_url).into(bookimageui)
@@ -144,7 +155,7 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     /**
      * fetch book info into the UI
      *
-     */
+      */
     fun feedBookUi()
     {
         tiltetxtui.text= bookinfo!!.book_title
@@ -156,6 +167,11 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
                 " "+bookinfo!!.publication_day+" , "+bookinfo!!.publication_year+" ISBN13 "+bookinfo!!.isbn
         seeallreviewstxtui.text=bookinfo!!.reviewscount.toString()+" other community reviews"
      }
+
+    /**
+     * this will be called untill we call the backend(Mock Serviece)
+     *
+     */
     fun getdummyjson():JSONObject
     {
 

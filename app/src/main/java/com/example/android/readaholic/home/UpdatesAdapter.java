@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.android.readaholic.books.BookPageActivity;
 
 import com.example.android.readaholic.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -64,16 +65,20 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
         TextView likedPostType = (TextView) ListItemView.findViewById(R.id.UpdatesActivity_typeofupdatelikedpost_textview);
         commentView = (TextView) ListItemView.findViewById(R.id.UpdatesActivity_comment_textview);
         ImageView bookImage = (ImageView) ListItemView.findViewById(R.id.UpdatesActivity_bookimage_imageview);
+        ImageView bookCover = (ImageView) ListItemView.findViewById(R.id.UpdatesActivity_bookimage_imageview);
+        ImageView userimg = (ImageView) ListItemView.findViewById(R.id.UpdatesActivity_profilepicture_imageView);
 
         Name.setText(Item.getmNameOfUser());
         date.setText(Item.getmDateOfUpdates());
         numOfLike.setText( Integer.toString(Item.getmNumOfLikes()));
         numOfComment.setText(Integer.toString(Item.getmNumOfComments()));
 
+
         //Picasso.get().load("https://images.gr-assets.com/users/1489660298p2/65993249.jpg").into(bookImage);
         commentView.setVisibility(View.GONE);
         wantToRead.setBackgroundResource(R.color.colorGreen);
         wantToRead.setTextColor(Color.parseColor("#F4F1EC"));
+        Picasso.get().load(Item.getmUserimg()).into(userimg);
 
         if (Item.getmTypeOfUpdates() == 0){
             if(Item.getmRatingValue() == 0){
@@ -92,6 +97,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
             }
             authorName.setText(Item.getmAuthorName());
             bookName.setText(Item.getmBookName());
+            Picasso.get().load(Item.getmBookCover()).into(bookCover);
             viewOfBook.setVisibility(View.VISIBLE);
             likedpost.setVisibility(View.GONE);
         }
@@ -99,6 +105,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
         else if (Item.getmTypeOfUpdates() == 1){
             Type.setText(Item.getmNameofFollow());
             bookName.setText(Item.getmBookName());
+            Picasso.get().load(Item.getmBookCover()).into(bookCover);
             authorName.setText(Item.getmAuthorName());
             viewOfBook.setVisibility(View.VISIBLE);
             followerName.setVisibility(View.GONE);
@@ -131,12 +138,14 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
                         review.setVisibility(View.GONE);
                     }
                     bookName.setText(Item.getmBookName());
+                    Picasso.get().load(Item.getmBookCover()).into(bookCover);
                     authorName.setText(Item.getmAuthorName());
                     break;
                 case 1:
                     updateType.setText("status update");
                     innerUpdatetype.setText("Want to read");
                     bookName.setText(Item.getmBookName());
+                    Picasso.get().load(Item.getmBookCover()).into(bookCover);
                     authorName.setText(Item.getmAuthorName());
                     followerName.setVisibility(View.GONE);
                     break;

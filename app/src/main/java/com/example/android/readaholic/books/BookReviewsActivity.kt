@@ -47,7 +47,7 @@ fun feedReviewDataFromURL(bookid:Int)
 
     val queue = Volley.newRequestQueue(this)
     var urltry="https://api.myjson.com/bins/128tbq"
-    var urlactual=URLS.Listofreviewsofabook+Cbookdata.book_title
+   // var urlactual=URLS.Listofreviewsofabook+Cbookdata.book_title
     val stringRequest = StringRequest(Request.Method.GET,urltry,
             Response.Listener<String> { response ->
                 var  jsonresponse= JSONObject(response)
@@ -65,7 +65,7 @@ fun feedReviewDataFromURL(bookid:Int)
 }
 
     /**
-     * TODO
+     *
      * extract the Reviews data from the json array
      * @param jsonarray
      */
@@ -82,11 +82,21 @@ fun feedReviewDataFromURL(bookid:Int)
 
     }
 
-
+    /**
+     * This Adapter mainly to take the list of reviews and show them in the UI
+     *
+     */
 
 
     inner class ReviewAdabterlist1(): BaseAdapter()
     {
+        /**
+         * will loop for every eelemnt in bookreviews array and feed the data to the UI
+         *
+         * @param position
+         * @param convertView
+         * @param parent
+         */
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             var myview=layoutInflater.inflate(R.layout.bookreview,null)
             var currentreview= bookreviews!![position]
@@ -129,7 +139,6 @@ fun feedReviewDataFromURL(bookid:Int)
                 Creviewdata.userimageurl=currentreview.userimageurl
                 Creviewdata.reviewbody=currentreview.reviewbody
                 startActivity(intent)
-
             }
             myview.likereviewtxtui.setOnClickListener {
                 var likes:Int=myview.numberoflikesreviewtxtui.text.toString().toInt()

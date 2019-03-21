@@ -22,6 +22,8 @@ public class Updates implements Parcelable {
     private String mInnerDate;
     private int mBookId;
     private int mNewActivity = 0;
+    private String mBookCover;
+    private String mUserimg;
 
     public Updates(int mTypeOfUpdates,String mNameOfUser,String mDateOfUpdates,int mNumOfLikes,int mNumOfComments){
         this.mTypeOfUpdates = mTypeOfUpdates;
@@ -61,6 +63,8 @@ public class Updates implements Parcelable {
         }
     };
 
+    public void setmUserimg(String mUserimg){this.mUserimg = mUserimg;}
+    public void setmBookCover(String mBookCover){this.mBookCover = mBookCover;}
     public void setmNewActivity(int mNewActivity) {this.mNewActivity = mNewActivity;}
     public void setmReview(String mReview){ this.mReview = mReview; }
     public void setmBookId(int mBookId){this.mBookId = mBookId;}
@@ -73,6 +77,8 @@ public class Updates implements Parcelable {
     public void setmNameofFollow(String mNameofFollow){ this.mNameofFollow = mNameofFollow; }
     public void setmInnerDate(String mInnerDate){ this.mInnerDate = mInnerDate; }
 
+    public String getmBookCover() { return mBookCover; }
+    public String getmUserimg(){return mUserimg;}
     public String getmDateOfUpdates(){ return mDateOfUpdates; }
     public int getmBookId() { return mBookId; }
     public int getmNumOfLikes(){ return mNumOfLikes; }
