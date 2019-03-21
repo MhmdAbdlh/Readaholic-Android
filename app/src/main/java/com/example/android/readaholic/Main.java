@@ -13,8 +13,8 @@ import android.util.Log;
 import android.view.MenuItem;
 
 
-
-
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -28,6 +28,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.HomeFragment;
 
+import com.example.android.readaholic.profile_and_profile_settings.FollowersAndFollowingFragment;
+import com.example.android.readaholic.profile_and_profile_settings.Profile;
 import com.example.android.readaholic.sign_in_up.Start;
 import com.example.android.readaholic.sign_in_up.UserInfo;
 
@@ -54,9 +56,21 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
+       /* ImageView profileImage = (ImageView)findViewById(R.id.Profilephoto);
+        profileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent profileIntent = new Intent(getApplicationContext(), Profile.class);
+                startActivity(profileIntent);
+            }
+        });
+        */
         if(savedInstanceState == null) {
             navigationView.setCheckedItem(R.id.draw_home_menu);
+            getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
+                    new HomeFragment()).commit();
+
+
         }
 
 
@@ -74,7 +88,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
             case R.id.draw_followers_menu:
                 getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
-                        new MyBooksFragment()).commit();
+                        new FollowersAndFollowingFragment(),"FollowersAndFollowings").addToBackStack("MainToFollowersAndFollowings").commit();
                 break;
             case R.id.draw_settings_menu:
 
@@ -102,7 +116,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             drawer.closeDrawer(GravityCompat.START);
         } else {
             if (mBackPressedTime + 2000 > System.currentTimeMillis()) {
-                super.onBackPressed();
+                this.finishAffinity();
                 return;
             } else {
                 Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();

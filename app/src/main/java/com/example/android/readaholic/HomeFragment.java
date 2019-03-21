@@ -11,6 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.home.Updates;
 import com.example.android.readaholic.home.UpdatesAdapter;
@@ -24,22 +30,22 @@ import java.util.ArrayList;
 public class HomeFragment extends Fragment {
 
     public ArrayList<Updates> arrayOfUpadates=new ArrayList<Updates>();
+    UpdatesAdapter adapter = null;
+    ListView listUpadtes;
+    View view;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //7oty al xml name ally anty sha8ala beg hna
         //wadeny 3la al adapter
-        View view=inflater.inflate(R.layout.activity_updates,container,false);
+        view=inflater.inflate(R.layout.activity_updates,container,false);
        // adapter = new MaterialAdapter(getContext(),MaterialList);
        // ListView list = (ListView) myview.findViewById(R.id.MaterialstList);
        // list.setAdapter(adapter);
-        final UpdatesAdapter adapter = new UpdatesAdapter(getContext(), arrayOfUpadates);
-        ListView listUpadtes = (ListView) view.findViewById(R.id.UpadtesActivity_updateslist_listview);
+        adapter = new UpdatesAdapter(getContext(), arrayOfUpadates);
+        listUpadtes = (ListView) view.findViewById(R.id.UpadtesActivity_updateslist_listview);
         adapter.notifyDataSetChanged();
         listUpadtes.setAdapter(adapter);
-
-
-        //anty momkn tzakry 3la ma a5ls  XD
 
 
         return view;
@@ -73,7 +79,8 @@ public class HomeFragment extends Fragment {
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
 */
-        jsonFile[0] = "{\n" +
+
+       jsonFile[0] = "{\n" +
                 "   \"updates\":{\n" +
                 "      \"update\":[\n" +
                 "         {\n" +
@@ -337,12 +344,40 @@ public class HomeFragment extends Fragment {
                 "}";
 //
 
+
+        //onResposeAction(jsonFile[0]);
+        request();
+    }
+
+    public void request(){
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        String url = "https://api.myjson.com/bins/kfxn6";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                        new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        onResposeAction(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                return;
+            }
+        });
+
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
+    }
+
+    public void onResposeAction(String response){
         JSONObject root = null;
         String name = "hh";
         JSONArray updatesArray  = null;
 
         try {
-            root = new JSONObject(jsonFile[0]);
+            root = new JSONObject(response);
             JSONObject update = root.getJSONObject("updates");
             updatesArray = update.getJSONArray("update");
         } catch (JSONException e) {

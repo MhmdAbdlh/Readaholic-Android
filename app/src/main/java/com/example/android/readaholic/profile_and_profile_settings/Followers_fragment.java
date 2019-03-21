@@ -49,6 +49,7 @@ public class Followers_fragment extends Fragment {
      ImageLoader mImageLoader;
      RequestQueue mRequestQueue;
      View view;
+     int FollowingNumber;
      String FollowesResponse = "{\n" +
             "  \"GoodreadsResponse\": {\n" +
             "    \"Request\": {\n" +
@@ -95,6 +96,11 @@ public class Followers_fragment extends Fragment {
         mNotAvaliable =(TextView)view.findViewById(R.id.NotAvaliableTextView);
         mNotAvaliable.setVisibility(View.INVISIBLE);
 
+
+
+        //TextView FollowingNumber = (TextView)view.findViewById(R.id.FollowersFragment_FollowingNumber_TextView);
+        //FollowingNumber.setText(FollowingNumber +" Following");
+
 /*
         String url = "https://api.myjson.com/bins/fjksu";
        // HTTPRequest(url);
@@ -133,31 +139,34 @@ public class Followers_fragment extends Fragment {
 
         }
 */
+
         TextView followersTextView = (TextView) view.findViewById(R.id.FollowersFragment_FollowersNumber_TextView);
         followersTextView.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                //making intent to go to followers and followings activity.
-                Intent FollowersIntent = new Intent(getContext(),FollowersAndFollowing.class);
-                // put section number of the tabs as
-                FollowersIntent.putExtra("section_number",1);
-                startActivity(FollowersIntent);
+                Fragment FollowersAndFollowing = new FollowersAndFollowingFragment();
+                Bundle bundle =new Bundle();
+                bundle.putInt("section_number",1);
+                FollowersAndFollowing.setArguments(bundle);
+
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ProfileLayout,FollowersAndFollowing,"FollowersFragment").addToBackStack("FollowersToFollowersAndFollowing").commit();
             }
 
         });
         TextView followingsTextView = (TextView) view.findViewById(R.id.FollowersFragment_FollowingNumber_TextView);
-        followingsTextView.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent FollowingsIntent = new Intent(getContext(),FollowersAndFollowing.class);
-                FollowingsIntent.putExtra("section_number",0);
-                startActivity(FollowingsIntent);
-            }
+        followingsTextView.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                Fragment FollowersAndFollowing = new FollowersAndFollowingFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt("section_number", 0);
+                FollowersAndFollowing.setArguments(bundle);
+
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ProfileLayout, FollowersAndFollowing,"FollowersFragment").addToBackStack("FollowersToFollowersAndFollowing").commit();
+            }
         });
 
 
@@ -188,6 +197,7 @@ public class Followers_fragment extends Fragment {
         super.onCreate(savedInstanceState);
         mUsers = new ArrayList<>();
 
+       /* mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
         mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
         mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
         mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
@@ -198,9 +208,40 @@ public class Followers_fragment extends Fragment {
         mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
         mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
         mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
+*/
 
-    }
+
+        JSONObject response = null;
+        try {
+            response = new JSONObject(FollowesResponse);
+        } catch (JSONException e) {
+            Log.e("First JSON OBj","Error in first json object");
+        }
+        JSONObject GoodReadsResponse = response.optJSONObject("GoodreadsResponse");
+        JSONObject Following = GoodReadsResponse.optJSONObject("following");
+        JSONArray User = null;
+        try {
+            User = Following.getJSONArray("user");
+        } catch (JSONException e) {
+            Log.e("JsonARRRAY ERROR","error in json array user");
+        }
+        mUsers = new ArrayList<>();
+
+        FollowingNumber = User.length();
+        Log.e("Following number",User.length()+"");
+        for(int i=0;i<User.length();i++){
+        try {
+            String image = User.getJSONObject(i).optString("image_url");
+            mUsers.add(image);
+        } catch (JSONException e) {
+            Log.e("User Error","ERRRRRRRORRRRRRRRRRRRRR");
+        }
+
+        }
+
+
+        }
+
 
 
     /**
