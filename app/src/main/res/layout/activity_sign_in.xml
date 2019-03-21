@@ -37,12 +37,12 @@
 
 
             <EditText
-                android:id="@+id/SignIn_email_edittext"
+                android:id="@+id/SignIn_userName_edittext"
                 style="@style/EditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:hint="Email"
+                android:hint="Username"
                 android:maxLines="1" />
 
             <EditText

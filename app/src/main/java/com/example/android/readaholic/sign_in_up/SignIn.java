@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -54,12 +55,15 @@ public class SignIn extends AppCompatActivity {
                 Intent intent = new Intent(v.getContext(),Main.class);
                 startActivity(intent);
                 finish();
-                /*
+
+
+               /*
                 //hides the keyboard when user clicks on sign in
                 hideSoftKeyboard(SignIn.this, v);
                 //checking if the user data is correct or not
                 getUserData();
                 */
+
 
             }
         });
@@ -73,6 +77,20 @@ public class SignIn extends AppCompatActivity {
                 ,"https://unsplash.com/photos/HUBofEFQ6CA","1234567");
     }
 
+    /**
+     * constructs the structure of the parameters that should be added to the url
+     * @return the parameters that should be concatenated with the root url
+     */
+    private String constructParameters()
+    {
+        EditText userName = (EditText)findViewById(R.id.SignIn_userName_edittext);
+        EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
+
+        return "?userName=" + userName.getText() + "&password="+pass.getText();
+
+
+    }
+
     //region request
     /**
      *sending a request to get the user data
@@ -84,9 +102,9 @@ public class SignIn extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
         String url ="https://api.myjson.com/bins/1hdk";
-
+        url = url + constructParameters();
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
