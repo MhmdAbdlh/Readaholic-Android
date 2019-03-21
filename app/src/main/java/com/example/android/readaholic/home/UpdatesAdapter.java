@@ -3,6 +3,11 @@ package com.example.android.readaholic.home;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +17,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.android.readaholic.HomeFragment;
 import com.example.android.readaholic.books.BookPageActivity;
 
 import com.example.android.readaholic.R;
+import com.example.android.readaholic.profile_and_profile_settings.ProfileFragment;
 
 import java.util.ArrayList;
 
@@ -64,11 +72,23 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
         TextView likedPostType = (TextView) ListItemView.findViewById(R.id.UpdatesActivity_typeofupdatelikedpost_textview);
         commentView = (TextView) ListItemView.findViewById(R.id.UpdatesActivity_comment_textview);
         ImageView bookImage = (ImageView) ListItemView.findViewById(R.id.UpdatesActivity_bookimage_imageview);
+        Spinner wantToReadSpinner = (Spinner) ListItemView.findViewById(R.id.activitybook_sheleve_spinner);
+        ImageView userimg = (ImageView) ListItemView.findViewById(R.id.UpdatesActivity_profilepicture_imageView);
 
         Name.setText(Item.getmNameOfUser());
         date.setText(Item.getmDateOfUpdates());
         numOfLike.setText( Integer.toString(Item.getmNumOfLikes()));
         numOfComment.setText(Integer.toString(Item.getmNumOfComments()));
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.Shelves, android.R.layout.simple_spinner_dropdown_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        wantToReadSpinner.setAdapter(adapter);
+
+
 
         //Picasso.get().load("https://images.gr-assets.com/users/1489660298p2/65993249.jpg").into(bookImage);
         commentView.setVisibility(View.GONE);
@@ -168,13 +188,32 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         likeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                likeButton.setText("UnLike");
+                if(likeButton.getText() == "Like")
+                    likeButton.setText("unLike");
+                else
+                    likeButton.setText("unLike");
+
             }
         });
 
         Name.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                //go to profile
+                Fragment fragment = new ProfileFragment();
+                ((FragmentActivity)v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
+                    fragment).commit();
+                Bundle bundle = new Bundle();
+                bundle.putInt("UserId", Item.getmUserId());
+                fragment.setArguments(bundle);
+            }
+        });
+        userimg.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                Fragment fragment = new ProfileFragment();
+                ((FragmentActivity)v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
+                        fragment).commit();
+                Bundle bundle = new Bundle();
+                bundle.putInt("UserId", Item.getmUserId());
+                fragment.setArguments(bundle);
             }
         });
 
@@ -205,16 +244,36 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
         });
         followerName.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                if(Item.getmTypeOfUpdates() == 0 || Item.getmTypeOfUpdates() == 4 || Item.getmTypeOfUpdates() == 3) {
+                if(Item.getmTypeOfUpdates() == 0 ) {
                     Intent intent = new Intent(v.getContext(), UpdatePage.class);
                     intent.putExtra("UpdateItem", Item);
                     v.getContext().startActivity(intent);
                 }else if(Item.getmTypeOfUpdates() == 2){
-                    //go to profile and send id
+                    Fragment fragment = new ProfileFragment();
+                    ((FragmentActivity)v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
+                            fragment).commit();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("UserId", Item.getmUserId());
+                    fragment.setArguments(bundle);
+                }else if(Item.getmTypeOfUpdates() == 3 || Item.getmTypeOfUpdates() == 4){
+                    if(Item.getmInnerUpdate() == 0 || Item.getmInnerUpdate() == 4 || Item.getmInnerUpdate() == 3) {
+                        Intent intent = new Intent(v.getContext(), UpdatePage.class);
+                        intent.putExtra("UpdateItem", Item);
+                        v.getContext().startActivity(intent);
+                    }else if(Item.getmInnerUpdate() == 2){
+                        Fragment fragment = new ProfileFragment();
+                        ((FragmentActivity)v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
+                                fragment).commit();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("UserId", Item.getmInnerUserId());
+                        fragment.setArguments(bundle);
+                    }
                 }
+
 
             }
         });
+
         if(Item.getmNewActivity() == 1){
             likedpost.setVisibility(View.GONE);
             commentView.setVisibility(View.GONE);

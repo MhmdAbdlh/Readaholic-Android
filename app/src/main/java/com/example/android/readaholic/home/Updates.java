@@ -22,13 +22,16 @@ public class Updates implements Parcelable {
     private String mInnerDate;
     private int mBookId;
     private int mNewActivity = 0;
+    private int mUserId = 0;
+    private int mInnerUserId;
 
-    public Updates(int mTypeOfUpdates,String mNameOfUser,String mDateOfUpdates,int mNumOfLikes,int mNumOfComments){
+    public Updates(int mTypeOfUpdates,String mNameOfUser,String mDateOfUpdates,int mNumOfLikes,int mNumOfComments,int mUserId){
         this.mTypeOfUpdates = mTypeOfUpdates;
         this.mNameOfUser = mNameOfUser;
         this.mDateOfUpdates = mDateOfUpdates;
         this.mNumOfLikes = mNumOfLikes;
         this.mNumOfComments = mNumOfComments;
+        this.mUserId = mUserId;
     }
 
     protected Updates(Parcel in) {
@@ -61,6 +64,7 @@ public class Updates implements Parcelable {
         }
     };
 
+    public void setmInnerUserId(int mInnerUserId){this.mInnerUserId = mInnerUserId;}
     public void setmNewActivity(int mNewActivity) {this.mNewActivity = mNewActivity;}
     public void setmReview(String mReview){ this.mReview = mReview; }
     public void setmBookId(int mBookId){this.mBookId = mBookId;}
@@ -89,6 +93,8 @@ public class Updates implements Parcelable {
     public String getmReview(){ return mReview; }
     public String getmShelf(){return mShelf;}
     public int getmNewActivity(){return mNewActivity;}
+    public int getmUserId(){return mUserId;}
+    public int getmInnerUserId(){return mInnerUserId;}
 
     @Override
     public int describeContents() {

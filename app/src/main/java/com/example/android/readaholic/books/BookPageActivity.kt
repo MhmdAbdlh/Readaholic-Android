@@ -29,7 +29,7 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
 
     /**
      * Handling the book btn ui between cuurently reading ,read and want to read
-     *
+     *activitybook_sheleve_spinner
 
      */
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
