@@ -18,10 +18,6 @@
             android:title="Explore" />
 
 
-            android:id="@+id/draw_settings_menu"
-            android:icon="@drawable/ic_settings"
-            android:title="Settings" />
-
 
         <item
             android:id="@+id/draw_Myshelves_menu"

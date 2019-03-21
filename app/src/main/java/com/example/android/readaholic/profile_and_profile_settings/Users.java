@@ -94,5 +94,11 @@ public class Users {
         setmReadImageUrl(mReadImageUrl);
         setmCurrentlyReadingImageUrl(mCurrentlyReadingImageUrl);
     }
-    public Users(){};
+    public Users(){}
+    public Users(String mUserName,String mUserImageUrl,int numberofbooks)
+    {
+        setmUsernumberOfBooks(numberofbooks);
+        setmUserName(mUserName);
+        setmUserImageUrl(mUserImageUrl);
+    }
 }

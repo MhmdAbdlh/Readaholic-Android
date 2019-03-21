@@ -61,7 +61,7 @@ public class FollowersListAdapter extends RecyclerView.Adapter<FollowersListAdap
                 myViewHolder.userImageView.setImageResource(R.drawable.reader);
             }
             else {
-             //   Picasso.get().load(mUsers.get(i).getmUserImageUrl()).transform(new CircleTransform()).into(myViewHolder.userImageView);
+                Picasso.get().load(mUsers.get(i).getmUserImageUrl()).transform(new CircleTransform()).into(myViewHolder.userImageView);
             }
             myViewHolder.userNameTextView.setText( mUsers.get(i).getmUserName());
             myViewHolder.userBooksNumberTextView.setText( mUsers.get(i).getmNumberOfFollowers()+" Books");
