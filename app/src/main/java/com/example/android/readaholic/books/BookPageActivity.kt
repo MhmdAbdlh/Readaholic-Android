@@ -104,6 +104,8 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
                     feedFromDummey(jsonresponse)
                 },
                 Response.ErrorListener {
+                    var mocresponse=getdummyjson()
+                    feedFromDummey(mocresponse)
 
                 })
         queue.add(stringRequest)
@@ -154,5 +156,11 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
                 " "+bookinfo!!.publication_day+" , "+bookinfo!!.publication_year+" ISBN13 "+bookinfo!!.isbn
         seeallreviewstxtui.text=bookinfo!!.reviewscount.toString()+" other community reviews"
      }
+    fun getdummyjson():JSONObject
+    {
+
+        return JSONObject("{\"book_title\":\"American Duchess\",\"isbn\":\"0062748343\",\"image_url\":\"https://images.gr-assets.com/books/1538445346l/36300673.jpg\",\"small_image_url\":\"https://images.gr-assets.com/books/1538445346l/36300673.jpg\",\"num_pages\":\"1000\",\"publisher\":\"dummyMan\",\"publication_day\":13,\"publication_year\":1932,\"publication_month\":10,\"average_rating\":3.532,\"reviews_count\":2,\"ratings_count\":1,\"description\":\"Before Meghan and Harry, another American ‘princess’ captured the hand of an English aristocrat. Now, Karen Harper tells the tale of Consuelo Vanderbilt, her “The Wedding of the Century” to the Duke of Marlborough, and her quest to find meaning behind “the glitter and the gold.\",\"author_id\":1,\"author_name\":\" Karen Harper\",\"genre\":\"action\"}")
+
+    }
 
 }

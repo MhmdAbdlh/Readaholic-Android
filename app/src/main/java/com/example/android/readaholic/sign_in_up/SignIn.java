@@ -216,11 +216,11 @@ public class SignIn extends AppCompatActivity {
      * it checks if the user is connected to the internet
      * @return true if the user is connected, false if not connected
      */
-  //  private boolean isNetworkConnected() {
-  //      ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+   private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-    //    return cm.getActiveNetworkInfo() != null;
-  //  }
+        return cm.getActiveNetworkInfo() != null;
+    }
 
 
 }
