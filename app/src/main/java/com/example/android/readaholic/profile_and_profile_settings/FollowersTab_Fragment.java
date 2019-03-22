@@ -1,6 +1,5 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,8 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.android.readaholic.R;
@@ -19,12 +16,25 @@ import com.example.android.readaholic.R;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * class FollowersTab Fragment of the tabbed fragment
+ * @author Hossam ahmed
+ */
 public class FollowersTab_Fragment extends Fragment {
      List<Users> followers;
      TextView mNotAvaliableTextView;
      RecyclerView mRecyclerView;
      LinearLayoutManager mLayoutManger;
      FollowersListAdapter mAdapter;
+
+    /**
+     * onCreateView called when the view is created
+     * @param inflater inflate the layout
+     * @param container parent view
+     * @param savedInstanceState bundle of saved states
+     * @return view
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -55,6 +65,11 @@ public class FollowersTab_Fragment extends Fragment {
 
         return view;
     }
+
+    /**
+     *onCreate  called when fragment is created to get the data before view is created
+     * @param savedInstanceState bundle of saved states
+     */
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

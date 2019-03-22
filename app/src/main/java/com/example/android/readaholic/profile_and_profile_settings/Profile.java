@@ -1,36 +1,21 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.android.readaholic.CircleTransform;
 import com.example.android.readaholic.R;
-import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-
+/**
+ * profile Activity class
+ * @author Hossam Ahmed
+ */
 public class Profile extends AppCompatActivity {
 
+    /**
+     * function that called when activity created.
+     * @param savedInstanceState bundle that have the saved state
+     */
     @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -39,6 +24,12 @@ public class Profile extends AppCompatActivity {
 
     }
 
+    /**
+     * onBackPressed that called we back button pressed .
+     * to hold the fragments movements
+     * when move from followers fragment to followers and following fragment and back button is
+     * pressed it go back to profile .
+     */
     @Override
     public void onBackPressed() {
         if(getSupportFragmentManager().findFragmentByTag("FollowersFragment") != null)

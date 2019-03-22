@@ -1,8 +1,11 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
 import java.util.ArrayList;
-import java.util.PriorityQueue;
 
+/**
+ * Users model to hold Users Data
+ * @author Hossam Ahmed
+ */
 public class Users {
     private String mUserName;
     private int mUsernumberOfBooks;
@@ -15,6 +18,7 @@ public class Users {
     private ArrayList<String> mCurrentlyReadingImageUrl;
     private ArrayList<String> mWantToReadImageUrl;
     private ArrayList<String> mReadImageUrl;
+
 
     public ArrayList<String> getmCurrentlyReadingImageUrl() {
         return mCurrentlyReadingImageUrl;
@@ -81,7 +85,17 @@ public class Users {
         return mUsernumberOfBooks;
     }
 
-
+    /**
+     * Users Constructor
+     * @param Name user name
+     * @param NumberOfFolloweings number of followings
+     * @param NumberOfFollowers number of followers
+     * @param Image image url
+     * @param UsernumberOfBooks number of books
+     * @param mCurrentlyReadingImageUrl array of currently reading URLs
+     * @param mReadImageUrl array of  read URLs
+     * @param mWantToReadImageUrl array of Want to read URLs
+     */
     public Users(String Name, int NumberOfFolloweings,int NumberOfFollowers,String Image,int UsernumberOfBooks,
                  ArrayList<String> mCurrentlyReadingImageUrl,ArrayList<String>mReadImageUrl,ArrayList<String>mWantToReadImageUrl)
     {
@@ -94,7 +108,18 @@ public class Users {
         setmReadImageUrl(mReadImageUrl);
         setmCurrentlyReadingImageUrl(mCurrentlyReadingImageUrl);
     }
+
+    /**
+     * Empty constructor
+     */
     public Users(){}
+
+    /**
+     * User Constructor with 3 parameters.
+     * @param mUserName user name
+     * @param mUserImageUrl image url
+     * @param numberofbooks number of books.
+     */
     public Users(String mUserName,String mUserImageUrl,int numberofbooks)
     {
         setmUsernumberOfBooks(numberofbooks);

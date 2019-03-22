@@ -1,22 +1,14 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.media.Image;
-import android.net.Uri;
-import android.net.sip.SipSession;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -28,7 +20,6 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.NetworkImageView;
 import com.example.android.readaholic.R;
 
 import org.json.JSONArray;
@@ -39,6 +30,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * class FollowersTab Fragment of the tabbed fragment
+ * @author Hossam ahmed
+ */
 public class Followers_fragment extends Fragment {
 
      RecyclerView recyclerView;
@@ -86,6 +81,13 @@ public class Followers_fragment extends Fragment {
             "}";
 
 
+    /**
+     * onCreateView called when the view is created
+     * @param inflater inflate the layout
+     * @param container parent view
+     * @param savedInstanceState bundle of saved states
+     * @return view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -103,42 +105,8 @@ public class Followers_fragment extends Fragment {
 
 /*
         String url = "https://api.myjson.com/bins/fjksu";
-       // HTTPRequest(url);
-        JSONObject response = null;
-        try {
-            response = new JSONObject(FollowesResponse);
-        } catch (JSONException e) {
-            Log.e("First JSON OBj","Error in first json object");
-        }
-        JSONObject GoodReadsResponse = response.optJSONObject("GoodreadsResponse");
-        JSONObject Following = GoodReadsResponse.optJSONObject("following");
-        JSONArray User = null;
-        try {
-            User = Following.getJSONArray("user");
-        } catch (JSONException e) {
-            Log.e("JsonARRRAY ERROR","error in json array user");
-        }
-        mUsers = new ArrayList<String>(User.length());
-        try {
-            User.getJSONObject(0).optString("image_url");
-        } catch (JSONException e) {
-            Log.e("User Error","ERRRRRRRORRRRRRRRRRRRRR");
-        }
-
-        if(User.length()!=0) {
-            for (int i = 0; i < User.length(); i++) {
-                JSONObject user = null;
-                try {
-                    user = User.getJSONObject(i);
-                } catch (JSONException e) {
-                    Log.e("ELement of array", "error in json array elements extraction");
-                }
-                mUsers.set(i, user.optString("image_url"));
-                Log.e("FollowersFragment", mUsers.get(i));
-            }
-
-        }
-*/
+        HTTPRequest(url);
+       */
 
         TextView followersTextView = (TextView) view.findViewById(R.id.FollowersFragment_FollowersNumber_TextView);
         followersTextView.setOnClickListener(new View.OnClickListener()
@@ -192,23 +160,17 @@ public class Followers_fragment extends Fragment {
         return view;
     }
 
+    /**
+     *onCreate  called when fragment is created to get the data before view is created
+     * @param savedInstanceState bundle of saved states
+     */
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mUsers = new ArrayList<>();
 
-       /* mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mUsers.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-*/
+
 
 
         JSONObject response = null;
