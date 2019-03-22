@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_book_reviews.*
 import kotlinx.android.synthetic.main.bookreview.view.*
 import org.json.JSONArray
 import org.json.JSONObject
+import kotlin.math.max
 
 class BookReviewsActivity : AppCompatActivity() {
     var bookreviews:ArrayList<BookReview>?=null
@@ -75,9 +76,9 @@ fun feedReviewDataFromURL(bookid:Int)
       for( i in 0..jsonarray.length()-1)
         {
            var jsonobject=jsonarray.getJSONObject(i)
-           bookreviews!!.add(BookReview(jsonobject.getString("id").toInt(),jsonobject.getString("userId").toInt(),jsonobject.getString("bookId").toInt(),
-                   jsonobject.getString("body"),jsonobject.getString("rating").toInt(),jsonobject.getString("lastUpdate"),jsonobject.getString("numberLikes").toInt()
-                   ,jsonobject.getString("numberComments").toInt(),jsonobject.getString("username"),jsonobject.getString("userimagelink")))
+           bookreviews!!.add(BookReview(checknotnigativeintegers(jsonobject.getString("id").toInt()),checknotnigativeintegers(jsonobject.getString("userId").toInt()),jsonobject.getString("bookId").toInt(),
+                   jsonobject.getString("body"),jsonobject.getString("rating").toInt(),checkformat(jsonobject.getString("lastUpdate")),jsonobject.getString("numberLikes").toInt()
+                   ,checknotnigativeintegers(jsonobject.getString("numberComments").toInt()),jsonobject.getString("username"),jsonobject.getString("userimagelink")))
         }
 
     }
@@ -176,5 +177,19 @@ fun feedReviewDataFromURL(bookid:Int)
         var dummy="{\"status\": \"success\",\"pages\": [{ \"id\": 3,\"bookId\": 1,            \"body\": \"This is a great book\",            \"rating\": 4,            \"lastUpdate\": \"2019-03-06 00:00:00\",            \"numberLikes\": 4,            \"numberComments\": 5,            \"userId\": 2,            \"username\": \"dsds\",            \"userimagelink\": \"https://upload.wikimedia.org/wikipedia/commons/c/c9/Moon.jpg\"        },        {            \"id\": 1,            \"bookId\": 1,            \"body\": \"3ash gdn elktab da ya shbab\",            \"rating\": 1,            \"lastUpdate\": \"2019-03-20 00:00:00\",            \"numberLikes\": 0,            \"numberComments\": 0,            \"userId\": 9,            \"username\": \"Nassar\",            \"userimagelink\": \"https://upload.wikimedia.org/wikipedia/commons/c/c9/Moon.jpg\"        },        {            \"id\": 5,            \"bookId\": 1,            \"body\": \"Great book from a great Author\",            \"rating\": 9,            \"lastUpdate\": \"2019-03-06 00:00:00\",            \"numberLikes\": 100,            \"numberComments\": 5,            \"userId\": 2,            \"username\": \"hossam\",            \"userimagelink\": \"https://upload.wikimedia.org/wikipedia/commons/c/c9/Moon.jpg\"  }] }"
 
         return JSONObject(dummy)
+    }
+    fun checkformat(date:String):String
+    {
+        if(date.length==10)
+            return date
+        else{
+            return "2019-12-12"
+        }
+
+    }
+    fun checknotnigativeintegers(id:Int):Int
+    {
+        return max(id,1)
+
     }
 }

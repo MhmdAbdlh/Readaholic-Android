@@ -1,5 +1,8 @@
 package com.example.android.readaholic;
 
+import com.example.android.readaholic.books.BookPageActivity;
+import com.example.android.readaholic.books.BookReviewsActivity;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -14,4 +17,24 @@ public class ExampleUnitTest {
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
+
+    @Test
+    public void DateFormattcorrect() throws Exception
+    {
+        BookReviewsActivity b=new BookReviewsActivity();
+        String s=b.checkformat("123123214235");
+       assertEquals(s,"2019-12-12");
+
+    }
+
+
+    @Test
+    public void notnigative() throws Exception
+    {
+        BookReviewsActivity b=new BookReviewsActivity();
+        int s=b.checknotnigativeintegers(-5);
+        assertEquals(s,1);
+
+    }
+
 }
