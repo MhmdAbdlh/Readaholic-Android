@@ -40,6 +40,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
     private long mBackPressedTime;
     private DrawerLayout drawer;
+    private ImageView ProfileImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +48,16 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
         Toolbar toolbar = findViewById(R.id.Main_toolbar);
         setSupportActionBar(toolbar);
+
+        View Header = ((NavigationView)findViewById(R.id.Main_navView)).getHeaderView(0);
+        ProfileImage = (ImageView)Header.findViewById(R.id.NavHeader_ProfilePhoto_ImageView);
+        ProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent profileIntent = new Intent(v.getContext(), Profile.class);
+                startActivity(profileIntent);
+            }
+        });
 
         drawer = findViewById(R.id.Main_drawerlayout);
         NavigationView navigationView = findViewById(R.id.Main_navView);
@@ -56,15 +67,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-       /* ImageView profileImage = (ImageView)findViewById(R.id.Profilephoto);
-        profileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent profileIntent = new Intent(getApplicationContext(), Profile.class);
-                startActivity(profileIntent);
-            }
-        });
-        */
+
         if(savedInstanceState == null) {
             navigationView.setCheckedItem(R.id.draw_home_menu);
             getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,

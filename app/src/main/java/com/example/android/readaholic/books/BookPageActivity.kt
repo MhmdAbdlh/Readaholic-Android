@@ -32,7 +32,6 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
 
     /**
      * Handling the book btn ui between cuurently reading ,read and want to read
-     *
      */
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         var SS:String=parent!!.getItemAtPosition(position).toString()

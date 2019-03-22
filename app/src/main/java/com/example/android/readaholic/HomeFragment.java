@@ -30,19 +30,20 @@ import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
-    public ArrayList<Updates> arrayOfUpadates=new ArrayList<Updates>();
+    public ArrayList<Updates> arrayOfUpadates1 = new ArrayList<Updates>();
     UpdatesAdapter adapter = null;
     ListView listUpadtes;
     View view;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//7oty al xml name ally anty sha8ala beg hna
-        //wadeny 3la al adapter
+
         view=inflater.inflate(R.layout.activity_updates,container,false);
        // adapter = new MaterialAdapter(getContext(),MaterialList);
        // ListView list = (ListView) myview.findViewById(R.id.MaterialstList);
        // list.setAdapter(adapter);
+
+        adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
 
         listUpadtes = (ListView) view.findViewById(R.id.UpadtesActivity_updateslist_listview);
         adapter.notifyDataSetChanged();
@@ -57,7 +58,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new UpdatesAdapter(getContext(), arrayOfUpadates);
+        adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
         final String[] jsonFile = new String[1];
 
             /* RequestQueue queue = Volley.newRequestQueue(this);
@@ -301,7 +302,7 @@ public class HomeFragment extends Fragment {
                 "            \"id\":\"0000000\",\n" +
                 "            \"actor\":{\n" +
                 "               \"id\":\"65993249\",\n" +
-                "               \"name\":\"Salma Ibrahim\",\n" +
+                "               \"name\":\"Salma\",\n" +
                 "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
                 "            },\n" +
                 "            \"updated_at\":\"sat at 7:00AM\",\n" +
@@ -317,7 +318,7 @@ public class HomeFragment extends Fragment {
                 "                  \"id\":\"0000000\",\n" +
                 "                  \"actor\":{\n" +
                 "                     \"id\":\"65993249\",\n" +
-                "                     \"name\":\"Salma Ibrahim\",\n" +
+                "                     \"name\":\"Salma \",\n" +
                 "                     \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
                 "                  },\n" +
                 "                  \"updated_at\":\"Fri at 8:00PM\",\n" +
@@ -343,11 +344,11 @@ public class HomeFragment extends Fragment {
                 "      \"_type\":\"array\"\n" +
                 "   }\n" +
                 "}";
-//
 
 
-      //  onResposeAction(jsonFile[0]);
-        request();
+        arrayOfUpadates1 = onResposeAction(jsonFile[0]);
+        //request();
+
     }
 
     public void request(){
@@ -373,7 +374,8 @@ public class HomeFragment extends Fragment {
 
     }
 
-    public void onResposeAction(String response){
+    static public ArrayList<Updates> onResposeAction(String response){
+        ArrayList<Updates> arrayOfUpadates = new ArrayList<Updates>();
         JSONObject root = null;
         String name = "hh";
         JSONArray updatesArray  = null;
@@ -393,7 +395,7 @@ public class HomeFragment extends Fragment {
                 JSONObject action = updateItemJson.getJSONObject("action");
 
 
-                Updates updateItem = new Updates(action.getInt("type"), actor.getString("name"),updateItemJson.getString("updated_at"),updateItemJson.getInt("numLikes"),updateItemJson.getInt("numComments"));
+                Updates updateItem = new Updates(action.getInt("type"), actor.getString("name"),updateItemJson.getString("updated_at"),updateItemJson.getInt("numLikes"),updateItemJson.getInt("numComments"),actor.getInt("id"));
                 switch (updateItem.getmTypeOfUpdates()){
                     case 0:
                         JSONObject book = action.getJSONObject("book");
@@ -423,6 +425,7 @@ public class HomeFragment extends Fragment {
                         JSONObject innerupdate = action.getJSONObject("update");
                         JSONObject inneraction = innerupdate.getJSONObject("action");
                         JSONObject inneractor = innerupdate.getJSONObject("actor");
+                        updateItem.setmInnerUserId(inneractor.getInt("id"));
                         updateItem.setmInnerUpdate(inneraction.getInt("type"));
                         updateItem.setmNameofFollow(inneractor.getString("name"));
                         updateItem.setmInnerDate(innerupdate.getString("updated_at"));
@@ -456,10 +459,11 @@ public class HomeFragment extends Fragment {
                         break;
                 }
                 arrayOfUpadates.add(updateItem);
-                adapter.notifyDataSetChanged();
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+        return arrayOfUpadates;
     }
 }
