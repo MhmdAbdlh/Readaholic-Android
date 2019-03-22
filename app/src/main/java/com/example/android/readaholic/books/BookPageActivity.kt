@@ -28,7 +28,6 @@ import org.json.JSONObject
  */
 class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener {
     override fun onNothingSelected(parent: AdapterView<*>?) {
-
     }
 
     /**
@@ -75,11 +74,7 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         }
 
         bookreview= ArrayList()
-
-
         feedUrlFromApi(bookinfo!!.bookid)
-
-
         rateittext.setOnClickListener {
             writeareviewbtn.visibility=View.VISIBLE
         }
@@ -105,7 +100,7 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
                 Response.Listener<String> { response ->
                     var jsonresponse=JSONObject(response)
                     feedFromDummey(jsonresponse)
-                    Toast.makeText(this,response,Toast.LENGTH_LONG).show()
+
                 },
                 Response.ErrorListener {
                     var mocresponse=getdummyjson()
@@ -163,7 +158,7 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         ratinginfotxtui.text= bookinfo!!.average_rating.toString()+"     "+bookinfo!!.ratings_count.toString()+" ratings "
         ratingui.rating=bookinfo!!.average_rating
         bookdesctxtui.text=bookinfo!!.description
-        boojsideinfotxtui.text=bookinfo!!.num_pages.toString()+" . First published "+bookinfo!!.publication_month+
+        boojsideinfotxtui.text="number of pages :"+bookinfo!!.num_pages.toString()+" . First published "+bookinfo!!.publication_month+
                 " "+bookinfo!!.publication_day+" , "+bookinfo!!.publication_year+" ISBN13 "+bookinfo!!.isbn
         seeallreviewstxtui.text=bookinfo!!.reviewscount.toString()+" other community reviews"
      }

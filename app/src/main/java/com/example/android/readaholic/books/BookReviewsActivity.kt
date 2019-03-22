@@ -13,6 +13,7 @@ import com.android.volley.toolbox.Volley
 import com.example.android.readaholic.R
 import com.example.android.readaholic.URLS
 import com.example.android.readaholic.profile_and_profile_settings.Profile
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_book_reviews.*
 import kotlinx.android.synthetic.main.bookreview.view.*
 import org.json.JSONArray
@@ -46,17 +47,16 @@ fun feedReviewDataFromURL(bookid:Int)
 {
 
     val queue = Volley.newRequestQueue(this)
-    var urltry="https://api.myjson.com/bins/128tbq"
+    var urltry="https://api.myjson.com/bins/iynfm"
    // var urlactual=URLS.Listofreviewsofabook+Cbookdata.book_title
     val stringRequest = StringRequest(Request.Method.GET,urltry,
             Response.Listener<String> { response ->
                 var  jsonresponse= JSONObject(response)
                 feedReviewsFromJson(jsonresponse!!.getJSONArray("pages"))
-
                 adapter!!.notifyDataSetChanged()
             },
             Response.ErrorListener {
-
+                getdummyjson()
                 adapter!!.notifyDataSetChanged()
             })
 
@@ -106,7 +106,7 @@ fun feedReviewDataFromURL(bookid:Int)
             myview.descriptionreviewui.text=currentreview.reviewbody
             myview.numberoflikesreviewtxtui.text=currentreview.numberoflikes.toString()
             myview.numberofcommentreviewtxtui.text=currentreview.numberofcomments.toString()
-           // Picasso.get().load("https://i.ytimg.com/vi/3nmoffllWTw/hqdefault.jpg").into(myview.profile_image1)
+           Picasso.get().load(currentreview.userimageurl).into( myview.reviewerimage)
             myview.commentreviewtxtui.setOnClickListener {
                var intent= Intent(baseContext, ReviewActivity::class.java)
                 Creviewdata.numberoflikes=currentreview.numberoflikes
@@ -170,5 +170,11 @@ fun feedReviewDataFromURL(bookid:Int)
             return bookreviews!!.size
         }
 
+    }
+    fun getdummyjson():JSONObject
+    {
+        var dummy="{\"status\": \"success\",\"pages\": [{ \"id\": 3,\"bookId\": 1,            \"body\": \"This is a great book\",            \"rating\": 4,            \"lastUpdate\": \"2019-03-06 00:00:00\",            \"numberLikes\": 4,            \"numberComments\": 5,            \"userId\": 2,            \"username\": \"dsds\",            \"userimagelink\": \"https://upload.wikimedia.org/wikipedia/commons/c/c9/Moon.jpg\"        },        {            \"id\": 1,            \"bookId\": 1,            \"body\": \"3ash gdn elktab da ya shbab\",            \"rating\": 1,            \"lastUpdate\": \"2019-03-20 00:00:00\",            \"numberLikes\": 0,            \"numberComments\": 0,            \"userId\": 9,            \"username\": \"Nassar\",            \"userimagelink\": \"https://upload.wikimedia.org/wikipedia/commons/c/c9/Moon.jpg\"        },        {            \"id\": 5,            \"bookId\": 1,            \"body\": \"Great book from a great Author\",            \"rating\": 9,            \"lastUpdate\": \"2019-03-06 00:00:00\",            \"numberLikes\": 100,            \"numberComments\": 5,            \"userId\": 2,            \"username\": \"hossam\",            \"userimagelink\": \"https://upload.wikimedia.org/wikipedia/commons/c/c9/Moon.jpg\"  }] }"
+
+        return JSONObject(dummy)
     }
 }
