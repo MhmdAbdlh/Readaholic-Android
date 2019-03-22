@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -22,6 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import com.example.android.readaholic.profile_and_profile_settings.FollowersAndFollowingFragment;
+import com.example.android.readaholic.profile_and_profile_settings.Profile;
 import com.example.android.readaholic.settings.Settings;
 import com.example.android.readaholic.sign_in_up.Start;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
@@ -39,7 +42,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.Main_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.Main_toolbar);
         setSupportActionBar(toolbar);
 
         View Header = ((NavigationView)findViewById(R.id.Main_navView)).getHeaderView(0);
