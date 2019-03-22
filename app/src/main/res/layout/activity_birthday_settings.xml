@@ -7,7 +7,14 @@
 
     android:orientation="vertical"
     tools:context=".settings.edit_Birthday.BirthdaySettings">
+    <ProgressBar
+        android:id="@+id/Birthday_progressBar"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
     <ScrollView
+        android:id="@+id/BirthDay_scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -51,14 +58,13 @@
                     android:paddingBottom="15dp"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
                 <TextView
-                    android:id="@+id/Birthday_saveCountry_TextView"
+                    android:id="@+id/Birthday_saveBirthday_TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Save"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorGreen"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
                 <Button
                     android:id="@+id/Birthday_Button"
@@ -81,12 +87,12 @@
                     android:paddingLeft="15dp"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
                 <TextView
+                    android:id="@+id/Birthday_saveWhoCanSeeMyBirthday_Textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:text="Save"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/colorGreen"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                     android:layout_marginRight="15dp"/>
             </RelativeLayout>
@@ -112,6 +118,15 @@
                         android:paddingLeft="15dp"
                         />
                 </RadioGroup>
+                <TextView
+                    android:id="@+id/Birthday_errorMessage_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/Birthday_radioGroup"
+                    android:textColor="@color/red"
+                    android:paddingTop="20dp"
+                    android:visibility="invisible"/>
             </RelativeLayout>
         </LinearLayout>
 

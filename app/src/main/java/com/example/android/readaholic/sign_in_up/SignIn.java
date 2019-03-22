@@ -52,10 +52,19 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 fillDummyData();
-                Intent intent = new Intent(v.getContext(),Main.class);
-                startActivity(intent);
-                finish();
 
+                EditText username = (EditText) findViewById(R.id.SignIn_userName_edittext);
+                EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
+                if(validateFields()) {
+                    if (username.getText().toString().equals("admin")
+                            && pass.getText().toString().equals("admin")) {
+                        Intent intent = new Intent(v.getContext(), Main.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        error("Please check your email and password");
+                    }
+                }
 
                /*
                 //hides the keyboard when user clicks on sign in
@@ -63,8 +72,6 @@ public class SignIn extends AppCompatActivity {
                 //checking if the user data is correct or not
                 getUserData();
                 */
-
-
             }
         });
 
@@ -235,6 +242,39 @@ public class SignIn extends AppCompatActivity {
     }
 
     //endregion
+
+    private boolean validateFields()
+    {
+
+        EditText usernameText = (EditText)findViewById(R.id.SignIn_userName_edittext);
+        String userName = usernameText.getText().toString();
+
+        EditText passText = (EditText)findViewById(R.id.SignIn_password_edittext);
+        String pass = passText.getText().toString();
+
+        //validating username and password fields
+
+        //checking if the username field is empty or not
+        if(userName.length() == 0){
+         error("Please fill the username and password fields");
+         return false;
+        } else if (pass.length() == 0) {
+            //checking if the password field is empty or not
+            error("Please fill the username and password fields");
+            return false;
+        }
+        else if(userName.length() > userName.replaceAll("\\s+","").length()) {
+            //checking if username contains white spaces
+            error("UserName or password should not contain spaces");
+            return false;
+        } else if(pass.length() > pass.replaceAll("\\s+","").length()) {
+            //checking if the password contains white spaces
+            error("UserName or password should not contain spaces");
+            return false;
+        }
+        return true;
+
+    }
 
 
 }

@@ -7,35 +7,48 @@
 
     android:orientation="vertical"
     tools:context=".settings.edit_Location.LocationSettings">
+    <ProgressBar
+        android:id="@+id/Location_progressBar"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone"/>
+
     <ScrollView
+        android:id="@+id/Location_scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Location"
-                android:paddingTop="30dp"
                 android:paddingLeft="15dp"
+                android:paddingTop="30dp"
                 android:paddingBottom="15dp"
+                android:text="Location"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/colorSilver"
-                ></View>
+                android:background="@color/colorSilver"></View>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/colorCream"></View>
+
             <View
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
                 android:background="@color/colorSilver"></View>
+
             <RelativeLayout
                 android:id="@+id/Location_relativeLayout"
                 android:layout_width="match_parent"
@@ -46,72 +59,89 @@
                     android:id="@+id/Location_Country_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Country"
-                    android:textStyle="bold"
                     android:paddingBottom="15dp"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
+                    android:text="Country"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/Location_saveCountry_TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Save"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorBlack"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
+                    android:layout_alignParentRight="true"
+                    android:text="Save"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/colorGreen" />
+
                 <Spinner
                     android:id="@+id/Location_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
+                    android:layout_below="@id/Location_Country_textview"
                     android:background="@color/colorSilver"
-                    android:layout_below="@id/Location_Country_textview"></Spinner>
+                    android:padding="15dp"></Spinner>
 
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Who can see my location?"
-                    android:textStyle="bold"
-                    android:paddingBottom="15dp"
                     android:paddingLeft="15dp"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
+                    android:paddingBottom="15dp"
+                    android:text="Who can see my location?"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:textStyle="bold" />
+
                 <TextView
+                    android:id="@+id/Location_saveWhoCanSeeMyLocation_TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
                     android:text="Save"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorBlack"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:layout_marginRight="15dp"/>
+                    android:textColor="@color/colorGreen" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <RadioGroup
                     android:id="@+id/Location_radioGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="15dp">
+
                     <RadioButton
                         android:id="@+id/Location_everynone_RadioButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Everyone"
-                        android:paddingLeft="15dp"/>
+                        android:paddingLeft="15dp"
+                        android:text="Everyone" />
+
                     <RadioButton
                         android:id="@+id/Location_onlyMe_RadioButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Only me"
                         android:paddingLeft="15dp"
-                        />
+                        android:text="Only me" />
                 </RadioGroup>
+
+                <TextView
+                    android:id="@+id/Location_errorMessage_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/Location_radioGroup"
+                    android:layout_centerHorizontal="true"
+                    android:paddingTop="20dp"
+                    android:textColor="@color/red"
+                    android:visibility="invisible" />
             </RelativeLayout>
         </LinearLayout>
 
