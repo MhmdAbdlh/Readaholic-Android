@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".settings.edit_UserName.UserNameSettings">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="User name"
+                android:paddingTop="30dp"
+                android:paddingLeft="15dp"
+                android:paddingBottom="15dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
+                android:textStyle="bold"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorSilver"
+                ></View>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorCream"></View>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/colorSilver"></View>
+            <RelativeLayout
+                android:id="@+id/Birthday_relativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+
+                <TextView
+                    android:id="@+id/Username_name_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="User name"
+                    android:textStyle="bold"
+                    android:paddingBottom="15dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
+                <TextView
+                    android:id="@+id/Username_saveUserName_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Save"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorBlack"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
+                <EditText
+                    android:id="@+id/UserName_EditTex"
+                    android:layout_width="match_parent"
+                    android:padding="15dp"
+                    android:background="@color/colorSilver"
+                    style="@style/EditTextStyle"
+                    android:layout_below="@id/Username_name_textview"></EditText>
+
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+
+        </LinearLayout>

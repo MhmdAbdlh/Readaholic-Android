@@ -9,29 +9,22 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.HttpResponse;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.android.readaholic.HomeFragment;
 
 import com.example.android.readaholic.profile_and_profile_settings.FollowersAndFollowingFragment;
-import com.example.android.readaholic.profile_and_profile_settings.Profile;
+import com.example.android.readaholic.settings.Settings;
 import com.example.android.readaholic.sign_in_up.Start;
-import com.example.android.readaholic.sign_in_up.UserInfo;
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
 
 import com.example.android.readaholic.myshelves.ShelvesFragment;
 
@@ -77,6 +70,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -91,7 +85,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                         new FollowersAndFollowingFragment(),"FollowersAndFollowings").addToBackStack("MainToFollowersAndFollowings").commit();
                 break;
             case R.id.draw_settings_menu:
-
+                Intent intent = new Intent(this, Settings.class);
+                startActivity(intent);
                 break;
             case R.id.draw_logout_menu:
                 logoutrequest();
