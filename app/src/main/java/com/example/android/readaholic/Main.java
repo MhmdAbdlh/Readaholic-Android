@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -128,6 +129,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
         private void logoutrequest() {
+
+                loading();
                 RequestQueue queue = Volley.newRequestQueue(this);
                 String url ="https://api.myjson.com/bins/1hdk";
                 int statusCode;
@@ -147,6 +150,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            showLayout();
                             Toast.makeText(Main.this, "Connection error", Toast.LENGTH_SHORT).show();
                         }
                     }) ;
@@ -154,6 +158,25 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             // Add the request to the RequestQueue.
                 queue.add(stringRequest);
 
+            }
+
+            private void loading()
+            {
+
+                DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.Main_drawerlayout);
+                drawerLayout.setVisibility(View.GONE);
+
+                ProgressBar progressBar = (ProgressBar)findViewById(R.id.Main_progressBar);
+                progressBar.setVisibility(View.VISIBLE);
+
+            }
+            private void showLayout()
+            {
+                ProgressBar progressBar = (ProgressBar)findViewById(R.id.Main_progressBar);
+                progressBar.setVisibility(View.GONE);
+
+                DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.Main_drawerlayout);
+                drawerLayout.setVisibility(View.VISIBLE);
             }
 
 
