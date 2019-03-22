@@ -9,23 +9,35 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.android.readaholic.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
+/**
+ * BookListsAdapter of Want To Read Books
+ * @author Hossam Ahmed
+ */
 public class BooksListsAdapter2 extends RecyclerView.Adapter<BooksListsAdapter2.MyViewHolder> {
     private List<String> mUsers;
     private Context mcontext;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
+    /**
+     * MyViewHolder class to hold the view elements
+     * @author Hossam Ahmed
+     */
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
+        //@BindView(R.id.WantToReadList_WantToReadBook_ImageView)
         private ImageView UserImageView;
         ViewGroup viewGroup;
 
+        /**
+         * view holder constructor
+         * @param v view
+         */
         public MyViewHolder(View v) {
             super(v);
+           // ButterKnife.bind(v);
             UserImageView= (ImageView)v.findViewById(R.id.WantToReadList_WantToReadBook_ImageView);
             viewGroup = (ViewGroup)itemView;
         }
@@ -34,12 +46,23 @@ public class BooksListsAdapter2 extends RecyclerView.Adapter<BooksListsAdapter2.
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
+    /**
+     * Adpater constructor
+     * @param context context of the layout
+     * @param users user object to fill the layout with their data
+     */
     public BooksListsAdapter2(Context context,List<String> users) {
         mUsers=users;
         mcontext = context;
     }
 
     // Create new views (invoked by the layout manager)
+    /**
+     * onCreateViewHolder to inflate the layout
+     * @param parent parent view
+     * @param viewType type of the view
+     * @return MyViewHolder object
+     */
     @Override
     public BooksListsAdapter2.MyViewHolder onCreateViewHolder(ViewGroup parent,
                                                              int viewType) {
@@ -50,6 +73,11 @@ public class BooksListsAdapter2 extends RecyclerView.Adapter<BooksListsAdapter2.
     }
 
     // Replace the contents of a view (invoked by the layout manager)
+    /**
+     * OnBindViewHolder to Replace the contents of a view (invoked by the layout manager)
+     * @param holder holding the view
+     * @param position position of the current view.
+     */
     @Override
     public void onBindViewHolder(BooksListsAdapter2.MyViewHolder holder, int position) {
         // - get element from my dataset at this position
@@ -60,7 +88,10 @@ public class BooksListsAdapter2 extends RecyclerView.Adapter<BooksListsAdapter2.
         //((MyViewHolder)holder).UserImageView.setImageResource(R.drawable.reader);
         holder.viewGroup.addView(holder.UserImageView);
     }
-
+    /**
+     * getItemsCount to get the list items number.
+     * @return the size of users list
+     */
     @Override
     public int getItemCount() {
         return mUsers.size();

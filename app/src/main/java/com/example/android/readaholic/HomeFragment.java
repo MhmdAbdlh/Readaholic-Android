@@ -36,6 +36,16 @@ public class HomeFragment extends Fragment {
     View view;
     @Nullable
     @Override
+    /**
+     * Called when the activity is first created.
+     * Creating in it ListView contians the array of Updates for the currently User
+     *
+     * @param inflater LayoutInflater:The LayoutInflater object that can be used to inflate any views in the fragment,
+     * @param container  ViewGroup:the parent view that the fragment's UI should be attached to
+     * @param savedInstanceState  Bundle:this fragment is being re-constructed from a previous saved state as given here.
+     *
+     * @return 	Return the View for the fragment's UI, or null.
+     */
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view=inflater.inflate(R.layout.activity_updates,container,false);
@@ -56,32 +66,17 @@ public class HomeFragment extends Fragment {
 
 
     @Override
+    /**
+     * Called when the activity is first created.
+     * Calling in it the funcion the create the array of updates to give it to adapter.
+     *
+    * @param savedInstanceState  Bundle:this fragment is being re-constructed from a previous saved state as given here.
+     *
+     */
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
         final String[] jsonFile = new String[1];
-
-            /* RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://api.myjson.com/bins/typ2m";
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        jsonFile[0] = response;
-                        adapter.notifyDataSetChanged();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                return;
-            }
-        });
-
-// Add the request to the RequestQueue.
-        queue.add(stringRequest);
-*/
-
        jsonFile[0] = "{\n" +
                 "   \"updates\":{\n" +
                 "      \"update\":[\n" +
@@ -350,7 +345,11 @@ public class HomeFragment extends Fragment {
         //request();
 
     }
-
+    /**
+     * request the json file of updates list to be displayed.
+     * in the response we call the function that create the array of updates
+     *
+     */
     public void request(){
         RequestQueue queue = Volley.newRequestQueue(getContext());
         String url = "https://api.myjson.com/bins/19y576";
@@ -358,7 +357,9 @@ public class HomeFragment extends Fragment {
                         new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        onResposeAction(response);
+
+                        arrayOfUpadates1 = onResposeAction(response);
+
                         Toast.makeText(getContext(),response,Toast.LENGTH_SHORT).show();
                         adapter.notifyDataSetChanged();
                     }
@@ -369,11 +370,16 @@ public class HomeFragment extends Fragment {
             }
         });
 
-// Add the request to the RequestQueue.
+        // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
     }
 
+    /**
+     * Create array of updates of different types.
+     * @param response the json string that contains array of updates
+     * @return Arraylist contains updates of the user that was extract from json.
+     */
     static public ArrayList<Updates> onResposeAction(String response){
         ArrayList<Updates> arrayOfUpadates = new ArrayList<Updates>();
         JSONObject root = null;
@@ -397,6 +403,7 @@ public class HomeFragment extends Fragment {
 
                 Updates updateItem = new Updates(action.getInt("type"), actor.getString("name"),updateItemJson.getString("updated_at"),updateItemJson.getInt("numLikes"),updateItemJson.getInt("numComments"),actor.getInt("id"));
                 switch (updateItem.getmTypeOfUpdates()){
+                    //review or raring update
                     case 0:
                         JSONObject book = action.getJSONObject("book");
                         updateItem.setmBookCover(book.getString("imgUrl"));
@@ -404,10 +411,11 @@ public class HomeFragment extends Fragment {
                         updateItem.setmRatingValue(action.getInt("rating"));
                         updateItem.setmAuthorName(book.getString("author"));
                         if(updateItem.getmRatingValue() == 0){
+                            //if type of only revies Disable rating value and assign review
                             updateItem.setmReview(action.getString("review"));
                         }
                         break;
-
+                     //shelves
                     case 1:
                         JSONObject book1 = action.getJSONObject("book");
                         updateItem.setmBookCover(book1.getString("imgUrl"));
@@ -415,12 +423,12 @@ public class HomeFragment extends Fragment {
                         updateItem.setmAuthorName(book1.getString("author"));
                         updateItem.setmNameofFollow(action.getString("shelf"));//shelf
                         break;
-
+                    //follwing
                     case 2:
                         JSONObject user = action.getJSONObject("user");
                         updateItem.setmNameofFollow(user.getString("name"));
                         break;
-
+                    //liked or commented on post
                     case 3: case 4:
                         JSONObject innerupdate = action.getJSONObject("update");
                         JSONObject inneraction = innerupdate.getJSONObject("action");
@@ -429,8 +437,9 @@ public class HomeFragment extends Fragment {
                         updateItem.setmInnerUpdate(inneraction.getInt("type"));
                         updateItem.setmNameofFollow(inneractor.getString("name"));
                         updateItem.setmInnerDate(innerupdate.getString("updated_at"));
-
+                        //type of the inner post
                         switch (updateItem.getmInnerUpdate()) {
+                            //review or rating
                             case 0:
                                 JSONObject innerbook = inneraction.getJSONObject("book");
                                 updateItem.setmBookCover(innerbook.getString("imgUrl"));
@@ -441,6 +450,7 @@ public class HomeFragment extends Fragment {
                                     updateItem.setmReview(action.getString("review"));
                                 }
                                 break;
+                            //shelves
                             case 1:
                                 JSONObject innerbook1 = inneraction.getJSONObject("book");
                                 updateItem.setmBookCover(innerbook1.getString("imgUrl"));
@@ -448,11 +458,13 @@ public class HomeFragment extends Fragment {
                                 updateItem.setmAuthorName(innerbook1.getString("author"));
                                 updateItem.setmShelf(inneraction.getString("shelf"));
                                 break;
+                            //follwing
                             case 2:
                                 JSONObject user1 = inneraction.getJSONObject("user");
                                 updateItem.setmNameofFollow(user1.getString("name"));
                                 break;
                         }
+                        //commented on post assign comment to show it
                         if(updateItem.getmTypeOfUpdates() == 4){
                             updateItem.setmComment(action.getString("comment"));
                         }

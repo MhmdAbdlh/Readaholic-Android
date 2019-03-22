@@ -1,8 +1,5 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
-import
-        android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,15 +8,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.example.android.readaholic.R;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * class Books Fragment
+ * @author Hossam ahmed
+ */
 public class books extends Fragment {
     private View mView;
     private List<String> mCurrentlyReadingImageUrl;
@@ -38,18 +38,19 @@ public class books extends Fragment {
     private BooksListsAdapter2 mWantToReadAdapter;
     private BooksListsAdapter3 mCurrentlyReadingAdapter;
     //public int NumberOfBooks;
+    /**
+     * onCreateView called when the view is created
+     * @param inflater inflate the layout
+     * @param container parent view
+     * @param savedInstanceState bundle of saved states
+     * @return view
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
          mView = inflater.inflate(R.layout.fragment_books, container, false);
-      /*  try {
-            Method method = Profile.QueryUtils.class.getMethod("getBooksNumber");
-            method.equals(NumberOfBooks);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        */
+
         //TextView BookNumber = (TextView)mView.findViewById(R.id.BookFragment_BookNumbers_TextView);
         //BookNumber.setText(NumberOfBooks+" Books");
 
@@ -132,6 +133,10 @@ public class books extends Fragment {
 
         return mView;
     }
+    /**
+     *onCreate  called when fragment is created to get the data before view is created
+     * @param savedInstanceState bundle of saved states
+     */
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

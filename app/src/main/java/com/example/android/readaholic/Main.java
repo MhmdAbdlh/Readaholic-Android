@@ -9,29 +9,26 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.HttpResponse;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.android.readaholic.HomeFragment;
 
 import com.example.android.readaholic.profile_and_profile_settings.FollowersAndFollowingFragment;
 import com.example.android.readaholic.profile_and_profile_settings.Profile;
+import com.example.android.readaholic.settings.Settings;
 import com.example.android.readaholic.sign_in_up.Start;
-import com.example.android.readaholic.sign_in_up.UserInfo;
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
 
 import com.example.android.readaholic.myshelves.ShelvesFragment;
 
@@ -46,7 +43,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.Main_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.Main_toolbar);
         setSupportActionBar(toolbar);
 
         View Header = ((NavigationView)findViewById(R.id.Main_navView)).getHeaderView(0);
@@ -80,6 +77,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
+
+            //region Listeners
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -94,7 +93,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                         new FollowersAndFollowingFragment(),"FollowersAndFollowings").addToBackStack("MainToFollowersAndFollowings").commit();
                 break;
             case R.id.draw_settings_menu:
-
+                Intent intent = new Intent(this, Settings.class);
+                startActivity(intent);
                 break;
             case R.id.draw_logout_menu:
                 logoutrequest();
@@ -113,6 +113,10 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         return true;
     }
 
+    /**
+     * should exit the app if back is pressed twice in two second
+     * and if the drawer is opened it should be closed
+     */
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -128,8 +132,15 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
         }
     }
+    //endregion
 
+            //region requests
+      /**
+       * sending logout request
+       */
         private void logoutrequest() {
+
+                loading();
                 RequestQueue queue = Volley.newRequestQueue(this);
                 String url ="https://api.myjson.com/bins/1hdk";
                 int statusCode;
@@ -149,6 +160,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            showLayout();
                             Toast.makeText(Main.this, "Connection error", Toast.LENGTH_SHORT).show();
                         }
                     }) ;
@@ -157,6 +169,36 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 queue.add(stringRequest);
 
             }
+            //endregion
+
+            //region UI control
+
+           /**
+           * showing progress bar to indicate that logout is processing
+           */
+            private void loading()
+            {
+
+                DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.Main_drawerlayout);
+                drawerLayout.setVisibility(View.GONE);
+
+                ProgressBar progressBar = (ProgressBar)findViewById(R.id.Main_progressBar);
+                progressBar.setVisibility(View.VISIBLE);
+
+            }
+           /**
+            * showing the original layout
+            * used if the logout failed
+            */
+            private void showLayout()
+            {
+                ProgressBar progressBar = (ProgressBar)findViewById(R.id.Main_progressBar);
+                progressBar.setVisibility(View.GONE);
+
+                DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.Main_drawerlayout);
+                drawerLayout.setVisibility(View.VISIBLE);
+            }
+            //endregion
 
 
 

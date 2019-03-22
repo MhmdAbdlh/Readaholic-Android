@@ -20,8 +20,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
+/**
+ * class FollowingTab Fragment of the tabbed fragment
+ * @author Hossam ahmed
+ */
 public class Followingtab_Fragment extends Fragment {
      List<Users> mUser;
      TextView mNotAvaliableTextView;
@@ -64,6 +67,13 @@ public class Followingtab_Fragment extends Fragment {
             "  }\n" +
             "}";
 
+    /**
+     * onCreateView called when the view is created
+     * @param inflater inflate the layout
+     * @param container parent view
+     * @param savedInstanceState bundle of saved states
+     * @return view
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -99,6 +109,10 @@ public class Followingtab_Fragment extends Fragment {
         return view;
     }
 
+    /**
+     *onCreate  called when fragment is created to get the data before view is created
+     * @param savedInstanceState bundle of saved states
+     */
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

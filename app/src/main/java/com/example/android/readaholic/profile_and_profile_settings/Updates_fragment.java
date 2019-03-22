@@ -1,10 +1,7 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +11,10 @@ import com.example.android.readaholic.R;
 
 import java.util.ArrayList;
 
-
+/**
+ * Update Fragment class
+ * @author Hossam ahmed
+ */
 public class Updates_fragment extends Fragment {
 
     private RecyclerView recyclerView;
@@ -22,6 +22,13 @@ public class Updates_fragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Users> mUsers;
 
+    /**
+     * onCreateView called when fragment is created
+     * @param inflater to inflate layout
+     * @param container parent of the view
+     * @param savedInstanceState bundle holding the saved state
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

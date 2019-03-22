@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -25,7 +24,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.Main;
 import com.example.android.readaholic.R;
 
-
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -57,14 +56,30 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 fillDummyData();
-                Intent intent = new Intent(v.getContext(),Main.class);
-                startActivity(intent);
-                finish();
+                EditText username = (EditText) findViewById(R.id.SignIn_userName_edittext);
+                EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
+                if(validateFields()) {
+                    if (username.getText().toString().equals("admin")
+                            && pass.getText().toString().equals("admin")) {
+                        Intent intent = new Intent(v.getContext(), Main.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        error("Please check your email and password");
+                    }
+                }
 
-                //hides the keyboard when user clicks on sign in
-                hideSoftKeyboard(SignIn.this, v);
-                //checking if the user data is correct or not
-               // getUserData();
+
+               /*
+                if(validateFields()) {
+                    //hides the keyboard when user clicks on sign in
+                    hideSoftKeyboard(SignIn.this, v);
+                    //checking if the user data is correct or not
+                    getUserData();
+                }
+                */
+
+
             }
         });
 
@@ -85,7 +100,8 @@ public class SignIn extends AppCompatActivity {
     {
         EditText userName = (EditText)findViewById(R.id.SignIn_userName_edittext);
         EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
-        return "?email=Ahmed@yahoo.com&password=Waled21";
+       // return "?email=Ahmed@yahoo.com&password=Waled21";
+        return "?email=" + userName + "&password=" + pass ;
     }
 
     //region request
@@ -105,9 +121,7 @@ public class SignIn extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         SignInResponses parseResponse = parseUserData(response);
-                        String s=response;
-                       Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
-                        if(true){//modified version duo to dg
+                        if(parseResponse == SignInResponses.ACCEPTED_USER){
                             noErrors();
                             Intent intent = new Intent(getBaseContext(),Main.class);
                             startActivity(intent);
@@ -225,6 +239,39 @@ public class SignIn extends AppCompatActivity {
     }
 
     //endregion
+
+    private boolean validateFields()
+    {
+
+        EditText usernameText = (EditText)findViewById(R.id.SignIn_userName_edittext);
+        String userName = usernameText.getText().toString();
+
+        EditText passText = (EditText)findViewById(R.id.SignIn_password_edittext);
+        String pass = passText.getText().toString();
+
+        //validating username and password fields
+
+        //checking if the username field is empty or not
+        if(userName.length() == 0){
+         error("Please fill the username and password fields");
+         return false;
+        } else if (pass.length() == 0) {
+            //checking if the password field is empty or not
+            error("Please fill the username and password fields");
+            return false;
+        }
+        else if(userName.length() > userName.replaceAll("\\s+","").length()) {
+            //checking if username contains white spaces
+            error("UserName or password should not contain spaces");
+            return false;
+        } else if(pass.length() > pass.replaceAll("\\s+","").length()) {
+            //checking if the password contains white spaces
+            error("UserName or password should not contain spaces");
+            return false;
+        }
+        return true;
+
+    }
 
 
     /**
