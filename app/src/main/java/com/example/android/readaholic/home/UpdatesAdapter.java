@@ -24,7 +24,9 @@ import com.example.android.readaholic.HomeFragment;
 import com.example.android.readaholic.books.BookPageActivity;
 
 import com.example.android.readaholic.R;
+import com.squareup.picasso.Picasso;
 import com.example.android.readaholic.profile_and_profile_settings.ProfileFragment;
+
 
 import java.util.ArrayList;
 
@@ -78,7 +80,11 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
         TextView likedPostType = (TextView) ListItemView.findViewById(R.id.UpdatesActivity_typeofupdatelikedpost_textview);
         commentView = (TextView) ListItemView.findViewById(R.id.UpdatesActivity_comment_textview);
         ImageView bookImage = (ImageView) ListItemView.findViewById(R.id.UpdatesActivity_bookimage_imageview);
+
+        ImageView bookCover = (ImageView) ListItemView.findViewById(R.id.UpdatesActivity_bookimage_imageview);
+
         Spinner wantToReadSpinner = (Spinner) ListItemView.findViewById(R.id.activitybook_sheleve_spinner);
+
         ImageView userimg = (ImageView) ListItemView.findViewById(R.id.UpdatesActivity_profilepicture_imageView);
 
         Name.setText(Item.getmNameOfUser());
@@ -86,7 +92,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
         numOfLike.setText( Integer.toString(Item.getmNumOfLikes()));
         numOfComment.setText(Integer.toString(Item.getmNumOfComments()));
 
-        // Create an ArrayAdapter using the String array and a default spinner layout
+        // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.Shelves, android.R.layout.simple_spinner_dropdown_item);
         // Specify the layout to use when the list of choices appears
@@ -96,11 +102,16 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
 
 
 
+
         //Picasso.get().load("https://images.gr-assets.com/users/1489660298p2/65993249.jpg").into(bookImage);
         commentView.setVisibility(View.GONE);
         wantToRead.setBackgroundResource(R.color.colorGreen);
         wantToRead.setTextColor(Color.parseColor("#F4F1EC"));
+
         //update's type review or rating
+    // Picasso.get().load(Item.getmUserimg()).into(userimg);
+
+
         if (Item.getmTypeOfUpdates() == 0){
             if(Item.getmRatingValue() == 0){
                 Type.setText("Wrote a");
@@ -118,6 +129,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
             }
             authorName.setText(Item.getmAuthorName());
             bookName.setText(Item.getmBookName());
+         //   Picasso.get().load(Item.getmBookCover()).into(bookCover);
             viewOfBook.setVisibility(View.VISIBLE);
             likedpost.setVisibility(View.GONE);
         }
@@ -125,6 +137,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
         else if (Item.getmTypeOfUpdates() == 1){
             Type.setText(Item.getmNameofFollow());
             bookName.setText(Item.getmBookName());
+         //   Picasso.get().load(Item.getmBookCover()).into(bookCover);
             authorName.setText(Item.getmAuthorName());
             viewOfBook.setVisibility(View.VISIBLE);
             followerName.setVisibility(View.GONE);
@@ -158,6 +171,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
                         review.setVisibility(View.GONE);
                     }
                     bookName.setText(Item.getmBookName());
+                  //  Picasso.get().load(Item.getmBookCover()).into(bookCover);
                     authorName.setText(Item.getmAuthorName());
                     break;
                 //Inner updates's type shelves(want to read ,reading , read)
@@ -165,6 +179,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
                     updateType.setText("status update");
                     innerUpdatetype.setText("Want to read");
                     bookName.setText(Item.getmBookName());
+                  //  Picasso.get().load(Item.getmBookCover()).into(bookCover);
                     authorName.setText(Item.getmAuthorName());
                     followerName.setVisibility(View.GONE);
                     break;

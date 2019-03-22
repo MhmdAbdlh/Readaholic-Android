@@ -83,7 +83,7 @@ class ReviewActivity : AppCompatActivity() {
                     commentadapter!!.notifyDataSetChanged()
                 },
                 Response.ErrorListener {
-
+                    feedFromJsonReturn(getdummyjson().getJSONArray("comment"))
                     commentadapter!!.notifyDataSetChanged()
                 })
 
@@ -94,7 +94,7 @@ class ReviewActivity : AppCompatActivity() {
     /**
      * extract the comments data from the jsno return and assign it to the array of comments
      *
-     * @param jsonarray
+     * @param jsonarray array of comments
      */
     fun feedFromJsonReturn(jsonarray: JSONArray)
     {
@@ -139,10 +139,19 @@ class ReviewActivity : AppCompatActivity() {
             return position.toLong()
         }
 
+        /**
+         *get the size of the list
+         *
+         */
         override fun getCount(): Int {
             return CommentList!!.size
         }
 
 
+    }
+    fun getdummyjson():JSONObject
+    {
+
+        return JSONObject("{\"comment\":[{\"id\":\"0000000\",\"user\":{\"id\":\"000000\",\"name\":\"ٍSalma\",\"location\":\"The United States\",\"link\":\"\nhttps://www.goodreads.com/user/show/000000-aa\n\",\"image_url\":\"\nhttps://cdn1.imggmi.com/uploads/2019/3/22/d30f78234b3aa20e06d6556e58107f85-full.jpg\n\"},\"date_added\":\"Fri Mar 08 16:25:10 -0800 2019\",\"date_updated\":\"Fri Mar 08 16:25:22 -0800 2019\",\"link\":\"\nhttps://www.goodreads.comshow/00000\n\",\"body\":\"a great book\"}]}")
     }
 }

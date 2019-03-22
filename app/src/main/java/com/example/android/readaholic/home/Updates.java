@@ -22,6 +22,10 @@ public class Updates implements Parcelable {
     private String mInnerDate;
     private int mBookId;
     private int mNewActivity = 0;
+
+    private String mBookCover;
+    private String mUserimg;
+
     private int mUserId = 0;
     private int mInnerUserId;
     /**
@@ -97,7 +101,12 @@ public class Updates implements Parcelable {
      *Set newActivity equal 1 when clicking in comment button in update page fragment.
      * @param mNewActivity int: defult zero in HOmeFragment or Profile fragment
      */
+
     public void setmNewActivity(int mNewActivity) {this.mNewActivity = mNewActivity;}
+
+
+    public void setmUserimg(String mUserimg){this.mUserimg = mUserimg;}
+    public void setmBookCover(String mBookCover){this.mBookCover = mBookCover;}
     /**
      *Set review when type of update equals 0 .
      * @param mReview String: review on the book.
@@ -150,12 +159,13 @@ public class Updates implements Parcelable {
     public void setmInnerDate(String mInnerDate){ this.mInnerDate = mInnerDate; }
 
 
-
     /**
      * get DateOfUpdates .
      * @return DateOfUpdates
      */
     public String getmDateOfUpdates(){ return mDateOfUpdates; }
+    public String getmBookCover() { return mBookCover; }
+    public String getmUserimg(){return mUserimg;}
     /**
      * get BookId of the update.
      * @return BookId

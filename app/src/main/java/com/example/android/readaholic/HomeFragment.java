@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -51,11 +52,13 @@ public class HomeFragment extends Fragment {
        // adapter = new MaterialAdapter(getContext(),MaterialList);
        // ListView list = (ListView) myview.findViewById(R.id.MaterialstList);
        // list.setAdapter(adapter);
+
         adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
+
         listUpadtes = (ListView) view.findViewById(R.id.UpadtesActivity_updateslist_listview);
         adapter.notifyDataSetChanged();
         listUpadtes.setAdapter(adapter);
-
+        adapter.notifyDataSetChanged();
 
         return view;
     }
@@ -72,7 +75,7 @@ public class HomeFragment extends Fragment {
      */
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
         final String[] jsonFile = new String[1];
        jsonFile[0] = "{\n" +
                 "   \"updates\":{\n" +
@@ -340,6 +343,7 @@ public class HomeFragment extends Fragment {
 
         arrayOfUpadates1 = onResposeAction(jsonFile[0]);
         //request();
+
     }
     /**
      * request the json file of updates list to be displayed.
@@ -348,18 +352,21 @@ public class HomeFragment extends Fragment {
      */
     public void request(){
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "https://api.myjson.com/bins/kfxn6";
-
+        String url = "https://api.myjson.com/bins/19y576";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                         new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+
                         arrayOfUpadates1 = onResposeAction(response);
+
+                        Toast.makeText(getContext(),response,Toast.LENGTH_SHORT).show();
+                        adapter.notifyDataSetChanged();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                return;
+                Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -399,6 +406,7 @@ public class HomeFragment extends Fragment {
                     //review or raring update
                     case 0:
                         JSONObject book = action.getJSONObject("book");
+                        updateItem.setmBookCover(book.getString("imgUrl"));
                         updateItem.setmBookName(book.getString("title"));
                         updateItem.setmRatingValue(action.getInt("rating"));
                         updateItem.setmAuthorName(book.getString("author"));
@@ -410,6 +418,7 @@ public class HomeFragment extends Fragment {
                      //shelves
                     case 1:
                         JSONObject book1 = action.getJSONObject("book");
+                        updateItem.setmBookCover(book1.getString("imgUrl"));
                         updateItem.setmBookName(book1.getString("title"));
                         updateItem.setmAuthorName(book1.getString("author"));
                         updateItem.setmNameofFollow(action.getString("shelf"));//shelf
@@ -433,6 +442,7 @@ public class HomeFragment extends Fragment {
                             //review or rating
                             case 0:
                                 JSONObject innerbook = inneraction.getJSONObject("book");
+                                updateItem.setmBookCover(innerbook.getString("imgUrl"));
                                 updateItem.setmBookName(innerbook.getString("title"));
                                 updateItem.setmRatingValue(inneraction.getInt("rating"));
                                 updateItem.setmAuthorName(innerbook.getString("author"));
@@ -443,6 +453,7 @@ public class HomeFragment extends Fragment {
                             //shelves
                             case 1:
                                 JSONObject innerbook1 = inneraction.getJSONObject("book");
+                                updateItem.setmBookCover(innerbook1.getString("imgUrl"));
                                 updateItem.setmBookName(innerbook1.getString("title"));
                                 updateItem.setmAuthorName(innerbook1.getString("author"));
                                 updateItem.setmShelf(inneraction.getString("shelf"));
