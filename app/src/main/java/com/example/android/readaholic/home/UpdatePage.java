@@ -13,6 +13,10 @@ import com.example.android.readaholic.R;
 import java.util.ArrayList;
 
 public class UpdatePage extends Activity {
+    /**
+     *Called when the activity is first created
+     * @param savedInstanceState
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_page);
