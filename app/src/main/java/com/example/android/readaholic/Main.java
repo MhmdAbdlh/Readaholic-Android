@@ -78,6 +78,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     }
 
 
+            //region Listeners
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -112,6 +113,10 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         return true;
     }
 
+    /**
+     * should exit the app if back is pressed twice in two second
+     * and if the drawer is opened it should be closed
+     */
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -127,7 +132,12 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
         }
     }
+    //endregion
 
+            //region requests
+      /**
+       * sending logout request
+       */
         private void logoutrequest() {
 
                 loading();
@@ -159,7 +169,13 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 queue.add(stringRequest);
 
             }
+            //endregion
 
+            //region UI control
+
+           /**
+           * showing progress bar to indicate that logout is processing
+           */
             private void loading()
             {
 
@@ -170,6 +186,10 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 progressBar.setVisibility(View.VISIBLE);
 
             }
+           /**
+            * showing the original layout
+            * used if the logout failed
+            */
             private void showLayout()
             {
                 ProgressBar progressBar = (ProgressBar)findViewById(R.id.Main_progressBar);
@@ -178,6 +198,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.Main_drawerlayout);
                 drawerLayout.setVisibility(View.VISIBLE);
             }
+            //endregion
 
 
 
