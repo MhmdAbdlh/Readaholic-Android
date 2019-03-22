@@ -192,7 +192,9 @@
             android:paddingLeft="4dp"
             android:paddingTop="6dp"
             android:paddingRight="4dp"
-            android:text="empty descreption" />
+            android:paddingBottom="6dp"
+            android:text="empty descreption"
+            android:textSize="18sp" />
 
 
         <View

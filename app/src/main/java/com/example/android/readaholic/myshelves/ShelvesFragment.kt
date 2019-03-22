@@ -13,7 +13,6 @@ import com.example.android.readaholic.R
 import com.example.android.readaholic.books.BookPageActivity
 import com.example.android.readaholic.books.BookPageInfo
 import kotlinx.android.synthetic.main.fragment_shelves.view.*
-
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 

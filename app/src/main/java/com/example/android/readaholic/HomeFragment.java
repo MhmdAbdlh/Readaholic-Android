@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,24 +30,25 @@ import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
-    public ArrayList<Updates> arrayOfUpadates=new ArrayList<Updates>();
+    public ArrayList<Updates> arrayOfUpadates1 = new ArrayList<Updates>();
     UpdatesAdapter adapter = null;
     ListView listUpadtes;
     View view;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//7oty al xml name ally anty sha8ala beg hna
-        //wadeny 3la al adapter
+
         view=inflater.inflate(R.layout.activity_updates,container,false);
        // adapter = new MaterialAdapter(getContext(),MaterialList);
        // ListView list = (ListView) myview.findViewById(R.id.MaterialstList);
        // list.setAdapter(adapter);
-        adapter = new UpdatesAdapter(getContext(), arrayOfUpadates);
+
+        adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
+
         listUpadtes = (ListView) view.findViewById(R.id.UpadtesActivity_updateslist_listview);
         adapter.notifyDataSetChanged();
         listUpadtes.setAdapter(adapter);
-
+        adapter.notifyDataSetChanged();
 
         return view;
     }
@@ -56,7 +58,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
         final String[] jsonFile = new String[1];
 
             /* RequestQueue queue = Volley.newRequestQueue(this);
@@ -300,7 +302,7 @@ public class HomeFragment extends Fragment {
                 "            \"id\":\"0000000\",\n" +
                 "            \"actor\":{\n" +
                 "               \"id\":\"65993249\",\n" +
-                "               \"name\":\"Salma Ibrahim\",\n" +
+                "               \"name\":\"Salma\",\n" +
                 "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
                 "            },\n" +
                 "            \"updated_at\":\"sat at 7:00AM\",\n" +
@@ -316,7 +318,7 @@ public class HomeFragment extends Fragment {
                 "                  \"id\":\"0000000\",\n" +
                 "                  \"actor\":{\n" +
                 "                     \"id\":\"65993249\",\n" +
-                "                     \"name\":\"Salma Ibrahim\",\n" +
+                "                     \"name\":\"Salma \",\n" +
                 "                     \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
                 "                  },\n" +
                 "                  \"updated_at\":\"Fri at 8:00PM\",\n" +
@@ -342,27 +344,28 @@ public class HomeFragment extends Fragment {
                 "      \"_type\":\"array\"\n" +
                 "   }\n" +
                 "}";
-//
 
 
-        //onResposeAction(jsonFile[0]);
-        request();
+        arrayOfUpadates1 = onResposeAction(jsonFile[0]);
+        //request();
+
     }
 
     public void request(){
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "https://api.myjson.com/bins/kfxn6";
-
+        String url = "https://api.myjson.com/bins/19y576";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                         new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         onResposeAction(response);
+                        Toast.makeText(getContext(),response,Toast.LENGTH_SHORT).show();
+                        adapter.notifyDataSetChanged();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                return;
+                Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -371,7 +374,8 @@ public class HomeFragment extends Fragment {
 
     }
 
-    public void onResposeAction(String response){
+    static public ArrayList<Updates> onResposeAction(String response){
+        ArrayList<Updates> arrayOfUpadates = new ArrayList<Updates>();
         JSONObject root = null;
         String name = "hh";
         JSONArray updatesArray  = null;
@@ -391,10 +395,11 @@ public class HomeFragment extends Fragment {
                 JSONObject action = updateItemJson.getJSONObject("action");
 
 
-                Updates updateItem = new Updates(action.getInt("type"), actor.getString("name"),updateItemJson.getString("updated_at"),updateItemJson.getInt("numLikes"),updateItemJson.getInt("numComments"));
+                Updates updateItem = new Updates(action.getInt("type"), actor.getString("name"),updateItemJson.getString("updated_at"),updateItemJson.getInt("numLikes"),updateItemJson.getInt("numComments"),actor.getInt("id"));
                 switch (updateItem.getmTypeOfUpdates()){
                     case 0:
                         JSONObject book = action.getJSONObject("book");
+                        updateItem.setmBookCover(book.getString("imgUrl"));
                         updateItem.setmBookName(book.getString("title"));
                         updateItem.setmRatingValue(action.getInt("rating"));
                         updateItem.setmAuthorName(book.getString("author"));
@@ -405,6 +410,7 @@ public class HomeFragment extends Fragment {
 
                     case 1:
                         JSONObject book1 = action.getJSONObject("book");
+                        updateItem.setmBookCover(book1.getString("imgUrl"));
                         updateItem.setmBookName(book1.getString("title"));
                         updateItem.setmAuthorName(book1.getString("author"));
                         updateItem.setmNameofFollow(action.getString("shelf"));//shelf
@@ -419,6 +425,7 @@ public class HomeFragment extends Fragment {
                         JSONObject innerupdate = action.getJSONObject("update");
                         JSONObject inneraction = innerupdate.getJSONObject("action");
                         JSONObject inneractor = innerupdate.getJSONObject("actor");
+                        updateItem.setmInnerUserId(inneractor.getInt("id"));
                         updateItem.setmInnerUpdate(inneraction.getInt("type"));
                         updateItem.setmNameofFollow(inneractor.getString("name"));
                         updateItem.setmInnerDate(innerupdate.getString("updated_at"));
@@ -426,6 +433,7 @@ public class HomeFragment extends Fragment {
                         switch (updateItem.getmInnerUpdate()) {
                             case 0:
                                 JSONObject innerbook = inneraction.getJSONObject("book");
+                                updateItem.setmBookCover(innerbook.getString("imgUrl"));
                                 updateItem.setmBookName(innerbook.getString("title"));
                                 updateItem.setmRatingValue(inneraction.getInt("rating"));
                                 updateItem.setmAuthorName(innerbook.getString("author"));
@@ -435,6 +443,7 @@ public class HomeFragment extends Fragment {
                                 break;
                             case 1:
                                 JSONObject innerbook1 = inneraction.getJSONObject("book");
+                                updateItem.setmBookCover(innerbook1.getString("imgUrl"));
                                 updateItem.setmBookName(innerbook1.getString("title"));
                                 updateItem.setmAuthorName(innerbook1.getString("author"));
                                 updateItem.setmShelf(inneraction.getString("shelf"));
@@ -455,5 +464,6 @@ public class HomeFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+        return arrayOfUpadates;
     }
 }

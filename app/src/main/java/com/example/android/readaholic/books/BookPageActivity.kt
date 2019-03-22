@@ -22,15 +22,16 @@ import kotlinx.android.synthetic.main.activity_book_page.*
 import kotlinx.android.synthetic.main.bookreview.view.*
 import org.json.JSONObject
 
+/**
+ * This Activity is for showing book information
+ *
+ */
 class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener {
     override fun onNothingSelected(parent: AdapterView<*>?) {
-
     }
 
     /**
      * Handling the book btn ui between cuurently reading ,read and want to read
-     *
-
      */
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         var SS:String=parent!!.getItemAtPosition(position).toString()
@@ -44,7 +45,6 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     }
 
     var bookinfo: BookPageInfo?=null
-    var jsonString:JSONObject?=null
     var bookreview:ArrayList<BookReview>?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,11 +73,7 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         }
 
         bookreview= ArrayList()
-      //  bookreview!!.add(BookReview("sadfas"))
-
         feedUrlFromApi(bookinfo!!.bookid)
-
-
         rateittext.setOnClickListener {
             writeareviewbtn.visibility=View.VISIBLE
         }
@@ -96,19 +92,30 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     fun feedUrlFromApi(BookId:Int)
     {
         val queue = Volley.newRequestQueue(this)
-        var url=URLS.BookPageURL+BookId.toString()
+        //var url=URLS.BookPageURL+BookId.toString()
+      //  var url = "http://"+"localhost"+":8000/api/books/show?book_id=1";
         var urltry="https://api.myjson.com/bins/howtu"
         val stringRequest = StringRequest(Request.Method.GET, urltry,
                 Response.Listener<String> { response ->
                     var jsonresponse=JSONObject(response)
                     feedFromDummey(jsonresponse)
+
                 },
                 Response.ErrorListener {
+                    var mocresponse=getdummyjson()
+                    feedFromDummey(mocresponse)
 
-                })
+                }
+
+        )
+
         queue.add(stringRequest)
     }
-    //get the book image from the url
+
+    /**
+     * get the book image from the url
+     *
+     */
     fun importImage()
     {
        Picasso.get().load(bookinfo!!.image_url).into(bookimageui)
@@ -142,7 +149,7 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     /**
      * fetch book info into the UI
      *
-     */
+      */
     fun feedBookUi()
     {
         tiltetxtui.text= bookinfo!!.book_title
@@ -150,9 +157,20 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         ratinginfotxtui.text= bookinfo!!.average_rating.toString()+"     "+bookinfo!!.ratings_count.toString()+" ratings "
         ratingui.rating=bookinfo!!.average_rating
         bookdesctxtui.text=bookinfo!!.description
-        boojsideinfotxtui.text=bookinfo!!.num_pages.toString()+" . First published "+bookinfo!!.publication_month+
+        boojsideinfotxtui.text="number of pages :"+bookinfo!!.num_pages.toString()+" . First published "+bookinfo!!.publication_month+
                 " "+bookinfo!!.publication_day+" , "+bookinfo!!.publication_year+" ISBN13 "+bookinfo!!.isbn
         seeallreviewstxtui.text=bookinfo!!.reviewscount.toString()+" other community reviews"
      }
+
+    /**
+     * this will be called untill we call the backend(Mock Serviece)
+     *
+     */
+    fun getdummyjson():JSONObject
+    {
+
+        return JSONObject("{\"book_title\":\"American Duchess\",\"isbn\":\"0062748343\",\"image_url\":\"https://images.gr-assets.com/books/1538445346l/36300673.jpg\",\"small_image_url\":\"https://images.gr-assets.com/books/1538445346l/36300673.jpg\",\"num_pages\":\"1000\",\"publisher\":\"dummyMan\",\"publication_day\":13,\"publication_year\":1932,\"publication_month\":10,\"average_rating\":3.532,\"reviews_count\":2,\"ratings_count\":1,\"description\":\"Before Meghan and Harry, another American ‘princess’ captured the hand of an English aristocrat. Now, Karen Harper tells the tale of Consuelo Vanderbilt, her “The Wedding of the Century” to the Duke of Marlborough, and her quest to find meaning behind “the glitter and the gold.\",\"author_id\":1,\"author_name\":\" Karen Harper\",\"genre\":\"action\"}")
+
+    }
 
 }

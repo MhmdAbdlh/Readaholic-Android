@@ -348,7 +348,7 @@ public class UpdatesActivity extends Activity {
                 JSONObject action = updateItemJson.getJSONObject("action");
 
 
-                Updates updateItem = new Updates(action.getInt("type"), actor.getString("name"),updateItemJson.getString("updated_at"),updateItemJson.getInt("numLikes"),updateItemJson.getInt("numComments"));
+                Updates updateItem = new Updates(action.getInt("type"), actor.getString("name"),updateItemJson.getString("updated_at"),updateItemJson.getInt("numLikes"),updateItemJson.getInt("numComments"),1);
                 switch (updateItem.getmTypeOfUpdates()){
                     case 0:
                         JSONObject book = action.getJSONObject("book");

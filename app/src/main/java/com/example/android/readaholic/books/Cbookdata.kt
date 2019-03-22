@@ -1,5 +1,8 @@
 package com.example.android.readaholic.books
 
+/**
+ * this object to hold the current book data
+ */
 object Cbookdata {
     var book_title:String="unknown"
     var image_url:String="unknown"

@@ -2,8 +2,10 @@ package com.example.android.readaholic.sign_in_up;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -11,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -19,8 +23,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.Main;
 import com.example.android.readaholic.R;
-import com.example.android.readaholic.contants_and_static_data.UserInfo;
 
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,7 +56,6 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 fillDummyData();
-
                 EditText username = (EditText) findViewById(R.id.SignIn_userName_edittext);
                 EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
                 if(validateFields()) {
@@ -66,12 +69,17 @@ public class SignIn extends AppCompatActivity {
                     }
                 }
 
+
                /*
-                //hides the keyboard when user clicks on sign in
-                hideSoftKeyboard(SignIn.this, v);
-                //checking if the user data is correct or not
-                getUserData();
+                if(validateFields()) {
+                    //hides the keyboard when user clicks on sign in
+                    hideSoftKeyboard(SignIn.this, v);
+                    //checking if the user data is correct or not
+                    getUserData();
+                }
                 */
+
+
             }
         });
 
@@ -80,7 +88,7 @@ public class SignIn extends AppCompatActivity {
 
     private void fillDummyData()
     {
-        UserInfo.addUserInfo("Ahmed","Ahmed Nassar"
+        UserInfo.addUserInfo("Ahmed","Waled"
                 ,"https://unsplash.com/photos/HUBofEFQ6CA","1234567");
     }
 
@@ -92,10 +100,8 @@ public class SignIn extends AppCompatActivity {
     {
         EditText userName = (EditText)findViewById(R.id.SignIn_userName_edittext);
         EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
-
-        return "?userName=" + userName.getText() + "&password="+pass.getText();
-
-
+       // return "?email=Ahmed@yahoo.com&password=Waled21";
+        return "?email=" + userName + "&password=" + pass ;
     }
 
     //region request
@@ -106,16 +112,14 @@ public class SignIn extends AppCompatActivity {
     private void getUserData()
     {
         whileLoading();
-
         RequestQueue queue = Volley.newRequestQueue(this);
         String url ="https://api.myjson.com/bins/1hdk";
-        url = url + constructParameters();
+      // String url = "http://"+"localhost"+":8000/api/logIn"+constructParameters();
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
                         SignInResponses parseResponse = parseUserData(response);
                         if(parseResponse == SignInResponses.ACCEPTED_USER){
                             noErrors();
@@ -130,8 +134,6 @@ public class SignIn extends AppCompatActivity {
                             error("Server error");
                         }
 
-
-
                     }
                 }, new Response.ErrorListener() {
                 @Override
@@ -143,7 +145,6 @@ public class SignIn extends AppCompatActivity {
 
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
-
     }
 
     //endregion
@@ -158,18 +159,14 @@ public class SignIn extends AppCompatActivity {
             JSONObject root = new JSONObject(userData);
             if (root.getString("status").equals("true") ) {
                 String token = root.getString("token");
-
                 JSONObject userObject = root.getJSONObject("user");
                 String userName = userObject.getString("userName");
                 String name = userObject.getString("name");
                 String image = userObject.optString("image");
-
                 UserInfo.addUserInfo(userName,name,image,token);
-
                 return SignInResponses.ACCEPTED_USER;
             }
             else return SignInResponses.WRONG_USER;
-
         }
         catch (JSONException E)
         {
@@ -274,6 +271,17 @@ public class SignIn extends AppCompatActivity {
         }
         return true;
 
+    }
+
+
+    /**
+     * it checks if the user is connected to the internet
+     * @return true if the user is connected, false if not connected
+     */
+   private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null;
     }
 
 

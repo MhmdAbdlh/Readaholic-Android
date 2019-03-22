@@ -1,5 +1,8 @@
 package com.example.android.readaholic.books
 
+/**
+ * This will hold the Current review data
+ */
 object Creviewdata {
 
     var reviewid:Int=0
