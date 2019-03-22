@@ -8,41 +8,306 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
 import com.example.android.readaholic.CircleTransform;
+import com.example.android.readaholic.HomeFragment;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.VolleyHelper.volleyRequestHelper;
+import com.example.android.readaholic.home.Updates;
+import com.example.android.readaholic.home.UpdatesAdapter;
 import com.squareup.picasso.Picasso;
 
-/**
- * ProfileFragment class to implement fragment behaviour
- * @author Hossam Ahmed
- */
-public class ProfileFragment extends Fragment implements ProfileView {
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+
+
+public class ProfileFragment extends Fragment implements ProfileView{
+    private RequestQueue mRequestQueue;
+    private JSONObject mJsonObject;
     private String mRequestUrl;
     private int mUser_Id;
     private Users mProfileUser;
-  //  @BindView(R.id.profileActivity_ProfilePic_ImageView)
     private ImageView mUserImage;
-   // @BindView(R.id.ProfileActivity_UserName_TextView)
     private TextView mUserName;
-   // @BindView(R.id.ProfileActivity_UserBooksNumber_TextView)
     private TextView mUserBookNumber;
+    public static int UserNumberofBooks;
+    ArrayList<Updates> arayOfUpdates = new ArrayList<Updates>();
+    private ListView mListOfUpdates;
+    private UpdatesAdapter adapterForUpdatesList;
     private ProfilePresenter mProfilePresenter;
-    private View view;
-    com.example.android.readaholic.VolleyHelper.volleyRequestHelper volleyRequestHelper ;
-    /**
-     * OnCreateView calling when fragment view is called to inflate the layout
-     * @param inflater to inflate the layout
-     * @param container View group to hold the parent
-     * @param savedInstanceState Bundle to have the previous data
-     * @return View to inflate
-     */
+    View view;
+    volleyRequestHelper volleyRequestHelper;
+    private String jsonFile = "{\n" +
+            "   \"updates\":{\n" +
+            "      \"update\":[\n" +
+            "         {\n" +
+            "            \"id\":\"0000000\",\n" +
+            "            \"actor\":{\n" +
+            "               \"id\":\"65993249\",\n" +
+            "               \"name\":\"Salma Ibrahim\",\n" +
+            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "            },\n" +
+            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "            \"numComments\":\"11\",\n" +
+            "            \"numLikes\":\"77\",\n" +
+            "            \"action\":{\n" +
+            "               \"id\":\"5\",\n" +
+            "               \"type\":\"0\",\n" +
+            "               \"rating\":\"5\",\n" +
+            "               \"body\":\"\",\n" +
+            "               \"book\":{\n" +
+            "                  \"id\":\"31087\",\n" +
+            "                  \"title\":\"American Duchess\",\n" +
+            "\t\t\t\t  \"author\":\"Karen Harper\",\n" +
+            "                  \"imgUrl\":\"https://i.harperapps.com/covers/9780062884299/y648.jpg\",\n" +
+            "                  \"shelf\":\"\",\n" +
+            "                  \"rating\":\"\"\n" +
+            "               }\n" +
+            "            }\n" +
+            "         },\n" +
+            "\t\t {\n" +
+            "            \"id\":\"0000000\",\n" +
+            "            \"actor\":{\n" +
+            "               \"id\":\"65993249\",\n" +
+            "               \"name\":\"Salma Ibrahim\",\n" +
+            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "            },\n" +
+            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "            \"numComments\":\"11\",\n" +
+            "            \"numLikes\":\"9\",\n" +
+            "            \"action\":{\n" +
+            "               \"id\":\"5\",\n" +
+            "               \"type\":\"0\",\n" +
+            "               \"rating\":\"0\",\n" +
+            "\t\t\t   \"review\":\"salma\",\n" +
+            "               \"body\":\"\",\n" +
+            "               \"book\":{\n" +
+            "                  \"id\":\"31087\",\n" +
+            "                  \"title\":\"American Duchess\",\n" +
+            "\t\t\t\t  \"author\":\"Karen Harper\",\n" +
+            "                  \"imgUrl\":\"https://i.harperapps.com/covers/9780062884299/y648.jpg\",\n" +
+            "                  \"shelf\":\"want to read\",\n" +
+            "                  \"rating\":\"\"\n" +
+            "               }\n" +
+            "            }\n" +
+            "         },\n" +
+            "         {\n" +
+            "            \"id\":\"000001\",\n" +
+            "            \"actor\":{\n" +
+            "               \"id\":\"65993249\",\n" +
+            "               \"name\":\"Salma Ibrahim\",\n" +
+            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "            },\n" +
+            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "            \"numComments\":\"7\",\n" +
+            "            \"numLikes\":\"9\",\n" +
+            "            \"action\":{\n" +
+            "               \"id\":\"\",\n" +
+            "               \"type\":\"2\",\n" +
+            "               \"user\":{\n" +
+            "                  \"name\":\"salma\",\n" +
+            "                  \"imageLink\":\"\",\n" +
+            "                  \"ratingAvg\":\"\",\n" +
+            "                  \"ratingCount\":\"\"\n" +
+            "               }\n" +
+            "            }\n" +
+            "         },\n" +
+            "         {\n" +
+            "            \"id\":\"0000000\",\n" +
+            "            \"actor\":{\n" +
+            "               \"id\":\"65993249\",\n" +
+            "               \"name\":\"Salma Ibrahim\",\n" +
+            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "            },\n" +
+            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "            \"numComments\":\"2\",\n" +
+            "            \"numLikes\":\"12\",\n" +
+            "            \"action\":{\n" +
+            "               \"id\":\"5\",\n" +
+            "               \"type\":\"1\",\n" +
+            "               \"shelf\":\"wants to read\",\n" +
+            "               \"book\":{\n" +
+            "                  \"id\":\"31087\",\n" +
+            "                  \"title\":\"The Last Boleyn\",\n" +
+            "                  \"imgUrl\":\"\",\n" +
+            "\t\t\t\t  \"author\":\"karen\",\n" +
+            "                  \"shelf\":\"\",\n" +
+            "                  \"rating\":\"\"\n" +
+            "               }\n" +
+            "            }\n" +
+            "         },\n" +
+            "         {\n" +
+            "            \"id\":\"0000000\",\n" +
+            "            \"actor\":{\n" +
+            "               \"id\":\"65993249\",\n" +
+            "               \"name\":\"Salma Ibrahim\",\n" +
+            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "            },\n" +
+            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "                  \"numComments\":\"127\",\n" +
+            "                  \"numLikes\":\"6123\",\n" +
+            "            \"action\":{\n" +
+            "               \"id\":\"7\",\n" +
+            "               \"type\":\"3\",\n" +
+            "               \"resourceType\":\"1\",\n" +
+            "\t\t\t\t\t \"comment\":\"the best book ever <3\",\n" +
+            "               \"update\":{\n" +
+            "                  \"id\":\"0000000\",\n" +
+            "                  \"actor\":{\n" +
+            "                     \"id\":\"65993249\",\n" +
+            "                     \"name\":\"Salma Ibrahim\",\n" +
+            "                     \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "                  },\n" +
+            "                  \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "                  \"action\":{\n" +
+            "                     \"id\":\"5\",\n" +
+            "                     \"type\":\"1\",\n" +
+            "                     \"shelf\":\"wants to read\",\n" +
+            "                     \"book\":{\n" +
+            "                        \"id\":\"31087\",\n" +
+            "\t\t\t\t\t\t\"author\":\"Karen\",\n" +
+            "                        \"title\":\"The Last Boleyn\",\n" +
+            "                        \"imgUrl\":\"\",\n" +
+            "                        \"shelf\":\"\",\n" +
+            "                        \"rating\":\"\"\n" +
+            "                     }\n" +
+            "                  }\n" +
+            "               }\n" +
+            "            }\n" +
+            "         },\n" +
+            "\t\t {\n" +
+            "            \"id\":\"0000000\",\n" +
+            "            \"actor\":{\n" +
+            "               \"id\":\"65993249\",\n" +
+            "               \"name\":\"Salma Ibrahim\",\n" +
+            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "            },\n" +
+            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "                  \"numComments\":\"127\",\n" +
+            "                  \"numLikes\":\"6123\",\n" +
+            "            \"action\":{\n" +
+            "               \"id\":\"7\",\n" +
+            "               \"type\":\"3\",\n" +
+            "               \"resourceType\":\"1\",\n" +
+            "\t\t\t\t\t \"comment\":\"the best book ever <3\",\n" +
+            "               \"update\":{\"id\":\"000001\",\n" +
+            "            \"actor\":{\n" +
+            "               \"id\":\"65993249\",\n" +
+            "               \"name\":\"Salma Ibrahim\",\n" +
+            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "            },\n" +
+            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "            \"numComments\":\"7\",\n" +
+            "            \"numLikes\":\"9\",\n" +
+            "            \"action\":{\n" +
+            "               \"id\":\"\",\n" +
+            "               \"type\":\"2\",\n" +
+            "               \"user\":{\n" +
+            "                  \"name\":\"Farah\",\n" +
+            "                  \"imageLink\":\"\",\n" +
+            "                  \"ratingAvg\":\"\",\n" +
+            "                  \"ratingCount\":\"\"\n" +
+            "               }\n" +
+            "            }\n" +
+            "         }\n" +
+            "            }\n" +
+            "         },\n" +
+            "         {\n" +
+            "            \"id\":\"0000000\",\n" +
+            "            \"actor\":{\n" +
+            "               \"id\":\"65993249\",\n" +
+            "               \"name\":\"Salma Ibrahim\",\n" +
+            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "            },\n" +
+            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "            \"numComments\":\"5\",\n" +
+            "            \"numLikes\":\"9\",\n" +
+            "            \"action\":{\n" +
+            "               \"id\":\"7\",\n" +
+            "               \"type\":\"4\",\n" +
+            "\t\t\t   \"comment\":\"the best book\",\n" +
+            "               \"resourceType\":\"0\",\n" +
+            "               \"body\":\"\",\n" +
+            "               \"update\":{\n" +
+            "                  \"id\":\"0000000\",\n" +
+            "                  \"actor\":{\n" +
+            "                     \"id\":\"65993249\",\n" +
+            "                     \"name\":\"Salma Ibrahim\",\n" +
+            "                     \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "                  },\n" +
+            "                  \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "                  \"action\":{\n" +
+            "                     \"id\":\"5\",\n" +
+            "                     \"type\":\"0\",\n" +
+            "                     \"rating\":\"3\",\n" +
+            "                     \"body\":\"\",\n" +
+            "                     \"book\":{\n" +
+            "                        \"id\":\"31087\",\n" +
+            "                        \"title\":\"The Last Boleyn\",\n" +
+            "\t\t\t\t\t\t\"author\":\"Harry\",\n" +
+            "                        \"imgUrl\":\"\",\n" +
+            "                        \"shelf\":\"\",\n" +
+            "                        \"rating\":\"\"\n" +
+            "                     }\n" +
+            "                  }\n" +
+            "               }\n" +
+            "            }\n" +
+            "         }, \n" +
+            "\t\t {\n" +
+            "            \"id\":\"0000000\",\n" +
+            "            \"actor\":{\n" +
+            "               \"id\":\"65993249\",\n" +
+            "               \"name\":\"Salma\",\n" +
+            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "            },\n" +
+            "            \"updated_at\":\"sat at 7:00AM\",\n" +
+            "            \"numComments\":\"5\",\n" +
+            "            \"numLikes\":\"9\",\n" +
+            "            \"action\":{\n" +
+            "               \"id\":\"7\",\n" +
+            "               \"type\":\"4\",\n" +
+            "\t\t\t   \"comment\":\"the best book\",\n" +
+            "               \"resourceType\":\"0\",\n" +
+            "               \"body\":\"\",\n" +
+            "               \"update\":{\n" +
+            "                  \"id\":\"0000000\",\n" +
+            "                  \"actor\":{\n" +
+            "                     \"id\":\"65993249\",\n" +
+            "                     \"name\":\"Salma\",\n" +
+            "                     \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "                  },\n" +
+            "                  \"updated_at\":\"Fri at 8:00PM\",\n" +
+            "                  \"action\":{\n" +
+            "                     \"id\":\"5\",\n" +
+            "                     \"type\":\"0\",\n" +
+            "                     \"rating\":\"0\",\n" +
+            "\t\t\t\t\t \"review\":\"the best book ever\",\n" +
+            "                     \"body\":\"\",\n" +
+            "                     \"book\":{\n" +
+            "                        \"id\":\"31087\",\n" +
+            "                        \"title\":\"The Last Boleyn\",\n" +
+            "\t\t\t\t\t\t\"author\":\"Harry\",\n" +
+            "                        \"imgUrl\":\"\",\n" +
+            "                        \"shelf\":\"\",\n" +
+            "                        \"rating\":\"\"\n" +
+            "                     }\n" +
+            "                  }\n" +
+            "               }\n" +
+            "            }\n" +
+            "\t\t }\n" +
+            "      ],\n" +
+            "      \"_type\":\"array\"\n" +
+            "   }\n" +
+            "}";
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,6 +323,15 @@ public class ProfileFragment extends Fragment implements ProfileView {
         mRequestUrl = "https://api.myjson.com/bins/1dujwm";
         mProfileUser = mProfilePresenter.fetchData(mRequestUrl);
 
+        //HTTPRequest(mRequestUrl,mProfileUser);
+
+///////////////////////////////////////////////////////////////////////////////
+        //Take user id when click in his name in Updates (user could be different from the current user)
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            int myInt = bundle.getInt("UserId", mUser_Id);
+        }
+       // mProfileUser = new Users();
 
         UpdateData(mProfileUser);
 
@@ -65,7 +339,32 @@ public class ProfileFragment extends Fragment implements ProfileView {
         loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId());
         loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId());
         loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId());
+        ////////////////////////////////////////////////////////////////////////////////////////////////
+        arayOfUpdates = HomeFragment.onResposeAction(jsonFile);
+        adapterForUpdatesList = new UpdatesAdapter(getContext(),arayOfUpdates);
+        mListOfUpdates = (ListView) view.findViewById(R.id.Profile_updateslist_listview);
+        mListOfUpdates.setOnTouchListener(new ListView.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow ScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
 
+                    case MotionEvent.ACTION_UP:
+                        // Allow ScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+
+                // Handle ListView touch events.
+                v.onTouchEvent(event);
+                return true;
+            }
+        });
+        mListOfUpdates.setAdapter(adapterForUpdatesList);
 
         return view;
 

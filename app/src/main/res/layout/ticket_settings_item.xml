@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/settingsItem_relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp">
+<TextView
+    android:id="@+id/settingItem_header_TextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentLeft="true"
+    android:text="Email"
+    android:textColor="@color/colorBlack"
+    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+    android:fontFamily="sans-serif-black"
+    android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/settingItem_edit_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="Edit"
+        android:textColor="@color/colorGreen"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:fontFamily="sans-serif-black"
+        />
+    <TextView
+        android:id="@+id/settingItem_content_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/settingItem_header_TextView"
+        android:text="ahmedNassar@yahoo.com"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+
+        />
+</RelativeLayout>

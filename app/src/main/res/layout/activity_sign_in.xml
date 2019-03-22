@@ -68,9 +68,10 @@
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:textAppearance="?android:textAppearanceMedium"
-                android:layout_gravity="center"
+                android:gravity="center_horizontal"
                 android:textColor="@color/red"
                 android:visibility="gone"
+                tools:text="please fill the email and password fields all asfa and   "
                 />
 
         </LinearLayout>
