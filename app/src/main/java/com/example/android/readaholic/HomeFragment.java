@@ -34,6 +34,270 @@ public class HomeFragment extends Fragment {
     UpdatesAdapter adapter = null;
     ListView listUpadtes;
     View view;
+    public static String jsonFile = "{\n" +
+            "   \"updates\":{\n" +
+            "      \"update\":[\n" +
+            "         {\n" +
+            "            \"id\":\"0000000\",\n" +
+            "            \"actor\":{\n" +
+            "               \"id\":\"65993249\",\n" +
+            "               \"name\":\"Salma Ibrahim\",\n" +
+            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "            },\n" +
+            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "            \"numComments\":\"11\",\n" +
+            "            \"numLikes\":\"77\",\n" +
+            "            \"action\":{\n" +
+            "               \"id\":\"5\",\n" +
+            "               \"type\":\"0\",\n" +
+            "               \"rating\":\"5\",\n" +
+            "               \"body\":\"\",\n" +
+            "               \"book\":{\n" +
+            "                  \"id\":\"31087\",\n" +
+            "                  \"title\":\"American Duchess\",\n" +
+            "\t\t\t\t  \"author\":\"Karen Harper\",\n" +
+            "                  \"imgUrl\":\"https://i.harperapps.com/covers/9780062884299/y648.jpg\",\n" +
+            "                  \"shelf\":\"\",\n" +
+            "                  \"rating\":\"\"\n" +
+            "               }\n" +
+            "            }\n" +
+            "         },\n" +
+            "\t\t {\n" +
+            "            \"id\":\"0000000\",\n" +
+            "            \"actor\":{\n" +
+            "               \"id\":\"65993249\",\n" +
+            "               \"name\":\"Salma Ibrahim\",\n" +
+            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "            },\n" +
+            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "            \"numComments\":\"11\",\n" +
+            "            \"numLikes\":\"9\",\n" +
+            "            \"action\":{\n" +
+            "               \"id\":\"5\",\n" +
+            "               \"type\":\"0\",\n" +
+            "               \"rating\":\"0\",\n" +
+            "\t\t\t   \"review\":\"salma\",\n" +
+            "               \"body\":\"\",\n" +
+            "               \"book\":{\n" +
+            "                  \"id\":\"31087\",\n" +
+            "                  \"title\":\"American Duchess\",\n" +
+            "\t\t\t\t  \"author\":\"Karen Harper\",\n" +
+            "                  \"imgUrl\":\"https://i.harperapps.com/covers/9780062884299/y648.jpg\",\n" +
+            "                  \"shelf\":\"want to read\",\n" +
+            "                  \"rating\":\"\"\n" +
+            "               }\n" +
+            "            }\n" +
+            "         },\n" +
+            "         {\n" +
+            "            \"id\":\"000001\",\n" +
+            "            \"actor\":{\n" +
+            "               \"id\":\"65993249\",\n" +
+            "               \"name\":\"Salma Ibrahim\",\n" +
+            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "            },\n" +
+            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "            \"numComments\":\"7\",\n" +
+            "            \"numLikes\":\"9\",\n" +
+            "            \"action\":{\n" +
+            "               \"id\":\"\",\n" +
+            "               \"type\":\"2\",\n" +
+            "               \"user\":{\n" +
+            "                  \"name\":\"salma\",\n" +
+            "                  \"imageLink\":\"\",\n" +
+            "                  \"ratingAvg\":\"\",\n" +
+            "                  \"ratingCount\":\"\"\n" +
+            "               }\n" +
+            "            }\n" +
+            "         },\n" +
+            "         {\n" +
+            "            \"id\":\"0000000\",\n" +
+            "            \"actor\":{\n" +
+            "               \"id\":\"65993249\",\n" +
+            "               \"name\":\"Salma Ibrahim\",\n" +
+            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "            },\n" +
+            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "            \"numComments\":\"2\",\n" +
+            "            \"numLikes\":\"12\",\n" +
+            "            \"action\":{\n" +
+            "               \"id\":\"5\",\n" +
+            "               \"type\":\"1\",\n" +
+            "               \"shelf\":\"wants to read\",\n" +
+            "               \"book\":{\n" +
+            "                  \"id\":\"31087\",\n" +
+            "                  \"title\":\"The Last Boleyn\",\n" +
+            "                  \"imgUrl\":\"\",\n" +
+            "\t\t\t\t  \"author\":\"karen\",\n" +
+            "                  \"shelf\":\"\",\n" +
+            "                  \"rating\":\"\"\n" +
+            "               }\n" +
+            "            }\n" +
+            "         },\n" +
+            "         {\n" +
+            "            \"id\":\"0000000\",\n" +
+            "            \"actor\":{\n" +
+            "               \"id\":\"65993249\",\n" +
+            "               \"name\":\"Salma Ibrahim\",\n" +
+            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "            },\n" +
+            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "                  \"numComments\":\"127\",\n" +
+            "                  \"numLikes\":\"6123\",\n" +
+            "            \"action\":{\n" +
+            "               \"id\":\"7\",\n" +
+            "               \"type\":\"3\",\n" +
+            "               \"resourceType\":\"1\",\n" +
+            "\t\t\t\t\t \"comment\":\"the best book ever <3\",\n" +
+            "               \"update\":{\n" +
+            "                  \"id\":\"0000000\",\n" +
+            "                  \"actor\":{\n" +
+            "                     \"id\":\"65993249\",\n" +
+            "                     \"name\":\"Salma Ibrahim\",\n" +
+            "                     \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "                  },\n" +
+            "                  \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "                  \"action\":{\n" +
+            "                     \"id\":\"5\",\n" +
+            "                     \"type\":\"1\",\n" +
+            "                     \"shelf\":\"wants to read\",\n" +
+            "                     \"book\":{\n" +
+            "                        \"id\":\"31087\",\n" +
+            "\t\t\t\t\t\t\"author\":\"Karen\",\n" +
+            "                        \"title\":\"The Last Boleyn\",\n" +
+            "                        \"imgUrl\":\"\",\n" +
+            "                        \"shelf\":\"\",\n" +
+            "                        \"rating\":\"\"\n" +
+            "                     }\n" +
+            "                  }\n" +
+            "               }\n" +
+            "            }\n" +
+            "         },\n" +
+            "\t\t {\n" +
+            "            \"id\":\"0000000\",\n" +
+            "            \"actor\":{\n" +
+            "               \"id\":\"65993249\",\n" +
+            "               \"name\":\"Salma Ibrahim\",\n" +
+            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "            },\n" +
+            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "                  \"numComments\":\"127\",\n" +
+            "                  \"numLikes\":\"6123\",\n" +
+            "            \"action\":{\n" +
+            "               \"id\":\"7\",\n" +
+            "               \"type\":\"3\",\n" +
+            "               \"resourceType\":\"1\",\n" +
+            "\t\t\t\t\t \"comment\":\"the best book ever <3\",\n" +
+            "               \"update\":{\"id\":\"000001\",\n" +
+            "            \"actor\":{\n" +
+            "               \"id\":\"65993249\",\n" +
+            "               \"name\":\"Salma Ibrahim\",\n" +
+            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "            },\n" +
+            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "            \"numComments\":\"7\",\n" +
+            "            \"numLikes\":\"9\",\n" +
+            "            \"action\":{\n" +
+            "               \"id\":\"\",\n" +
+            "               \"type\":\"2\",\n" +
+            "               \"user\":{\n" +
+            "                  \"name\":\"Farah\",\n" +
+            "                  \"imageLink\":\"\",\n" +
+            "                  \"ratingAvg\":\"\",\n" +
+            "                  \"ratingCount\":\"\"\n" +
+            "               }\n" +
+            "            }\n" +
+            "         }\n" +
+            "            }\n" +
+            "         },\n" +
+            "         {\n" +
+            "            \"id\":\"0000000\",\n" +
+            "            \"actor\":{\n" +
+            "               \"id\":\"65993249\",\n" +
+            "               \"name\":\"Salma Ibrahim\",\n" +
+            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "            },\n" +
+            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "            \"numComments\":\"5\",\n" +
+            "            \"numLikes\":\"9\",\n" +
+            "            \"action\":{\n" +
+            "               \"id\":\"7\",\n" +
+            "               \"type\":\"4\",\n" +
+            "\t\t\t   \"comment\":\"the best book\",\n" +
+            "               \"resourceType\":\"0\",\n" +
+            "               \"body\":\"\",\n" +
+            "               \"update\":{\n" +
+            "                  \"id\":\"0000000\",\n" +
+            "                  \"actor\":{\n" +
+            "                     \"id\":\"65993249\",\n" +
+            "                     \"name\":\"Salma Ibrahim\",\n" +
+            "                     \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "                  },\n" +
+            "                  \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
+            "                  \"action\":{\n" +
+            "                     \"id\":\"5\",\n" +
+            "                     \"type\":\"0\",\n" +
+            "                     \"rating\":\"3\",\n" +
+            "                     \"body\":\"\",\n" +
+            "                     \"book\":{\n" +
+            "                        \"id\":\"31087\",\n" +
+            "                        \"title\":\"The Last Boleyn\",\n" +
+            "\t\t\t\t\t\t\"author\":\"Harry\",\n" +
+            "                        \"imgUrl\":\"\",\n" +
+            "                        \"shelf\":\"\",\n" +
+            "                        \"rating\":\"\"\n" +
+            "                     }\n" +
+            "                  }\n" +
+            "               }\n" +
+            "            }\n" +
+            "         }, \n" +
+            "\t\t {\n" +
+            "            \"id\":\"0000000\",\n" +
+            "            \"actor\":{\n" +
+            "               \"id\":\"65993249\",\n" +
+            "               \"name\":\"Salma\",\n" +
+            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "            },\n" +
+            "            \"updated_at\":\"sat at 7:00AM\",\n" +
+            "            \"numComments\":\"5\",\n" +
+            "            \"numLikes\":\"9\",\n" +
+            "            \"action\":{\n" +
+            "               \"id\":\"7\",\n" +
+            "               \"type\":\"4\",\n" +
+            "\t\t\t   \"comment\":\"the best book\",\n" +
+            "               \"resourceType\":\"0\",\n" +
+            "               \"body\":\"\",\n" +
+            "               \"update\":{\n" +
+            "                  \"id\":\"0000000\",\n" +
+            "                  \"actor\":{\n" +
+            "                     \"id\":\"65993249\",\n" +
+            "                     \"name\":\"Salma \",\n" +
+            "                     \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
+            "                  },\n" +
+            "                  \"updated_at\":\"Fri at 8:00PM\",\n" +
+            "                  \"action\":{\n" +
+            "                     \"id\":\"5\",\n" +
+            "                     \"type\":\"0\",\n" +
+            "                     \"rating\":\"0\",\n" +
+            "\t\t\t\t\t \"review\":\"the best book ever\",\n" +
+            "                     \"body\":\"\",\n" +
+            "                     \"book\":{\n" +
+            "                        \"id\":\"31087\",\n" +
+            "                        \"title\":\"The Last Boleyn\",\n" +
+            "\t\t\t\t\t\t\"author\":\"Harry\",\n" +
+            "                        \"imgUrl\":\"\",\n" +
+            "                        \"shelf\":\"\",\n" +
+            "                        \"rating\":\"\"\n" +
+            "                     }\n" +
+            "                  }\n" +
+            "               }\n" +
+            "            }\n" +
+            "\t\t }\n" +
+            "      ],\n" +
+            "      \"_type\":\"array\"\n" +
+            "   }\n" +
+            "}";
+
+
     @Nullable
     @Override
     /**
@@ -76,272 +340,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
-        final String[] jsonFile = new String[1];
-       jsonFile[0] = "{\n" +
-                "   \"updates\":{\n" +
-                "      \"update\":[\n" +
-                "         {\n" +
-                "            \"id\":\"0000000\",\n" +
-                "            \"actor\":{\n" +
-                "               \"id\":\"65993249\",\n" +
-                "               \"name\":\"Salma Ibrahim\",\n" +
-                "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-                "            },\n" +
-                "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-                "            \"numComments\":\"11\",\n" +
-                "            \"numLikes\":\"77\",\n" +
-                "            \"action\":{\n" +
-                "               \"id\":\"5\",\n" +
-                "               \"type\":\"0\",\n" +
-                "               \"rating\":\"5\",\n" +
-                "               \"body\":\"\",\n" +
-                "               \"book\":{\n" +
-                "                  \"id\":\"31087\",\n" +
-                "                  \"title\":\"American Duchess\",\n" +
-                "\t\t\t\t  \"author\":\"Karen Harper\",\n" +
-                "                  \"imgUrl\":\"https://i.harperapps.com/covers/9780062884299/y648.jpg\",\n" +
-                "                  \"shelf\":\"\",\n" +
-                "                  \"rating\":\"\"\n" +
-                "               }\n" +
-                "            }\n" +
-                "         },\n" +
-                "\t\t {\n" +
-                "            \"id\":\"0000000\",\n" +
-                "            \"actor\":{\n" +
-                "               \"id\":\"65993249\",\n" +
-                "               \"name\":\"Salma Ibrahim\",\n" +
-                "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-                "            },\n" +
-                "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-                "            \"numComments\":\"11\",\n" +
-                "            \"numLikes\":\"9\",\n" +
-                "            \"action\":{\n" +
-                "               \"id\":\"5\",\n" +
-                "               \"type\":\"0\",\n" +
-                "               \"rating\":\"0\",\n" +
-                "\t\t\t   \"review\":\"salma\",\n" +
-                "               \"body\":\"\",\n" +
-                "               \"book\":{\n" +
-                "                  \"id\":\"31087\",\n" +
-                "                  \"title\":\"American Duchess\",\n" +
-                "\t\t\t\t  \"author\":\"Karen Harper\",\n" +
-                "                  \"imgUrl\":\"https://i.harperapps.com/covers/9780062884299/y648.jpg\",\n" +
-                "                  \"shelf\":\"want to read\",\n" +
-                "                  \"rating\":\"\"\n" +
-                "               }\n" +
-                "            }\n" +
-                "         },\n" +
-                "         {\n" +
-                "            \"id\":\"000001\",\n" +
-                "            \"actor\":{\n" +
-                "               \"id\":\"65993249\",\n" +
-                "               \"name\":\"Salma Ibrahim\",\n" +
-                "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-                "            },\n" +
-                "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-                "            \"numComments\":\"7\",\n" +
-                "            \"numLikes\":\"9\",\n" +
-                "            \"action\":{\n" +
-                "               \"id\":\"\",\n" +
-                "               \"type\":\"2\",\n" +
-                "               \"user\":{\n" +
-                "                  \"name\":\"salma\",\n" +
-                "                  \"imageLink\":\"\",\n" +
-                "                  \"ratingAvg\":\"\",\n" +
-                "                  \"ratingCount\":\"\"\n" +
-                "               }\n" +
-                "            }\n" +
-                "         },\n" +
-                "         {\n" +
-                "            \"id\":\"0000000\",\n" +
-                "            \"actor\":{\n" +
-                "               \"id\":\"65993249\",\n" +
-                "               \"name\":\"Salma Ibrahim\",\n" +
-                "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-                "            },\n" +
-                "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-                "            \"numComments\":\"2\",\n" +
-                "            \"numLikes\":\"12\",\n" +
-                "            \"action\":{\n" +
-                "               \"id\":\"5\",\n" +
-                "               \"type\":\"1\",\n" +
-                "               \"shelf\":\"wants to read\",\n" +
-                "               \"book\":{\n" +
-                "                  \"id\":\"31087\",\n" +
-                "                  \"title\":\"The Last Boleyn\",\n" +
-                "                  \"imgUrl\":\"\",\n" +
-                "\t\t\t\t  \"author\":\"karen\",\n" +
-                "                  \"shelf\":\"\",\n" +
-                "                  \"rating\":\"\"\n" +
-                "               }\n" +
-                "            }\n" +
-                "         },\n" +
-                "         {\n" +
-                "            \"id\":\"0000000\",\n" +
-                "            \"actor\":{\n" +
-                "               \"id\":\"65993249\",\n" +
-                "               \"name\":\"Salma Ibrahim\",\n" +
-                "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-                "            },\n" +
-                "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-                "                  \"numComments\":\"127\",\n" +
-                "                  \"numLikes\":\"6123\",\n" +
-                "            \"action\":{\n" +
-                "               \"id\":\"7\",\n" +
-                "               \"type\":\"3\",\n" +
-                "               \"resourceType\":\"1\",\n" +
-                "\t\t\t\t\t \"comment\":\"the best book ever <3\",\n" +
-                "               \"update\":{\n" +
-                "                  \"id\":\"0000000\",\n" +
-                "                  \"actor\":{\n" +
-                "                     \"id\":\"65993249\",\n" +
-                "                     \"name\":\"Salma Ibrahim\",\n" +
-                "                     \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-                "                  },\n" +
-                "                  \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-                "                  \"action\":{\n" +
-                "                     \"id\":\"5\",\n" +
-                "                     \"type\":\"1\",\n" +
-                "                     \"shelf\":\"wants to read\",\n" +
-                "                     \"book\":{\n" +
-                "                        \"id\":\"31087\",\n" +
-                "\t\t\t\t\t\t\"author\":\"Karen\",\n" +
-                "                        \"title\":\"The Last Boleyn\",\n" +
-                "                        \"imgUrl\":\"\",\n" +
-                "                        \"shelf\":\"\",\n" +
-                "                        \"rating\":\"\"\n" +
-                "                     }\n" +
-                "                  }\n" +
-                "               }\n" +
-                "            }\n" +
-                "         },\n" +
-                "\t\t {\n" +
-                "            \"id\":\"0000000\",\n" +
-                "            \"actor\":{\n" +
-                "               \"id\":\"65993249\",\n" +
-                "               \"name\":\"Salma Ibrahim\",\n" +
-                "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-                "            },\n" +
-                "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-                "                  \"numComments\":\"127\",\n" +
-                "                  \"numLikes\":\"6123\",\n" +
-                "            \"action\":{\n" +
-                "               \"id\":\"7\",\n" +
-                "               \"type\":\"3\",\n" +
-                "               \"resourceType\":\"1\",\n" +
-                "\t\t\t\t\t \"comment\":\"the best book ever <3\",\n" +
-                "               \"update\":{\"id\":\"000001\",\n" +
-                "            \"actor\":{\n" +
-                "               \"id\":\"65993249\",\n" +
-                "               \"name\":\"Salma Ibrahim\",\n" +
-                "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-                "            },\n" +
-                "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-                "            \"numComments\":\"7\",\n" +
-                "            \"numLikes\":\"9\",\n" +
-                "            \"action\":{\n" +
-                "               \"id\":\"\",\n" +
-                "               \"type\":\"2\",\n" +
-                "               \"user\":{\n" +
-                "                  \"name\":\"Farah\",\n" +
-                "                  \"imageLink\":\"\",\n" +
-                "                  \"ratingAvg\":\"\",\n" +
-                "                  \"ratingCount\":\"\"\n" +
-                "               }\n" +
-                "            }\n" +
-                "         }\n" +
-                "            }\n" +
-                "         },\n" +
-                "         {\n" +
-                "            \"id\":\"0000000\",\n" +
-                "            \"actor\":{\n" +
-                "               \"id\":\"65993249\",\n" +
-                "               \"name\":\"Salma Ibrahim\",\n" +
-                "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-                "            },\n" +
-                "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-                "            \"numComments\":\"5\",\n" +
-                "            \"numLikes\":\"9\",\n" +
-                "            \"action\":{\n" +
-                "               \"id\":\"7\",\n" +
-                "               \"type\":\"4\",\n" +
-                "\t\t\t   \"comment\":\"the best book\",\n" +
-                "               \"resourceType\":\"0\",\n" +
-                "               \"body\":\"\",\n" +
-                "               \"update\":{\n" +
-                "                  \"id\":\"0000000\",\n" +
-                "                  \"actor\":{\n" +
-                "                     \"id\":\"65993249\",\n" +
-                "                     \"name\":\"Salma Ibrahim\",\n" +
-                "                     \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-                "                  },\n" +
-                "                  \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-                "                  \"action\":{\n" +
-                "                     \"id\":\"5\",\n" +
-                "                     \"type\":\"0\",\n" +
-                "                     \"rating\":\"3\",\n" +
-                "                     \"body\":\"\",\n" +
-                "                     \"book\":{\n" +
-                "                        \"id\":\"31087\",\n" +
-                "                        \"title\":\"The Last Boleyn\",\n" +
-                "\t\t\t\t\t\t\"author\":\"Harry\",\n" +
-                "                        \"imgUrl\":\"\",\n" +
-                "                        \"shelf\":\"\",\n" +
-                "                        \"rating\":\"\"\n" +
-                "                     }\n" +
-                "                  }\n" +
-                "               }\n" +
-                "            }\n" +
-                "         }, \n" +
-                "\t\t {\n" +
-                "            \"id\":\"0000000\",\n" +
-                "            \"actor\":{\n" +
-                "               \"id\":\"65993249\",\n" +
-                "               \"name\":\"Salma\",\n" +
-                "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-                "            },\n" +
-                "            \"updated_at\":\"sat at 7:00AM\",\n" +
-                "            \"numComments\":\"5\",\n" +
-                "            \"numLikes\":\"9\",\n" +
-                "            \"action\":{\n" +
-                "               \"id\":\"7\",\n" +
-                "               \"type\":\"4\",\n" +
-                "\t\t\t   \"comment\":\"the best book\",\n" +
-                "               \"resourceType\":\"0\",\n" +
-                "               \"body\":\"\",\n" +
-                "               \"update\":{\n" +
-                "                  \"id\":\"0000000\",\n" +
-                "                  \"actor\":{\n" +
-                "                     \"id\":\"65993249\",\n" +
-                "                     \"name\":\"Salma \",\n" +
-                "                     \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-                "                  },\n" +
-                "                  \"updated_at\":\"Fri at 8:00PM\",\n" +
-                "                  \"action\":{\n" +
-                "                     \"id\":\"5\",\n" +
-                "                     \"type\":\"0\",\n" +
-                "                     \"rating\":\"0\",\n" +
-                "\t\t\t\t\t \"review\":\"the best book ever\",\n" +
-                "                     \"body\":\"\",\n" +
-                "                     \"book\":{\n" +
-                "                        \"id\":\"31087\",\n" +
-                "                        \"title\":\"The Last Boleyn\",\n" +
-                "\t\t\t\t\t\t\"author\":\"Harry\",\n" +
-                "                        \"imgUrl\":\"\",\n" +
-                "                        \"shelf\":\"\",\n" +
-                "                        \"rating\":\"\"\n" +
-                "                     }\n" +
-                "                  }\n" +
-                "               }\n" +
-                "            }\n" +
-                "\t\t }\n" +
-                "      ],\n" +
-                "      \"_type\":\"array\"\n" +
-                "   }\n" +
-                "}";
-
-
-        arrayOfUpadates1 = onResposeAction(jsonFile[0]);
+        arrayOfUpadates1 = onResposeAction(jsonFile);
         //request();
 
     }

@@ -1,6 +1,7 @@
 package com.example.android.readaholic;
 
 import android.support.test.espresso.Espresso;
+import android.support.test.rule.ActivityTestRule;
 
 import com.example.android.readaholic.profile_and_profile_settings.ProfileFragment;
 
@@ -15,8 +16,8 @@ public class ProfileTest {
 
 
         @Rule
-        public ActivityT<ProfileFragment> mSignInTestRule =
-                new ActivityTestRule<ProfileFragment>(ProfileFragment.class);
+       // public ActivityT<ProfileFragment> mSignInTestRule =
+             //   new ActivityTestRule<ProfileFragment>(ProfileFragment.class);
 
         @Test
         public void userNameTest()
