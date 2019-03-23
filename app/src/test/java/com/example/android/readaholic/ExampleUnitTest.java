@@ -1,11 +1,5 @@
 package com.example.android.readaholic;
 
-import android.util.Patterns;
-
-import com.example.android.readaholic.VolleyHelper.volleyRequestHelper;
-import com.example.android.readaholic.profile_and_profile_settings.Users;
-
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -19,7 +13,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class ExampleUnitTest {
 
-    volleyRequestHelper helper;
+/*    volleyRequestHelper helper;
     protected Assert anAssert ;
     Users user;
 
@@ -28,21 +22,22 @@ public class ExampleUnitTest {
         user = helper.getmUser();
 
     }
+*/
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
     }
-
+/*
 
     @Test
     public void userNameTest()
     {
-/*        Pattern userName = Pattern.compile("^[a-z0-9_-]{6,14}$");
+        Pattern userName = Pattern.compile("^[a-z0-9_-]{6,14}$");
         Matcher matcher = userName.matcher(user.getmUserName());
         assertEquals(null,matcher.matches());
-*/
-//        Espresso.onView(withId(R.id.SignIn_error_textview))
-  //              .check(matches(withText("Please check your email and password")));
+
+        Espresso.onView(withId(R.id.SignIn_error_textview))
+                .check(matches(withText("Please check your email and password")));
 
     }
     @Test
@@ -57,5 +52,5 @@ public class ExampleUnitTest {
         Users user = helper.getmUser();
         assertEquals(9,user.getmUsernumberOfBooks());
     }
-
+*/
 }
