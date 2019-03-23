@@ -31,7 +31,6 @@ class ReviewActivity : AppCompatActivity() {
         feedBookData()
         feedReviewDate()
         feedCommentsDataFromURL(2)
-
         swiperefreshcomment.setOnRefreshListener {
             CommentList!!.clear()
             feedCommentsDataFromURL(4)
