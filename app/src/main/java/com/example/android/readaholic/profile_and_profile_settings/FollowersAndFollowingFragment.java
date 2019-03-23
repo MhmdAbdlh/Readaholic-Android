@@ -1,3 +1,4 @@
+
 package com.example.android.readaholic.profile_and_profile_settings;
 
 import android.os.Bundle;
@@ -18,6 +19,10 @@ import com.example.android.readaholic.R;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * FollowersAndFollowing Fragment class to handle the fragment behaviour.
+ * @author Hossam Ahmed
+ */
     public class FollowersAndFollowingFragment extends Fragment {
 
         /**
@@ -34,6 +39,13 @@ import java.util.List;
         private ViewPager mViewPager;
         private int mSectionNumber = 1;
 
+    /**
+     * onCreateView called when fragment is created
+     * @param inflater to inflate layout
+     * @param container parent of the view
+     * @param savedInstanceState bundle holding the saved state
+     * @return
+     */
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -83,6 +95,11 @@ import java.util.List;
                 super(fm);
             }
 
+            /**
+             * getItem to get certain fragment with its index.
+             * @param position index of fragment
+             * @return fragment
+             */
             @Override
             public Fragment getItem(int position) {
                 // getItem is called to instantiate the fragment for the given page.
@@ -90,17 +107,32 @@ import java.util.List;
                 return ListFragments.get(position);
             }
 
+            /**
+             * getcount to get number of sections in fragment
+             * @return number of sections
+             */
             @Override
             public int getCount() {
                 // Show 2 total pages.
                 return ListFragments.size();
             }
 
+            /**
+             * getPageTitile to get the section title
+             * @param position index of fragment corresponding to the title list .
+             * @return string as title
+             */
             @Nullable
             @Override
             public CharSequence getPageTitle(int position) {
                 return getPageTitle(position);
             }
+
+            /**
+             * to add fragment to the view pager.
+             * @param fragment fragment object to add to list
+             * @param Title title of section to add to list
+             */
             public void AddFragment(Fragment fragment,String Title)
             {
                 ListFragments.add(fragment);
