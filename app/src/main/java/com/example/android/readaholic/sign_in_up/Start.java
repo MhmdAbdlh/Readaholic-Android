@@ -38,7 +38,8 @@ public class Start extends AppCompatActivity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (v.getContext(),BookPageActivity.class);
+            //    Intent intent = new Intent (v.getContext(),BookPageActivity.class);
+                Intent intent = new Intent (v.getContext(),SignUp.class);
                 startActivity(intent);
             }
         });

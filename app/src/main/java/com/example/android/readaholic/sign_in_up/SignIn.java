@@ -25,84 +25,27 @@ import com.example.android.readaholic.Main;
 import com.example.android.readaholic.R;
 
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Sign in activity
+ *
+ * handles the sign in process
+ * it goes to the main activity if the user exits
+ * else it provides the user with the error message
+ */
 public class SignIn extends AppCompatActivity {
-
-    /**
-     * this enum covers all the type of responses i could get
-     * ACCEPTED_USER  if the email and password are right
-     * WRONG_USER if the email or password are incorrect
-     * SERVER_ERROR if the url is wrong
-     * CONNECTION_ERROR when the internet of the user is off
-     */
-    public enum SignInResponses{
-        WRONG_USER,
-        ACCEPTED_USER,
-        CONNECTION_ERROR,
-        SERVER_ERROR
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-
-        //setting Signin button clicklistener
-        Button signIn = (Button) findViewById(R.id.SignIn_signin_btn);
-        signIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fillDummyData();
-                EditText username = (EditText) findViewById(R.id.SignIn_userName_edittext);
-                EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
-                if(validateFields()) {
-                    if (username.getText().toString().equals("admin")
-                            && pass.getText().toString().equals("admin")) {
-                        Intent intent = new Intent(v.getContext(), Main.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        error("Please check your email and password");
-                    }
-                }
-
-
-               /*
-                if(validateFields()) {
-                    //hides the keyboard when user clicks on sign in
-                    hideSoftKeyboard(SignIn.this, v);
-                    //checking if the user data is correct or not
-                    getUserData();
-                }
-                */
-
-
-            }
-        });
-
-
+        setClickListeners();
     }
 
-    private void fillDummyData()
-    {
-        UserInfo.addUserInfo("Ahmed","Waled"
-                ,"https://unsplash.com/photos/HUBofEFQ6CA","1234567");
-    }
-
-    /**
-     * constructs the structure of the parameters that should be added to the url
-     * @return the parameters that should be concatenated with the root url
-     */
-    private String constructParameters()
-    {
-        EditText userName = (EditText)findViewById(R.id.SignIn_userName_edittext);
-        EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
-       // return "?email=Ahmed@yahoo.com&password=Waled21";
-        return "?email=" + userName + "&password=" + pass ;
-    }
 
     //region request
     /**
@@ -120,25 +63,19 @@ public class SignIn extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        SignInResponses parseResponse = parseUserData(response);
-                        if(parseResponse == SignInResponses.ACCEPTED_USER){
-                            noErrors();
+                        boolean parseResponse = parseUserData(response);
+                        if(parseResponse == true){
                             Intent intent = new Intent(getBaseContext(),Main.class);
                             startActivity(intent);
                             finish();
                         }
-                        else if (parseResponse == SignInResponses.WRONG_USER){
-                        error("Please check your email and password");
-                        }
-                        else {
-                            error("Server error");
-                        }
+
 
                     }
                 }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    error("Error in Connection");
+                    showErrorMessage("Error in Connection");
                     }
 
         });
@@ -148,36 +85,59 @@ public class SignIn extends AppCompatActivity {
     }
 
     //endregion
+
+    //region parsing request
     /**
      * it parses the json data provided in the user data string
      * @param userData the json data string
      * @return it returns the the type of responses
      */
-    private SignInResponses parseUserData(String userData)
+    private boolean parseUserData(String userData)
     {
         try {
             JSONObject root = new JSONObject(userData);
             if (root.getString("status").equals("true") ) {
+                //getting user info
+                /****************************getting user info -> open*****************************/
                 String token = root.getString("token");
                 JSONObject userObject = root.getJSONObject("user");
                 String userName = userObject.getString("userName");
                 String name = userObject.getString("name");
                 String image = userObject.optString("image");
+                /****************************getting user info -> close****************************/
+                //adding data to the static class to be used later
                 UserInfo.addUserInfo(userName,name,image,token);
-                return SignInResponses.ACCEPTED_USER;
+
+                return true;
             }
-            else return SignInResponses.WRONG_USER;
+            else {
+                //if the sign up process failed show error message
+                String error = "";
+
+                //getting error messages
+                JSONArray errorMessage = root.getJSONArray("errors");
+                for (int i =0;i<errorMessage.length() ; i++)
+                {
+                    error += errorMessage.getString(i) + '\n';
+                }
+
+                //display them to the user
+                showErrorMessage(error);
+                return false;
+            }
         }
         catch (JSONException E)
         {
-            return SignInResponses.SERVER_ERROR;
+            showErrorMessage("Server error");
+            return false;
         }
 
 
     }
-
+    //endregion
 
     //region ui
+
     /**
      * this method hides the keyboard
      * used when the user clicks sign in to hide the keyboard to enable the user to see
@@ -191,98 +151,209 @@ public class SignIn extends AppCompatActivity {
         imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
     }
 
+
+
     /**
      * shows the loading bar and makes the content of layout invisible
      * to indicate that the data is still loading
      */
     private void whileLoading()
     {
+        //show the progress bar
         ProgressBar progressBar = (ProgressBar)findViewById(R.id.SignIn_loading_progbar);
         progressBar.setVisibility(View.VISIBLE);
 
+        //hide the original layout
         ScrollView scrollView = (ScrollView) findViewById(R.id.SignIn_scroll_scrollview);
         scrollView.setVisibility(View.INVISIBLE);
 
+        //hiding the error message
         TextView error = (TextView)findViewById(R.id.SignIn_error_textview);
         error.setVisibility(View.INVISIBLE);
     }
 
+
+
     /**
      * shows a message to a user to inform him that there is an error
+     * @param errorMessage the error message to be shown
      */
-    private void error(String errorMessage)
+    private void showErrorMessage(String errorMessage)
     {
+        //hiding the progress bar
         ProgressBar progressBar = (ProgressBar)findViewById(R.id.SignIn_loading_progbar);
         progressBar.setVisibility(View.GONE);
 
+        //showing the original view
         ScrollView scrollView = (ScrollView) findViewById(R.id.SignIn_scroll_scrollview);
         scrollView.setVisibility(View.VISIBLE);
 
+        //showing error message
         TextView error = (TextView)findViewById(R.id.SignIn_error_textview);
         error.setText(errorMessage);
         error.setVisibility(View.VISIBLE);
 
     }
+
+
+
     /**
-     * shows the content of the layout and hides all errors text views
+     * shows the content of the layout and hides error text view
      */
-    private void noErrors()
+    private void showLayout()
     {
+        //hiding progress bar
         ProgressBar progressBar = (ProgressBar)findViewById(R.id.SignIn_loading_progbar);
         progressBar.setVisibility(View.GONE);
 
+        //showing the original layout
         ScrollView scrollView = (ScrollView) findViewById(R.id.SignIn_scroll_scrollview);
         scrollView.setVisibility(View.VISIBLE);
 
+        //hiding the error message
         TextView error = (TextView)findViewById(R.id.SignIn_error_textview);
         error.setVisibility(View.INVISIBLE);
     }
 
     //endregion
 
+    //region initializations
+
+
+    /**
+     * sets all click listeners in the signin layout
+     *
+     * signin button click listener -> checking if the the user name and password belong to a user
+     * or if they contain any error
+     *
+     */
+    private void setClickListeners()
+    {
+        //setting Signin button clicklistener
+        /******************************Signin click listener -> open*****************************************/
+        Button signIn = (Button) findViewById(R.id.SignIn_signin_btn);
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //in case of mocking data
+                /**********************mocking data -> open***************************************/
+
+
+                //getting user name and password
+                EditText username = (EditText) findViewById(R.id.SignIn_userName_edittext);
+                EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
+
+                //checking user name and password fields
+                if(validateFields()) {
+                    if (username.getText().toString().equals("admin")
+                            && pass.getText().toString().equals("admin")) {
+                        //filling the static class with dummy data
+                        fillDummyData();
+                        //starting main activity
+                        Intent intent = new Intent(v.getContext(), Main.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        //if the user name and password dont match admin , admin show error message
+                        showErrorMessage("Please check your email and password");
+                    }
+                }
+
+
+                /**************************mocking data -> close*****************************************/
+
+
+                //in case of connected to the server
+                /**************************server connected -> open***************************************/
+               /*
+                if(validateFields()) {
+                    //hides the keyboard when user clicks on sign in
+                    hideSoftKeyboard(SignIn.this, v);
+                    //checking if the user data is correct or not
+                    getUserData();
+                }
+                */
+               /***************************server connected -> close***************************************/
+
+
+            }
+        });
+        /******************************Signin click listener -> close*********************************************/
+    }
+    private void fillDummyData()
+    {
+        UserInfo.addUserInfo("Ahmed","Waled"
+                ,"https://unsplash.com/photos/HUBofEFQ6CA","1234567");
+    }
+
+
+
+
+    /**
+     * constructs the structure of the parameters that should be added to the url
+     * @return the parameters that should be concatenated with the root url
+     */
+    private String constructParameters()
+    {
+        //getting parameters
+        String userName = ((EditText)findViewById(R.id.SignIn_userName_edittext)).getText().toString();
+        String pass = ((EditText)findViewById(R.id.SignIn_password_edittext)).getText().toString();
+        // return "?email=Ahmed@yahoo.com&password=Waled21";
+        //concatenating parameters and sending them
+        return "?email=" + userName + "&password=" + pass ;
+    }
+
+
+
+
+
+    /**
+     * testing if the user name and password are filled or not
+     * and if they contain spaces
+     *
+     * @return it returns true if they pass all tests
+     *          it return false if they fail in any test
+     */
     private boolean validateFields()
     {
 
-        EditText usernameText = (EditText)findViewById(R.id.SignIn_userName_edittext);
-        String userName = usernameText.getText().toString();
+        //getting the data user entered
+        /*******************************getting data -> open**************************************/
+        String userName = ((EditText)findViewById(R.id.SignIn_userName_edittext)).getText().toString();
+        String pass = ((EditText)findViewById(R.id.SignIn_password_edittext)).getText().toString();
+        /********************************getting data -> close**********************************/
 
-        EditText passText = (EditText)findViewById(R.id.SignIn_password_edittext);
-        String pass = passText.getText().toString();
+
 
         //validating username and password fields
 
         //checking if the username field is empty or not
-        if(userName.length() == 0){
-         error("Please fill the username and password fields");
+        /********************************Checking empty fields -> open*********************************/
+        if(userName.length() == 0 ||  pass.length() == 0){
+         showErrorMessage("Please fill the username and password fields");
+
          return false;
-        } else if (pass.length() == 0) {
-            //checking if the password field is empty or not
-            error("Please fill the username and password fields");
+        }
+         /********************************Checking empty fields -> close******************************/
+
+
+
+         //checking if there were spaces in the username or the password
+        /********************************Checking white spaces -> open*******************************/
+        if(userName.length() > userName.replaceAll("\\s+","").length()
+                || pass.length() > pass.replaceAll("\\s+","").length()) {
+
+            showErrorMessage("UserName or password should not contain spaces");
             return false;
         }
-        else if(userName.length() > userName.replaceAll("\\s+","").length()) {
-            //checking if username contains white spaces
-            error("UserName or password should not contain spaces");
-            return false;
-        } else if(pass.length() > pass.replaceAll("\\s+","").length()) {
-            //checking if the password contains white spaces
-            error("UserName or password should not contain spaces");
-            return false;
-        }
+         /*******************************Checking white spaces -> close******************************/
         return true;
 
     }
+    //endregion
 
 
-    /**
-     * it checks if the user is connected to the internet
-     * @return true if the user is connected, false if not connected
-     */
-   private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        return cm.getActiveNetworkInfo() != null;
-    }
 
 
 }
