@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withHint;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -25,6 +26,7 @@ public class ProfileTest {
         @Rule
         public ActivityTestRule<Profile> mProfileTestRule =
                 new ActivityTestRule<Profile>(Profile.class);
+
 
 
         @Before
@@ -43,6 +45,11 @@ public class ProfileTest {
         @Test
         public void CorrectUserNameTextDisplayed() {
                 onView(withId(R.id.ProfileActivity_UserName_TextView)).check(matches(withText("Hossam Ahmed")));
+        }
+
+        @Test
+        public void ProfilePicIsExist() {
+                onView(withId(R.id.profileActivity_ProfilePic_ImageView)).check(matches((isDisplayed())));
         }
 
         @Test
