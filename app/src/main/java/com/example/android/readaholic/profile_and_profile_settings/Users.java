@@ -1,5 +1,7 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 /**
@@ -7,8 +9,11 @@ import java.util.ArrayList;
  * @author Hossam Ahmed
  */
 public class Users {
+    @SerializedName("mUsername")
     private String mUserName;
+    @SerializedName("mUsernumberofBooks")
     private int mUsernumberOfBooks;
+    @SerializedName("mUserImageUrl")
     private String mUserImageUrl;
     private int mNumberOfFollowers;
     private int getmNumberOfFolloweings;
@@ -32,26 +37,51 @@ public class Users {
         return mWantToReadImageUrl;
     }
 
+    /**
+     * set the currentlyReading image url list
+     * @param mCurrentlyReadingImageUrl List of strings that hold books images urls
+     */
     public void setmCurrentlyReadingImageUrl(ArrayList<String> mCurrentlyReadingImageUrl) {
         this.mCurrentlyReadingImageUrl = mCurrentlyReadingImageUrl;
     }
+
+    /**
+     * set the Read books image url list
+     * @param mReadImageUrl List of strings that hold books images urls
+     */
 
     public void setmReadImageUrl(ArrayList<String> mReadImageUrl) {
         this.mReadImageUrl = mReadImageUrl;
     }
 
+    /**
+     * set the Want To Read image url list
+     * @param mWantToReadImageUrl List of strings that hold books images urls
+     */
     public void setmWantToReadImageUrl(ArrayList<String> mWantToReadImageUrl) {
         this.mWantToReadImageUrl = mWantToReadImageUrl;
     }
 
+    /**
+     * get followings number
+     * @return number of followings
+     */
     public int getGetmNumberOfFolloweings() {
         return getmNumberOfFolloweings;
     }
 
+    /**
+     * get followers number
+     * @return number of followers
+     */
     public int getmNumberOfFollowers() {
         return mNumberOfFollowers;
     }
 
+    /**
+     *
+     * @param getmNumberOfFolloweings
+     */
     public void setGetmNumberOfFolloweings(int getmNumberOfFolloweings) {
         this.getmNumberOfFolloweings = getmNumberOfFolloweings;
     }

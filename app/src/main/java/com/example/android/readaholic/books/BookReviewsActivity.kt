@@ -178,6 +178,12 @@ fun feedReviewDataFromURL(bookid:Int)
 
         return JSONObject(dummy)
     }
+
+    /**
+     * THis to check to format of the date returned
+     *
+     * @param date
+     */
     fun checkformat(date:String):String
     {
         if(date.length==10)
@@ -187,6 +193,12 @@ fun feedReviewDataFromURL(bookid:Int)
         }
 
     }
+
+    /**
+     * This to make sure that the id returned is positive
+     *
+     * @param id
+     */
     fun checknotnigativeintegers(id:Int):Int
     {
         return max(id,1)
