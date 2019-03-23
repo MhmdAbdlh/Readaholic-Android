@@ -6,8 +6,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".sign_in_up.SignUp">
+    <ProgressBar
+        android:id="@+id/SignUp_proressBar"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        />
 
     <ScrollView
+        android:id="@+id/SignUp_Scrolliew"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -31,8 +39,60 @@
                     android:layout_width="260dp"
                     android:hint="Email"
                     android:maxLines="1" />
+                <EditText
+                    android:id="@+id/SignUp_userName_edittext"
+                    android:inputType="textEmailAddress"
+                    style="@style/EditTextStyle"
+                    android:layout_width="260dp"
+                    android:hint="User name"
+                    android:maxLines="1" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Location"
+                    android:layout_gravity="center_horizontal"
+
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
+                <Spinner
+                    android:id="@+id/SignUp_location_Spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="@color/colorSilver"
+                    >
+                </Spinner>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Birthday"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
+                <Button
+                    android:id="@+id/SignUp_birthday_Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="@color/colorSilver"
+                    >
+                </Button>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gender"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"/>
+                <Spinner
+                    android:id="@+id/SignUp_gender_Spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="@color/colorSilver"
+                    >
+                </Spinner>
 
                 <LinearLayout
+                    android:layout_marginTop="15dp"
                     android:layout_width="260dp"
                     android:layout_height="wrap_content">
 
@@ -54,15 +114,6 @@
                         android:maxLines="1" />
 
                 </LinearLayout>
-                <EditText
-                    android:id="@+id/SignUp_midName_edittext"
-                    style="@style/EditTextStyle"
-                    android:layout_width="wrap_content"
-                    android:gravity="center"
-                    android:layout_weight="1"
-                    android:hint="Middle Name"
-                    android:layout_gravity="center_horizontal"
-                    android:maxLines="1" />
 
                 <EditText
                     android:id="@+id/SignUp_Pass_edittext"
