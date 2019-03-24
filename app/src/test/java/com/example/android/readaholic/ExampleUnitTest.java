@@ -18,16 +18,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class ExampleUnitTest {
 
-/*    volleyRequestHelper helper;
-    protected Assert anAssert ;
-    Users user;
-
-    public ExampleUnitTest()
-    {
-        user = helper.getmUser();
-
-    }
-*/
 private Users user;
 private volleyRequestHelper volleyRequestHelper;
 
@@ -49,7 +39,7 @@ public void init()
         assertEquals("Hossam Ahmed",user.getmUserName());
     }
     @Test
-    public void testUserImageurl()
+    public void testUserImageUrl()
     {
         user.setmUserImageUrl("https://images.gr-assets.com/users/1551035887p3/27948863.jpg");
         assertEquals("https://images.gr-assets.com/users/1551035887p3/27948863.jpg",user.getmUserImageUrl());
@@ -75,7 +65,7 @@ public void init()
     }
 
     @Test
-    public void testConstructorofUser()
+    public void testConstructorOfUser()
     {
       Users testUser = new Users("Hossam Ahmed","https://images.gr-assets.com/users/1551035887p3/27948863.jpg",10);
       user.setmUserName("Hossam Ahmed");
@@ -87,7 +77,7 @@ public void init()
     }
 
     @Test
-    public void testVolleyUser()
+    public void testVolleyUserName()
     {
         Users testUser = new Users();
         testUser = volleyRequestHelper.getmUser();
@@ -98,43 +88,58 @@ public void init()
     }
 
     @Test
-    public void testNotCorrectVolleyUser()
+    public void testNotCorrectVolleyUserName()
     {
         Users testUser = new Users();
         testUser = volleyRequestHelper.getmUser();
 
         user.setmUserName("Ahmed");
+        //not correct user name extracted from json.
         assertEquals(user.getmUserName(),testUser.getmUserName());
-
     }
 
-
-    /*
 
     @Test
-    public void userNameTest()
+    public void testVolleyUserImageView()
     {
-        Pattern userName = Pattern.compile("^[a-z0-9_-]{6,14}$");
-        Matcher matcher = userName.matcher(user.getmUserName());
-        assertEquals(null,matcher.matches());
+        Users testUser = new Users();
+        testUser = volleyRequestHelper.getmUser();
 
-        Espresso.onView(withId(R.id.SignIn_error_textview))
-                .check(matches(withText("Please check your email and password")));
+        user.setmUserImageUrl("https://s.gr-assets.com/assets/nophoto/user/u_111x148-9394ebedbb3c6c218f64be9549657029.png");
+        assertEquals(user.getmUserImageUrl(),testUser.getmUserImageUrl());
 
+    }
+
+    @Test
+    public void testNotCorrectVolleyUserImageView()
+    {
+        Users testUser = new Users();
+        testUser = volleyRequestHelper.getmUser();
+
+        user.setmUserImageUrl("https://images.gr-assets.com/users/1551035887p3/27948863.jpg");
+        //not the extracted image url.
+        assertEquals(user.getmUserImageUrl(),testUser.getmUserImageUrl());
+    }
+
+    @Test
+    public void testVolleyUserNumberOfBooks()
+    {
+        Users testUser = new Users();
+        testUser = volleyRequestHelper.getmUser();
+        user.setmUsernumberOfBooks(7);
+        assertEquals(user.getmUsernumberOfBooks(),testUser.getmUsernumberOfBooks());
     }
     @Test
-    public void imageUrlTest()
+    public void testNotCorrectVolleyUserNumberOfBooks()
     {
+        Users testUser = new Users();
+        testUser = volleyRequestHelper.getmUser();
+        user.setmUsernumberOfBooks(7);
+        assertEquals(user.getmUsernumberOfBooks(),testUser.getmUsernumberOfBooks());
+    }
 
-        assertEquals(null, Patterns.WEB_URL.matcher(user.getmUserImageUrl()).matches());
-    }
-    @Test
-    public void bookNumberTest()
-    {
-        Users user = helper.getmUser();
-        assertEquals(9,user.getmUsernumberOfBooks());
-    }
-*/
+
+
 @Test
 public void DateFormattcorrect() throws Exception {
     BookReviewsActivity b = new BookReviewsActivity();
