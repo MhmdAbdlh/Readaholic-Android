@@ -1,5 +1,7 @@
 package com.example.android.readaholic;
 
+import android.support.test.espresso.Espresso;
+import android.support.test.rule.ActivityTestRule;
 import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
@@ -26,8 +28,6 @@ public class ProfileTest {
         @Rule
         public ActivityTestRule<Profile> mProfileTestRule =
                 new ActivityTestRule<Profile>(Profile.class);
-
-
 
         @Before
         public void setup()
