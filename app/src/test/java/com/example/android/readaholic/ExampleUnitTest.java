@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
-@RunWith(RobolectricTestRunner.class)
+
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
