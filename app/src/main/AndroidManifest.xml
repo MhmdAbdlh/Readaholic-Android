@@ -8,12 +8,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/readholicloh"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/readholicloh"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".settings.edit_Location.LocationSettings"></activity>
+        <activity android:name=".myshelves.BookShelves"></activity>
+        <activity android:name=".settings.edit_Location.LocationSettings" />
         <activity android:name=".settings.edit_Birthday.BirthdaySettings" />
         <activity android:name=".settings.edit_UserName.UserNameSettings" />
         <activity android:name=".settings.Settings" />
@@ -38,8 +39,10 @@
             android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity android:name=".sign_in_up.SignUp" />
         <activity android:name=".books.BookPageActivity" />
-        <activity android:name=".books.BookReviewsActivity" />
-        <activity android:name=".books.ReviewActivity" />
+        <activity android:name=".books.BookReviewsActivity"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".books.ReviewActivity"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

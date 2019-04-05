@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
@@ -15,6 +16,7 @@ import com.example.android.readaholic.URLS
 import com.example.android.readaholic.profile_and_profile_settings.Profile
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_book_reviews.*
+import kotlinx.android.synthetic.main.activity_review.*
 import kotlinx.android.synthetic.main.bookreview.view.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -64,6 +66,57 @@ fun feedReviewDataFromURL(bookid:Int)
     queue.add(stringRequest)
 
 }
+
+    fun sendReview(view:View)
+    {
+        var commenttext=writerreview.text.toString()
+        if(commenttext=="")
+        {
+            Toast.makeText(this,"Please write something first", Toast.LENGTH_SHORT).show()
+        }
+        else{
+            var succes= sendReviewService(commenttext,2)
+            if(succes)
+            {
+                Toast.makeText(this,"your Review Added", Toast.LENGTH_SHORT).show()
+
+            }
+            else{
+                Toast.makeText(this,"Someething went wrong with the server ,try again later", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    /**
+     * server communication to post the comment
+     *
+     * @param commentbody
+     */
+    fun sendReviewService(reviewbody:String,rating:Int):Boolean
+    {
+        var success=false
+        val queue = Volley.newRequestQueue(this)
+        var url = "http://"+"localhost"+":8000/api/reviwes/create/bookId="+Cbookdata.bookid+"&shelf=0&body="+reviewbody+"&rating="+rating.toString();
+        val stringRequest = StringRequest(Request.Method.POST, url,
+                Response.Listener<String> { response ->
+                    var jsonresponse=JSONObject(response)
+                    if(jsonresponse.getString("status")=="true")
+                        success=true
+
+
+                },
+                Response.ErrorListener {
+
+
+                }
+
+        )
+
+        queue.add(stringRequest)
+        return success
+
+
+    }
 
     /**
      *
@@ -145,6 +198,8 @@ fun feedReviewDataFromURL(bookid:Int)
                 var likes:Int=myview.numberoflikesreviewtxtui.text.toString().toInt()
                 if( myview.likereviewtxtui.text=="like")
                 {
+                    likeservicies(Creviewdata.reviewid)
+
                     likes+=1
                     myview.likereviewtxtui.text="unlike"
                 }
@@ -172,6 +227,26 @@ fun feedReviewDataFromURL(bookid:Int)
         }
 
     }
+    fun likeservicies(reviewid:Int)
+    {
+
+        val queue = Volley.newRequestQueue(this)
+        var url = "http://"+"localhost"+":8000/api/makeLike?id="+reviewid.toString()+"&type?=2"
+        val stringRequest = StringRequest(Request.Method.POST,url,
+                Response.Listener<String> { response ->
+                    var jsonresponse=JSONObject(response)
+                    if(jsonresponse.getString("status")=="true")
+                        Toast.makeText(this,"Like added",Toast.LENGTH_SHORT).show()
+                },
+                Response.ErrorListener {
+                    Toast.makeText(this,"Someething went wrong with the seerver",Toast.LENGTH_SHORT).show()
+                }
+        )
+
+        queue.add(stringRequest)
+
+    }
+
 
     /**
      * git the data from json string and rety=urn it as json object

@@ -16,6 +16,8 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import com.example.android.readaholic.URLS
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_book_page.*
@@ -46,11 +48,13 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
 
     var bookinfo: BookPageInfo?=null
     var bookreview:ArrayList<BookReview>?=null
+    var mybookrating:Int?=null
+    var shelvetype:Int?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_page)
         bookinfo= BookPageInfo()
-
         //this to get the passed book id from the other activities
         var intent:Intent= Intent()
         bookinfo!!.bookid=intent.getIntExtra("BookId",0)
@@ -78,14 +82,32 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
             writeareviewbtn.visibility=View.VISIBLE
         }
         ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+            mybookrating=ratingBar.rating.toInt()
+            setshelve()
             writeareviewbtn.visibility=View.VISIBLE
             rateittext.text="My Rating"
             bookreadbtnui.text="READ"
             bookreadbtnui.setBackgroundResource(R.drawable.btnselectedshape); // From android.graphics.Color
             bookreadbtnui.setTextColor(Color.BLACK)
+            animate()
+        }
+
+    }
+    fun setshelve()
+    {
+        when( bookreadbtnui.text) {
+            "READ" -> shelvetype=0
+            "Currently reading"->  shelvetype=1
+            "Wnat to read" ->  shelvetype=2
         }
     }
+    fun animate()
+    {
 
+        YoYo.with(Techniques.FadeIn)
+                .duration(1000)
+                .playOn(writeareviewbtn);
+    }
     /**
      * get the book info from the url as a json file or show error messege in failiar case     *
      */

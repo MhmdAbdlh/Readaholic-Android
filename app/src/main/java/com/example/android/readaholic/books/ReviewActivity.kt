@@ -66,6 +66,62 @@ class ReviewActivity : AppCompatActivity() {
     }
 
     /**
+     * called when the user want to post gis comment
+     *
+     * @param view
+     */
+    fun sendcomment(view:View)
+    {
+        var commenttext=writercomment.text.toString()
+        if(commenttext=="")
+        {
+            Toast.makeText(this,"Please write something first",Toast.LENGTH_SHORT).show()
+        }
+        else{
+         var succes= sendCommetService(commenttext)
+            if(succes)
+            {
+                Toast.makeText(this,"your comment added to the review",Toast.LENGTH_SHORT).show()
+
+            }
+            else{
+                Toast.makeText(this,"Someething went wrong with the seerver",Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    /**
+     * server communication to post the comment
+     *
+     * @param commentbody
+     */
+    fun sendCommetService(commentbody:String):Boolean
+    {
+        var success=false
+        val queue = Volley.newRequestQueue(this)
+          var url = "http://"+"localhost"+":8000/api/makeComment/id"+Creviewdata.reviewid+"&type=0&body="+commentbody;
+        val stringRequest = StringRequest(Request.Method.POST, url,
+                Response.Listener<String> { response ->
+                    var jsonresponse=JSONObject(response)
+                    if(jsonresponse.getString("status")=="true")
+                        success=true
+
+
+                },
+                Response.ErrorListener {
+
+
+                }
+
+        )
+
+        queue.add(stringRequest)
+        return success
+
+
+    }
+
+    /**
      * got to the provided end point url and get the json return of the list of commints and send it to git the data from it
      *
      * @param bookid
