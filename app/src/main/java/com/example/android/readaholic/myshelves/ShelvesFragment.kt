@@ -42,39 +42,39 @@ class ShelvesFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
        var myview= inflater.inflate(R.layout.fragment_shelves, container, false)
 
-            YoYo.with(Techniques.FadeIn)
-                    .duration(1000)
-                    .playOn(myview.readbooks);
-
-        YoYo.with(Techniques.FadeIn)
-                .duration(1000)
-                .playOn(myview.cuurentlyreading);
-
-        YoYo.with(Techniques.FadeIn)
-                .duration(1000)
-                .playOn(myview.wanttoread);
-
-            myview.readbooks.setOnClickListener {
-                var intent=Intent(context,BookShelves::class.java)
-                intent.putExtra("Shelve",0)
-                startActivity(intent)
-
-
-            }
-        myview.cuurentlyreading.setOnClickListener {
-            var intent=Intent(context,BookShelves::class.java)
-            intent.putExtra("Shelve",1)
-            startActivity(intent)
-
-
-        }
-        myview.wanttoread.setOnClickListener {
-            var intent=Intent(context,BookShelves::class.java)
-            intent.putExtra("Shelve",2)
-            startActivity(intent)
-
-
-        }
+//            YoYo.with(Techniques.FadeIn)
+//                    .duration(1000)
+//                    .playOn(myview.readbooks);
+//
+//        YoYo.with(Techniques.FadeIn)
+//                .duration(1000)
+//                .playOn(myview.cuurentlyreading);
+//
+//        YoYo.with(Techniques.FadeIn)
+//                .duration(1000)
+//                .playOn(myview.wanttoread);
+//
+//            myview.readbooks.setOnClickListener {
+//                var intent=Intent(context,BookShelves::class.java)
+//                intent.putExtra("Shelve",0)
+//                startActivity(intent)
+//
+//
+//            }
+//        myview.cuurentlyreading.setOnClickListener {
+//            var intent=Intent(context,BookShelves::class.java)
+//            intent.putExtra("Shelve",1)
+//            startActivity(intent)
+//
+//
+//        }
+//        myview.wanttoread.setOnClickListener {
+//            var intent=Intent(context,BookShelves::class.java)
+//            intent.putExtra("Shelve",2)
+//            startActivity(intent)
+//
+//
+//        }
         return myview
     }
 
