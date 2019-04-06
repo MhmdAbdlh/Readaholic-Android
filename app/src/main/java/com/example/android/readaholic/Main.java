@@ -97,7 +97,14 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 startActivity(intent);
                 break;
             case R.id.draw_logout_menu:
+                /*
                 logoutrequest();
+                */
+                //moc
+                Intent startIntent = new Intent(this,Start.class);
+                startActivity(startIntent);
+                finish();
+
                 break;
 
             case R.id.draw_Myshelves_menu:
