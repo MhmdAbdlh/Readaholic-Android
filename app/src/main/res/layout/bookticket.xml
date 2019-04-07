@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="7dp"
+    android:paddingBottom="7dp">
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="130dp"
+        android:layout_height="match_parent"
+        android:paddingRight="5dp"
+        app:srcCompat="@drawable/bookcover" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/bookname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="A Game of Thrones"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/authorname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="by George R.R.Martin" />
+
+        <LinearLayout
+            android:id="@+id/ratedpartui"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0" />
+
+            <TextView
+                android:id="@+id/ratedummytext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:padding="3dp"
+                android:text="You rated it" />
+
+            <RatingBar
+                android:id="@+id/myratingui"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:stepSize="0.1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/noratedpartui"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0" />
+
+            <RatingBar
+                android:id="@+id/ratingui"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:stepSize="0.1" />
+
+            <TextView
+                android:id="@+id/ratinginfotxtui"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:padding="3dp"
+                android:text="ratingavg" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/numbrtofratings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1,719,696 ratings" />
+
+        <TextView
+            android:id="@+id/publishedday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="First published August 31,2005" />
+
+        <TextView
+            android:id="@+id/numberofpages"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="848  pages"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/updateddate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Laste updated March 14,2019"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

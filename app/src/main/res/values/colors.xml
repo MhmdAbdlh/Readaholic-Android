@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#F4F1EC</color>
-    <color name="colorPrimaryDark">#B9AE9C</color>
+    <color name="colorPrimaryDark">#B9AF9C</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorBlack">#000000</color>
     <color name="background">#e1e1e1</color>
@@ -18,7 +18,7 @@
     <color name="colorBookTitle">#333336</color>
 
     <color name="colorGreen">#229954</color>
-    <color name="brownish">#c99b69</color>
+    <color name="brownish">#ff9933</color>
     <color name="brown">#5c3f23</color>
     <color name="middlegrey">#bababa</color>
     <color name="colorBackgroundWhite">#FAFAFA</color>

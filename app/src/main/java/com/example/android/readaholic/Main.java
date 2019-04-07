@@ -118,7 +118,14 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 startActivity(intent);
                 break;
             case R.id.draw_logout_menu:
+                /*
                 logoutrequest();
+                */
+                //moc
+                Intent startIntent = new Intent(this,Start.class);
+                startActivity(startIntent);
+                finish();
+
                 break;
 
             case R.id.draw_Myshelves_menu:
@@ -161,7 +168,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
       /**
        * sending logout request
        */
-        private void logoutrequest() {
+      public void logoutrequest() {
 
                 loading();
                 RequestQueue queue = Volley.newRequestQueue(this);
@@ -199,7 +206,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
            /**
            * showing progress bar to indicate that logout is processing
            */
-            private void loading()
+           public void loading()
             {
 
                 DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.Main_drawerlayout);
@@ -213,7 +220,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             * showing the original layout
             * used if the logout failed
             */
-            private void showLayout()
+           public void showLayout()
             {
                 ProgressBar progressBar = (ProgressBar)findViewById(R.id.Main_progressBar);
                 progressBar.setVisibility(View.GONE);

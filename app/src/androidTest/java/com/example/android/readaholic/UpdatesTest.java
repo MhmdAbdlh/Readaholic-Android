@@ -65,10 +65,19 @@ public class UpdatesTest {
     }
 
     private void startFragment(HomeFragment homeFragment) {
-            FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.add(homeFragment, null );
-            fragmentTransaction.commit();
+        FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(homeFragment, null );
+        fragmentTransaction.commit();
+    }
+
+    @Test
+    public void basicElements() throws JSONException {
+        onView(withId(R.id.UpadtesActivity_updateslist_listview)).check(matches(isEnabled()));
+        ArrayList<Updates> j = HomeFragment.onResposeAction(HomeFragment.jsonFile);
+        for(int i = 0; i < j.size(); i++) {
+            onData(allOf(is(instanceOf(Updates.class)))).atPosition(i+1).equals(j.get(i));
+        }
     }
 
   /*  @Test

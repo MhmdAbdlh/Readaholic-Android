@@ -25,7 +25,7 @@
                 android:layout_height="200dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="20dp"
-                android:src="@drawable/goodreads"  />
+                android:src="@drawable/readholicloh" />
 
             <TextView
                 style="@style/EditTextTitle"

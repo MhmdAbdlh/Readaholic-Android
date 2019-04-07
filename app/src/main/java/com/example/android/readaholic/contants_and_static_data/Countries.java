@@ -1,5 +1,8 @@
 package com.example.android.readaholic.contants_and_static_data;
 
+/**
+ * class holds
+ */
 public class Countries {
     public static String[] countries = new String[]{"Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla",
             "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas",
