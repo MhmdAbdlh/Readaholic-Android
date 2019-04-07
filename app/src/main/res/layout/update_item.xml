@@ -282,7 +282,8 @@
                         android:id="@+id/activitybook_sheleve_spinner"
                         android:layout_width="30dp"
                         android:layout_height="40dp"
-                        android:layout_weight="0">
+                        android:layout_weight="0"
+                        android:background="@drawable/bookbottonshape">
 
                     </Spinner>
 

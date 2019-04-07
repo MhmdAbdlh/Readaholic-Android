@@ -3,13 +3,17 @@ package com.example.android.readaholic;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.TabItem;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -21,6 +25,8 @@ import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.home.Updates;
 import com.example.android.readaholic.home.UpdatesAdapter;
+import com.example.android.readaholic.profile_and_profile_settings.Followers_fragment;
+import com.example.android.readaholic.profile_and_profile_settings.ProfileFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +40,130 @@ public class HomeFragment extends Fragment {
     UpdatesAdapter adapter = null;
     ListView listUpadtes;
     View view;
+    public static String newjson ="{\n" +
+            "    \"status\": \"true\",\n" +
+            "    \"updates\": [\n" +
+            "        {\n" +
+            "            \"id\": 2,\n" +
+            "            \"body\": null,\n" +
+            "            \"rating\": 5,\n" +
+            "            \"likes_count\":66,\n" +
+            "            \"comments_count\": 77,\n" +
+            "            \"updated_at\": \"2019-03-21 00:00:00\",\n" +
+            "            \"book_id\": 1,\n" +
+            "            \"title\": \"the great book\",\n" +
+            "            \"description\": \"\",\n" +
+            "            \"img_url\": \"asfafaaf\",\n" +
+            "            \"reviews_count\": 11,\n" +
+            "            \"ratings_count\": 44,\n" +
+            "            \"ratings_avg\": 44,\n" +
+            "            \"pages_no\": 44,\n" +
+            "            \"user_id\": 2,\n" +
+            "            \"name\": \"sam\",\n" +
+            "            \"image_link\": fff,\n" +
+            "            \"author_name\": \"Dean Winchester\",\n" +
+            "            \"update_type\": 0\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"id\": 1,\n" +
+            "            \"shelf_type\": 3,\n" +
+            "            \"updated_at\": \"2019-03-15 00:00:00\",\n" +
+            "            \"likes_count\":66,\n" +
+            "            \"comments_count\": 6,\n" +
+            "            \"book_id\": 1,\n" +
+            "            \"title\": \"a\",\n" +
+            "            \"description\": \"\",\n" +
+            "            \"img_url\": \"yyy\",\n" +
+            "            \"reviews_count\": 6,\n" +
+            "            \"ratings_count\": 7,\n" +
+            "            \"ratings_avg\": 8,\n" +
+            "            \"pages_no\": null,\n" +
+            "            \"user_id\": 2,\n" +
+            "            \"name\": \"Tom\",\n" +
+            "            \"image_link\": 99,\n" +
+            "            \"author_name\": \"ghk\",\n" +
+            "            \"update_type\": 1\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"id\": 2,\n" +
+            "            \"shelf_type\": 3,\n" +
+            "            \"updated_at\": \"2019-03-01 00:00:00\",\n" +
+            "            \"likes_count\": null,\n" +
+            "            \"comments_count\": null,\n" +
+            "            \"book_id\": 1,\n" +
+            "            \"title\": \"a\",\n" +
+            "            \"description\": \"\",\n" +
+            "            \"img_url\": \"\",\n" +
+            "            \"reviews_count\": null,\n" +
+            "            \"ratings_count\": null,\n" +
+            "            \"ratings_avg\": null,\n" +
+            "            \"pages_no\": null,\n" +
+            "            \"user_id\": 3,\n" +
+            "            \"name\": \"\",\n" +
+            "            \"image_link\": null,\n" +
+            "            \"author_name\": \"a\",\n" +
+            "            \"update_type\": 1\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"updated_at\": \"2019-03-19 00:00:00\",\n" +
+            "            \"u_id\": 2,\n" +
+            "            \"user_image_link\": null,\n" +
+            "            \"user_name\": \"\",\n" +
+            "            \"followed_id\": 3,\n" +
+            "            \"followed_image_link\": null,\n" +
+            "            \"followed_name\": \"\",\n" +
+            "            \"update_type\": 2\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"id\": 2,\n" +
+            "            \"resourse_type\": 0,\n" +
+            "            \"updated_at\": null,\n" +
+            "            \"comment_body\": \"\",\n" +
+            "            \"review_id\": 1,\n" +
+            "            \"body\": null,\n" +
+            "            \"rating\": null,\n" +
+            "            \"comments_count\": null,\n" +
+            "            \"review_updated_at\": \"2019-03-03 00:00:00\",\n" +
+            "            \"book_id\": 1,\n" +
+            "            \"title\": \"a\",\n" +
+            "            \"description\": \"\",\n" +
+            "            \"img_url\": \"\",\n" +
+            "            \"reviews_count\": null,\n" +
+            "            \"ratings_count\": null,\n" +
+            "            \"ratings_avg\": null,\n" +
+            "            \"pages_no\": null,\n" +
+            "            \"user_id\": 1,\n" +
+            "            \"name\": \"\",\n" +
+            "            \"image_link\": null,\n" +
+            "            \"author_name\": \"a\",\n" +
+            "            \"update_type\": 4\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"id\": 2,\n" +
+            "            \"resourse_type\": 0,\n" +
+            "            \"updated_at\": null,\n" +
+            "            \"review_id\": 1,\n" +
+            "            \"body\": null,\n" +
+            "            \"rating\": null,\n" +
+            "            \"likes_count\": null,\n" +
+            "            \"comments_count\": null,\n" +
+            "            \"review_updated_at\": \"2019-03-03 00:00:00\",\n" +
+            "            \"book_id\": 1,\n" +
+            "            \"title\": \"a\",\n" +
+            "            \"description\": \"\",\n" +
+            "            \"img_url\": \"\",\n" +
+            "            \"reviews_count\": null,\n" +
+            "            \"ratings_count\": null,\n" +
+            "            \"ratings_avg\": null,\n" +
+            "            \"pages_no\": null,\n" +
+            "            \"user_id\": 1,\n" +
+            "            \"name\": \"\",\n" +
+            "            \"image_link\": null,\n" +
+            "            \"author_name\": \"a\",\n" +
+            "            \"update_type\": 3\n" +
+            "        }\n" +
+            "    ]\n" +
+            "}";
     public static String jsonFile = "{\n" +
             "   \"updates\":{\n" +
             "      \"update\":[\n" +
@@ -297,7 +427,8 @@ public class HomeFragment extends Fragment {
             "   }\n" +
             "}";
 
-
+    TabItem mUpdtesfragment ;
+    TabItem mNotificationfragment;
     @Nullable
     @Override
     /**
@@ -320,9 +451,9 @@ public class HomeFragment extends Fragment {
         adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
 
         listUpadtes = (ListView) view.findViewById(R.id.UpadtesActivity_updateslist_listview);
-        adapter.notifyDataSetChanged();
+        listUpadtes.setEmptyView(view.findViewById(R.id.empty));
         listUpadtes.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+
 
         return view;
     }
@@ -340,7 +471,8 @@ public class HomeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
-        arrayOfUpadates1 = onResposeAction(jsonFile);
+        arrayOfUpadates1 = onResposeAction(newjson);
+        //arrayOfUpadates1 = onResposeAction1(jsonFile);
         //request();
 
     }
@@ -387,6 +519,97 @@ public class HomeFragment extends Fragment {
 
         try {
             root = new JSONObject(response);
+            updatesArray = root.getJSONArray("updates");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < updatesArray.length(); i++) {
+            try {
+
+                JSONObject updateItemJson = updatesArray.getJSONObject(i);
+
+                Updates updateItem = new Updates(updateItemJson.getInt("update_type"), updateItemJson.getString("name"),updateItemJson.getString("updated_at"),updateItemJson.getInt("likes_count"),updateItemJson.getInt("comments_count"),updateItemJson.getInt("id"));
+                switch (updateItem.getmTypeOfUpdates()){
+                    //review or raring update
+                    case 0:
+                        updateItem.setmBookCover(updateItemJson.getString("img_url"));
+                        updateItem.setmBookName(updateItemJson.getString("title"));
+                        updateItem.setmRatingValue(updateItemJson.getInt("ratings_count"));
+                        updateItem.setmAuthorName(updateItemJson.getString("author_name"));
+                        if(updateItem.getmRatingValue() == 0){
+                            //if type of only revies Disable rating value and assign review
+                            updateItem.setmReview(updateItemJson.getString("reviews_count"));
+                        }
+                        break;
+                     //shelves
+                    case 1:
+                        updateItem.setmBookCover(updateItemJson.getString("img_url"));
+                        updateItem.setmBookName(updateItemJson.getString("title"));
+                        updateItem.setmAuthorName(updateItemJson.getString("author_name"));
+                        updateItem.setmNameofFollow(updateItemJson.getString("shelf_type"));//shelf
+                        break;
+                    //follwing
+                    case 2:
+                        updateItem.setmNameofFollow(updateItemJson.getString("followed_name"));
+                        break;
+                    //liked or commented on post
+                    case 3: case 4:
+                        JSONObject innerupdate = updateItemJson.getJSONObject("update");
+                        JSONObject inneraction = innerupdate.getJSONObject("action");
+                        JSONObject inneractor = innerupdate.getJSONObject("actor");
+                        updateItem.setmInnerUserId(inneractor.getInt("id"));
+                        updateItem.setmInnerUpdate(inneraction.getInt("type"));
+                        updateItem.setmNameofFollow(inneractor.getString("name"));
+                        updateItem.setmInnerDate(innerupdate.getString("updated_at"));
+                        //type of the inner post
+                        switch (updateItem.getmInnerUpdate()) {
+                            //review or rating
+                            case 0:
+                                JSONObject innerbook = inneraction.getJSONObject("book");
+                                updateItem.setmBookCover(innerbook.getString("imgUrl"));
+                                updateItem.setmBookName(innerbook.getString("title"));
+                                updateItem.setmRatingValue(inneraction.getInt("rating"));
+                                updateItem.setmAuthorName(innerbook.getString("author"));
+                                if (updateItem.getmRatingValue() == 0) {
+                                    updateItem.setmReview(updateItemJson.getString("review"));
+                                }
+                                break;
+                            //shelves
+                            case 1:
+                                JSONObject innerbook1 = inneraction.getJSONObject("book");
+                                updateItem.setmBookCover(innerbook1.getString("imgUrl"));
+                                updateItem.setmBookName(innerbook1.getString("title"));
+                                updateItem.setmAuthorName(innerbook1.getString("author"));
+                                updateItem.setmShelf(inneraction.getString("shelf"));
+                                break;
+                            //follwing
+                            case 2:
+                                JSONObject user1 = inneraction.getJSONObject("user");
+                                updateItem.setmNameofFollow(user1.getString("name"));
+                                break;
+                        }
+                        //commented on post assign comment to show it
+                        if(updateItem.getmTypeOfUpdates() == 4){
+                            updateItem.setmComment(updateItemJson.getString("comment"));
+                        }
+                        break;
+                }
+                arrayOfUpadates.add(updateItem);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return arrayOfUpadates;
+    }
+    static public ArrayList<Updates> onResposeAction1(String response){
+        ArrayList<Updates> arrayOfUpadates = new ArrayList<Updates>();
+        JSONObject root = null;
+        String name = "hh";
+        JSONArray updatesArray  = null;
+
+        try {
+            root = new JSONObject(response);
             JSONObject update = root.getJSONObject("updates");
             updatesArray = update.getJSONArray("update");
         } catch (JSONException e) {
@@ -414,7 +637,7 @@ public class HomeFragment extends Fragment {
                             updateItem.setmReview(action.getString("review"));
                         }
                         break;
-                     //shelves
+                    //shelves
                     case 1:
                         JSONObject book1 = action.getJSONObject("book");
                         updateItem.setmBookCover(book1.getString("imgUrl"));

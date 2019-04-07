@@ -340,7 +340,7 @@ public class ProfileFragment extends Fragment implements ProfileView{
         loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId());
         loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId());
         ////////////////////////////////////////////////////////////////////////////////////////////////
-        arayOfUpdates = HomeFragment.onResposeAction(jsonFile);
+        arayOfUpdates = HomeFragment.onResposeAction1(jsonFile);
         adapterForUpdatesList = new UpdatesAdapter(getContext(),arayOfUpdates);
         mListOfUpdates = (ListView) view.findViewById(R.id.Profile_updateslist_listview);
         mListOfUpdates.setOnTouchListener(new ListView.OnTouchListener() {

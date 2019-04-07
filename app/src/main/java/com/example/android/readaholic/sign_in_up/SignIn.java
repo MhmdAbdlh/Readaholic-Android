@@ -241,7 +241,11 @@ public class SignIn extends AppCompatActivity {
 
 
                 //getting user name and password
-                EditText username = (EditText) findViewById(R.id.SignIn_userName_edittext);
+
+                Intent intent1 = new Intent(getBaseContext(),Main.class);
+                startActivity(intent1);
+
+                /*EditText username = (EditText) findViewById(R.id.SignIn_userName_edittext);
                 EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
 
                 //checking user name and password fields
@@ -258,7 +262,7 @@ public class SignIn extends AppCompatActivity {
                         //if the user name and password dont match admin , admin show error message
                         showErrorMessage("Please check your email and password");
                     }
-                }
+                }*/
 
 
                 /**************************mocking data -> close*****************************************/
