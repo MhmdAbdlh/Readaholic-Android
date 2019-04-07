@@ -13,7 +13,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.android.readaholic.profile_and_profile_settings.Users;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -239,7 +238,6 @@ public class volleyRequestHelper {
         BasicNetwork network = new BasicNetwork(new HurlStack());
         mRequestQueue = new RequestQueue(cache, network);
         mRequestQueue.start();
-
     }
 
     public volleyRequestHelper() {
@@ -250,7 +248,7 @@ public class volleyRequestHelper {
      *
      * @return User obj
      */
-    public Users getmUser() {
+    /*public Users getmUser() {
         mProfileUser = new Users();
         JSONObject response = null;
         try {
@@ -271,12 +269,9 @@ public class volleyRequestHelper {
         }
         Log.e("number of book ", " " + numberOfBooks);
         mProfileUser.setmUsernumberOfBooks(numberOfBooks);
-
-
         return mProfileUser;
-
     }
-
+*/
     /**
      * Request Json response from the Web API.
      *
@@ -285,70 +280,94 @@ public class volleyRequestHelper {
      * @param requestParams the list of parameters in byte array.
      * @param webMethod     the integer indicates the web method.
      * @param getCache      the boolean indicates whether cache can enable/disable
+     * @return user after request
      */
-    public void JsonObjectRequest(final String requestName,
+    public ArrayList<Users> JsonObjectRequest(final String requestName,
                                   final String webserviceUrl,
                                   final byte[] requestParams, final int webMethod,
                                   final boolean getCache) {
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(webMethod, webserviceUrl, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                mJsonObject = response;
+        if(requestName == "ShowProfile") {
+            final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(webMethod, webserviceUrl, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    mUsers.set( 0,ExtractUser(response));
+                    mRequestQueue.stop();
+                }
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+                    , new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    mUsers.set(0,null);
+                    mRequestQueue.stop();
+                }
+            });
+            mRequestQueue.add(jsonObjectRequest);
+        }
+        else if(requestName == "Followinglist")
+        {
+            final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(webMethod, webserviceUrl, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    mUsers = ExtractFollowingArray(response);
+                    mRequestQueue.stop();
+                }
+            }
+                    , new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    mUsers = null;
+                    mRequestQueue.stop();
+                }
+            });
+            mRequestQueue.add(jsonObjectRequest);
 
+        }
+        else if(requestName == "Followerslist")
+        {
+
+            final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(webMethod, webserviceUrl, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    mUsers = ExtractFollowersArray(response);
+                    mRequestQueue.stop();
+                }
             }
-        });
+                    , new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    mUsers = null;
+                    mRequestQueue.stop();
+                }
+            });
+            mRequestQueue.add(jsonObjectRequest);
+
+        }
+        return mUsers;
     }
 
-    /*
+
     private Users ExtractUser(JSONObject Response)
      {
-         mUser = new Users();
+         Users user = new Users();
          JSONObject GoodReadsResponse = Response.optJSONObject("GoodreadsResponse");
-         JSONObject User = GoodReadsResponse.optJSONObject("user");
-         mUser.setmUserName(User.optString("name"));
-         Log.e("Test" ,mUser.getmUserName());
-         mUser.setmUserImageUrl(User.optString("small_image_url"));
-         JSONObject user_shelves = User.optJSONObject("user_shelves");
+         user.setmUserName(GoodReadsResponse.optString("name"));
+         Log.e("Test" ,user.getmUserName());
+         user.setmUserImageUrl(GoodReadsResponse.optString("small_image_url"));
+         JSONObject user_shelves = GoodReadsResponse.optJSONObject("user_shelves");
          JSONArray user_shelf = user_shelves.optJSONArray("user_shelf");
          int numberOfBooks = 0;
          for(int i=0;i<3;i++)
          {
-             numberOfBooks += user_shelf.optJSONObject(i).optJSONObject("book_count").optInt("#text");
+             numberOfBooks += user_shelf.optJSONObject(i).optJSONObject("book_count").optInt("__text");
          }
          Log.e("number of book "," "+numberOfBooks);
-         mUser.setmUsernumberOfBooks(numberOfBooks);
+         user.setmUsernumberOfBooks(numberOfBooks);
 
-
-         JSONObject response = null;
-         try {
-             response = new JSONObject(profileResponse);
-         } catch (JSONException e) {
-             Log.e("First JSON OBj","Error in first json object");
-         }
-         JSONObject GoodReadsResponse = response.optJSONObject("GoodreadsResponse");
-         JSONObject User = GoodReadsResponse.optJSONObject("user");
-         mProfileUser.setmUserName(User.optString("name"));
-         Log.e("Test" ,mProfileUser.getmUserName());
-         mProfileUser.setmUserImageUrl(User.optString("image_url"));
-         JSONObject user_shelves = User.optJSONObject("user_shelves");
-         JSONArray user_shelf = user_shelves.optJSONArray("user_shelf");
-         int numberOfBooks = 0;
-         for(int i=0;i<3;i++)
-         {
-             numberOfBooks += user_shelf.optJSONObject(i).optJSONObject("book_count").optInt("#text");
-         }
-         Log.e("number of book "," "+numberOfBooks);
-         mProfileUser.setmUsernumberOfBooks(numberOfBooks);
-
-         return mProfileUser;
+         return user;
      }
 
- */
+/*
     public ArrayList<Users> getUsersListofFollowings() {
         mUsers = new ArrayList<>();
         JSONObject response = null;
@@ -363,7 +382,7 @@ public class volleyRequestHelper {
         try {
             User = Following.getJSONArray("user");
         } catch (JSONException e) {
-            Log.e("JsonARRRAY ERROR", "error in json array user");
+            Log.e("JsonArray ERROR", "error in json array user");
         }
         Users user;
         for (int i = 0; i < User.length(); i++) {
@@ -373,14 +392,54 @@ public class volleyRequestHelper {
                 int numberofbooks = User.getJSONObject(i).optInt("reviews_count");
                 mUsers.add(new Users(Name, image, numberofbooks));
             } catch (JSONException e) {
-                Log.e("User Error", "ERRRRRRRORRRRRRRRRRRRRR");
+                Log.e("User Error", "ERROR in book count books number.");
             }
 
         }
-
         return mUsers;
     }
 
+*/
+
+    /**
+     * extract the followings
+     * @param Response json object of response
+     * @return array list of users
+     */
+    private ArrayList<Users> ExtractFollowingArray(JSONObject Response)
+    {
+        mUsers = new ArrayList<>();
+        Users user = new Users();
+        JSONObject GoodReadsResponse = Response.optJSONObject("GoodreadsResponse");
+        JSONArray Following = GoodReadsResponse.optJSONArray("following");
+        for (int i=0;i<Following.length();i++) {
+            user.setmUserName(Following.optJSONObject(i).optString("name"));
+            user.setmUserId(Following.optJSONObject(i).optInt("id"));
+            user.setmUserImageUrl(GoodReadsResponse.optString("image_link"));
+            mUsers.add(user);
+        }
+        return mUsers;
+    }
+
+    /**
+     * extract the followers
+     * @param Response json object of response
+     * @return array list of users
+     */
+    private ArrayList<Users> ExtractFollowersArray(JSONObject Response)
+    {
+        mUsers = new ArrayList<>();
+        Users user = new Users();
+        JSONObject GoodReadsResponse = Response.optJSONObject("GoodreadsResponse");
+        JSONArray Following = GoodReadsResponse.optJSONArray("followers");
+        for (int i=0;i<Following.length();i++) {
+            user.setmUserName(Following.optJSONObject(i).optString("name"));
+            user.setmUserId(Following.optJSONObject(i).optInt("id"));
+            user.setmUserImageUrl(GoodReadsResponse.optString("image_link"));
+            mUsers.add(user);
+        }
+        return mUsers;
+    }
 }
 
 

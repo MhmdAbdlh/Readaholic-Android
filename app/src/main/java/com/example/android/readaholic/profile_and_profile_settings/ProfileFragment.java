@@ -43,6 +43,7 @@ public class ProfileFragment extends Fragment implements ProfileView{
     private ListView mListOfUpdates;
     private UpdatesAdapter adapterForUpdatesList;
     private ProfilePresenter mProfilePresenter;
+
     View view;
     volleyRequestHelper volleyRequestHelper;
     private String jsonFile = "{\n" +
@@ -415,6 +416,14 @@ public class ProfileFragment extends Fragment implements ProfileView{
         Picasso.get().load(user.getmUserImageUrl()).transform(new CircleTransform()).into(mUserImage);
         mUserBookNumber.setText(user.getmUsernumberOfBooks()+" Books");
         mUserName.setText(user.getmUserName());
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        volleyRequestHelper = new volleyRequestHelper(getViewContext());
+        mProfileUser = volleyRequestHelper.JsonObjectRequest("ShowProfile",null,null,0,false).get(0);
 
     }
 

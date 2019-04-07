@@ -1,7 +1,6 @@
 package com.example.android.readaholic;
 
 import com.example.android.readaholic.VolleyHelper.volleyRequestHelper;
-import com.example.android.readaholic.books.BookReviewsActivity;
 import com.example.android.readaholic.profile_and_profile_settings.Users;
 
 import org.junit.Before;
@@ -16,6 +15,7 @@ import static org.junit.Assert.assertEquals;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
+@RunWith(RobolectricTestRunner.class)
 public class ExampleUnitTest {
 
 private Users user;
@@ -87,16 +87,6 @@ public void init()
 
     }
 
-    @Test
-    public void testNotCorrectVolleyUserName()
-    {
-        Users testUser = new Users();
-        testUser = volleyRequestHelper.getmUser();
-
-        user.setmUserName("Ahmed");
-        //not correct user name extracted from json.
-        assertEquals(user.getmUserName(),testUser.getmUserName());
-    }
 
 
     @Test
@@ -110,16 +100,6 @@ public void init()
 
     }
 
-    @Test
-    public void testNotCorrectVolleyUserImageView()
-    {
-        Users testUser = new Users();
-        testUser = volleyRequestHelper.getmUser();
-
-        user.setmUserImageUrl("https://images.gr-assets.com/users/1551035887p3/27948863.jpg");
-        //not the extracted image url.
-        assertEquals(user.getmUserImageUrl(),testUser.getmUserImageUrl());
-    }
 
     @Test
     public void testVolleyUserNumberOfBooks()
@@ -129,31 +109,8 @@ public void init()
         user.setmUsernumberOfBooks(7);
         assertEquals(user.getmUsernumberOfBooks(),testUser.getmUsernumberOfBooks());
     }
-    @Test
-    public void testNotCorrectVolleyUserNumberOfBooks()
-    {
-        Users testUser = new Users();
-        testUser = volleyRequestHelper.getmUser();
-        user.setmUsernumberOfBooks(7);
-        assertEquals(user.getmUsernumberOfBooks(),testUser.getmUsernumberOfBooks());
-    }
 
 
 
-@Test
-public void DateFormattcorrect() throws Exception {
-    BookReviewsActivity b = new BookReviewsActivity();
-    String s = b.checkformat("123123214235");
-    assertEquals(s, "2019-12-12");
-
-}
-
-
-    @Test
-    public void notnigative() throws Exception {
-        BookReviewsActivity b = new BookReviewsActivity();
-        int s = b.checknotnigativeintegers(-5);
-        assertEquals(s, 1);
-    }
 
 }
