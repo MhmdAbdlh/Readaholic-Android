@@ -242,7 +242,7 @@ fun feedReviewDataFromURL(bookid:Int)
                         Toast.makeText(this,"Like added",Toast.LENGTH_SHORT).show()
                 },
                 Response.ErrorListener {
-                    Toast.makeText(this,"Someething went wrong with the seerver",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"Someething went wrong with the server",Toast.LENGTH_SHORT).show()
                 }
         )
 
