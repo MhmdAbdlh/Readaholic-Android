@@ -24,6 +24,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.Main;
 import com.example.android.readaholic.R;
 
+import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 
 import org.json.JSONArray;
@@ -48,8 +49,8 @@ public class SignIn extends AppCompatActivity {
     {
         whileLoading();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://api.myjson.com/bins/1hdk";
-      // String url = "http://"+"localhost"+":8000/api/logIn"+constructParameters();
+        String url = Urls.LOG_IN + "?email=zwiza@example.net&password=password";
+
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -88,22 +89,25 @@ public class SignIn extends AppCompatActivity {
     {
         try {
             JSONObject root = new JSONObject(userData);
-            if (root.getString("status").equals("true") ) {
+
+            // if (root.getString("status").equals("true") ) {
+            if(root.getString("token").length() != 0) {
                 //getting user info
                 /****************************getting user info -> open*****************************/
                 String token = root.getString("token");
+                String tokenType = root.getString("token_type");
                 JSONObject userObject = root.getJSONObject("user");
-                String userName = userObject.getString("userName");
+                String userName = userObject.getString("username");
                 String name = userObject.getString("name");
-                String image = userObject.optString("image");
+                String imageLink = userObject.optString("image_link");
                 /****************************getting user info -> close****************************/
                 //adding data to the static class to be used later
-                UserInfo.addUserInfo(userName,name,image,token);
+                UserInfo.addUserInfo(userName,name,imageLink,token,tokenType);
 
                 return true;
             }
             else {
-                //if the sign up process failed show error message
+                //if the sign in process failed show error message
                 String error = "";
 
                 //getting error messages
@@ -126,8 +130,6 @@ public class SignIn extends AppCompatActivity {
 
 
     }
-
-
 
 
     /**
@@ -230,7 +232,7 @@ public class SignIn extends AppCompatActivity {
 
                 //in case of mocking data
                 /**********************mocking data -> open***************************************/
-
+/*
 
                 //getting user name and password
                 EditText username = (EditText) findViewById(R.id.SignIn_userName_edittext);
@@ -251,20 +253,20 @@ public class SignIn extends AppCompatActivity {
                     }
                 }
 
-
+*/
                 /**************************mocking data -> close*****************************************/
 
 
                 //in case of connected to the server
                 /**************************server connected -> open***************************************/
-               /*
+
                 if(validateFields()) {
                     //hides the keyboard when user clicks on sign in
                     hideSoftKeyboard(SignIn.this, v);
                     //checking if the user data is correct or not
                     getUserData();
                 }
-                */
+
                /***************************server connected -> close***************************************/
 
 
@@ -272,11 +274,13 @@ public class SignIn extends AppCompatActivity {
         });
         /******************************Signin click listener -> close*********************************************/
     }
+
 //    public void fillDummyData()
 //    {
 //        UserInfo.addUserInfo("Ahmed","Waled"
 //                ,"https://unsplash.com/photos/HUBofEFQ6CA","1234567");
 //    }
+
 
 
 
@@ -292,7 +296,7 @@ public class SignIn extends AppCompatActivity {
         String pass = ((EditText)findViewById(R.id.SignIn_password_edittext)).getText().toString();
         // return "?email=Ahmed@yahoo.com&password=Waled21";
         //concatenating parameters and sending them
-        return "http://06025f7d.ngrok.io/api/login?email=zwiza@example.net&password=password" ;
+        return "http://f53a8477.ngrok.io/api/login?email=zwiza@example.net&password=password" ;
     }
 
     /**

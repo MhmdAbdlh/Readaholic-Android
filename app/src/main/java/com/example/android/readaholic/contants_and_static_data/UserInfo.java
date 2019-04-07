@@ -14,6 +14,7 @@ public class UserInfo {
     public static String sImageUrl;
     //token required for post requests
     public static String sToken;
+    public static String sTokenType;
 
     /**
      * adding the user data
@@ -22,12 +23,15 @@ public class UserInfo {
      * @param name
      * @param imageUrl
      * @param token
+     * @param tokenType
      */
-    public static void addUserInfo(String userName , String name , String imageUrl , String token ){
+    public static void addUserInfo(String userName , String name , String imageUrl
+                                 , String token , String tokenType  ){
         sUserName = userName;
         sName = name;
         sImageUrl = imageUrl;
         sToken = token;
+        sTokenType = tokenType;
     }
 
     /**
@@ -39,6 +43,7 @@ public class UserInfo {
         sName = null;
         sImageUrl = null;
         sToken = null;
+        sTokenType = null;
     }
 
 

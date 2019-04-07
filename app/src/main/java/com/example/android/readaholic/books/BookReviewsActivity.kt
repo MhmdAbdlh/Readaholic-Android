@@ -13,6 +13,8 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.android.readaholic.R
 import com.example.android.readaholic.URLS
+import com.example.android.readaholic.contants_and_static_data.Urls
+import com.example.android.readaholic.contants_and_static_data.UserInfo
 import com.example.android.readaholic.profile_and_profile_settings.Profile
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_book_reviews.*
@@ -50,17 +52,18 @@ fun feedReviewDataFromURL(bookid:Int)
 {
 
     val queue = Volley.newRequestQueue(this)
-    var urltry="https://api.myjson.com/bins/iynfm"
-   // var urlactual=URLS.Listofreviewsofabook+Cbookdata.book_title
-    val stringRequest = StringRequest(Request.Method.GET,urltry,
+    var url= Urls.ROOT+"api/showReviewsForABook?bookId=1&token="+UserInfo.sToken +"&type="+UserInfo.sTokenType
+    val stringRequest = StringRequest(Request.Method.GET,url,
             Response.Listener<String> { response ->
                 var  jsonresponse= JSONObject(response)
+                Toast.makeText(this,UserInfo.sToken,Toast.LENGTH_LONG).show()
+                Toast.makeText(this,response,Toast.LENGTH_LONG).show()
                 feedReviewsFromJson(jsonresponse!!.getJSONArray("pages"))
                 adapter!!.notifyDataSetChanged()
             },
             Response.ErrorListener {
-                feedReviewsFromJson( getdummyjson().getJSONArray("pages"))
-                adapter!!.notifyDataSetChanged()
+             //   feedReviewsFromJson( getdummyjson().getJSONArray("pages"))
+              //  adapter!!.notifyDataSetChanged()
             })
 
     queue.add(stringRequest)
@@ -96,7 +99,7 @@ fun feedReviewDataFromURL(bookid:Int)
     {
         var success=false
         val queue = Volley.newRequestQueue(this)
-        var url = "http://"+"localhost"+":8000/api/reviwes/create/bookId="+Cbookdata.bookid+"&shelf=0&body="+reviewbody+"&rating="+rating.toString();
+        var url= Urls.ROOT+"api/11showReviewsForABook?bookId=1&token="+UserInfo.sToken +"&type="+UserInfo.sTokenType
         val stringRequest = StringRequest(Request.Method.POST, url,
                 Response.Listener<String> { response ->
                     var jsonresponse=JSONObject(response)
