@@ -57,7 +57,7 @@ public class SignIn extends AppCompatActivity {
     {
         whileLoading();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Urls.LOG_IN + "?email=zwiza@example.net&password=password";
+        String url = Urls.SERVER_NUMBER +Urls.ROOT + Urls.LOG_IN + "?email=zwiza@example.net&password=password";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -243,7 +243,6 @@ public class SignIn extends AppCompatActivity {
                 //in case of mocking data
                 /**********************mocking data -> open***************************************/
 /*
-
                 //getting user name and password
                 EditText username = (EditText) findViewById(R.id.SignIn_userName_edittext);
                 EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
@@ -285,12 +284,12 @@ public class SignIn extends AppCompatActivity {
         });
         /******************************Signin click listener -> close*********************************************/
     }
-    /*private void fillDummyData()
+   private void fillDummyData()
     {
         UserInfo.addUserInfo("Ahmed","Waled"
-                ,"https://unsplash.com/photos/HUBofEFQ6CA","1234567");
+                ,"https://unsplash.com/photos/HUBofEFQ6CA","1234567","afas");
     }
-    */
+
 
 
 

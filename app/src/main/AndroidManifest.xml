@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".settings.edit_Location.LocationSettings"></activity>
+        <activity android:name=".explore.ExploreActivity"
+            android:theme="@style/AppTheme.NoActionBar" ></activity>
+        <activity android:name=".settings.edit_Location.LocationSettings" />
         <activity android:name=".settings.edit_Birthday.BirthdaySettings" />
         <activity android:name=".settings.edit_UserName.UserNameSettings" />
         <activity android:name=".settings.Settings" />
