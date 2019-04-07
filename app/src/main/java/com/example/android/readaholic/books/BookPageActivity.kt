@@ -16,7 +16,12 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import com.example.android.readaholic.URLS
+import com.example.android.readaholic.contants_and_static_data.Urls
+import com.example.android.readaholic.contants_and_static_data.UserInfo
+import com.example.android.readaholic.profile_and_profile_settings.books
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_book_page.*
 import kotlinx.android.synthetic.main.bookreview.view.*
@@ -46,11 +51,14 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
 
     var bookinfo: BookPageInfo?=null
     var bookreview:ArrayList<BookReview>?=null
+    var mybookrating:Int?=null
+    var shelvetype:Int?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_page)
-        bookinfo= BookPageInfo()
 
+        bookinfo= BookPageInfo()
         //this to get the passed book id from the other activities
         var intent:Intent= Intent()
         bookinfo!!.bookid=intent.getIntExtra("BookId",0)
@@ -78,14 +86,32 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
             writeareviewbtn.visibility=View.VISIBLE
         }
         ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+            mybookrating=ratingBar.rating.toInt()
+            setshelve()
             writeareviewbtn.visibility=View.VISIBLE
             rateittext.text="My Rating"
             bookreadbtnui.text="READ"
             bookreadbtnui.setBackgroundResource(R.drawable.btnselectedshape); // From android.graphics.Color
             bookreadbtnui.setTextColor(Color.BLACK)
+            animate()
+        }
+
+    }
+    fun setshelve()
+    {
+        when( bookreadbtnui.text) {
+            "READ" -> shelvetype=0
+            "Currently reading"->  shelvetype=1
+            "Wnat to read" ->  shelvetype=2
         }
     }
+    fun animate()
+    {
 
+        YoYo.with(Techniques.FadeIn)
+                .duration(1000)
+                .playOn(writeareviewbtn);
+    }
     /**
      * get the book info from the url as a json file or show error messege in failiar case     *
      */
@@ -93,19 +119,20 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     {
         val queue = Volley.newRequestQueue(this)
         //var url=URLS.BookPageURL+BookId.toString()
-      //  var url = "http://"+"localhost"+":8000/api/books/show?book_id=1";
-        var urltry="https://api.myjson.com/bins/howtu"
-        val stringRequest = StringRequest(Request.Method.GET, urltry,
+        var url = Urls.ROOT+"/api/books/show?book_id=2&token=" + UserInfo.sToken + "&type="+ UserInfo.sTokenType;
+        val stringRequest = StringRequest(Request.Method.GET, url,
                 Response.Listener<String> { response ->
+                    Toast.makeText(this,UserInfo.sToken,Toast.LENGTH_LONG).show()
+                    Toast.makeText(this,response,Toast.LENGTH_LONG).show()
                     var jsonresponse=JSONObject(response)
                     feedFromDummey(jsonresponse)
-
                 },
                 Response.ErrorListener {
-                    var mocresponse=getdummyjson()
-                    feedFromDummey(mocresponse)
+                 //   var mocresponse=getdummyjson()
+                   // feedFromDummey(mocresponse)
 
                 }
+
 
         )
 
@@ -125,23 +152,20 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
      * fitch the bookobject info from the jsonobject
      * @param jsonobject
      */
-    fun feedFromDummey(jsonobject:JSONObject)
+    fun feedFromDummey(jsonresponce:JSONObject)
     {
-        bookinfo!!.book_title =jsonobject.getString("book_title")
-        bookinfo!!.author_name =jsonobject.getString("author_name")
+
+        var jsonobject=jsonresponce.getJSONObject("pages")
+        bookinfo!!.book_title =jsonobject.getString("title")
+//        bookinfo!!.author_name =jsonobject.getString("author_name")
         bookinfo!!.author_id =jsonobject.getString("author_id").toInt()
         bookinfo!!.description =jsonobject.getString("description")
-        bookinfo!!.genre =jsonobject.getString("genre")
-        bookinfo!!.image_url =jsonobject.getString("image_url")
+       bookinfo!!.image_url =jsonobject.getString("img_url")
+        bookinfo!!.average_rating=jsonobject.getString("ratings_avg").toFloat()
         bookinfo!!.isbn =jsonobject.getString("isbn").toInt()
-        bookinfo!!.average_rating =jsonobject.getString("average_rating").toFloat()
-        bookinfo!!.publication_day =jsonobject.getString("publication_day").toInt()
-        bookinfo!!.publication_month =jsonobject.getString("publication_month").toInt()
+        bookinfo!!.publication_date =jsonobject.getString("publication_date")
         bookinfo!!.publisher =jsonobject.getString("publisher")
         bookinfo!!.ratings_count =jsonobject.getString("ratings_count").toInt()
-        bookinfo!!.small_image_url=jsonobject.getString("small_image_url")
-        bookinfo!!.publication_year=jsonobject.getString("publication_year").toInt()
-        bookinfo!!.num_pages=jsonobject.getString("num_pages").toInt()
         bookinfo!!.reviewscount=jsonobject.getString("reviews_count").toInt()
         feedBookUi()
         importImage()
@@ -158,19 +182,11 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         ratingui.rating=bookinfo!!.average_rating
         bookdesctxtui.text=bookinfo!!.description
         boojsideinfotxtui.text="number of pages :"+bookinfo!!.num_pages.toString()+" . First published "+bookinfo!!.publication_month+
-                " "+bookinfo!!.publication_day+" , "+bookinfo!!.publication_year+" ISBN13 "+bookinfo!!.isbn
+                " "+bookinfo!!.publication_date+" , "+bookinfo!!.publication_year+" ISBN13 "+bookinfo!!.isbn
         seeallreviewstxtui.text=bookinfo!!.reviewscount.toString()+" other community reviews"
      }
 
-    /**
-     * this will be called untill we call the backend(Mock Serviece)
-     *
-     */
-    fun getdummyjson():JSONObject
-    {
 
-        return JSONObject("{\"book_title\":\"American Duchess\",\"isbn\":\"0062748343\",\"image_url\":\"https://images.gr-assets.com/books/1538445346l/36300673.jpg\",\"small_image_url\":\"https://images.gr-assets.com/books/1538445346l/36300673.jpg\",\"num_pages\":\"1000\",\"publisher\":\"dummyMan\",\"publication_day\":13,\"publication_year\":1932,\"publication_month\":10,\"average_rating\":3.532,\"reviews_count\":2,\"ratings_count\":1,\"description\":\"Before Meghan and Harry, another American ‘princess’ captured the hand of an English aristocrat. Now, Karen Harper tells the tale of Consuelo Vanderbilt, her “The Wedding of the Century” to the Duke of Marlborough, and her quest to find meaning behind “the glitter and the gold.\",\"author_id\":1,\"author_name\":\" Karen Harper\",\"genre\":\"action\"}")
 
-    }
 
 }

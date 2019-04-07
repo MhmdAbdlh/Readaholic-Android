@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavadocGenerationManager">
+<<<<<<< HEAD
+    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/../../NASSAR" />
+    <option name="OPTION_SCOPE" value="public" />
+    <option name="OPTION_HIERARCHY" value="false" />
+=======
     <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/../../doc" />
     <option name="OPTION_SCOPE" value="private" />
+>>>>>>> 2c6f96b9f51e8e96e42c7f04277ed8fa5eec4632
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />

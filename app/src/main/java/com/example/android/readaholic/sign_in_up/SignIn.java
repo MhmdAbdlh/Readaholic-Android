@@ -31,13 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Sign in activity
- *
- * handles the sign in process
- * it goes to the main activity if the user exits
- * else it provides the user with the error message
- */
+
 public class SignIn extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,13 +41,11 @@ public class SignIn extends AppCompatActivity {
         setClickListeners();
     }
 
-
-    //region request
     /**
      *sending a request to get the user data
      *used when the status is true (valid username and password)
      */
-    private void getUserData()
+    public void getUserData()
     {
         whileLoading();
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -85,15 +77,15 @@ public class SignIn extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    //endregion
 
-    //region parsing request
+
+
     /**
      * it parses the json data provided in the user data string
      * @param userData the json data string
      * @return it returns the the type of responses
      */
-    private boolean parseUserData(String userData)
+    public boolean parseUserData(String userData)
     {
         try {
             JSONObject root = new JSONObject(userData);
@@ -138,9 +130,7 @@ public class SignIn extends AppCompatActivity {
 
 
     }
-    //endregion
 
-    //region ui
 
     /**
      * this method hides the keyboard
@@ -149,7 +139,7 @@ public class SignIn extends AppCompatActivity {
      * @param activity
      * @param view
      */
-    private  void hideSoftKeyboard (Activity activity, View view)
+    public  void hideSoftKeyboard (Activity activity, View view)
     {
         InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
@@ -161,7 +151,7 @@ public class SignIn extends AppCompatActivity {
      * shows the loading bar and makes the content of layout invisible
      * to indicate that the data is still loading
      */
-    private void whileLoading()
+    public void whileLoading()
     {
         //show the progress bar
         ProgressBar progressBar = (ProgressBar)findViewById(R.id.SignIn_loading_progbar);
@@ -182,7 +172,7 @@ public class SignIn extends AppCompatActivity {
      * shows a message to a user to inform him that there is an error
      * @param errorMessage the error message to be shown
      */
-    private void showErrorMessage(String errorMessage)
+    public void showErrorMessage(String errorMessage)
     {
         //hiding the progress bar
         ProgressBar progressBar = (ProgressBar)findViewById(R.id.SignIn_loading_progbar);
@@ -204,7 +194,7 @@ public class SignIn extends AppCompatActivity {
     /**
      * shows the content of the layout and hides error text view
      */
-    private void showLayout()
+    public void showLayout()
     {
         //hiding progress bar
         ProgressBar progressBar = (ProgressBar)findViewById(R.id.SignIn_loading_progbar);
@@ -219,9 +209,9 @@ public class SignIn extends AppCompatActivity {
         error.setVisibility(View.INVISIBLE);
     }
 
-    //endregion
 
-    //region initializations
+
+
 
 
     /**
@@ -231,7 +221,7 @@ public class SignIn extends AppCompatActivity {
      * or if they contain any error
      *
      */
-    private void setClickListeners()
+    public void setClickListeners()
     {
         //setting Signin button clicklistener
         /******************************Signin click listener -> open*****************************************/
@@ -242,17 +232,16 @@ public class SignIn extends AppCompatActivity {
 
                 //in case of mocking data
                 /**********************mocking data -> open***************************************/
-/*
+
                 //getting user name and password
                 EditText username = (EditText) findViewById(R.id.SignIn_userName_edittext);
                 EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
 
                 //checking user name and password fields
                 if(validateFields()) {
-                    if (username.getText().toString().equals("admin")
-                            && pass.getText().toString().equals("admin")) {
+                    if (true) {
                         //filling the static class with dummy data
-                        fillDummyData();
+                      //  fillDummyData();
                         //starting main activity
                         Intent intent = new Intent(v.getContext(), Main.class);
                         startActivity(intent);
@@ -263,20 +252,20 @@ public class SignIn extends AppCompatActivity {
                     }
                 }
 
-*/
+
                 /**************************mocking data -> close*****************************************/
 
 
                 //in case of connected to the server
                 /**************************server connected -> open***************************************/
-
+/*
                 if(validateFields()) {
                     //hides the keyboard when user clicks on sign in
                     hideSoftKeyboard(SignIn.this, v);
                     //checking if the user data is correct or not
                     getUserData();
                 }
-
+*/
                /***************************server connected -> close***************************************/
 
 
@@ -284,6 +273,7 @@ public class SignIn extends AppCompatActivity {
         });
         /******************************Signin click listener -> close*********************************************/
     }
+
    private void fillDummyData()
     {
         UserInfo.addUserInfo("Ahmed","Waled"
@@ -294,23 +284,22 @@ public class SignIn extends AppCompatActivity {
 
 
 
+
+
+
     /**
      * constructs the structure of the parameters that should be added to the url
      * @return the parameters that should be concatenated with the root url
      */
-    private String constructParameters()
+    public String constructParameters()
     {
         //getting parameters
         String userName = ((EditText)findViewById(R.id.SignIn_userName_edittext)).getText().toString();
         String pass = ((EditText)findViewById(R.id.SignIn_password_edittext)).getText().toString();
         // return "?email=Ahmed@yahoo.com&password=Waled21";
         //concatenating parameters and sending them
-        return "?email=" + userName + "&password=" + pass ;
+        return "http://f53a8477.ngrok.io/api/login?email=zwiza@example.net&password=password" ;
     }
-
-
-
-
 
     /**
      * testing if the user name and password are filled or not
@@ -319,7 +308,7 @@ public class SignIn extends AppCompatActivity {
      * @return it returns true if they pass all tests
      *          it return false if they fail in any test
      */
-    private boolean validateFields()
+    public boolean validateFields()
     {
 
         //getting the data user entered
@@ -355,7 +344,7 @@ public class SignIn extends AppCompatActivity {
         return true;
 
     }
-    //endregion
+
 
 
 

@@ -8,12 +8,6 @@
     android:orientation="vertical"
     tools:context=".myshelves.ShelvesFragment">
 
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/readholicloh" />
-
     <TextView
         android:id="@+id/shelves"
         android:layout_width="match_parent"
@@ -32,4 +26,27 @@
         android:layout_marginRight="100dp"
         android:background="@color/colorPrimaryDark" />
 
+    <ImageView
+        android:id="@+id/readbooks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="7dp"
+        android:src="@drawable/readbooks" />
+
+    <ImageView
+        android:id="@+id/cuurentlyreading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="7dp"
+        android:src="@drawable/currentlyreading" />
+
+    <ImageView
+        android:id="@+id/wanttoread"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="7dp"
+        android:src="@drawable/wanttoread" />
 </LinearLayout>
