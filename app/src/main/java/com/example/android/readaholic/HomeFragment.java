@@ -471,9 +471,9 @@ public class HomeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
-        arrayOfUpadates1 = onResposeAction(newjson);
+        //arrayOfUpadates1 = onResposeAction(newjson);
         //arrayOfUpadates1 = onResposeAction1(jsonFile);
-        //request();
+        request();
 
     }
     /**
