@@ -49,7 +49,7 @@ public class SignIn extends AppCompatActivity {
     {
         whileLoading();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Urls.LOG_IN + "?email=zwiza@example.net&password=password";
+        String url = Urls.LOG_IN + "?email=test@yahoo.com&password=password";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,

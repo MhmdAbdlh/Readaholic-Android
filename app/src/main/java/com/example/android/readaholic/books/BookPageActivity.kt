@@ -2,15 +2,12 @@ package com.example.android.readaholic.books
 
 import android.content.Intent
 import android.graphics.Color
-import android.opengl.Visibility
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.example.android.readaholic.R
-import android.widget.BaseAdapter
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
@@ -18,13 +15,10 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
-import com.example.android.readaholic.URLS
 import com.example.android.readaholic.contants_and_static_data.Urls
 import com.example.android.readaholic.contants_and_static_data.UserInfo
-import com.example.android.readaholic.profile_and_profile_settings.books
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_book_page.*
-import kotlinx.android.synthetic.main.bookreview.view.*
 import org.json.JSONObject
 
 /**
@@ -39,16 +33,14 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
      * Handling the book btn ui between cuurently reading ,read and want to read
      */
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        var SS:String=parent!!.getItemAtPosition(position).toString()
-        bookreadbtnui.text=SS
+        var shelftype:String=parent!!.getItemAtPosition(position).toString()
+        bookreadbtnui.text=shelftype
         if(position!=0)
         {
             bookreadbtnui.setBackgroundResource(R.drawable.btnselectedshape); // From android.graphics.Color
             bookreadbtnui.setTextColor(Color.BLACK)
         }
-
     }
-
     var bookinfo: BookPageInfo?=null
     var bookreview:ArrayList<BookReview>?=null
     var mybookrating:Int?=null
@@ -57,31 +49,26 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_page)
-
-        bookinfo= BookPageInfo()
-        //this to get the passed book id from the other activities
-        var intent:Intent= Intent()
-        bookinfo!!.bookid=intent.getIntExtra("BookId",0)
-        ////
-        //this code to  hundle the button spinner thing (want to read /read /currently reading)
         var spinneradapter:ArrayAdapter<CharSequence> =ArrayAdapter.createFromResource(this, R.array.Shelves,android.R.layout.simple_spinner_item)
         spinneradapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         activitybook_sheleve_spinner.adapter=spinneradapter
         activitybook_sheleve_spinner.onItemSelectedListener=this
-        ////
-        //Here to go to the list of reviews and send important info to them
+        /////////////////////////////
+        bookinfo= BookPageInfo()
+        var intent:Intent= Intent()
+        bookinfo!!.bookid=intent.getIntExtra("BookId",0)
         seeallreviewstxtui.setOnClickListener {
-
-            var intent=Intent(this, BookReviewsActivity::class.java)
             Cbookdata.author_name=bookinfo!!.author_name
             Cbookdata.book_title=bookinfo!!.book_title
             Cbookdata.bookid=bookinfo!!.bookid
-            Cbookdata.image_url=bookinfo!!.small_image_url
+            Cbookdata.image_url=bookinfo!!.image_url
+            Cbookdata.bookid=1
+            var intent=Intent(this, BookReviewsActivity::class.java)
             startActivity(intent)
         }
-
         bookreview= ArrayList()
-        feedUrlFromApi(bookinfo!!.bookid)
+         var succes=feedUrlFromApi(bookinfo!!.bookid)
+
         rateittext.setOnClickListener {
             writeareviewbtn.visibility=View.VISIBLE
         }
@@ -102,8 +89,19 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         when( bookreadbtnui.text) {
             "READ" -> shelvetype=0
             "Currently reading"->  shelvetype=1
-            "Wnat to read" ->  shelvetype=2
+            "Want to read" ->  shelvetype=2
         }
+    }
+    fun refreshBookPage(view: View)
+    {
+        feedUrlFromApi(bookinfo!!.bookid)
+    }
+    fun writeReview(view:View)
+    {
+
+
+
+
     }
     fun animate()
     {
@@ -118,25 +116,26 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     fun feedUrlFromApi(BookId:Int)
     {
         val queue = Volley.newRequestQueue(this)
-        //var url=URLS.BookPageURL+BookId.toString()
-        var url = Urls.ROOT+"/api/books/show?book_id=2&token=" + UserInfo.sToken + "&type="+ UserInfo.sTokenType;
+        var url =Urls.getShowBook("1")
+
         val stringRequest = StringRequest(Request.Method.GET, url,
                 Response.Listener<String> { response ->
-                    Toast.makeText(this,UserInfo.sToken,Toast.LENGTH_LONG).show()
-                    Toast.makeText(this,response,Toast.LENGTH_LONG).show()
+                    whenconnection.visibility=View.VISIBLE
+                    noconnection.visibility=View.GONE
                     var jsonresponse=JSONObject(response)
                     feedFromDummey(jsonresponse)
+
                 },
                 Response.ErrorListener {
-                 //   var mocresponse=getdummyjson()
-                   // feedFromDummey(mocresponse)
+
+                    whenconnection.visibility=View.GONE
+                    noconnection.visibility=View.VISIBLE
 
                 }
-
-
         )
 
         queue.add(stringRequest)
+
     }
 
     /**
@@ -155,12 +154,12 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     fun feedFromDummey(jsonresponce:JSONObject)
     {
 
-        var jsonobject=jsonresponce.getJSONObject("pages")
+        var jsonobject=jsonresponce.getJSONArray("pages").getJSONObject(0)
         bookinfo!!.book_title =jsonobject.getString("title")
-//        bookinfo!!.author_name =jsonobject.getString("author_name")
+        bookinfo!!.author_name =jsonobject.getString("author_name")
         bookinfo!!.author_id =jsonobject.getString("author_id").toInt()
         bookinfo!!.description =jsonobject.getString("description")
-       bookinfo!!.image_url =jsonobject.getString("img_url")
+        bookinfo!!.image_url =jsonobject.getString("img_url")
         bookinfo!!.average_rating=jsonobject.getString("ratings_avg").toFloat()
         bookinfo!!.isbn =jsonobject.getString("isbn").toInt()
         bookinfo!!.publication_date =jsonobject.getString("publication_date")
