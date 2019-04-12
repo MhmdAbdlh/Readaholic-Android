@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp">
@@ -38,6 +39,7 @@
 
     <Button
         android:id="@+id/FollowersList_UserFollowingStatus_Button"
+        style="@style/Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -45,8 +47,12 @@
         android:layout_centerVertical="false"
         android:layout_marginTop="8dp"
         android:layout_marginRight="16dp"
-        android:background="@android:color/transparent"
-        android:text="following" />
+        android:text="following"
+        android:textColor="@color/colorWhite"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:background="@drawable/followandunfollowbutton"
+        />
 
     <View
         style="@style/Divider"

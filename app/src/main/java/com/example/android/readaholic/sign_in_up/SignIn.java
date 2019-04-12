@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -276,7 +276,9 @@ public class SignIn extends AppCompatActivity {
 
                 //in case of mocking data
                 /**********************mocking data -> open***************************************/
+
 /*
+
                 //getting user name and password
                 EditText username = (EditText) findViewById(R.id.SignIn_email_edittext);
                 EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);

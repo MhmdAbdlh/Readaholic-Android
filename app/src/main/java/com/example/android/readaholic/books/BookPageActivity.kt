@@ -1,30 +1,24 @@
 package com.example.android.readaholic.books
 
+//import com.daimajia.androidanimations.library.Techniques
+//import com.daimajia.androidanimations.library.YoYo
 import android.content.Intent
 import android.graphics.Color
-import android.opengl.Visibility
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import com.example.android.readaholic.R
-import android.widget.BaseAdapter
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.daimajia.androidanimations.library.Techniques
-import com.daimajia.androidanimations.library.YoYo
-import com.example.android.readaholic.URLS
+import com.example.android.readaholic.R
 import com.example.android.readaholic.contants_and_static_data.Urls
 import com.example.android.readaholic.contants_and_static_data.UserInfo
-import com.example.android.readaholic.profile_and_profile_settings.books
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_book_page.*
-import kotlinx.android.synthetic.main.bookreview.view.*
 import org.json.JSONObject
 
 /**
@@ -108,9 +102,9 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     fun animate()
     {
 
-        YoYo.with(Techniques.FadeIn)
-                .duration(1000)
-                .playOn(writeareviewbtn);
+//        YoYo.with(Techniques.FadeIn)
+  //              .duration(1000)
+    //            .playOn(writeareviewbtn);
     }
     /**
      * get the book info from the url as a json file or show error messege in failiar case     *

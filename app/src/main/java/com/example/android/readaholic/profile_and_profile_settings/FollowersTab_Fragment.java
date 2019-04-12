@@ -1,17 +1,33 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.android.readaholic.R;
+import com.example.android.readaholic.contants_and_static_data.Urls;
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +43,10 @@ public class FollowersTab_Fragment extends Fragment {
      RecyclerView mRecyclerView;
      LinearLayoutManager mLayoutManger;
      FollowersListAdapter mAdapter;
-
-    /**
+     RequestQueue mRequestQueue;
+     View view;
+     private static ProgressDialog mProgressDialog;
+     /**
      * onCreateView called when the view is created
      * @param inflater inflate the layout
      * @param container parent view
@@ -38,12 +56,69 @@ public class FollowersTab_Fragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.followerstab_fragment,container,false);
+        view = inflater.inflate(R.layout.followerstab_fragment,container,false);
         mNotAvaliableTextView = (TextView) view.findViewById(R.id.FollowersTab_fragment_NotAvaliable_TextView);
         mNotAvaliableTextView.setVisibility(View.INVISIBLE);
 
+        return view;
+    }
 
-        if(followers==null)
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ExtractFollowersArray();
+    }
+
+    /**
+     * function to extract followers array of users from response
+     */
+    private void ExtractFollowersArray()
+    {
+        followers = new ArrayList<>();
+        DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(), 1024 * 1024);
+        BasicNetwork network = new BasicNetwork(new HurlStack());
+        mRequestQueue = new RequestQueue(cache, network);
+        mRequestQueue.start();
+        String mRequestUrl =  Urls.ROOT + "/api/followers?"+"token="+
+                UserInfo.sToken+"&type="+ UserInfo.sTokenType;
+
+        showSimpleProgressDialog(getContext(),"Loading.....","Loading Followers",false);
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject Response) {
+                        Log.e("followers tab response",Response.toString());
+
+                        JSONArray Followers = Response.optJSONArray("followers");
+                        if (Followers == null) {
+                            Log.e("Followers tab","followers tab followers array in json is null");
+                            followers = null;
+                        } else {
+                            Log.e("Followers tab","followers tab followers array in json is not  null");
+                            for (int i = 0; i < Followers.length(); i++) {
+                                Users user = new Users();
+                                user.setmUserName(Followers.optJSONObject(i).optString("name"));
+                                user.setmUserId(Followers.optJSONObject(i).optInt("id"));
+                                user.setmUserImageUrl(Followers.optJSONObject(i).optString("image_link"));
+                                followers.add(user);
+                            }
+                            UpdateList();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                followers = null;
+                mRequestQueue.stop();
+            }
+        });
+
+        mRequestQueue.add(jsonObjectRequest);
+    }
+    private void UpdateList()
+    {
+        removeSimpleProgressDialog();
+        if(followers.isEmpty())
         {
             mNotAvaliableTextView.setVisibility(View.VISIBLE);
         }
@@ -63,30 +138,45 @@ public class FollowersTab_Fragment extends Fragment {
             mAdapter.notifyDataSetChanged();
         }
 
-        return view;
     }
 
-    /**
-     *onCreate  called when fragment is created to get the data before view is created
-     * @param savedInstanceState bundle of saved states
-     */
+    public static void removeSimpleProgressDialog() {
+        try {
+            if (mProgressDialog != null) {
+                if (mProgressDialog.isShowing()) {
+                    mProgressDialog.dismiss();
+                    mProgressDialog = null;
+                }
+            }
+        } catch (IllegalArgumentException ie) {
+            ie.printStackTrace();
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        followers = new ArrayList<>();
-        followers.add(new Users("hossam",
-                5,5,"https://images.gr-assets.com/users/1507144891p3/7004371.jpg",7,null,null,null));
-        followers.add(new Users("hossam",
-                5,5,"https://images.gr-assets.com/users/1507144891p3/7004371.jpg",7,null,null,null));
-        followers.add(new Users("hossam",
-                5,5,"https://images.gr-assets.com/users/1507144891p3/7004371.jpg",7,null,null,null));
-        followers.add(new Users("hossam",
-                5,5,"https://images.gr-assets.com/users/1507144891p3/7004371.jpg",7,null,null,null));
-        followers.add(new Users("hossam",
-                5,5,"https://images.gr-assets.com/users/1507144891p3/7004371.jpg",7,null,null,null));
-        followers.add(new Users("hossam",
-                5,5,"https://images.gr-assets.com/users/1507144891p3/7004371.jpg",7,null,null,null));
+        } catch (RuntimeException re) {
+            re.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+    }
+
+    public static void showSimpleProgressDialog(Context context, String title,
+                                                String msg, boolean isCancelable) {
+        try {
+            if (mProgressDialog == null) {
+                mProgressDialog = ProgressDialog.show(context, title, msg);
+                mProgressDialog.setCancelable(isCancelable);
+            }
+
+            if (!mProgressDialog.isShowing()) {
+                mProgressDialog.show();
+            }
+
+        } catch (IllegalArgumentException ie) {
+            ie.printStackTrace();
+        } catch (RuntimeException re) {
+            re.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
