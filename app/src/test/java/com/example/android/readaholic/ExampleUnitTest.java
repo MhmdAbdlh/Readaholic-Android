@@ -1,12 +1,16 @@
 package com.example.android.readaholic;
 
+import android.support.v4.app.Fragment;
+
 import com.example.android.readaholic.VolleyHelper.volleyRequestHelper;
+import com.example.android.readaholic.profile_and_profile_settings.ProfileFragment;
 import com.example.android.readaholic.profile_and_profile_settings.Users;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.util.FragmentTestUtil;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,16 +20,16 @@ import static org.junit.Assert.assertEquals;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(RobolectricTestRunner.class)
-public class ExampleUnitTest {
+public class ExampleUnitTest  {
 
 private Users user;
 private volleyRequestHelper volleyRequestHelper;
-
 @Before
 public void init()
 {
     user = new Users();
     volleyRequestHelper = new volleyRequestHelper();
+
 }
     @Test
     public void addition_isCorrect() {
@@ -80,7 +84,7 @@ public void init()
     public void testVolleyUserName()
     {
         Users testUser = new Users();
-        testUser = volleyRequestHelper.getmUser();
+        testUser = volleyRequestHelper.;
 
         user.setmUserName("Hossam Ahmed");
         assertEquals(user.getmUserName(),testUser.getmUserName());

@@ -12,6 +12,7 @@
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
         android:cropToPadding="false"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY"
+        android:background="@drawable/circle"/>
 
 </LinearLayout>

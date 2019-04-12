@@ -1,25 +1,31 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.android.readaholic.CircleTransform;
-import com.example.android.readaholic.HomeFragment;
 import com.example.android.readaholic.R;
-import com.example.android.readaholic.VolleyHelper.volleyRequestHelper;
+import com.example.android.readaholic.contants_and_static_data.Urls;
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.example.android.readaholic.home.Updates;
 import com.example.android.readaholic.home.UpdatesAdapter;
 import com.squareup.picasso.Picasso;
@@ -29,23 +35,18 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-public class ProfileFragment extends Fragment implements ProfileView{
+public class ProfileFragment extends Fragment {
     private RequestQueue mRequestQueue;
-    private JSONObject mJsonObject;
     private String mRequestUrl;
     private int mUser_Id;
-    private Users mProfileUser;
+    private  Users mProfileUser;
     private ImageView mUserImage;
     private TextView mUserName;
     private TextView mUserBookNumber;
-    public static int UserNumberofBooks;
     ArrayList<Updates> arayOfUpdates = new ArrayList<Updates>();
     private ListView mListOfUpdates;
     private UpdatesAdapter adapterForUpdatesList;
-    private ProfilePresenter mProfilePresenter;
-
     View view;
-    volleyRequestHelper volleyRequestHelper;
     private String jsonFile = "{\n" +
             "   \"updates\":{\n" +
             "      \"update\":[\n" +
@@ -316,32 +317,28 @@ public class ProfileFragment extends Fragment implements ProfileView{
         mUserImage = (ImageView)view.findViewById(R.id.profileActivity_ProfilePic_ImageView);
         mUserName =(TextView)view.findViewById(R.id.ProfileActivity_UserName_TextView);
         mUserBookNumber = (TextView)view.findViewById(R.id.ProfileActivity_UserBooksNumber_TextView);
-        volleyRequestHelper = new volleyRequestHelper(view.getContext());
 
-//        ButterKnife.bind(this,view);
+            Picasso.get().load("https://s.gr-assets.com/assets/nophoto/user/" +
+                    "u_111x148-9394ebedbb3c6c218f64be9549657029.png").transform(new CircleTransform()).into(mUserImage);
 
-        mProfilePresenter = new ProfilePresenter(view.getContext(),this);
-        mRequestUrl = "https://api.myjson.com/bins/1dujwm";
-        mProfileUser = mProfilePresenter.fetchData(mRequestUrl);
+            mUser_Id = getArguments().getInt("user-id");
+            Log.e("userid",Integer.toString(mUser_Id));
+        requestProfileView(mUser_Id);
 
-        //HTTPRequest(mRequestUrl,mProfileUser);
 
+        //Loading Fragments
+        loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId());
+        loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId());
+        loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId());
 ///////////////////////////////////////////////////////////////////////////////
         //Take user id when click in his name in Updates (user could be different from the current user)
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             int myInt = bundle.getInt("UserId", mUser_Id);
         }
-       // mProfileUser = new Users();
 
-        UpdateData(mProfileUser);
-
-        //Loading Fragments
-        loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId());
-        loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId());
-        loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId());
-        ////////////////////////////////////////////////////////////////////////////////////////////////
-        arayOfUpdates = HomeFragment.onResposeAction(jsonFile);
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+       /* arayOfUpdates = HomeFragment.onResposeAction(jsonFile);
         adapterForUpdatesList = new UpdatesAdapter(getContext(),arayOfUpdates);
         mListOfUpdates = (ListView) view.findViewById(R.id.Profile_updateslist_listview);
         mListOfUpdates.setOnTouchListener(new ListView.OnTouchListener() {
@@ -366,29 +363,12 @@ public class ProfileFragment extends Fragment implements ProfileView{
             }
         });
         mListOfUpdates.setAdapter(adapterForUpdatesList);
-
+*/
         return view;
 
     }
 
-    /**
-     * function to return context of View
-     * @return Context of view
-     */
-    @Nullable
-    @Override
-    public Context getViewContext() {
-        return view.getContext();
-    }
 
-    /**
-     * destory the view
-     */
-    @Override
-    public void onDestroy() {
-        mProfilePresenter.onDestroy();
-        super.onDestroy();
-    }
 
     /**
      * loadFragment function to initialize the Fragment
@@ -408,23 +388,56 @@ public class ProfileFragment extends Fragment implements ProfileView{
     }
 
     /**
-     * implementation of UpdateDate from ProfileView interface.
+     *Update the view with data of user
+     * @param user holding data from request.
      */
-    @Override
     public void UpdateData(Users user) {
-
-        Picasso.get().load(user.getmUserImageUrl()).transform(new CircleTransform()).into(mUserImage);
+        Log.e("UserImageUrl",user.getmUserImageUrl());
+            Picasso.get().load(user.getmUserImageUrl()).transform(new CircleTransform()).into(mUserImage);
         mUserBookNumber.setText(user.getmUsernumberOfBooks()+" Books");
         mUserName.setText(user.getmUserName());
 
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        volleyRequestHelper = new volleyRequestHelper(getViewContext());
-        mProfileUser = volleyRequestHelper.JsonObjectRequest("ShowProfile",null,null,0,false).get(0);
+    /**
+     * function to doing the request to get user info and update the view with it.
+     */
+    public void requestProfileView(int user_id)
+{
+    if(user_id != 0)
+    mRequestUrl = Urls.ROOT + "/api/showProfile?"+"id="+Integer.toString(user_id)+"&token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
-    }
+    else
+        mRequestUrl = Urls.ROOT + "/api/showProfile?"+"token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
+    mProfileUser = new Users();
+    DiskBasedCache cache = new DiskBasedCache(view.getContext().getCacheDir(), 1024 * 1024);
+    BasicNetwork network = new BasicNetwork(new HurlStack());
+    mRequestQueue = new RequestQueue(cache, network);
+    mRequestQueue.start();
+    final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null, new Response.Listener<JSONObject>() {
+        @Override
+        public void onResponse(JSONObject Response) {
+            Log.e("profileResponse",Response.toString());
+            mProfileUser.setmUserName(Response.optString("name"));
+            Log.e("Test" ,mProfileUser.getmUserName());
+            mProfileUser.setmUserImageUrl(Response.optString("small_image_link"));
+            mProfileUser.setmUsernumberOfBooks(Response.optInt("books-count"));
+
+            Log.e("showprofileResponseName",mProfileUser.getmUserName());
+            UpdateData(mProfileUser);
+            mRequestQueue.stop();
+        }
+    }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+
+
+            mProfileUser=null;
+            mRequestQueue.stop();
+        }
+    });
+    mRequestQueue.add(jsonObjectRequest);
+
+}
 }

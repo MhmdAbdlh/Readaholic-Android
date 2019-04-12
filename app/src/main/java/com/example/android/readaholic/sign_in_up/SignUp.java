@@ -39,7 +39,7 @@ import java.util.Calendar;
 
 public class SignUp extends AppCompatActivity {
 
-    private DatePickerDialog.OnDateSetListener mDateSetListener;
+    public DatePickerDialog.OnDateSetListener mDateSetListener;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +61,7 @@ public class SignUp extends AppCompatActivity {
      * if the fields are valid or not and then make the request
      *
      */
-    private void setClickListeners()
+    public void setClickListeners()
     {
         //getting the date button
         final Button date = (Button)findViewById(R.id.SignUp_birthday_Button);
@@ -129,7 +129,7 @@ public class SignUp extends AppCompatActivity {
     /**
      *initializing the country spinner and gender spinner and providing them with data
      */
-    private void initializeSpinners()
+    public void initializeSpinners()
     {
         //setting and initializing country spinner
         /*****************************country spinner -> open************************************/
@@ -157,7 +157,7 @@ public class SignUp extends AppCompatActivity {
      * @return true if they passed all the tests
      *         false if there is a problem in any field
      */
-    private boolean validateFields()
+    public boolean validateFields()
     {
         //getting data that the user entered
         /***********************************getting data -> open**********************************/
@@ -217,7 +217,7 @@ public class SignUp extends AppCompatActivity {
      *
      * if there was a problem the user would be informed by an error message
      */
-    private void signUpRequest()
+    public void signUpRequest()
     {
         //showing the progress bar
         whileLoading();
@@ -265,7 +265,7 @@ public class SignUp extends AppCompatActivity {
      * if the status was false -> error message should be displayed informing the user what was
      * wrong in the data
      */
-    private boolean parseSignUpResponse(String response)
+    public boolean parseSignUpResponse(String response)
     {
         try {
             JSONObject root = new JSONObject(response);
@@ -302,7 +302,7 @@ public class SignUp extends AppCompatActivity {
     /**
      * showing the progress bar to indicate that the request is in process
      */
-    private void whileLoading()
+    public void whileLoading()
     {
         //make progress bar visible
         ProgressBar progressBar = (ProgressBar)findViewById(R.id.SignUp_proressBar);
@@ -316,7 +316,7 @@ public class SignUp extends AppCompatActivity {
     /**
      * shown the layout after the request is done
      */
-    private void showLayout()
+    public void showLayout()
     {
         //hide progress bar
         ProgressBar progressBar = (ProgressBar)findViewById(R.id.SignUp_proressBar);
@@ -331,7 +331,7 @@ public class SignUp extends AppCompatActivity {
      * showing error message to the user
      * @param errorMessage error message to be shown
      */
-    private void showErrorMessage(String errorMessage)
+    public void showErrorMessage(String errorMessage)
     {
         AlertDialog alertDialog = new AlertDialog.Builder(SignUp.this).create();
         alertDialog.setTitle("Error");
