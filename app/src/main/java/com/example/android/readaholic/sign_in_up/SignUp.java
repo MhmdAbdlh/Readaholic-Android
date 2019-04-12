@@ -228,7 +228,7 @@ public class SignUp extends AppCompatActivity {
     {
         //showing the progress bar
         whileLoading();
-        Urls urlController = new Urls();
+        Urls urlController = new Urls(this,this.getBaseContext());
 
         RequestQueue queue = Volley.newRequestQueue(this);
 

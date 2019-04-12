@@ -195,7 +195,7 @@ public class LocationSettings extends AppCompatActivity {
     private void changeLocationRequest()
     {
         Loading();
-        Urls urlController = new Urls();
+        Urls urlController = new Urls(this,this.getBaseContext());
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Urls.ROOT + Urls.CHANGE_COUNTRY + "?" + urlController.constructTokenParameters()
                 +"&" + urlController.getChangeLocationParameters();
@@ -249,7 +249,7 @@ public class LocationSettings extends AppCompatActivity {
     private void changeWhoCanSeeMyLocationRequest()
     {
         Loading();
-        Urls urlController = new Urls();
+        Urls urlController = new Urls(this,this.getBaseContext());
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Urls.ROOT + Urls.WHO_CAN_SEE_MY_COUNTRY + "?" + urlController.constructTokenParameters()
                 +"&" + urlController.getWhoCanSeeMyLocationParameters();

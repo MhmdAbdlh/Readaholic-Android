@@ -224,7 +224,7 @@ public class BirthdaySettings extends AppCompatActivity {
     private void changeBirthDayRequest()
     {
         Loading();
-        Urls urlController = new Urls();
+        Urls urlController = new Urls(this,this.getBaseContext());
 
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = Urls.ROOT + Urls.CHANGE_BIRTHDAY + "?" + urlController.constructTokenParameters()
@@ -278,7 +278,7 @@ public class BirthdaySettings extends AppCompatActivity {
      */
     private void changeWhoCanSeeMyBirthDayRequest()
     {
-        Urls urlController = new Urls();
+        Urls urlController = new Urls(this,this.getBaseContext());
         Loading();
         RequestQueue queue = Volley.newRequestQueue(this);
         //constructing the url

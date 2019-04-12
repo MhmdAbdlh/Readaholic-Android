@@ -61,9 +61,10 @@ public class SignIn extends AppCompatActivity {
         //showing the progress bar to indicate that data is loading
         whileLoading();
 
-        Urls urlController = new Urls();
+        Urls urlController = new Urls(this ,this.getBaseContext());
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Urls.ROOT + Urls.LOG_IN + "?" +urlController.getLogInParameters() ;
+        String url = Urls.ROOT + Urls.LOG_IN + "?" + getLogInParameters() ;
+
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -325,6 +326,19 @@ public class SignIn extends AppCompatActivity {
                 ,"https://unsplash.com/photos/HUBofEFQ6CA","1234567","afas");
     }
 
+    public String getLogInParameters() {
+        String parameters = "";
+
+        //getting email and password entered by user
+        String email = ((EditText)findViewById(R.id.SignIn_email_edittext)).getText().toString();
+        String password = ((EditText)findViewById(R.id.SignIn_password_edittext)).getText().toString();
+
+
+        //constructing the parameters
+        parameters += "email=" + email + "&password=" + password;
+
+        return parameters ;
+    }
 
 
     /**

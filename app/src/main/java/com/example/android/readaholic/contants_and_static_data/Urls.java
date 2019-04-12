@@ -1,5 +1,7 @@
 package com.example.android.readaholic.contants_and_static_data;
 
+import android.app.Activity;
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
@@ -8,9 +10,12 @@ import android.widget.Spinner;
 
 import com.example.android.readaholic.R;
 
-public class Urls extends AppCompatActivity {
+public class Urls  {
 
-    public static final String ROOT = "http://f8b0ca5b.ngrok.io";
+    private Activity mActivity;
+    private Context  mContext;
+
+    public static final String ROOT = "http://972c6e5d.ngrok.io";
     //Login url
     public static String LOG_IN = "/api/login";
     //sign up url
@@ -28,7 +33,10 @@ public class Urls extends AppCompatActivity {
 
 
 
-    public Urls(){}
+    public Urls(Activity activity,Context context){
+        mActivity = activity;
+        mContext = context;
+    }
 
     public String constructTokenParameters() {
         String parameters = "";
@@ -44,8 +52,8 @@ public class Urls extends AppCompatActivity {
         String parameters = "";
 
         //getting email and password entered by user
-        String email = ((EditText)findViewById(R.id.SignUp_email_edittext)).getText().toString();
-        String password = ((EditText)findViewById(R.id.SignIn_password_edittext)).getText().toString();
+        String email = ((EditText)mActivity.findViewById(R.id.SignUp_email_edittext)).getText().toString();
+        String password = ((EditText)mActivity.findViewById(R.id.SignIn_password_edittext)).getText().toString();
 
 
         //constructing the parameters
@@ -59,14 +67,14 @@ public class Urls extends AppCompatActivity {
 
         //getting data entered by user
         /*****************************************************************************************/
-        String email = ((EditText)findViewById(R.id.SignUp_email_edittext)).getText().toString();
-        String password = ((EditText)findViewById(R.id.SignUp_Pass_edittext)).getText().toString();
-        String confPassword = ((EditText)findViewById(R.id.SignUp_rePass_edittext)).getText().toString();
-        String birthday = ((Button)findViewById(R.id.SignUp_birthday_Button)).getText().toString();
-        String location = ((Spinner)findViewById(R.id.SignUp_location_Spinner)).getSelectedItem().toString();
-        String gender = ((Spinner)findViewById(R.id.SignUp_gender_Spinner)).getSelectedItem().toString();
-        String firstName = ((EditText)findViewById(R.id.SignUp_firstName_edittext)).getText().toString();
-        String lastName = ((EditText)findViewById(R.id.SignUp_lastName_edittext)).getText().toString();
+        String email = ((EditText)mActivity.findViewById(R.id.SignUp_email_edittext)).getText().toString();
+        String password = ((EditText)mActivity.findViewById(R.id.SignUp_Pass_edittext)).getText().toString();
+        String confPassword = ((EditText)mActivity.findViewById(R.id.SignUp_rePass_edittext)).getText().toString();
+        String birthday = ((Button)mActivity.findViewById(R.id.SignUp_birthday_Button)).getText().toString();
+        String location = ((Spinner)mActivity.findViewById(R.id.SignUp_location_Spinner)).getSelectedItem().toString();
+        String gender = ((Spinner)mActivity.findViewById(R.id.SignUp_gender_Spinner)).getSelectedItem().toString();
+        String firstName = ((EditText)mActivity.findViewById(R.id.SignUp_firstName_edittext)).getText().toString();
+        String lastName = ((EditText)mActivity.findViewById(R.id.SignUp_lastName_edittext)).getText().toString();
 
         //getting full name from first and last name
         String fullName = firstName + " " + lastName;
@@ -90,7 +98,7 @@ public class Urls extends AppCompatActivity {
     public  String getChangeBirthdayParameters() {
         String parameters = "";
 
-        String birthday = ((Button)findViewById(R.id.Birthday_Button)).getText().toString();
+        String birthday = ((Button)mActivity.findViewById(R.id.Birthday_Button)).getText().toString();
 
         parameters += "birthday=" + birthday;
 
@@ -102,8 +110,8 @@ public class Urls extends AppCompatActivity {
 
         //getting the radio buttons for who can see my birth day
         /***************************************************************************************/
-        RadioButton everyone = ((RadioButton)findViewById(R.id.Birthday_everyone_RadioButton));
-        RadioButton onlyme = ((RadioButton)findViewById(R.id.Birthday_onlyMe_RadioButton));
+        RadioButton everyone = ((RadioButton)mActivity.findViewById(R.id.Birthday_everyone_RadioButton));
+        RadioButton onlyme = ((RadioButton)mActivity.findViewById(R.id.Birthday_onlyMe_RadioButton));
         /***************************************************************************************/
 
         //checking which radio button is clicked
@@ -126,7 +134,7 @@ public class Urls extends AppCompatActivity {
     public  String getChangeLocationParameters() {
         String parameters = "";
 
-        String location = ((Spinner)findViewById(R.id.Location_spinner)).getSelectedItem().toString();
+        String location = ((Spinner)mActivity.findViewById(R.id.Location_spinner)).getSelectedItem().toString();
 
         parameters += "location=" + location;
 
@@ -138,8 +146,8 @@ public class Urls extends AppCompatActivity {
 
         //getting the radio buttons for who can see my birth day
         /***************************************************************************************/
-        RadioButton everyone = ((RadioButton)findViewById(R.id.Location_everynone_RadioButton));
-        RadioButton onlyme = ((RadioButton)findViewById(R.id.Location_onlyMe_RadioButton));
+        RadioButton everyone = ((RadioButton)mActivity.findViewById(R.id.Location_everynone_RadioButton));
+        RadioButton onlyme = ((RadioButton)mActivity.findViewById(R.id.Location_onlyMe_RadioButton));
         /***************************************************************************************/
 
         //checking which radio button is clicked
