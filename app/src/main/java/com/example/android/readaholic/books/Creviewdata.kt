@@ -14,4 +14,7 @@ object Creviewdata {
     var numberofcomments:Int=0
     var username:String=""
     var userimageurl:String=""
+    var book_name:String=""
+    var book_image:String=""
+    var author_name:String=""
 }

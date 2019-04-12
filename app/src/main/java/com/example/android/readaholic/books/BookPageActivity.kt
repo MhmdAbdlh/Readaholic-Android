@@ -43,8 +43,6 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     }
     var bookinfo: BookPageInfo?=null
     var bookreview:ArrayList<BookReview>?=null
-    var mybookrating:Int?=null
-    var shelvetype:Int?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,24 +54,15 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         /////////////////////////////
         bookinfo= BookPageInfo()
         var intent:Intent= Intent()
-        bookinfo!!.bookid=intent.getIntExtra("BookId",0)
-        seeallreviewstxtui.setOnClickListener {
-            Cbookdata.author_name=bookinfo!!.author_name
-            Cbookdata.book_title=bookinfo!!.book_title
-            Cbookdata.bookid=bookinfo!!.bookid
-            Cbookdata.image_url=bookinfo!!.image_url
-            Cbookdata.bookid=1
-            var intent=Intent(this, BookReviewsActivity::class.java)
-            startActivity(intent)
-        }
+         Cbookdata!!.bookid=intent.getIntExtra("BookId",2)
         bookreview= ArrayList()
-         var succes=feedUrlFromApi(bookinfo!!.bookid)
-
+        feedBookInfoFromApi(Cbookdata.bookid)
         rateittext.setOnClickListener {
             writeareviewbtn.visibility=View.VISIBLE
         }
+
         ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
-            mybookrating=ratingBar.rating.toInt()
+        Cbookdata.bookrating=ratingBar.rating.toInt()
             setshelve()
             writeareviewbtn.visibility=View.VISIBLE
             rateittext.text="My Rating"
@@ -82,30 +71,41 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
             bookreadbtnui.setTextColor(Color.BLACK)
             animate()
         }
+        seeallreviewstxtui.setOnClickListener {
+            Cbookdata.author_name=bookinfo!!.author_name
+            Cbookdata.book_title=bookinfo!!.book_title
+            Cbookdata.image_url=bookinfo!!.image_url
+            var intent=Intent(this, BookReviewsActivity::class.java)
+            startActivity(intent)
+        }
 
     }
+
+    /**
+     * Set the shelf type
+     *
+     */
     fun setshelve()
     {
         when( bookreadbtnui.text) {
-            "READ" -> shelvetype=0
-            "Currently reading"->  shelvetype=1
-            "Want to read" ->  shelvetype=2
+            "READ" -> Cbookdata.shelf=0
+            "CURRENTLY READING"->   Cbookdata.shelf=1
+            "WANT TO READ" ->   Cbookdata.shelf=2
         }
     }
+
     fun refreshBookPage(view: View)
     {
-        feedUrlFromApi(bookinfo!!.bookid)
+        feedBookInfoFromApi(Cbookdata.bookid)
     }
+
     fun writeReview(view:View)
     {
-
-
-
-
+        var intent=Intent(this, BookReviewsActivity::class.java)
+        startActivity(intent)
     }
     fun animate()
     {
-
         YoYo.with(Techniques.FadeIn)
                 .duration(1000)
                 .playOn(writeareviewbtn);
@@ -113,17 +113,16 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     /**
      * get the book info from the url as a json file or show error messege in failiar case     *
      */
-    fun feedUrlFromApi(BookId:Int)
+    fun feedBookInfoFromApi(BookId:Int)
     {
         val queue = Volley.newRequestQueue(this)
-        var url =Urls.getShowBook("1")
-
+        var url =Urls.getShowBook(Cbookdata.bookid.toString())
         val stringRequest = StringRequest(Request.Method.GET, url,
                 Response.Listener<String> { response ->
                     whenconnection.visibility=View.VISIBLE
                     noconnection.visibility=View.GONE
                     var jsonresponse=JSONObject(response)
-                    feedFromDummey(jsonresponse)
+                    feedFromApi(jsonresponse)
 
                 },
                 Response.ErrorListener {
@@ -133,7 +132,6 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
 
                 }
         )
-
         queue.add(stringRequest)
 
     }
@@ -151,7 +149,7 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
      * fitch the bookobject info from the jsonobject
      * @param jsonobject
      */
-    fun feedFromDummey(jsonresponce:JSONObject)
+    fun feedFromApi(jsonresponce:JSONObject)
     {
 
         var jsonobject=jsonresponce.getJSONArray("pages").getJSONObject(0)
@@ -182,10 +180,7 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         bookdesctxtui.text=bookinfo!!.description
         boojsideinfotxtui.text="number of pages :"+bookinfo!!.num_pages.toString()+" . First published "+bookinfo!!.publication_month+
                 " "+bookinfo!!.publication_date+" , "+bookinfo!!.publication_year+" ISBN13 "+bookinfo!!.isbn
-        seeallreviewstxtui.text=bookinfo!!.reviewscount.toString()+" other community reviews"
+        seeallreviewstxtui.text=bookinfo!!.reviewscount.toString()+" community reviews"
      }
-
-
-
 
 }

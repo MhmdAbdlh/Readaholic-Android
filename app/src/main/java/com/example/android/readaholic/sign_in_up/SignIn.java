@@ -49,7 +49,7 @@ public class SignIn extends AppCompatActivity {
     {
         whileLoading();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Urls.LOG_IN + "?email=test@yahoo.com&password=password";
+        String url = Urls.LOG_IN + "?email=zachariah72@example.net&password=password";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -62,7 +62,6 @@ public class SignIn extends AppCompatActivity {
                             startActivity(intent);
                             finish();
                         }
-
 
                     }
                 }, new Response.ErrorListener() {
@@ -296,7 +295,7 @@ public class SignIn extends AppCompatActivity {
         String pass = ((EditText)findViewById(R.id.SignIn_password_edittext)).getText().toString();
         // return "?email=Ahmed@yahoo.com&password=Waled21";
         //concatenating parameters and sending them
-        return "http://f53a8477.ngrok.io/api/login?email=zwiza@example.net&password=password" ;
+        return "http://ffb1e410.ngrok.io/api/login?email=zachariah72@example.net&password=password" ;
     }
 
     /**

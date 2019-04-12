@@ -151,14 +151,14 @@
             android:textSize="18sp" />
 
         <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:numStars="5"
-            android:progressTint="@color/colorGoled"
-            android:rating="0"
-            android:stepSize="1" />
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:numStars="5"
+        android:progressTint="@color/colorGoled"
+        android:rating="0"
+        android:stepSize="1" />
 
         <Button
             android:id="@+id/writeareviewbtn"
