@@ -15,9 +15,16 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -26,10 +33,14 @@ import com.example.android.readaholic.R;
 
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.net.HttpURLConnection;
 
 
 public class SignIn extends AppCompatActivity {
@@ -45,11 +56,14 @@ public class SignIn extends AppCompatActivity {
      *sending a request to get the user data
      *used when the status is true (valid username and password)
      */
-    public void getUserData()
+    private void getUserData()
     {
+        //showing the progress bar to indicate that data is loading
         whileLoading();
+
+        Urls urlController = new Urls();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Urls.SERVER_NUMBER +Urls.ROOT + Urls.LOG_IN + "?email=zwiza@example.net&password=password";
+        String url = Urls.ROOT + Urls.LOG_IN + "?" +urlController.getLogInParameters() ;
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -68,8 +82,35 @@ public class SignIn extends AppCompatActivity {
                 }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    showErrorMessage("Error in Connection");
+
+                    //checking what caused the error providing the user with appropriate message
+                    String message = null;
+
+                    if (error instanceof NetworkError || error instanceof NoConnectionError
+                            || error instanceof TimeoutError) {
+                        message = "Connection error...Please check your connection!";
+                    } else if (error instanceof ServerError) {
+                        message = "The server could not be found. Please try again after some time!!";
+                    } else if (error instanceof ParseError) {
+                        message = "Parsing error! Please try again after some time!!";
+                    } else if (error instanceof AuthFailureError) {
+                      message = "Cannot connect to Internet...Please check your connection!";
                     }
+
+                    //if error code is 405 i should show the error message to the user privided
+                    //by the backend
+                    NetworkResponse networkResponse = error.networkResponse;
+                    if (networkResponse != null && networkResponse.statusCode == HttpURLConnection.HTTP_BAD_METHOD) {
+                        if(error.networkResponse.data!=null) {
+                            //getting the error message provided by the backend
+                            message = parseErrorResponse(error.networkResponse.data.toString());
+                        }
+                    }
+
+                    showErrorMessage(message);
+
+
+                }
 
         });
 
@@ -85,13 +126,10 @@ public class SignIn extends AppCompatActivity {
      * @param userData the json data string
      * @return it returns the the type of responses
      */
-    public boolean parseUserData(String userData)
+    private boolean parseUserData(String userData)
     {
         try {
-            JSONObject root = new JSONObject(userData);
-
-            // if (root.getString("status").equals("true") ) {
-            if(root.getString("token").length() != 0) {
+               JSONObject root = new JSONObject(userData);
                 //getting user info
                 /****************************getting user info -> open*****************************/
                 String token = root.getString("token");
@@ -105,29 +143,35 @@ public class SignIn extends AppCompatActivity {
                 UserInfo.addUserInfo(userName,name,imageLink,token,tokenType);
 
                 return true;
-            }
-            else {
-                //if the sign in process failed show error message
-                String error = "";
 
-                //getting error messages
-                JSONArray errorMessage = root.getJSONArray("errors");
-                for (int i =0;i<errorMessage.length() ; i++)
-                {
-                    error += errorMessage.getString(i) + '\n';
-                }
-
-                //display them to the user
-                showErrorMessage(error);
-                return false;
-            }
-        }
+          }
         catch (JSONException E)
         {
             showErrorMessage("Server error");
             return false;
         }
 
+
+    }
+
+    private String parseErrorResponse(String response) {
+        String errorMessage = "";
+
+        try {
+
+            JSONObject root = new JSONObject(response);
+            JSONArray errors = root.getJSONArray("errors");
+
+            for(int i = 0 ;i<errors.length() ; i++)
+            {
+                errorMessage+=errors.get(i) + "\n" ;
+            }
+
+        } catch (JSONException e) {
+            showErrorMessage("server error");
+        }
+
+        return errorMessage;
 
     }
 
@@ -139,7 +183,7 @@ public class SignIn extends AppCompatActivity {
      * @param activity
      * @param view
      */
-    public  void hideSoftKeyboard (Activity activity, View view)
+    private  void hideSoftKeyboard (Activity activity, View view)
     {
         InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), 0);
@@ -151,7 +195,7 @@ public class SignIn extends AppCompatActivity {
      * shows the loading bar and makes the content of layout invisible
      * to indicate that the data is still loading
      */
-    public void whileLoading()
+    private void whileLoading()
     {
         //show the progress bar
         ProgressBar progressBar = (ProgressBar)findViewById(R.id.SignIn_loading_progbar);
@@ -172,7 +216,7 @@ public class SignIn extends AppCompatActivity {
      * shows a message to a user to inform him that there is an error
      * @param errorMessage the error message to be shown
      */
-    public void showErrorMessage(String errorMessage)
+    private void showErrorMessage(String errorMessage)
     {
         //hiding the progress bar
         ProgressBar progressBar = (ProgressBar)findViewById(R.id.SignIn_loading_progbar);
@@ -194,7 +238,7 @@ public class SignIn extends AppCompatActivity {
     /**
      * shows the content of the layout and hides error text view
      */
-    public void showLayout()
+    private void showLayout()
     {
         //hiding progress bar
         ProgressBar progressBar = (ProgressBar)findViewById(R.id.SignIn_loading_progbar);
@@ -221,7 +265,7 @@ public class SignIn extends AppCompatActivity {
      * or if they contain any error
      *
      */
-    public void setClickListeners()
+    private void setClickListeners()
     {
         //setting Signin button clicklistener
         /******************************Signin click listener -> open*****************************************/
@@ -232,9 +276,9 @@ public class SignIn extends AppCompatActivity {
 
                 //in case of mocking data
                 /**********************mocking data -> open***************************************/
-
+/*
                 //getting user name and password
-                EditText username = (EditText) findViewById(R.id.SignIn_userName_edittext);
+                EditText username = (EditText) findViewById(R.id.SignIn_email_edittext);
                 EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
 
                 //checking user name and password fields
@@ -252,21 +296,20 @@ public class SignIn extends AppCompatActivity {
                     }
                 }
 
-
+*/
                 /**************************mocking data -> close*****************************************/
 
 
                 //in case of connected to the server
                 /**************************server connected -> open***************************************/
-/*
+
                 if(validateFields()) {
                     //hides the keyboard when user clicks on sign in
                     hideSoftKeyboard(SignIn.this, v);
                     //checking if the user data is correct or not
                     getUserData();
                 }
-*/
-               /***************************server connected -> close***************************************/
+             /***************************server connected -> close***************************************/
 
 
             }
@@ -282,19 +325,14 @@ public class SignIn extends AppCompatActivity {
 
 
 
-
-
-
-
-
     /**
      * constructs the structure of the parameters that should be added to the url
      * @return the parameters that should be concatenated with the root url
      */
-    public String constructParameters()
+    private String constructParameters()
     {
         //getting parameters
-        String userName = ((EditText)findViewById(R.id.SignIn_userName_edittext)).getText().toString();
+        String userName = ((EditText)findViewById(R.id.SignIn_email_edittext)).getText().toString();
         String pass = ((EditText)findViewById(R.id.SignIn_password_edittext)).getText().toString();
         // return "?email=Ahmed@yahoo.com&password=Waled21";
         //concatenating parameters and sending them
@@ -308,12 +346,12 @@ public class SignIn extends AppCompatActivity {
      * @return it returns true if they pass all tests
      *          it return false if they fail in any test
      */
-    public boolean validateFields()
+    private boolean validateFields()
     {
 
         //getting the data user entered
         /*******************************getting data -> open**************************************/
-        String userName = ((EditText)findViewById(R.id.SignIn_userName_edittext)).getText().toString();
+        String userName = ((EditText)findViewById(R.id.SignIn_email_edittext)).getText().toString();
         String pass = ((EditText)findViewById(R.id.SignIn_password_edittext)).getText().toString();
         /********************************getting data -> close**********************************/
 

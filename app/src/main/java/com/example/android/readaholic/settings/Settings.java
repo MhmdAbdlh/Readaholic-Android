@@ -11,9 +11,16 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -27,20 +34,9 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.HttpURLConnection;
+
 public class Settings extends AppCompatActivity {
-
-    /**
-     * provides all possible scenarios that could happen while requesting the settings data
-     * ACCEPTED -> request and parse completed successfully
-     * CONNECTION_ERROR -> user internet not connected
-     * SERVER_ERROR -> error in server
-     */
-    public enum SettingsResponses{
-        ACCEPTED,
-        CONNECTION_ERROR,
-        SERVER_ERROR
-    }
-
     private SettingData mSettingData ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,24 +120,45 @@ public class Settings extends AppCompatActivity {
         Loading();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url ="https://api.myjson.com/bins/91qo2";
+
+        /*
+           String url = Urls.ROOT + Urls.showSetting + "?" + urlController.constructTokenParameters();
+        */
+
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        SettingsResponses parseResult =  parseSettingsItems(response);
-                        if(parseResult == SettingsResponses.ACCEPTED) {
+                        boolean parseResult =  parseSettingsItems(response);
+                        if(parseResult == true) {
                             loadLayout();
                             noErrors();
                         }
-                        else if(parseResult == SettingsResponses.SERVER_ERROR) {
-                            error("Server error");
+                        else if(parseResult == false) {
+                            error("Parsing error! Please try again after some time!!");
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error("Connection error");
+
+                //checking what caused the error providing the user with appropriate message
+                String message = null;
+
+                if (error instanceof NetworkError || error instanceof NoConnectionError
+                        || error instanceof TimeoutError) {
+                    message = "Connection error...Please check your connection!";
+                } else if (error instanceof ServerError) {
+                    message = "The server could not be found. Please try again after some time!!";
+                } else if (error instanceof ParseError) {
+                    message = "Parsing error! Please try again after some time!!";
+                } else if (error instanceof AuthFailureError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                }
+
+                //showing error message to the user
+                error(message);
             }
 
         });
@@ -156,11 +173,10 @@ public class Settings extends AppCompatActivity {
     /**
      * parsing all settings data and passing them to mSettingsData if succeeded
      * @param response the json response
-     * @return returns the parsing status whether it succeeded or if there was an error
-     * ACCEPTED-> the parsing succeeded
-     * SERVER_ERROR -> there was an error while parsing the data
+     * @return returns if the parsing completed successfully or not
+     *
      */
-    private SettingsResponses parseSettingsItems(String response){
+    private boolean parseSettingsItems(String response){
 
         try {
                 JSONObject root = new JSONObject(response);
@@ -183,12 +199,12 @@ public class Settings extends AppCompatActivity {
                                               ,whoCanSeeMyBirthDay,whoCanSeeMyLocation);
 
 
-                return SettingsResponses.ACCEPTED;
+                return true;
 
         }
         catch (JSONException E)
         {
-            return SettingsResponses.SERVER_ERROR;
+            return false;
         }
 
     }

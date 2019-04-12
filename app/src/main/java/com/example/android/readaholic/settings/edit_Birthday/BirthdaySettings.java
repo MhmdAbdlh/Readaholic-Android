@@ -16,15 +16,22 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.Main;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Countries;
+import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.settings.Settings;
 import com.example.android.readaholic.settings.edit_UserName.UserNameSettings;
 
@@ -34,26 +41,7 @@ import org.json.JSONObject;
 import java.util.Calendar;
 
 public class BirthdaySettings extends AppCompatActivity {
-    //TODO change the possible responses when the back end gives more info
-    /**
-     *All possible Change birrthday responses
-     * SUCCESS-> birthday changed successfully
-     */
-    enum ChangeBirthDayResponses {
-        SUCCESS,
-        FAILED,
-        SERVER_ERROR
-    }
-    //TODO change the possible responses when the back end gives more info
-    /**
-     *All possible Change who can see my birthday responses
-     * SUCCESS-> who can see my birth day changed successfully
-     */
-    enum ChangeWhoCanSeeMyBirthDayResponses {
-        SUCCESS,
-        FAILED,
-        SERVER_ERROR
-    }
+
 
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     @Override
@@ -236,30 +224,46 @@ public class BirthdaySettings extends AppCompatActivity {
     private void changeBirthDayRequest()
     {
         Loading();
+        Urls urlController = new Urls();
+
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://api.myjson.com/bins/91qo2";
+        String url = Urls.ROOT + Urls.CHANGE_BIRTHDAY + "?" + urlController.constructTokenParameters()
+                   +"&" + urlController.getChangeBirthdayParameters();
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        ChangeBirthDayResponses result = parseBirthDayResponse(response);
-                        if(result == ChangeBirthDayResponses.SUCCESS) {
+                        boolean result = parseBirthDayResponse(response);
+                        if(result == true) {
 
                             Toast.makeText(BirthdaySettings.this, "Birthday saved successfully"
                                     , Toast.LENGTH_SHORT).show();
                         }
-                        else if(result == ChangeBirthDayResponses.FAILED) {
-                            error("Saving failed");
-
-                        } else if(result == ChangeBirthDayResponses.SERVER_ERROR) {
-                            error("Server error");
+                        else {
+                            error("Parsing error! Please try again after some time!!");
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error("Connection error");
+                //checking what caused the error providing the user with appropriate message
+                String message = null;
+
+                if (error instanceof NetworkError || error instanceof NoConnectionError
+                        || error instanceof TimeoutError) {
+                    message = "Connection error...Please check your connection!";
+                } else if (error instanceof ServerError) {
+                    message = "The server could not be found. Please try again after some time!!";
+                } else if (error instanceof ParseError) {
+                    message = "Parsing error! Please try again after some time!!";
+                } else if (error instanceof AuthFailureError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                }
+
+                //showing error message to the user
+                error(message);
+
 
             }
 
@@ -274,32 +278,49 @@ public class BirthdaySettings extends AppCompatActivity {
      */
     private void changeWhoCanSeeMyBirthDayRequest()
     {
+        Urls urlController = new Urls();
         Loading();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://api.myjson.com/bins/91qo2";
+        //constructing the url
+        String url = Urls.ROOT + Urls.WHO_CAN_SEE_MY_BIRTHDAY + "?" + urlController.constructTokenParameters()
+                   + "&" + urlController.getWhoCanSeeMyBirthdayParameters();
+
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        ChangeWhoCanSeeMyBirthDayResponses result = parseWhoCanSeeMyBirthDayResponse(response);
-                        if(result == ChangeWhoCanSeeMyBirthDayResponses.SUCCESS) {
+                        boolean result = parseWhoCanSeeMyBirthDayResponse(response);
+                        if(result == true) {
 
                             Toast.makeText(BirthdaySettings.this
                                     ,"Who can see my birthday saved successfully"
                                     , Toast.LENGTH_SHORT).show();
                         }
-                        else if(result == ChangeWhoCanSeeMyBirthDayResponses.FAILED) {
-                            error("Saving failed");
-
-                        } else if(result == ChangeWhoCanSeeMyBirthDayResponses.SERVER_ERROR) {
-                            error("Server error");
+                        else{
+                            error("Parsing error! Please try again after some time!!");
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error("Connection error");
+                //checking what caused the error providing the user with appropriate message
+                String message = null;
+
+                if (error instanceof NetworkError || error instanceof NoConnectionError
+                        || error instanceof TimeoutError) {
+                    message = "Connection error...Please check your connection!";
+                } else if (error instanceof ServerError) {
+                    message = "The server could not be found. Please try again after some time!!";
+                } else if (error instanceof ParseError) {
+                    message = "Parsing error! Please try again after some time!!";
+                } else if (error instanceof AuthFailureError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                }
+
+                //showing error message to the user
+                error(message);
+
 
             }
 
@@ -315,48 +336,48 @@ public class BirthdaySettings extends AppCompatActivity {
     /**
      * getting the response of changing the birth day
      * @param response
-     * @return SUCCESS -> if the name changed successfully (status = true)
-     *         FAILED -> if there was
+     * @return true -> if the name changed successfully (status = true)
+     *         false -> if there was
      *
      */
-    private ChangeBirthDayResponses parseBirthDayResponse(String response)
+    private boolean parseBirthDayResponse(String response)
     {
         try {
             JSONObject root = new JSONObject(response);
             if (root.getString("status").equals("true") ) {
 
-                return ChangeBirthDayResponses.SUCCESS;
+                return true;
             }
-            else return ChangeBirthDayResponses.FAILED;
+            else return false;
 
         }
         catch (JSONException E)
         {
-            return ChangeBirthDayResponses.SERVER_ERROR;
+            return false;
         }
     }
 
     /**
      * getting the response of changing the user name
      * @param response
-     * @return SUCCESS -> if the name changed successfully (status = true)
-     *         FAILED -> if there was
+     * @return true -> if the name changed successfully (status = true)
+     *         false -> if there was
      *
      */
-    private ChangeWhoCanSeeMyBirthDayResponses parseWhoCanSeeMyBirthDayResponse(String response)
+    private boolean parseWhoCanSeeMyBirthDayResponse(String response)
     {
         try {
             JSONObject root = new JSONObject(response);
             if (root.getString("status").equals("true") ) {
 
-                return ChangeWhoCanSeeMyBirthDayResponses.SUCCESS;
+                return true;
             }
-            else return ChangeWhoCanSeeMyBirthDayResponses.FAILED;
+            else return false;
 
         }
         catch (JSONException E)
         {
-            return ChangeWhoCanSeeMyBirthDayResponses.SERVER_ERROR;
+            return false;
         }
     }
 

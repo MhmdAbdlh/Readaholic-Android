@@ -33,7 +33,7 @@ protected var shelvetype:Int?=null
 
 
 
-    inner class BookistAdapter(): BaseAdapter()
+     inner class BookistAdapter(): BaseAdapter()
     {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
