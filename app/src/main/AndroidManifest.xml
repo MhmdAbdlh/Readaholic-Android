@@ -15,6 +15,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Editreview"></activity>
         <activity android:name=".myshelves.BookShelves" />
+        <activity android:name=".explore.ExploreActivity"
+            android:theme="@style/AppTheme.NoActionBar" ></activity>
         <activity android:name=".settings.edit_Location.LocationSettings" />
         <activity android:name=".settings.edit_Birthday.BirthdaySettings" />
         <activity android:name=".settings.edit_UserName.UserNameSettings" />

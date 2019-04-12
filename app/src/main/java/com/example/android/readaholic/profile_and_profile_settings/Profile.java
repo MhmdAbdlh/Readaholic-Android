@@ -1,6 +1,7 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
@@ -20,8 +21,22 @@ public class Profile extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity__profile);
-            getSupportFragmentManager().beginTransaction().add(R.id.ProfileLayout,new ProfileFragment(),"profileFragment").commit();
 
+                Bundle bundle = new Bundle();
+                bundle = getIntent().getExtras();
+                int user_id;
+                if(bundle == null)
+                {
+                    user_id = 0;
+                }
+                else {
+                    user_id = bundle.getInt("user-idFromFollowingList");
+                }
+                Fragment profile = new ProfileFragment();
+                Bundle bundle2 = new Bundle();
+                bundle2.putInt("user-id",user_id);
+                profile.setArguments(bundle2);
+                getSupportFragmentManager().beginTransaction().add(R.id.ProfileLayout,profile, "profileFragment").commit();
     }
 
     /**

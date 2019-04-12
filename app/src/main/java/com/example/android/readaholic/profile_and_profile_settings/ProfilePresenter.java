@@ -5,6 +5,8 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.example.android.readaholic.VolleyHelper.volleyRequestHelper;
 
+import java.util.ArrayList;
+
 /**
  * Profile Presenter Layer.
  * @author Hossam ahmed
@@ -34,11 +36,12 @@ public class ProfilePresenter {
      * @param url String of endpoint of api
      * @return user object holding userdata
      */
-    public Users fetchData(String url)
+    public ArrayList<Users> fetchData(String url)
     {
+        ArrayList<Users> users = new ArrayList<>();
         volleyRequestHelper =new volleyRequestHelper(context);
-        volleyRequestHelper.JsonObjectRequest("UsersRequest",url,null, Request.Method.GET,false);
-        return volleyRequestHelper.getmUser();
+        users =  volleyRequestHelper.JsonObjectRequest("ShowProfile",url,null, Request.Method.GET,false);
+        return users;
     }
 
     /**

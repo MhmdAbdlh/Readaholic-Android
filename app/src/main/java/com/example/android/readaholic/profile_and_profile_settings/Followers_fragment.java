@@ -18,12 +18,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.android.readaholic.R;
+import com.example.android.readaholic.contants_and_static_data.Urls;
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -41,7 +41,6 @@ public class Followers_fragment extends Fragment {
      RecyclerView.LayoutManager layoutManager;
      List<String> mUsers;
      TextView mNotAvaliable ;
-     ImageLoader mImageLoader;
      RequestQueue mRequestQueue;
      View view;
      int FollowingNumber;
@@ -103,10 +102,9 @@ public class Followers_fragment extends Fragment {
         //TextView FollowingNumber = (TextView)view.findViewById(R.id.FollowersFragment_FollowingNumber_TextView);
         //FollowingNumber.setText(FollowingNumber +" Following");
 
-/*
-        String url = "https://api.myjson.com/bins/fjksu";
-        HTTPRequest(url);
-       */
+
+
+
 
         TextView followersTextView = (TextView) view.findViewById(R.id.FollowersFragment_FollowersNumber_TextView);
         followersTextView.setOnClickListener(new View.OnClickListener()
@@ -136,27 +134,7 @@ public class Followers_fragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ProfileLayout, FollowersAndFollowing,"FollowersFragment").addToBackStack("FollowersToFollowersAndFollowing").commit();
             }
         });
-
-
-        if(mUsers==null)
-        {
-            mNotAvaliable.setVisibility(View.VISIBLE);
-        }
-        else {
-
-            recyclerView = (RecyclerView) view.findViewById(R.id.FollowersFragment_FollowersList_RecyclerView);
-            // use a linear layout manager
-            layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
-            recyclerView.setLayoutManager(layoutManager);
-
-     //       recyclerView.setHasFixedSize(true);
-
-            // specify an adapter
-            mAdapter = new FollowersAdapter(getActivity(),mUsers);
-            recyclerView.setAdapter(mAdapter);
-            mAdapter.notifyDataSetChanged();
-        }
-
+        ExtractFollowings();
         return view;
     }
 
@@ -168,65 +146,48 @@ public class Followers_fragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mUsers = new ArrayList<>();
-
-
-
-
-        JSONObject response = null;
-        try {
-            response = new JSONObject(FollowesResponse);
-        } catch (JSONException e) {
-            Log.e("First JSON OBj","Error in first json object");
-        }
-        JSONObject GoodReadsResponse = response.optJSONObject("GoodreadsResponse");
-        JSONObject Following = GoodReadsResponse.optJSONObject("following");
-        JSONArray User = null;
-        try {
-            User = Following.getJSONArray("user");
-        } catch (JSONException e) {
-            Log.e("JsonARRRAY ERROR","error in json array user");
-        }
-        mUsers = new ArrayList<>();
-
-        FollowingNumber = User.length();
-        Log.e("Following number",User.length()+"");
-        for(int i=0;i<User.length();i++){
-        try {
-            String image = User.getJSONObject(i).optString("image_url");
-            mUsers.add(image);
-        } catch (JSONException e) {
-            Log.e("User Error","ERRRRRRRORRRRRRRRRRRRRR");
-        }
-
-        }
-
 
         }
 
 
 
     /**
-     * function to do the communication process giving url
-     * @param url string url to determine the endpoint.
-     *
+     * function to do the communication process
      */
-    private void HTTPRequest(String url)
+    private void ExtractFollowings()
     {
-
-        DiskBasedCache cache = new DiskBasedCache(getActivity().getCacheDir(),1024*1024);
+        DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(),1024*1024);
         BasicNetwork network = new BasicNetwork(new HurlStack());
         mRequestQueue = new RequestQueue(cache,network);
         mRequestQueue.start();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new com.android.volley.Response.Listener<JSONObject>() {
+        String mRequestUrl =  Urls.ROOT + "/api/following?"+"token="+
+                UserInfo.sToken+"&type="+ UserInfo.sTokenType;
+        mUsers = new ArrayList<>();
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null, new com.android.volley.Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                ExtractUser(response);
+
+                JSONArray followings = response.optJSONArray("followings");
+                if (followings == null) {
+                    mUsers = null ;
+                } else {
+                    for (int i = 0; i < followings.length(); i++) {
+                        String userImageUrl = null;
+                        userImageUrl =(followings.optJSONObject(i).optString("image_link"));
+                        mUsers.add(userImageUrl);
+                    }
+                    UpdateList();
+                }
+
+                mRequestQueue.stop();
 
             }
-        }, new Response.ErrorListener() {
+        },
+                new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                mUsers = null;
                 Log.e("Volly ERROR","Error in volley request");
 
             }
@@ -234,23 +195,29 @@ public class Followers_fragment extends Fragment {
         mRequestQueue.add(jsonObjectRequest);
 
     }
-
-    /**
-     * function to Extract data of user from json response
-     * @param Response json object to root tree that contain the user data
-     *
-     */
-    private void ExtractUser(JSONObject Response)
+private void UpdateList()
+{
+    if(mUsers.isEmpty())
     {
+        Log.e("not available ","not available in following and followers ");
+        mNotAvaliable.setVisibility(View.VISIBLE);
+    }
+    else {
 
-        JSONObject GoodReadsResponse = Response.optJSONObject("GoodreadsResponse");
-        JSONArray User = GoodReadsResponse.optJSONArray("user");
-        for(int i=0;i<User.length();i++)
-        {
-            mUsers.set(i,User.optJSONObject(i).optString("image_url"));
-            Log.e("FollowersFragment",mUsers.get(i));
-        }
+        recyclerView = (RecyclerView) view.findViewById(R.id.FollowersFragment_FollowersList_RecyclerView);
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+        recyclerView.setLayoutManager(layoutManager);
+
+        //       recyclerView.setHasFixedSize(true);
+
+        // specify an adapter
+        mAdapter = new FollowersAdapter(getContext(),mUsers);
+        mAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(mAdapter);
 
     }
 
+
+}
 }

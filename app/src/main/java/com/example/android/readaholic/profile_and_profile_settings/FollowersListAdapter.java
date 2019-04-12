@@ -82,13 +82,7 @@ public class FollowersListAdapter extends RecyclerView.Adapter<FollowersListAdap
      */
     @Override
         public void onBindViewHolder(@NonNull FollowersListAdapter.MyViewHolder myViewHolder, int i) {
-            if(mUsers.get(i).getmUserImageUrl() == null)
-            {
-                myViewHolder.userImageView.setImageResource(R.drawable.reader);
-            }
-            else {
-                Picasso.get().load(mUsers.get(i).getmUserImageUrl()).transform(new CircleTransform()).into(myViewHolder.userImageView);
-            }
+            Picasso.get().load(mUsers.get(i).getmUserImageUrl()).transform(new CircleTransform()).into(myViewHolder.userImageView);
             myViewHolder.userNameTextView.setText( mUsers.get(i).getmUserName());
             myViewHolder.userBooksNumberTextView.setText( mUsers.get(i).getmNumberOfFollowers()+" Books");
             //following button todo.

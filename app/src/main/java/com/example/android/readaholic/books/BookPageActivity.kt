@@ -1,31 +1,30 @@
 package com.example.android.readaholic.books
 
+//import com.daimajia.androidanimations.library.Techniques
+//import com.daimajia.androidanimations.library.YoYo
 import android.content.Intent
 import android.graphics.Color
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import com.example.android.readaholic.R
-import android.widget.Toast
-import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
+import com.example.android.readaholic.R
 import com.example.android.readaholic.contants_and_static_data.Urls
-import com.example.android.readaholic.contants_and_static_data.UserInfo
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_book_page.*
 import org.json.JSONObject
-
+import com.android.volley.Request
+import com.android.volley.Response
 /**
  * This Activity is for showing book information
  *
  */
-class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener {
+class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListener {
     override fun onNothingSelected(parent: AdapterView<*>?) {
     }
 
@@ -47,7 +46,7 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_page)
-        var spinneradapter:ArrayAdapter<CharSequence> =ArrayAdapter.createFromResource(this, R.array.Shelves,android.R.layout.simple_spinner_item)
+        var spinneradapter: ArrayAdapter<CharSequence> =ArrayAdapter.createFromResource(this, R.array.Shelves,android.R.layout.simple_spinner_item)
         spinneradapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         activitybook_sheleve_spinner.adapter=spinneradapter
         activitybook_sheleve_spinner.onItemSelectedListener=this
@@ -104,8 +103,7 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
         var intent=Intent(this, BookReviewsActivity::class.java)
         startActivity(intent)
     }
-    fun animate()
-    {
+    fun animate() {
         YoYo.with(Techniques.FadeIn)
                 .duration(1000)
                 .playOn(writeareviewbtn);
@@ -116,12 +114,12 @@ class BookPageActivity : AppCompatActivity() ,AdapterView.OnItemSelectedListener
     fun feedBookInfoFromApi(BookId:Int)
     {
         val queue = Volley.newRequestQueue(this)
-        var url =Urls.getShowBook(Cbookdata.bookid.toString())
+        var url = Urls.getShowBook(Cbookdata.bookid.toString())
         val stringRequest = StringRequest(Request.Method.GET, url,
                 Response.Listener<String> { response ->
                     whenconnection.visibility=View.VISIBLE
                     noconnection.visibility=View.GONE
-                    var jsonresponse=JSONObject(response)
+                    var jsonresponse= JSONObject(response)
                     feedFromApi(jsonresponse)
 
                 },

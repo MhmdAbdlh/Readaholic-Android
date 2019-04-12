@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
 
@@ -24,6 +25,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+
+import com.example.android.readaholic.explore.ExploreActivity;
 import com.example.android.readaholic.profile_and_profile_settings.FollowersAndFollowingFragment;
 import com.example.android.readaholic.profile_and_profile_settings.Profile;
 import com.example.android.readaholic.settings.Settings;
@@ -77,8 +80,18 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.mainsearch , menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-            //region Listeners
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+           //region Listeners
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -110,6 +123,10 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             case R.id.draw_Myshelves_menu:
                 getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
                         new ShelvesFragment()).commit();
+                break;
+            case R.id.draw_explore_menu:
+                Intent exploreIntent = new Intent(this, ExploreActivity.class);
+                startActivity(exploreIntent);
                 break;
 
 
@@ -206,6 +223,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 drawerLayout.setVisibility(View.VISIBLE);
             }
             //endregion
+
 
 
 

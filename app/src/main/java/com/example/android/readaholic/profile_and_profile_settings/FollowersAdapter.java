@@ -88,7 +88,6 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.MyVi
         // - get element from my dataset at this position
         // - replace the contents of the view with that element
         holder.viewGroup.removeAllViews();
-
        Picasso.get().load(mUsers.get(position)).transform(new CircleTransform()).into(holder.UserImageView);
         //((MyViewHolder)holder).UserImageView.setImageResource(R.drawable.reader);
         holder.viewGroup.addView(holder.UserImageView);
