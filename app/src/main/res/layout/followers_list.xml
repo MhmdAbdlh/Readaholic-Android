@@ -49,7 +49,7 @@
         android:layout_marginRight="16dp"
         android:text="following"
         android:textColor="@color/colorWhite"
-        android:textSize="14sp"
+        android:textSize="10sp"
         android:textStyle="bold"
         android:background="@drawable/followandunfollowbutton"
         />

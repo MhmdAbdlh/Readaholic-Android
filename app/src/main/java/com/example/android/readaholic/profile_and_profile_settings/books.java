@@ -37,7 +37,7 @@ public class books extends Fragment {
     private BooksListsAdapter mReadAdapter;
     private BooksListsAdapter2 mWantToReadAdapter;
     private BooksListsAdapter3 mCurrentlyReadingAdapter;
-    //public int NumberOfBooks;
+    public int NumberOfBooks;
     /**
      * onCreateView called when the view is created
      * @param inflater inflate the layout
@@ -51,8 +51,9 @@ public class books extends Fragment {
         // Inflate the layout for this fragment
          mView = inflater.inflate(R.layout.fragment_books, container, false);
 
-        //TextView BookNumber = (TextView)mView.findViewById(R.id.BookFragment_BookNumbers_TextView);
-        //BookNumber.setText(NumberOfBooks+" Books");
+         NumberOfBooks = getArguments().getInt("books-num");
+        TextView BookNumber = (TextView)mView.findViewById(R.id.BookFragment_BookNumbers_TextView);
+        BookNumber.setText(Integer.toString(NumberOfBooks)+" Books");
 
 
 

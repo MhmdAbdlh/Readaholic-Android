@@ -318,25 +318,13 @@ public class ProfileFragment extends Fragment {
         mUserName =(TextView)view.findViewById(R.id.ProfileActivity_UserName_TextView);
         mUserBookNumber = (TextView)view.findViewById(R.id.ProfileActivity_UserBooksNumber_TextView);
 
-            Picasso.get().load("https://s.gr-assets.com/assets/nophoto/user/" +
-                    "u_111x148-9394ebedbb3c6c218f64be9549657029.png").transform(new CircleTransform()).into(mUserImage);
-
-            mUser_Id = getArguments().getInt("user-id");
-            Log.e("userid",Integer.toString(mUser_Id));
-        requestProfileView(mUser_Id);
-
-
-        //Loading Fragments
-        loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId());
-        loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId());
-        loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId());
 ///////////////////////////////////////////////////////////////////////////////
         //Take user id when click in his name in Updates (user could be different from the current user)
-        Bundle bundle = this.getArguments();
+        /*Bundle bundle = this.getArguments();
         if (bundle != null) {
             int myInt = bundle.getInt("UserId", mUser_Id);
         }
-
+*/
         ///////////////////////////////////////////////////////////////////////////////////////////////
        /* arayOfUpdates = HomeFragment.onResposeAction(jsonFile);
         adapterForUpdatesList = new UpdatesAdapter(getContext(),arayOfUpdates);
@@ -368,7 +356,19 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState == null) {
+            if (getArguments() == null)
+                mUser_Id = 0;
+            else
+                mUser_Id = getArguments().getInt("user-id");
+            Log.e("userid", Integer.toString(mUser_Id));
+            requestProfileView(mUser_Id);
+        }
 
+    }
 
     /**
      * loadFragment function to initialize the Fragment
@@ -377,11 +377,21 @@ public class ProfileFragment extends Fragment {
      * to initialize the Fragment argument and replace FrameLayout with it.
      * and id to assign it to certain fragment layout.
      */
-    private void loadFragment(Fragment fragment,int ID) {
+    private void loadFragment(Fragment fragment,int ID,int userID) {
         // create a FragmentManager
         FragmentManager fm = getActivity().getSupportFragmentManager();
         // create a FragmentTransaction to begin the transaction and replace the Fragment
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putInt("user-id",userID);
+        if(ID == view.findViewById(R.id.Profile_Books_Fragment).getId())
+            bundle.putInt("books-num",mProfileUser.getmUsernumberOfBooks());
+        else if(ID == view.findViewById(R.id.Profile_Friends_Fragment).getId())
+        {
+            bundle.putInt("followers-num",mProfileUser.getmNumberOfFollowers());
+            bundle.putInt("followers-num",mProfileUser.getGetmNumberOfFolloweings());
+        }
+        fragment.setArguments(bundle);
         // replace the FrameLayout with new Fragment
         fragmentTransaction.add(ID, fragment);
         fragmentTransaction.commit(); // save the changes
@@ -405,13 +415,13 @@ public class ProfileFragment extends Fragment {
     public void requestProfileView(int user_id)
 {
     if(user_id != 0)
-    mRequestUrl = Urls.ROOT + "/api/showProfile?"+"id="+Integer.toString(user_id)+"&token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
+    mRequestUrl = Urls.SERVER_NUMBER +Urls.ROOT + "/api/showProfile?"+"id="+Integer.toString(user_id)+"&token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
     else
-        mRequestUrl = Urls.ROOT + "/api/showProfile?"+"token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
+        mRequestUrl = Urls.SERVER_NUMBER +Urls.ROOT  + "/api/showProfile?"+"token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
     mProfileUser = new Users();
-    DiskBasedCache cache = new DiskBasedCache(view.getContext().getCacheDir(), 1024 * 1024);
+    DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(), 1024 * 1024);
     BasicNetwork network = new BasicNetwork(new HurlStack());
     mRequestQueue = new RequestQueue(cache, network);
     mRequestQueue.start();
@@ -422,10 +432,17 @@ public class ProfileFragment extends Fragment {
             mProfileUser.setmUserName(Response.optString("name"));
             Log.e("Test" ,mProfileUser.getmUserName());
             mProfileUser.setmUserImageUrl(Response.optString("small_image_link"));
-            mProfileUser.setmUsernumberOfBooks(Response.optInt("books-count"));
-
+            mProfileUser.setmUsernumberOfBooks(Response.optInt("books_count"));
+            mProfileUser.setmNumberOfFollowers(Response.optInt("followers_count"));
+            mProfileUser.setGetmNumberOfFolloweings(Response.optInt("following_count"));
             Log.e("showprofileResponseName",mProfileUser.getmUserName());
             UpdateData(mProfileUser);
+
+            //Loading Fragments
+            loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId(),mUser_Id);
+            loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId(),mUser_Id);
+            loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId(),mUser_Id);
+
             mRequestQueue.stop();
         }
     }, new Response.ErrorListener() {
@@ -437,6 +454,7 @@ public class ProfileFragment extends Fragment {
             mRequestQueue.stop();
         }
     });
+
     mRequestQueue.add(jsonObjectRequest);
 
 }

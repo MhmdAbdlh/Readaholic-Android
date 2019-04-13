@@ -2,8 +2,6 @@ package com.example.android.readaholic.sign_in_up;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,7 +11,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,7 +20,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.Main;
 import com.example.android.readaholic.R;
-
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 
@@ -49,7 +45,7 @@ public class SignIn extends AppCompatActivity {
     {
         whileLoading();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = Urls.SERVER_NUMBER +Urls.ROOT + Urls.LOG_IN + "?email=zwiza@example.net&password=password";
+        String url = Urls.SERVER_NUMBER +Urls.ROOT + Urls.LOG_IN + "?email=zachariah72@example.net&password=password";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -259,14 +255,14 @@ public class SignIn extends AppCompatActivity {
 
                 //in case of connected to the server
                 /**************************server connected -> open***************************************/
-/*
+
                 if(validateFields()) {
                     //hides the keyboard when user clicks on sign in
                     hideSoftKeyboard(SignIn.this, v);
                     //checking if the user data is correct or not
                     getUserData();
                 }
-*/
+
                /***************************server connected -> close***************************************/
 
 

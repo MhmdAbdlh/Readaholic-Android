@@ -55,6 +55,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             @Override
             public void onClick(View v) {
                 Intent profileIntent = new Intent(v.getContext(), Profile.class);
+                profileIntent.putExtra("user-idFromFollowingList",0);
                 startActivity(profileIntent);
             }
         });

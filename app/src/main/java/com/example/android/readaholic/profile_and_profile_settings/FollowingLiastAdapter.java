@@ -96,6 +96,7 @@ public class FollowingLiastAdapter extends RecyclerView.Adapter<FollowingLiastAd
         myViewHolder.userNameTextView.setText( mUsers.get(i).getmUserName());
         myViewHolder.userBooksNumberTextView.setText( mUsers.get(i).getmUsernumberOfBooks()+" Books");
 
+
     }
 
     /**
