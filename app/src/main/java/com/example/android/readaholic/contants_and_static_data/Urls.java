@@ -23,6 +23,8 @@ public class Urls {
 
     //Login url
     public static String LOG_IN = "/api/login";
+    //Logout url
+    public static String LOG_OUT = "/api/logout";
     //sign up url
     public static String SIGN_UP = "/api/signup";
     //show settings url
