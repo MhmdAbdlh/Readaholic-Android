@@ -2,7 +2,6 @@ package com.example.android.readaholic.books
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.support.annotation.RequiresPermission
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.AdapterView
@@ -17,9 +16,6 @@ import kotlinx.android.synthetic.main.activity_book_page.*
 import org.json.JSONObject
 import com.android.volley.Request
 import com.android.volley.Response
-import com.example.android.readaholic.Editreview
-import com.google.gson.JsonObject
-import kotlinx.android.synthetic.main.activity_book_reviews.*
 
 
 /**
