@@ -486,7 +486,7 @@ public class HomeFragment extends Fragment {
         Toast.makeText(getContext(),"salma",Toast.LENGTH_SHORT).show();
 
     }
-    
+
     /**
      * request the json file of updates list to be displayed.
      * in the response we call the function that create the array of updates
@@ -717,6 +717,12 @@ public class HomeFragment extends Fragment {
             }
         }
         return arrayOfUpadates;
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        request();
     }
 
 

@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -40,6 +41,7 @@ import com.example.android.readaholic.sign_in_up.Start;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 
 import com.example.android.readaholic.myshelves.ShelvesFragment;
+import com.squareup.picasso.Picasso;
 
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,6 +49,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     private long mBackPressedTime;
     private DrawerLayout drawer;
     private ImageView ProfileImage;
+    private TextView mUsername;
     private TabLayout mTabs;
     private ViewPager mPages;
     @Override
@@ -62,6 +65,9 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
         View Header = ((NavigationView)findViewById(R.id.Main_navView)).getHeaderView(0);
         ProfileImage = (ImageView)Header.findViewById(R.id.NavHeader_ProfilePhoto_ImageView);
+        mUsername = (TextView) Header.findViewById(R.id.NavHeader_Profile_TextView);
+        Picasso.get().load(UserInfo.sImageUrl).into(ProfileImage);
+        mUsername.setText(UserInfo.sName);
         ProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

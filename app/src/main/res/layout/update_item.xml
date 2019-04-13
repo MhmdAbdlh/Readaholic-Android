@@ -313,6 +313,9 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/UpdatesActivity_reviewinrate_textview"
             android:textSize="14sp" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp" />
 
         <LinearLayout
             android:orientation="horizontal"

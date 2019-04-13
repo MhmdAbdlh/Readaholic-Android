@@ -30,6 +30,8 @@ import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.books.BookPageActivity;
 
 import com.example.android.readaholic.R;
+import com.example.android.readaholic.books.Cbookdata;
+import com.example.android.readaholic.books.Creviewdata;
 import com.example.android.readaholic.books.ReviewActivity;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
@@ -295,7 +297,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
              */
             public void onClick(View v){
                 requestshelf(2,Item.getmBookId());
-                shelfview("WANT TO READ");
+                shelfview(1);
             }
         });
 
@@ -335,7 +337,8 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
                     }
                 */
                 Intent intent = new Intent (v.getContext(), BookPageActivity.class);
-                intent.putExtra("BookID",Item.getmBookId());
+                Cbookdata.INSTANCE.setBookid(Item.getmBookId());
+                //intent.putExtra("BookID",Item.getmBookId());
                 v.getContext().startActivity(intent);
             }
         });
@@ -346,12 +349,17 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
              */
             public void onClick(View v){
                 if(Item.getmTypeOfUpdates() == 0 ) {
-                    Fragment fragment = new UpdatePageFragment();
+                    /*Fragment fragment = new UpdatePageFragment();
                     ((FragmentActivity)v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
                             fragment).commit();
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("UpdateItem", Item);
-                    fragment.setArguments(bundle);
+                    fragment.setArguments(bundle);*/
+                    Intent i = new Intent(v.getContext(), ReviewActivity.class);
+                    Creviewdata.INSTANCE.setReviewid(Item.getmReviewID());
+                    //i.putExtra("ReviewID",Item.getmReviewID());
+                    v.getContext().startActivity(i);
+
                 }else if(Item.getmTypeOfUpdates() == 2){
                     Fragment fragment = new ProfileFragment();
                     ((FragmentActivity)v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
@@ -401,7 +409,8 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
              */
             public void onClick(View v) {
                 Intent i = new Intent(v.getContext(), ReviewActivity.class);
-                i.putExtra("ReviewID",Item.getmReviewID());
+                Creviewdata.INSTANCE.setReviewid(Item.getmReviewID());
+                //i.putExtra("ReviewID",Item.getmReviewID());
                 v.getContext().startActivity(i);
 
                 //we already in update page if it equal 1
@@ -426,11 +435,11 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
 
                 boolean flag = true;
                 String selecteditem = adapter.getItemAtPosition(i).toString();
+                shelfview(1);
                 if (selecteditem == "WANT TO READ") {
-                    // requestshelf(2,Item.getmBookId());
-                    //shelfview(selecteditem);
+                    flag = requestshelf(2,Item.getmBookId());
+                    shelfview(2);
                 } else if (selecteditem == "CURRENTLY READING") {
-
                     flag = requestshelf(1, Item.getmBookId());
                     shelfview(1);
                 } else if (selecteditem == "READ") {
@@ -438,6 +447,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
                     shelfview(0);
                 }
 
+                Toast.makeText(getContext(), selecteditem, Toast.LENGTH_LONG).show();
                 //or this can be also right: selecteditem = level[i];
                 if (flag == false) {
                     Toast.makeText(getContext(), "Wrrrrrong", Toast.LENGTH_LONG).show();
@@ -457,62 +467,6 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
     }
     public boolean requestshelf(final int shelf, final int bookid){
         final boolean[] flag = {true};
-      /*  RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = Urls.ROOT+"/api/shelf/add_book?shelf_id="+shelf+"&book_id=4"+"&token="+ UserInfo.sToken +"&type="+UserInfo.sTokenType;
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
-                        JSONObject r = null;
-                        try {
-                            r = new JSONObject(response);
-                            if(r.getString("status") == "false"){
-                                flag[0] = false;
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
-            }
-        });*/
-
-        // Add the request to the RequestQueue.
-        //queue.add(stringRequest);
-       /* RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = Urls.ROOT+"/api/shelf/add_book";
-        StringRequest sr = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        }){
-            @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("shelf_id",String.valueOf(shelf));
-                params.put("book_id",String.valueOf(bookid));
-                params.put("token", UserInfo.sToken);
-                params.put("type",UserInfo.sTokenType);
-
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<String, String>();
-                return params;
-            }
-        };
-        queue.add(sr);*/
 
         StringRequest request = new StringRequest(Request.Method.POST, Urls.ROOT+"/api/shelf/add_book", new Response.Listener<String>() {
             @Override
@@ -531,9 +485,6 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Content-Type", "application/json");
-                params.put("token", UserInfo.sToken);
-                params.put("type", UserInfo.sTokenType);
                 return params;
             }
 
@@ -543,6 +494,8 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("shelf_id",String.valueOf(shelf));
                 params.put("book_id",String.valueOf(bookid));
+                params.put("token", UserInfo.sToken);
+                params.put("type", UserInfo.sTokenType);
                 return params;
             }
         };
@@ -551,11 +504,6 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
         return flag[0];
     }
 
-    public void shelfview(String shelf){
-        wantToRead.setBackgroundResource(R.color.colorPrimary);
-        wantToRead.setTextColor(Color.BLACK);
-        wantToRead.setText(shelf);
-    }
     @SuppressLint("ResourceAsColor")
     public void shelfview(int shelf){
         if(shelf == 3){

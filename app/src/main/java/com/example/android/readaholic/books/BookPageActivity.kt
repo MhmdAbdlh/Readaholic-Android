@@ -52,8 +52,8 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
         activitybook_sheleve_spinner.onItemSelectedListener=this
         /////////////////////////////
         bookinfo= BookPageInfo()
-        var intent:Intent= Intent()
-         Cbookdata!!.bookid=intent.getIntExtra("BookId",2)
+       /* var intent:Intent= Intent()
+         Cbookdata!!.bookid=intent.getIntExtra("BookId",2)*/
         bookreview= ArrayList()
         feedBookInfoFromApi(Cbookdata.bookid)
         rateittext.setOnClickListener {
