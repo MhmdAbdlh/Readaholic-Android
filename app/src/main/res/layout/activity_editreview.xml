@@ -7,30 +7,47 @@
     android:orientation="vertical"
     tools:context=".Editreview" >
 
+
+    <TextView
+        android:id="@+id/rateittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:text="Rate it"
+        android:textSize="30sp" />
+
     <RatingBar
-        android:id="@+id/editratingbar"
+        android:id="@+id/raitebookstarts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:numStars="5"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:progressTint="@color/colorGoled"
-        android:rating="0" />
+        android:rating="0"
+        android:stepSize="1" />
 
     <EditText
-        android:id="@+id/reviewbody"
+        android:id="@+id/writerreview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:gravity="center_horizontal"
         android:hint="Enter Your Review here"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:paddingBottom="10dp"
+        android:textSize="24sp" />
 
     <Button
         android:id="@+id/savereview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_rounded_corners_brownish"
-        android:onClick="saveReview"
+        android:onClick="sendReview"
+        android:paddingTop="10dp"
         android:text="Save Review"
         android:textSize="24sp" />
 </LinearLayout>
