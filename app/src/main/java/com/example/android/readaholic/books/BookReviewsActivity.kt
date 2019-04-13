@@ -2,7 +2,6 @@ package com.example.android.readaholic.books
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.content.ContextCompat.startActivity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
@@ -11,7 +10,6 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.android.readaholic.Editreview
 import com.example.android.readaholic.R
 import com.example.android.readaholic.contants_and_static_data.Urls
 import com.example.android.readaholic.profile_and_profile_settings.Profile
@@ -156,7 +154,7 @@ fun feedReviewDataFromURL(bookid:Int)
 
     }
 
-   
+
     fun likeservicies(reviewid:Int)
     {
 

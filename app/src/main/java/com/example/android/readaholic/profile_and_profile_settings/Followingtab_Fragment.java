@@ -100,8 +100,6 @@ public class Followingtab_Fragment extends Fragment {
         mNotAvaliableTextView = (TextView) view.findViewById(R.id.Followingtab_fragment_NotAvaliableTextView);
         mNotAvaliableTextView.setVisibility(View.INVISIBLE);
 
-        //TextView FollowingNumber = (TextView)view.findViewById(R.id.Followingtab_fragment_Followings_TextView);
-        //FollowingNumber.setText(FollowingNumber+" Following");
 
         Bundle bundle = getArguments();
         if(bundle == null)
@@ -139,7 +137,7 @@ public class Followingtab_Fragment extends Fragment {
                 UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
         else
-            mRequestUrl = Urls.ROOT  + "/api/following?id="+Integer.toString(id)+"&token="+
+            mRequestUrl = Urls.ROOT  + "/api/following?user_id="+Integer.toString(id)+"&token="+
                     UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
         //showSimpleProgressDialog(getContext(),"Loading.....","Loading Followings",false);
@@ -159,9 +157,9 @@ public class Followingtab_Fragment extends Fragment {
                                 user.setmUserName(followings.optJSONObject(i).optString("name"));
                                 user.setmUserId(followings.optJSONObject(i).optInt("id"));
                                 user.setmUserImageUrl(followings.optJSONObject(i).optString("image_link"));
+                                user.setmFollowerState(true);
                                 mUser.add(user);
                             }
-                            Log.e("following Test",mUser.get(1).getmUserName());
                             UpdateList();
                         }
 
@@ -203,6 +201,7 @@ public class Followingtab_Fragment extends Fragment {
                    int userId = mUser.get(position).getmUserId();
                     Intent profileIntent = new Intent(getContext(), Profile.class);
                     profileIntent.putExtra("user-idFromFollowingList",userId);
+                    profileIntent.putExtra("followingState",true);
                     Log.e("Followng_tab","following tab user id"+Integer.toString(userId));
                     startActivity(profileIntent);
                 }

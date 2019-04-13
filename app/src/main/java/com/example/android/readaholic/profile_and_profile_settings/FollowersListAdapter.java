@@ -11,8 +11,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
 import com.example.android.readaholic.CircleTransform;
 import com.example.android.readaholic.R;
+import com.example.android.readaholic.contants_and_static_data.Urls;
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -25,6 +31,27 @@ public class FollowersListAdapter extends RecyclerView.Adapter<FollowersListAdap
         private List<Users> mUsers;
         private Context mcontext;
         private FollowersListAdapter.customItemCLickLisenter customItemCLickLisenter;
+        private RequestQueue mRequestQueue;
+        private String mRequestUrl;
+        private int user_id;
+
+    /**
+     * function post the state of following of users.
+     */
+    public void PostFollowAndFollowing()
+    {
+        if(user_id != 0)
+            mRequestUrl = Urls.ROOT + "/api/showProfile?"+"id="+Integer.toString(user_id)+"&token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
+
+        else
+            mRequestUrl = Urls.ROOT  + "/api/showProfile?"+"token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
+
+        DiskBasedCache cache = new DiskBasedCache(mcontext.getCacheDir(), 1024 * 1024);
+        BasicNetwork network = new BasicNetwork(new HurlStack());
+        mRequestQueue = new RequestQueue(cache, network);
+        mRequestQueue.start();
+
+    }
 
     /**
      * MyViewHolder classe to hold the view elements
@@ -147,3 +174,4 @@ public class FollowersListAdapter extends RecyclerView.Adapter<FollowersListAdap
         }
 
     }
+

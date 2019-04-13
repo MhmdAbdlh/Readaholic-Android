@@ -11,6 +11,7 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.android.readaholic.books.Cbookdata;
 import com.example.android.readaholic.profile_and_profile_settings.Users;
 
 import org.json.JSONArray;
@@ -387,6 +388,8 @@ public class volleyRequestHelper {
         if(Following.length() ==0)
         {
             mUsers = null;
+
+
         }
         else
             {

@@ -28,6 +28,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.home.HomeFragment;
 import com.example.android.readaholic.home.NotificationFragment;
 import com.example.android.readaholic.home.ViewPageAdapter;
@@ -140,13 +141,14 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 startActivity(intent);
                 break;
             case R.id.draw_logout_menu:
-                /*
+
                 logoutrequest();
-                */
+                /*
                 //moc
                 Intent startIntent = new Intent(this,Start.class);
                 startActivity(startIntent);
                 finish();
+                */
 
                 break;
 
@@ -197,12 +199,13 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
       public void logoutrequest() {
 
                 loading();
+                Urls urlController = new Urls(this,this);
                 RequestQueue queue = Volley.newRequestQueue(this);
-                String url ="https://api.myjson.com/bins/1hdk";
+                String url = Urls.ROOT + Urls.LOG_OUT + "?" +urlController.constructTokenParameters();
                 int statusCode;
                 // Request a string response from the provided URL.
 
-            StringRequest stringRequest = new StringRequest(Request.Method.GET,
+            StringRequest stringRequest = new StringRequest(Request.Method.DELETE,
                     url,
                     new Response.Listener<String>() {
                         @Override
@@ -217,7 +220,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             showLayout();
-                            Toast.makeText(Main.this, "Connection error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Main.this, "Logout failed Please try again", Toast.LENGTH_SHORT).show();
                         }
                     }) ;
 

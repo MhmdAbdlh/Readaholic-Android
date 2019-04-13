@@ -1,16 +1,17 @@
 package com.example.android.readaholic;
 
-import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.example.android.readaholic.VolleyHelper.volleyRequestHelper;
 import com.example.android.readaholic.profile_and_profile_settings.ProfileFragment;
 import com.example.android.readaholic.profile_and_profile_settings.Users;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
-import org.robolectric.util.FragmentTestUtil;
+import org.junit.runners.BlockJUnit4ClassRunner;
 
 import static org.junit.Assert.assertEquals;
 
@@ -19,18 +20,36 @@ import static org.junit.Assert.assertEquals;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-@RunWith(RobolectricTestRunner.class)
+@RunWith(BlockJUnit4ClassRunner.class)
+
 public class ExampleUnitTest  {
 
 private Users user;
+private ProfileFragment profile;
 private volleyRequestHelper volleyRequestHelper;
+JSONObject response;
+String ProfileResponse="{\"id\":1,\"name\":\"test\",\"username\":\"test\",\"email\":\"test@yahoo.com\",\"email_verified_at\":null,\"link\":null,\"image_link\":\"default.jpg\",\"small_image_link\":null,\"about\":null,\"age\":21,\"gender\":\"female\",\"country\":\"Canada\",\"city\":\"Atawwa\",\"joined_at\":\"2019-04-13\",\"followers_count\":-2,\"following_count\":-1,\"rating_avg\":2,\"rating_count\":4,\"book_count\":0,\"birthday\":\"1998-02-21\",\"see_my_birthday\":\"Everyone\",\"see_my_country\":\"Everyone\",\"see_my_city\":\"Everyone\",\"created_at\":null,\"updated_at\":null}";
+
 @Before
 public void init()
 {
     user = new Users();
-    volleyRequestHelper = new volleyRequestHelper();
-
+    profile = new ProfileFragment();
+    try {
+        response = new JSONObject(ProfileResponse);
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
 }
+
+
+@Test
+public void testExtractUserInProfileFragmentUserName()
+{
+    user = profile.ExtractUser(response);
+    assertEquals("test",user.getmUserName());
+}
+
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
@@ -81,18 +100,21 @@ public void init()
     }
 
     @Test
-    public void testVolleyUserName()
-    {
-        Users testUser = new Users();
-        testUser = volleyRequestHelper.;
-
-        user.setmUserName("Hossam Ahmed");
+    public void testVolleyUserName() {
+        try {
+            response = new JSONObject(ProfileResponse);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Users testUser ;
+        testUser = profile.ExtractUser(response);
+        Log.e("unitTesting",response.toString());
+        user.setmUserName("TheLeader");
         assertEquals(user.getmUserName(),testUser.getmUserName());
-
     }
 
 
-
+/*
     @Test
     public void testVolleyUserImageView()
     {
@@ -116,5 +138,5 @@ public void init()
 
 
 
-
+*/
 }

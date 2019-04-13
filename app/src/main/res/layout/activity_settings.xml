@@ -47,7 +47,7 @@
                 android:id="@+id/Settings_profileLayout_Layout"
                 android:layout_width="match_parent"
                 android:layout_height="175dp"
-                android:background="@color/brownish"
+                android:background="@color/colorSilver"
                 >
                 <ImageView
                     android:id="@+id/Settings_Image_ImageView"
