@@ -1,4 +1,4 @@
-package com.example.android.readaholic
+package com.example.android.readaholic.books
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -9,7 +9,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.example.android.readaholic.books.Cbookdata
+import com.example.android.readaholic.R
 import com.example.android.readaholic.contants_and_static_data.Urls
 import kotlinx.android.synthetic.main.activity_editreview.*
 import org.json.JSONObject

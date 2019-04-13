@@ -457,9 +457,9 @@ public class ProfileFragment extends Fragment {
             UpdateData(mProfileUser,user_id);
 
             //Loading Fragments
-            loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId(),mUser_Id);
-            loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId(),mUser_Id);
-            loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId(),mUser_Id);
+            loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId(),user_id);
+            loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId(),user_id);
+            loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId(),user_id);
 
             mRequestQueue.stop();
         }
@@ -486,7 +486,7 @@ public class ProfileFragment extends Fragment {
     Log.e("profileResponse",Response.toString());
     mProfileUser.setmUserName(Response.optString("name"));
     Log.e("Test" ,mProfileUser.getmUserName());
-    mProfileUser.setmUserImageUrl(Response.optString("small_image_link"));
+    mProfileUser.setmUserImageUrl(Response.optString("image_link"));
     mProfileUser.setmUsernumberOfBooks(Response.optInt("books_count"));
     mProfileUser.setmNumberOfFollowers(Response.optInt("followers_count"));
     mProfileUser.setGetmNumberOfFolloweings(Response.optInt("following_count"));
