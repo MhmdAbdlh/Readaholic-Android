@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -32,6 +34,9 @@ import com.example.android.readaholic.settings.edit_Birthday.BirthdaySettings;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 
 public class LocationSettings extends AppCompatActivity {
 
@@ -70,9 +75,9 @@ public class LocationSettings extends AppCompatActivity {
         Spinner countriesSpinner = (Spinner)findViewById(R.id.Location_spinner);
         //setting the default selected country of the spinner
         Intent intent = getIntent();
-        if(intent.hasExtra("location")){
+        if(intent.hasExtra("country")){
             //getting the country sent from the previews activity
-            String country = intent.getStringExtra("location");
+            String country = intent.getStringExtra("country");
             int index = Countries.getCountryIndex(country);
             //if the country exists in the stored countries -> make it default in the spinner
             if(index >= 0){
@@ -128,7 +133,7 @@ public class LocationSettings extends AppCompatActivity {
         saveWhoCanSeeMyLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeWhoCanSeeMyLocationRequest();
+                changeWhoCanSeeMyCountryRequest();
             }
         });
 
@@ -197,22 +202,19 @@ public class LocationSettings extends AppCompatActivity {
         Loading();
         Urls urlController = new Urls(this,this.getBaseContext());
         RequestQueue queue = Volley.newRequestQueue(this);
+
+        String newCountry = ((Spinner)findViewById(R.id.Location_spinner)).getSelectedItem().toString();
+
         String url = Urls.ROOT + Urls.CHANGE_COUNTRY + "?" + urlController.constructTokenParameters()
-                +"&" + urlController.getChangeLocationParameters();
+                +"&newCountry=" + newCountry;
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        boolean result = parseLocationResponse(response);
-                        if(result == true) {
-
-                            Toast.makeText(LocationSettings.this, "Birthday saved successfully"
+                            Toast.makeText(LocationSettings.this, "Country saved successfully"
                                     , Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            error("Parsing error! Please try again after some time!!");
-                        }
+                            showLayout();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -229,6 +231,22 @@ public class LocationSettings extends AppCompatActivity {
                     message = "Parsing error! Please try again after some time!!";
                 } else if (error instanceof AuthFailureError) {
                     message = "Cannot connect to Internet...Please check your connection!";
+                }
+
+                //if error code is 405 i should show the error message to the user provided
+                //by the backend
+                NetworkResponse networkResponse = error.networkResponse;
+                if (networkResponse != null && networkResponse.statusCode == HttpURLConnection.HTTP_BAD_METHOD) {
+                    if(error.networkResponse.data!=null) {
+                        //getting the error message provided by the backend
+                        try {
+                            String response = new String(error.networkResponse.data, "UTF-8");
+                            message = parseErrorResponse(response);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
                 }
 
                 //showing error message to the user
@@ -246,7 +264,7 @@ public class LocationSettings extends AppCompatActivity {
     /**
      * sending a request to save who can see my Location
      */
-    private void changeWhoCanSeeMyLocationRequest()
+    private void changeWhoCanSeeMyCountryRequest()
     {
         Loading();
         Urls urlController = new Urls(this,this.getBaseContext());
@@ -254,20 +272,15 @@ public class LocationSettings extends AppCompatActivity {
         String url = Urls.ROOT + Urls.WHO_CAN_SEE_MY_COUNTRY + "?" + urlController.constructTokenParameters()
                 +"&" + urlController.getWhoCanSeeMyLocationParameters();
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        boolean result = parseWhoCanSeeMyLocationResponse(response);
-                        if(result == true) {
-
                             Toast.makeText(LocationSettings.this
-                                    ,"Who can see my birthday saved successfully"
+                                    ,"Who can see my country saved successfully"
                                     , Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            error("Parsing error! Please try again after some time!!");
-                        }
+
+                            showLayout();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -286,6 +299,24 @@ public class LocationSettings extends AppCompatActivity {
                     message = "Cannot connect to Internet...Please check your connection!";
                 }
 
+
+                //if error code is 405 i should show the error message to the user provided
+                //by the backend
+                NetworkResponse networkResponse = error.networkResponse;
+                if (networkResponse != null && networkResponse.statusCode == HttpURLConnection.HTTP_BAD_METHOD) {
+                    if(error.networkResponse.data!=null) {
+                        //getting the error message provided by the backend
+                        try {
+                            String response = new String(error.networkResponse.data, "UTF-8");
+                            message = parseErrorResponse(response);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+
+
                 //showing error message to the user
                 error(message);
 
@@ -300,52 +331,25 @@ public class LocationSettings extends AppCompatActivity {
     //endregion
 
     //region parsing responses
-    /**
-     * getting the response of changing location
-     * @param response
-     * @return true -> if the location successfully (status = true)
-     *         false -> if there was
-     *
-     */
-    private boolean parseLocationResponse(String response)
-    {
+
+    private String parseErrorResponse(String response) {
+        String errorMessage = "";
+
         try {
+
             JSONObject root = new JSONObject(response);
-            if (root.getString("status").equals("true") ) {
+            errorMessage = root.getString("errors");
 
-                return true;
-            }
-            else return false;
 
+        } catch (JSONException e) {
+            errorMessage = "Please try again later";
         }
-        catch (JSONException E)
-        {
-            return false;
-        }
+
+        return errorMessage;
+
     }
 
-    /**
-     * getting the response of changing the location
-     * @param response
-     * @return true -> if the  location changed successfully (status = true)
-     *         false -> if there was
-     *
-     */
-    private boolean parseWhoCanSeeMyLocationResponse(String response)
-    {
-        try {
-            JSONObject root = new JSONObject(response);
-            if (root.getString("status").equals("true") ) {
 
-                return true;
-            }
-            else return false;
-
-        }
-        catch (JSONException E)
-        {
-            return false;
-        }
-    }
     //endregion
+
 }

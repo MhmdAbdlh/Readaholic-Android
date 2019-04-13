@@ -3,7 +3,9 @@ package com.example.android.readaholic;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -24,6 +27,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import com.example.android.readaholic.home.HomeFragment;
+import com.example.android.readaholic.home.NotificationFragment;
+import com.example.android.readaholic.home.ViewPageAdapter;
 
 
 import com.example.android.readaholic.explore.ExploreActivity;
@@ -34,6 +41,7 @@ import com.example.android.readaholic.sign_in_up.Start;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 
 import com.example.android.readaholic.myshelves.ShelvesFragment;
+import com.squareup.picasso.Picasso;
 
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,6 +49,9 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     private long mBackPressedTime;
     private DrawerLayout drawer;
     private ImageView ProfileImage;
+    private TextView mUsername;
+    private TabLayout mTabs;
+    private ViewPager mPages;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +60,14 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         Toolbar toolbar = (Toolbar) findViewById(R.id.Main_toolbar);
         setSupportActionBar(toolbar);
 
+        mTabs = findViewById(R.id.Main_tabs_tablayout);
+        mPages = findViewById(R.id.Main_views_viewpager);
+
         View Header = ((NavigationView)findViewById(R.id.Main_navView)).getHeaderView(0);
         ProfileImage = (ImageView)Header.findViewById(R.id.NavHeader_ProfilePhoto_ImageView);
+        mUsername = (TextView) Header.findViewById(R.id.NavHeader_Profile_TextView);
+        Picasso.get().load(UserInfo.sImageUrl).into(ProfileImage);
+        mUsername.setText(UserInfo.sName);
         ProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,15 +87,15 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         toggle.syncState();
 
         if(savedInstanceState == null) {
+            ViewPageAdapter adapter = new ViewPageAdapter(getSupportFragmentManager());
             navigationView.setCheckedItem(R.id.draw_home_menu);
-            getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
-                    new HomeFragment()).commit();
-
-
+            adapter.AddFragment(new HomeFragment(),"Updates");
+            adapter.AddFragment(new NotificationFragment(),"notification");
+            mPages.setAdapter(adapter);
+            mTabs.setupWithViewPager(mPages);
+            /*getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
+                    new HomeFragment()).commit();*/
         }
-
-
-
     }
 
     @Override
@@ -97,16 +114,28 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.draw_home_menu:
-                getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
-                        new HomeFragment()).commit();
+                mTabs.setVisibility(View.VISIBLE);
+                mPages.setVisibility(View.VISIBLE);
+                ViewPageAdapter adapter = new ViewPageAdapter(getSupportFragmentManager());
+                adapter.AddFragment(new HomeFragment(),"Updates");
+                adapter.AddFragment(new NotificationFragment(),"notification");
+                mPages.setAdapter(adapter);
+                mTabs.setupWithViewPager(mPages);
+
+               /* getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
+                        new HomeFragment()).commit();*/
 
                 break;
 
             case R.id.draw_followers_menu:
+                mTabs.setVisibility(View.GONE);
+                mPages.setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
                         new FollowersAndFollowingFragment(),"FollowersAndFollowings").addToBackStack("MainToFollowersAndFollowings").commit();
                 break;
             case R.id.draw_settings_menu:
+                mTabs.setVisibility(View.GONE);
+                mPages.setVisibility(View.GONE);
                 Intent intent = new Intent(this, Settings.class);
                 startActivity(intent);
                 break;
@@ -122,6 +151,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
 
             case R.id.draw_Myshelves_menu:
+                mTabs.setVisibility(View.GONE);
+                mPages.setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
                         new ShelvesFragment()).commit();
                 break;

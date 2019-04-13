@@ -21,29 +21,27 @@ public class Urls {
 
    public static final String ROOT = "http://972c6e5d.ngrok.io";
 
-
-
-
     //Login url
     public static String LOG_IN = "/api/login";
     //sign up url
-    public static String SIGN_UP = "/api/signUp";
+    public static String SIGN_UP = "/api/signup";
     //show settings url
-    public static String SHOW_SETTINGS = "/api/showSettings";
+    public static String SHOW_SETTINGS = "/api/showsetting";
     //change birthday url
-    public static String CHANGE_BIRTHDAY = "/api/changeBirthday";
+    public static String CHANGE_BIRTHDAY = "/api/changebirthday";
     // who can see my birthday url
-    public static String WHO_CAN_SEE_MY_BIRTHDAY = "/api/whoCanSeeMyBirthday";
+    public static String WHO_CAN_SEE_MY_BIRTHDAY = "/api/whocanseemybirthday";
     //change country url
-    public static String CHANGE_COUNTRY = "/api/changeCountry";
+    public static String CHANGE_COUNTRY = "/api/changecountry";
     //who can see my country url
-    public static String WHO_CAN_SEE_MY_COUNTRY = "/api/whoCanSeeMyCountry";
+    public static String WHO_CAN_SEE_MY_COUNTRY = "/api/whocanseemycountry";
+    //change name
+    public static String CHANGE_NAME = "/api/changename";
 
     public Urls(Activity activity, Context context) {
         mActivity = activity;
         mContext = context;
     }
-
 
     public static String getShowBook(String Bookid) {
         return ROOT + "/api/books/show?book_id=" + Bookid + "&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
@@ -82,7 +80,7 @@ public class Urls {
     public String constructTokenParameters() {
         String parameters = "";
 
-        parameters += "token=" + UserInfo.sToken + "&tokenType=" + UserInfo.sTokenType;
+        parameters += "token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
 
         return parameters;
     }
@@ -118,16 +116,15 @@ public class Urls {
         String lastName = ((EditText) mActivity.findViewById(R.id.SignUp_lastName_edittext)).getText().toString();
 
         //getting full name from first and last name
-        String fullName = firstName + " " + lastName;
+        String name = firstName + " " + lastName;
 
         /***************************************************************************************/
 
 
         //constructing the parameters
-        parameters += "email=" + email + "&fullName=" + fullName + "&password=" + password
-                + "&password_confirmation=" + confPassword + "&gender=" + gender
-                + "&location=" + location + "&birthday=" + birthday;
-
+        parameters += "email=" + email +  "&fullName=" + name + "&password=" + password
+                    + "&password_confirmation=" + confPassword + "&gender=" + gender
+                    + "&location=" + location + "&birthday=" + birthday;
         return parameters;
     }
 
@@ -140,7 +137,7 @@ public class Urls {
 
         String birthday = ((Button) mActivity.findViewById(R.id.Birthday_Button)).getText().toString();
 
-        parameters += "birthday=" + birthday;
+        parameters += "newBirthday=" + birthday;
 
         return parameters;
     }
@@ -156,9 +153,9 @@ public class Urls {
 
         //checking which radio button is clicked
         /******************************************/
-        String whoCanSeeMyBirthday = "";
-        if (everyone.isChecked()) {
-            whoCanSeeMyBirthday = "everyOne";
+        String whoCanSeeMyBirthday ="";
+        if(everyone.isChecked()) {
+            whoCanSeeMyBirthday = "Everyone";
         } else {
             whoCanSeeMyBirthday = "onlyMe";
         }
@@ -192,9 +189,9 @@ public class Urls {
 
         //checking which radio button is clicked
         /******************************************/
-        String whoCanSeeMyLocation = "";
-        if (everyone.isChecked()) {
-            whoCanSeeMyLocation = "everyOne";
+        String whoCanSeeMyLocation ="";
+        if(everyone.isChecked()) {
+            whoCanSeeMyLocation = "Everyone";
         } else {
             whoCanSeeMyLocation = "onlyMe";
         }
@@ -206,9 +203,7 @@ public class Urls {
 
         return parameters;
     }
-
-    }
-
+}
 
 
 

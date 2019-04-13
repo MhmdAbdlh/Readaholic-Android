@@ -34,6 +34,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 
 
@@ -96,7 +97,13 @@ public class SignIn extends AppCompatActivity {
                     if (networkResponse != null && networkResponse.statusCode == HttpURLConnection.HTTP_BAD_METHOD) {
                         if(error.networkResponse.data!=null) {
                             //getting the error message provided by the backend
-                            message = parseErrorResponse(error.networkResponse.data.toString());
+                            try {
+                                String response = new String(error.networkResponse.data, "UTF-8");
+                                message = parseErrorResponse(response);
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+
                         }
                     }
 
@@ -146,28 +153,22 @@ public class SignIn extends AppCompatActivity {
 
 
     }
-
     private String parseErrorResponse(String response) {
         String errorMessage = "";
 
         try {
 
             JSONObject root = new JSONObject(response);
-            JSONArray errors = root.getJSONArray("errors");
+            errorMessage = root.getString("errors");
 
-            for(int i = 0 ;i<errors.length() ; i++)
-            {
-                errorMessage+=errors.get(i) + "\n" ;
-            }
 
         } catch (JSONException e) {
-            showErrorMessage("server error");
+            errorMessage = "Please try again later";
         }
 
         return errorMessage;
 
     }
-
 
     /**
      * this method hides the keyboard
@@ -273,7 +274,15 @@ public class SignIn extends AppCompatActivity {
 /*
 
                 //getting user name and password
+<<<<<<< HEAD
+
+                Intent intent1 = new Intent(getBaseContext(),Main.class);
+                startActivity(intent1);
+
+                /*EditText username = (EditText) findViewById(R.id.SignIn_userName_edittext);
+=======
                 EditText username = (EditText) findViewById(R.id.SignIn_email_edittext);
+>>>>>>> 69069f8888ad988381b96d1750f9cde21a3e5325
                 EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
 
                 //checking user name and password fields
@@ -289,9 +298,9 @@ public class SignIn extends AppCompatActivity {
                         //if the user name and password dont match admin , admin show error message
                         showErrorMessage("Please check your email and password");
                     }
-                }
+                }*/
 
-*/
+
                 /**************************mocking data -> close*****************************************/
 
 
@@ -327,8 +336,8 @@ public class SignIn extends AppCompatActivity {
 
 
         //constructing the parameters
-       // parameters += "email=" + email + "&password=" + password;
-        parameters += "email=test@yahoo.com&password=password";
+        parameters += "email=" + email + "&password=" + password;
+        //parameters += "email=test@yahoo.com&password=password";
         return parameters ;
     }
 
@@ -344,6 +353,7 @@ public class SignIn extends AppCompatActivity {
         String pass = ((EditText)findViewById(R.id.SignIn_password_edittext)).getText().toString();
         // return "?email=Ahmed@yahoo.com&password=Waled21";
         //concatenating parameters and sending them
+
         return "http://ffb1e410.ngrok.io/api/login?email=zachariah72@example.net&password=password" ;
     }
 

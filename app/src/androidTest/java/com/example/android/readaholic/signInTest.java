@@ -26,7 +26,7 @@ public class signInTest {
 
     @Test
     public void testWrongUserName(){
-        Espresso.onView(withId(R.id.SignIn_userName_edittext))
+        Espresso.onView(withId(R.id.SignIn_email_edittext))
                 .perform(typeText("a"));
         Espresso.onView(withId(R.id.SignIn_password_edittext))
                 .perform(typeText("admin"));
@@ -42,7 +42,7 @@ public class signInTest {
 
     @Test
     public void testWrongpassword(){
-        Espresso.onView(withId(R.id.SignIn_userName_edittext))
+        Espresso.onView(withId(R.id.SignIn_email_edittext))
                 .perform(typeText("admin"));
         Espresso.onView(withId(R.id.SignIn_password_edittext))
                 .perform(typeText("123456"));
@@ -57,7 +57,7 @@ public class signInTest {
 
     @Test
     public void testEmptyUsername(){
-        Espresso.onView(withId(R.id.SignIn_userName_edittext))
+        Espresso.onView(withId(R.id.SignIn_email_edittext))
                 .perform(typeText(""));
         Espresso.onView(withId(R.id.SignIn_password_edittext))
                 .perform(typeText("123456"));
@@ -72,7 +72,7 @@ public class signInTest {
 
     @Test
     public void testEmptypassword(){
-        Espresso.onView(withId(R.id.SignIn_userName_edittext))
+        Espresso.onView(withId(R.id.SignIn_email_edittext))
                 .perform(typeText("a"));
         Espresso.onView(withId(R.id.SignIn_password_edittext))
                 .perform(typeText(""));
@@ -88,7 +88,7 @@ public class signInTest {
 
     @Test
     public void testInvalidCharacterInUsername(){
-        Espresso.onView(withId(R.id.SignIn_userName_edittext))
+        Espresso.onView(withId(R.id.SignIn_email_edittext))
                 .perform(typeText("ahmed moh g "));
         Espresso.onView(withId(R.id.SignIn_password_edittext))
                 .perform(typeText("123456"));
@@ -103,7 +103,7 @@ public class signInTest {
 
     @Test
     public void testInvalidCharacterInPassword(){
-        Espresso.onView(withId(R.id.SignIn_userName_edittext))
+        Espresso.onView(withId(R.id.SignIn_email_edittext))
                 .perform(typeText("a12"));
         Espresso.onView(withId(R.id.SignIn_password_edittext))
                 .perform(typeText("12 34 56"));

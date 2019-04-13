@@ -71,7 +71,4 @@ public class UpdatePageFragment extends Fragment {
 
         return view;
     }
-
-
-
 }
