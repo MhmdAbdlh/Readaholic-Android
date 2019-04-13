@@ -48,14 +48,16 @@
 
 
             <View
-                style="@style/Divider"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorPrimaryDark"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginBottom="16dp">
+                android:layout_height="50dp"
+                android:layout_marginBottom="8dp">
 
                 <ImageView
                     android:id="@+id/Profile_Settings_ImageView"
@@ -86,7 +88,11 @@
             </RelativeLayout>
         </LinearLayout>
 
-        <View style="@style/Divider" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorPrimaryDark"
+            />
 
         <FrameLayout
             android:id="@+id/Profile_Books_Fragment"
@@ -121,7 +127,7 @@
                 android:orientation="vertical" >
 
                 <ListView
-                    android:id="@+id/Profile_updateslist_listview"
+                    android:id="@+id/Profile_updateslist_listview1"
                     android:layout_width="match_parent"
                     android:layout_height="400dp" />
             </LinearLayout>

@@ -43,9 +43,13 @@ public class ProfileFragment extends Fragment {
     private ImageView mUserImage;
     private TextView mUserName;
     private TextView mUserBookNumber;
+    private TextView profileSettingtofollowingState;
+    private ImageView profilerEditToRightSign;
+
     ArrayList<Updates> arayOfUpdates = new ArrayList<Updates>();
     private ListView mListOfUpdates;
     private UpdatesAdapter adapterForUpdatesList;
+    private int userFollowingState;
     View view;
     private String jsonFile = "{\n" +
             "   \"updates\":{\n" +
@@ -317,7 +321,8 @@ public class ProfileFragment extends Fragment {
         mUserImage = (ImageView)view.findViewById(R.id.profileActivity_ProfilePic_ImageView);
         mUserName =(TextView)view.findViewById(R.id.ProfileActivity_UserName_TextView);
         mUserBookNumber = (TextView)view.findViewById(R.id.ProfileActivity_UserBooksNumber_TextView);
-
+        profilerEditToRightSign = (ImageView)view.findViewById(R.id.Profile_Settings_ImageView);
+        profileSettingtofollowingState = (TextView)view.findViewById(R.id.Profile_Settings_TextView);
 ///////////////////////////////////////////////////////////////////////////////
         //Take user id when click in his name in Updates (user could be different from the current user)
         /*Bundle bundle = this.getArguments();
@@ -362,8 +367,10 @@ public class ProfileFragment extends Fragment {
         if(savedInstanceState == null) {
             if (getArguments() == null)
                 mUser_Id = 0;
-            else
+            else {
                 mUser_Id = getArguments().getInt("user-id");
+                userFollowingState = getArguments().getInt("followingState");
+            }
             Log.e("userid", Integer.toString(mUser_Id));
             requestProfileView(mUser_Id);
         }
@@ -401,7 +408,25 @@ public class ProfileFragment extends Fragment {
      *Update the view with data of user
      * @param user holding data from request.
      */
-    public void UpdateData(Users user) {
+    public void UpdateData(Users user ,int id) {
+        if(id != 0)
+        {
+            if(userFollowingState == 1)//user is following this profile.
+                {
+                    profileSettingtofollowingState.setText(" FOLLOWING");
+                    profilerEditToRightSign.setImageResource(R.drawable.check);
+                }
+                else //user is not following this profile user.
+                    {
+                        profileSettingtofollowingState.setText(" FOLLOW");
+                        profilerEditToRightSign.setImageResource(R.drawable.check);
+                    }
+
+        }
+        else
+        {
+
+        }
         Log.e("UserImageUrl",user.getmUserImageUrl());
             Picasso.get().load(user.getmUserImageUrl()).transform(new CircleTransform()).into(mUserImage);
         mUserBookNumber.setText(user.getmUsernumberOfBooks()+" Books");
@@ -412,7 +437,7 @@ public class ProfileFragment extends Fragment {
     /**
      * function to doing the request to get user info and update the view with it.
      */
-    public void requestProfileView(int user_id)
+    public void requestProfileView(final int user_id)
 {
     if(user_id != 0)
     mRequestUrl =Urls.ROOT + "/api/showProfile?"+"id="+Integer.toString(user_id)+"&token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
@@ -428,15 +453,8 @@ public class ProfileFragment extends Fragment {
     final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null, new Response.Listener<JSONObject>() {
         @Override
         public void onResponse(JSONObject Response) {
-            Log.e("profileResponse",Response.toString());
-            mProfileUser.setmUserName(Response.optString("name"));
-            Log.e("Test" ,mProfileUser.getmUserName());
-            mProfileUser.setmUserImageUrl(Response.optString("small_image_link"));
-            mProfileUser.setmUsernumberOfBooks(Response.optInt("books_count"));
-            mProfileUser.setmNumberOfFollowers(Response.optInt("followers_count"));
-            mProfileUser.setGetmNumberOfFolloweings(Response.optInt("following_count"));
-            Log.e("showprofileResponseName",mProfileUser.getmUserName());
-            UpdateData(mProfileUser);
+            ExtractUser(Response);
+            UpdateData(mProfileUser,user_id);
 
             //Loading Fragments
             loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId(),mUser_Id);
@@ -456,6 +474,25 @@ public class ProfileFragment extends Fragment {
     });
 
     mRequestQueue.add(jsonObjectRequest);
+}
+
+    /**
+     * extract user info from response.
+     * @param Response
+     * @return user object holding the user data.
+     */
+    public Users ExtractUser(JSONObject Response)
+{
+    Log.e("profileResponse",Response.toString());
+    mProfileUser.setmUserName(Response.optString("name"));
+    Log.e("Test" ,mProfileUser.getmUserName());
+    mProfileUser.setmUserImageUrl(Response.optString("small_image_link"));
+    mProfileUser.setmUsernumberOfBooks(Response.optInt("books_count"));
+    mProfileUser.setmNumberOfFollowers(Response.optInt("followers_count"));
+    mProfileUser.setGetmNumberOfFolloweings(Response.optInt("following_count"));
+    Log.e("showprofileResponseName",mProfileUser.getmUserName());
+
+    return mProfileUser;
 
 }
 }

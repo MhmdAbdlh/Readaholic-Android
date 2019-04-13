@@ -274,7 +274,15 @@ public class SignIn extends AppCompatActivity {
 /*
 
                 //getting user name and password
+<<<<<<< HEAD
+
+                Intent intent1 = new Intent(getBaseContext(),Main.class);
+                startActivity(intent1);
+
+                /*EditText username = (EditText) findViewById(R.id.SignIn_userName_edittext);
+=======
                 EditText username = (EditText) findViewById(R.id.SignIn_email_edittext);
+>>>>>>> 69069f8888ad988381b96d1750f9cde21a3e5325
                 EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
 
                 //checking user name and password fields
@@ -290,9 +298,9 @@ public class SignIn extends AppCompatActivity {
                         //if the user name and password dont match admin , admin show error message
                         showErrorMessage("Please check your email and password");
                     }
-                }
+                }*/
 
-*/
+
                 /**************************mocking data -> close*****************************************/
 
 
@@ -328,8 +336,8 @@ public class SignIn extends AppCompatActivity {
 
 
         //constructing the parameters
-          parameters += "email=" + email + "&password=" + password;
-      //  parameters += "email=test@yahoo.com&password=password";
+        parameters += "email=" + email + "&password=" + password;
+        //parameters += "email=test@yahoo.com&password=password";
         return parameters ;
     }
 
@@ -345,6 +353,7 @@ public class SignIn extends AppCompatActivity {
         String pass = ((EditText)findViewById(R.id.SignIn_password_edittext)).getText().toString();
         // return "?email=Ahmed@yahoo.com&password=Waled21";
         //concatenating parameters and sending them
+
         return "http://ffb1e410.ngrok.io/api/login?email=zachariah72@example.net&password=password" ;
     }
 

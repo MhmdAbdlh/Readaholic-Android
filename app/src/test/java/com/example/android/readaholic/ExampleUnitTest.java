@@ -3,9 +3,15 @@ package com.example.android.readaholic;
 import android.support.v4.app.Fragment;
 
 import com.example.android.readaholic.VolleyHelper.volleyRequestHelper;
+import com.example.android.readaholic.contants_and_static_data.Urls;
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
+import com.example.android.readaholic.profile_and_profile_settings.Profile;
 import com.example.android.readaholic.profile_and_profile_settings.ProfileFragment;
 import com.example.android.readaholic.profile_and_profile_settings.Users;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,13 +29,25 @@ import static org.junit.Assert.assertEquals;
 public class ExampleUnitTest  {
 
 private Users user;
+private ProfileFragment profile;
 private volleyRequestHelper volleyRequestHelper;
+String url = Urls.ROOT + "/api/showProfile?"+"token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
+JsonObject response;
+String ProfileResponse="{\"id\":1,\"name\":\"test\",\"username\":\"test\"" +
+        ",\"email\":\"test@yahoo.com\",\"email_verified_at\":null,\"link\":null" +
+        ",\"image_link\":\"default.jpg\",\"small_image_link\":null,\"about\":null" +
+        ",\"age\":21,\"gender\":\"female\",\"country\":\"Canada\",\"city\":\"Atawwa\"" +
+        ",\"joined_at\":\"2019-04-13\",\"followers_count\":0,\"following_count\":0" +
+        ",\"rating_avg\":3,\"rating_count\":4,\"book_count\":0,\"birthday\":\"1998-02-21\",\"see_my_birthday\":\"Everyone\"" +
+        ",\"see_my_country\":\"Everyone\",\"see_my_city\":\"Everyone\",\"created_at\":null,\"updated_at\":null}";
 @Before
 public void init()
 {
     user = new Users();
-    volleyRequestHelper = new volleyRequestHelper();
-
+    profile = new ProfileFragment();
+    JsonParser parser = new JsonParser();
+    response = (JSONObject)parser.parse(ProfileResponse);
+    profile.ExtractUser(response);
 }
     @Test
     public void addition_isCorrect() {
@@ -84,7 +102,7 @@ public void init()
     public void testVolleyUserName()
     {
         Users testUser = new Users();
-        testUser = volleyRequestHelper.;
+        testUser = volleyRequestHelper.getmUser();
 
         user.setmUserName("Hossam Ahmed");
         assertEquals(user.getmUserName(),testUser.getmUserName());
