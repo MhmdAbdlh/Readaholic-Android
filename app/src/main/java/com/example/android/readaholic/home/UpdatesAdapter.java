@@ -222,13 +222,13 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
                     followerName.setVisibility(View.GONE);
                     break;
                 //Inner updates's type following someone
-                case 2:
+               /* case 2:
                     updateType.setText("update");
                     innerUpdatetype.setText("is now following");
                     followerName.setText(Item.getmNameofFollow());
                     followerName.setVisibility(View.VISIBLE);
                     viewOfBook.setVisibility(View.GONE);
-                    break;
+                    break;*/
             }
             //updates's type comment show comment
             if(Item.getmTypeOfUpdates() == 4){
@@ -264,16 +264,33 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
             }
         });
 
-        Name.setOnClickListener(new View.OnClickListener(){
+        userLikedPost.setOnClickListener(new View.OnClickListener(){
+            /**
+             * when we click on the name of the user we move to the profile fragment.
+             * @param v View: The view that was clicked
+             */
+            public void onClick(View v) {
+                Intent profileIntent = new Intent(v.getContext(), Profile.class);
+                profileIntent.putExtra("user-idFromFollowingList", Item.getmInnerUserId());
+                v.getContext().startActivity(profileIntent);
+            }
+        });
+                Name.setOnClickListener(new View.OnClickListener(){
             /**
              * when we click on the name of the user we move to the profile fragment.
              * @param v View: The view that was clicked
              */
             public void onClick(View v){
 
-                Intent profileIntent = new Intent(v.getContext(), Profile.class);
-                profileIntent.putExtra("user-idFromFollowingList",Item.getmUserId());
-                v.getContext().startActivity(profileIntent);
+                if(Item.getmTypeOfUpdates() == 0 ||Item.getmTypeOfUpdates() == 1 || Item.getmTypeOfUpdates() == 2 ) {
+                    Intent profileIntent = new Intent(v.getContext(), Profile.class);
+                    profileIntent.putExtra("user-idFromFollowingList", Item.getmUserId());
+                    v.getContext().startActivity(profileIntent);
+                }else  if(Item.getmTypeOfUpdates() == 4 || Item.getmTypeOfUpdates() == 3) {
+                    Intent profileIntent = new Intent(v.getContext(), Profile.class);
+                    profileIntent.putExtra("user-idFromFollowingList", Item.getmInnerUserId());
+                    v.getContext().startActivity(profileIntent);
+                }
                 /*
                 Fragment fragment = new ProfileFragment();
                 ((FragmentActivity)v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
@@ -369,20 +386,21 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
                     v.getContext().startActivity(i);
 
                 }else if(Item.getmTypeOfUpdates() == 2){
-                    Fragment fragment = new ProfileFragment();
-                    ((FragmentActivity)v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
-                            fragment).commit();
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("UserId", Item.getmUserId());
-                    fragment.setArguments(bundle);
+
+                    Intent profileIntent = new Intent(v.getContext(), Profile.class);
+                    profileIntent.putExtra("user-idFromFollowingList",Item.getmInnerUserId());
+                    v.getContext().startActivity(profileIntent);
                 }else if(Item.getmTypeOfUpdates() == 3 || Item.getmTypeOfUpdates() == 4){
                     if(Item.getmInnerUpdate() == 0) {
-                        Fragment fragment = new UpdatePageFragment();
+                        Intent i = new Intent(v.getContext(), ReviewActivity.class);
+                        Creviewdata.INSTANCE.setReviewid(Item.getmReviewID());
+                        v.getContext().startActivity(i);
+                        /*Fragment fragment = new UpdatePageFragment();
                         ((FragmentActivity)v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
                                 fragment).commit();
                         Bundle bundle = new Bundle();
                         bundle.putParcelable("UpdateItem", Item);
-                        fragment.setArguments(bundle);
+                        fragment.setArguments(bundle);*/
                     }else if(Item.getmInnerUpdate() == 2){
                         Fragment fragment = new ProfileFragment();
                         ((FragmentActivity)v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
@@ -403,7 +421,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
              */
             public void onClick(View v){
                 Intent profileIntent = new Intent(v.getContext(), Profile.class);
-                profileIntent.putExtra("user-idFromFollowingList",Item.getmUserId());
+                profileIntent.putExtra("user-idFromFollowingList",Item.getmInnerUserId());
                 v.getContext().startActivity(profileIntent);
                 /*Fragment fragment = new ProfileFragment();
                 ((FragmentActivity)v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
@@ -481,13 +499,13 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
         StringRequest request = new StringRequest(Request.Method.POST, Urls.ROOT+"/api/shelf/add_book", new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
             }
 
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show();
             }
         }) {
 

@@ -326,21 +326,21 @@ public class ProfileFragment extends Fragment {
         mUserImage = (ImageView)view.findViewById(R.id.profileActivity_ProfilePic_ImageView);
         mUserName =(TextView)view.findViewById(R.id.ProfileActivity_UserName_TextView);
 
-
-/*
-        //Loading Fragments
-        loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId());
-        loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId());
-        loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId());
-*/
-        mUserBookNumber = (TextView)view.findViewById(R.id.ProfileActivity_UserBooksNumber_TextView);
-
-///////////////////////////////////////////////////////////////////////////////
-        //Take user id when click in his name in Updates (user could be different from the current user)
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             mUser_Id = bundle.getInt("UserId");
         }
+
+        //Loading Fragments
+      // loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId(),mUser_Id);
+      // loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId(),mUser_Id);
+        loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId(),mUser_Id);
+
+        mUserBookNumber = (TextView)view.findViewById(R.id.ProfileActivity_UserBooksNumber_TextView);
+
+///////////////////////////////////////////////////////////////////////////////
+        //Take user id when click in his name in Updates (user could be different from the current user)
+
         Picasso.get().load("https://s.gr-assets.com/assets/nophoto/user/" +
                     "u_111x148-9394ebedbb3c6c218f64be9549657029.png").transform(new CircleTransform()).into(mUserImage);
 
@@ -353,7 +353,7 @@ public class ProfileFragment extends Fragment {
 
         Log.e("UserImageUrl",String.valueOf(mUser_Id));
 
-        Toast.makeText(getContext(),String.valueOf(mUser_Id),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(),String.valueOf(mUser_Id),Toast.LENGTH_SHORT).show();
         UpdateData(mProfileUser);
 
 
@@ -439,7 +439,7 @@ public class ProfileFragment extends Fragment {
     else
         mRequestUrl = Urls.ROOT  + "/api/showProfile?"+"token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
-    Toast.makeText(getContext(),String.valueOf(mUser_Id),Toast.LENGTH_SHORT).show();
+    //Toast.makeText(getContext(),String.valueOf(mUser_Id),Toast.LENGTH_SHORT).show();
     mProfileUser = new Users();
     DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(), 1024 * 1024);
     BasicNetwork network = new BasicNetwork(new HurlStack());
@@ -470,7 +470,7 @@ public class ProfileFragment extends Fragment {
         @Override
         public void onErrorResponse(VolleyError error) {
 
-            Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
            // mProfileUser=null;
             mRequestQueue.stop();
         }
