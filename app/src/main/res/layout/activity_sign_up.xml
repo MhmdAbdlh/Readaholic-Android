@@ -39,13 +39,6 @@
                     android:layout_width="260dp"
                     android:hint="Email"
                     android:maxLines="1" />
-                <EditText
-                    android:id="@+id/SignUp_userName_edittext"
-                    android:inputType="textEmailAddress"
-                    style="@style/EditTextStyle"
-                    android:layout_width="260dp"
-                    android:hint="User name"
-                    android:maxLines="1" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

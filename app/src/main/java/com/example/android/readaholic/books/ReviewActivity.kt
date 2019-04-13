@@ -12,6 +12,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.android.readaholic.R
+import com.example.android.readaholic.contants_and_static_data.Urls
 import com.example.android.readaholic.profile_and_profile_settings.Profile
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_review.*
@@ -28,26 +29,37 @@ class ReviewActivity : AppCompatActivity() {
         CommentList= ArrayList()
         commentadapter= CommentsAdabterlist()
         commentlist.adapter=commentadapter
-        feedBookData()
-        feedReviewDate()
-        feedCommentsDataFromURL(2)
+        getReviewInfo()
+
+
         swiperefreshcomment.setOnRefreshListener {
             CommentList!!.clear()
-            feedCommentsDataFromURL(4)
             swiperefreshcomment.isRefreshing=false
         }
     }
-
-    /**
-     * git the book data  and assign them to the ui
-     *
-     */
-
-    fun feedBookData()
+    fun getReviewInfo()
     {
-        booktitleui.text=Cbookdata.book_title
-        authornameui.text=Cbookdata.author_name
-      //  Picasso.get().load("https://i.ytimg.com/vi/3nmoffllWTw/hqdefault.jpg").into(bookimage)
+        val queue = Volley.newRequestQueue(this)
+        var url=Urls.getShowReview( Creviewdata.reviewid.toString())
+        val stringRequest = StringRequest(Request.Method.GET,url,
+                Response.Listener<String> { response ->
+                    var  jsonresponse= JSONObject(response)
+                        if(jsonresponse.getString("status")=="success")
+                        {
+                            feedCreview(jsonresponse.getJSONArray("pages").getJSONObject(0))
+                            feeduser(jsonresponse.getJSONArray("user").getJSONObject(0))
+                            feedbook(jsonresponse.getJSONArray("book").getJSONObject(0))
+                            feedauthor(jsonresponse.getJSONArray("auther").getJSONObject(0))
+                            feedReviewDate()
+                        }
+
+                },
+                Response.ErrorListener {
+
+                })
+
+        queue.add(stringRequest)
+
     }
 
     /**
@@ -62,8 +74,47 @@ class ReviewActivity : AppCompatActivity() {
         descriptionreviewui.text=Creviewdata.reviewbody
         numberoflikesreviewtxtui.text=Creviewdata.numberoflikes.toString()
         numberofcommentreviewtxtui.text=Creviewdata.numberofcomments.toString()
-       // Picasso.get().load("https://i.ytimg.com/vi/3nmoffllWTw/hqdefault.jpg").into(reviewerimage)
+        booktitleui.text=Creviewdata.book_name
+        authornameui.text=Creviewdata.author_name
+        reviwernametxtui.text=Creviewdata.username
+       Picasso.get().load(Creviewdata.book_image).into(bookimage)
+        Picasso.get().load(Creviewdata.userimageurl).into(reviewerimage)
     }
+
+    fun feedCreview(jsonreaponse: JSONObject)
+    {
+
+
+        Creviewdata.rating=jsonreaponse.getString("rating").toInt()
+        Creviewdata.lastupdate=jsonreaponse.getString("updated_at")
+        Creviewdata.reviewbody=jsonreaponse.getString("body")
+        Creviewdata.numberoflikes=jsonreaponse.getInt("likes_count")
+        Creviewdata.numberofcomments=jsonreaponse.getInt("comments_count")
+        Creviewdata.reviewid=jsonreaponse.getInt("id")
+
+    }
+
+    fun feeduser(jsonreaponsebook: JSONObject)
+    {
+        Creviewdata.username=jsonreaponsebook.getString("user_name")
+        Creviewdata.userimageurl=jsonreaponsebook.getString("image_link")
+
+    }
+    fun feedbook(jsonreaponsebook: JSONObject)
+    {
+        Creviewdata.book_name=jsonreaponsebook.getString("book_name")
+        Creviewdata.book_image=jsonreaponsebook.getString("book_image")
+
+    }
+    fun feedauthor(jsonreaponsebook: JSONObject)
+    {
+        Creviewdata.author_name=jsonreaponsebook.getString("author_name")
+
+    }
+
+
+
+
 
     /**
      * called when the user want to post gis comment
@@ -121,24 +172,31 @@ class ReviewActivity : AppCompatActivity() {
 
     }
 
+
+
+
+
+
+
+
+
     /**
      * got to the provided end point url and get the json return of the list of commints and send it to git the data from it
      *
      * @param bookid
      */
+
     fun feedCommentsDataFromURL(bookid:Int)
     {
-
         val queue = Volley.newRequestQueue(this)
-        var urltry="https://api.myjson.com/bins/10fnna"
-        val stringRequest = StringRequest(Request.Method.GET,urltry,
+        var url=""
+        val stringRequest = StringRequest(Request.Method.GET,url,
                 Response.Listener<String> { response ->
                     var  jsonresponse= JSONObject(response)
                     feedFromJsonReturn(jsonresponse!!.getJSONArray("comment"))
                     commentadapter!!.notifyDataSetChanged()
                 },
                 Response.ErrorListener {
-                    feedFromJsonReturn(getdummyjson().getJSONArray("comment"))
                     commentadapter!!.notifyDataSetChanged()
                 })
 
@@ -160,7 +218,7 @@ class ReviewActivity : AppCompatActivity() {
             CommentList!!.add(CommentInfo(jsonobject.getString("id").toInt(),jsonobject.getJSONObject("user").getString("id").toInt(),jsonobject.getJSONObject("user").getString("name")
             ,jsonobject.getJSONObject("user").getString("image_url"),jsonobject.getString("body")))
         }
-           // Toast.makeText(this,"dfsdf",Toast.LENGTH_SHORT).show()
+
     }
 
     /**
@@ -204,9 +262,5 @@ class ReviewActivity : AppCompatActivity() {
 
 
     }
-    fun getdummyjson():JSONObject
-    {
 
-        return JSONObject("{\"comment\":[{\"id\":\"0000000\",\"user\":{\"id\":\"000000\",\"name\":\"ٍSalma\",\"location\":\"The United States\",\"link\":\"\nhttps://www.goodreads.com/user/show/000000-aa\n\",\"image_url\":\"\nhttps://cdn1.imggmi.com/uploads/2019/3/22/d30f78234b3aa20e06d6556e58107f85-full.jpg\n\"},\"date_added\":\"Fri Mar 08 16:25:10 -0800 2019\",\"date_updated\":\"Fri Mar 08 16:25:22 -0800 2019\",\"link\":\"\nhttps://www.goodreads.comshow/00000\n\",\"body\":\"a great book\"}]}")
-    }
 }

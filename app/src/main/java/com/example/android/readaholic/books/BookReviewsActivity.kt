@@ -1,5 +1,4 @@
 package com.example.android.readaholic.books
-
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -11,19 +10,16 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.android.readaholic.Editreview
 import com.example.android.readaholic.R
-import com.example.android.readaholic.URLS
 import com.example.android.readaholic.contants_and_static_data.Urls
-import com.example.android.readaholic.contants_and_static_data.UserInfo
 import com.example.android.readaholic.profile_and_profile_settings.Profile
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_book_reviews.*
-import kotlinx.android.synthetic.main.activity_review.*
 import kotlinx.android.synthetic.main.bookreview.view.*
 import org.json.JSONArray
 import org.json.JSONObject
 import kotlin.math.max
-
 class BookReviewsActivity : AppCompatActivity() {
     var bookreviews:ArrayList<BookReview>?=null
     var adapter: ReviewAdabterlist1?=null
@@ -31,15 +27,16 @@ class BookReviewsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_reviews)
         bookreviews= ArrayList()
-         var bookid=5
-       feedReviewDataFromURL(bookid)
+       feedReviewDataFromURL(Cbookdata.bookid)
         adapter= ReviewAdabterlist1()
         list.adapter=adapter
+
         swiperefresh.setOnRefreshListener {
             bookreviews!!.clear()
-            feedReviewDataFromURL(4)
+            feedReviewDataFromURL(Cbookdata.bookid)
             swiperefresh.isRefreshing=false
         }
+
     }
 
     /**
@@ -50,73 +47,66 @@ class BookReviewsActivity : AppCompatActivity() {
 
 fun feedReviewDataFromURL(bookid:Int)
 {
-
-    val queue = Volley.newRequestQueue(this)
-    var url= Urls.ROOT+"api/showReviewsForABook?bookId=1&token="+UserInfo.sToken +"&type="+UserInfo.sTokenType
+    var queue = Volley.newRequestQueue(this)
+    var url=Urls.getShowReviewsForaBook(bookid.toString())
     val stringRequest = StringRequest(Request.Method.GET,url,
-            Response.Listener<String> { response ->
-                var  jsonresponse= JSONObject(response)
-                Toast.makeText(this,UserInfo.sToken,Toast.LENGTH_LONG).show()
-                Toast.makeText(this,response,Toast.LENGTH_LONG).show()
+            Response.Listener<String> { response1 ->
+                var  jsonresponse= JSONObject(response1)
                 feedReviewsFromJson(jsonresponse!!.getJSONArray("pages"))
-                adapter!!.notifyDataSetChanged()
-            },
-            Response.ErrorListener {
-             //   feedReviewsFromJson( getdummyjson().getJSONArray("pages"))
-              //  adapter!!.notifyDataSetChanged()
+                adapter!!.notifyDataSetChanged()},
+            Response.ErrorListener {error ->
+                Toast.makeText(this,error.toString(),Toast.LENGTH_LONG).show()
             })
-
     queue.add(stringRequest)
 
 }
 
     fun sendReview(view:View)
     {
-        var commenttext=writerreview.text.toString()
-        if(commenttext=="")
+        var reviewtext=writerreview.text.toString()
+        if(reviewtext=="")
         {
             Toast.makeText(this,"Please write something first", Toast.LENGTH_SHORT).show()
         }
-        else{
-            var succes= sendReviewService(commenttext,2)
-            if(succes)
-            {
-                Toast.makeText(this,"your Review Added", Toast.LENGTH_SHORT).show()
-
-            }
-            else{
-                Toast.makeText(this,"Someething went wrong with the server ,try again later", Toast.LENGTH_SHORT).show()
-            }
+        else {
+            sendReviewService(Cbookdata.bookid,reviewtext,Cbookdata.bookrating,Cbookdata.shelf.toString())
         }
-    }
+        }
 
     /**
      * server communication to post the comment
      *
      * @param commentbody
      */
-    fun sendReviewService(reviewbody:String,rating:Int):Boolean
+    fun sendReviewService(Book_id:Int,reviewbody:String,rating:Int,shelf:String)
     {
-        var success=false
+
         val queue = Volley.newRequestQueue(this)
-        var url= Urls.ROOT+"api/11showReviewsForABook?bookId=1&token="+UserInfo.sToken +"&type="+UserInfo.sTokenType
+        var url=Urls.createreview(Book_id.toString(),reviewbody,rating.toString(),shelf)
         val stringRequest = StringRequest(Request.Method.POST, url,
                 Response.Listener<String> { response ->
                     var jsonresponse=JSONObject(response)
                     if(jsonresponse.getString("status")=="true")
-                        success=true
+                    {
+                        Toast.makeText(this,"Thanks for your review yasta",Toast.LENGTH_SHORT).show()
+                        writerreview.text.clear()
+                    }
 
+                   else if (jsonresponse.getString("status")=="false")
+                    {
+                        Toast.makeText(this,jsonresponse.getString("errors"),Toast.LENGTH_SHORT).show()
+                    }
 
                 },
                 Response.ErrorListener {
-
+                    Toast.makeText(this,"connection error, please try again",Toast.LENGTH_SHORT).show()
 
                 }
 
         )
 
         queue.add(stringRequest)
-        return success
+
 
 
     }
@@ -132,9 +122,9 @@ fun feedReviewDataFromURL(bookid:Int)
       for( i in 0..jsonarray.length()-1)
         {
            var jsonobject=jsonarray.getJSONObject(i)
-           bookreviews!!.add(BookReview(checknotnigativeintegers(jsonobject.getString("id").toInt()),checknotnigativeintegers(jsonobject.getString("userId").toInt()),jsonobject.getString("bookId").toInt(),
-                   jsonobject.getString("body"),jsonobject.getString("rating").toInt(),checkformat(jsonobject.getString("lastUpdate")),jsonobject.getString("numberLikes").toInt()
-                   ,checknotnigativeintegers(jsonobject.getString("numberComments").toInt()),jsonobject.getString("username"),jsonobject.getString("userimagelink")))
+           bookreviews!!.add(BookReview(checknotnigativeintegers(jsonobject.getString("id").toInt()),checknotnigativeintegers(jsonobject.getString("user_id").toInt()),jsonobject.getString("book_id").toInt(),
+                   jsonobject.getString("body"),jsonobject.getString("rating").toInt(),jsonobject.getString("likes_count").toInt()
+                   ,checknotnigativeintegers(jsonobject.getString("comments_count").toInt()),jsonobject.getString("username"),jsonobject.getString("userimagelink"),jsonobject.getString("created_at")))
         }
 
     }
@@ -157,24 +147,37 @@ fun feedReviewDataFromURL(bookid:Int)
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             var myview=layoutInflater.inflate(R.layout.bookreview,null)
             var currentreview= bookreviews!![position]
+//            if(currentreview.userId==UserInfo.username)
+//            {
+//                myview.deletereview.visibility=View.VISIBLE
+//                myview.editreviewbtn.visibility=View.VISIBLE
+//            }
+            myview.deletereview.setOnClickListener {
+
+                deleteReview(currentreview.reviewid)
+                adapter!!.notifyDataSetChanged()
+            }
+            myview.editreviewbtn.setOnClickListener {
+                var intent= Intent(baseContext, Editreview::class.java)
+                intent.putExtra("REVIEWID",currentreview.reviewid)
+                startActivity(intent)
+            }
             myview.reviwernametxtui.text=currentreview.username
             myview.ratingui.rating=currentreview.rating.toFloat()
-            myview.dateofreviewtxtui.text=currentreview.lastupdate
             myview.descriptionreviewui.text=currentreview.reviewbody
             myview.numberoflikesreviewtxtui.text=currentreview.numberoflikes.toString()
             myview.numberofcommentreviewtxtui.text=currentreview.numberofcomments.toString()
+            myview.dateofreviewtxtui.text=currentreview.createdate
            Picasso.get().load(currentreview.userimageurl).into( myview.reviewerimage)
             myview.commentreviewtxtui.setOnClickListener {
                var intent= Intent(baseContext, ReviewActivity::class.java)
-                Creviewdata.numberoflikes=currentreview.numberoflikes
-                Creviewdata.lastupdate=currentreview.lastupdate
-                Creviewdata.rating=currentreview.rating
-                Creviewdata.numberofcomments=currentreview.numberofcomments
                 Creviewdata.reviewid=currentreview.reviewid
-                Creviewdata.userId=currentreview.userId
-                Creviewdata.username=currentreview.username
-                Creviewdata.userimageurl=currentreview.userimageurl
-                Creviewdata.reviewbody=currentreview.reviewbody
+                startActivity(intent)
+            }
+            myview.readmoretxtui.setOnClickListener {
+
+                var intent= Intent(baseContext, ReviewActivity::class.java)
+                Creviewdata.reviewid=currentreview.reviewid
                 startActivity(intent)
             }
             myview.reviewerimage.setOnClickListener {
@@ -182,20 +185,6 @@ fun feedReviewDataFromURL(bookid:Int)
                 var intent= Intent(baseContext, Profile::class.java)
                 startActivity(intent)
 
-            }
-            myview.readmoretxtui.setOnClickListener {
-
-                var intent= Intent(baseContext, ReviewActivity::class.java)
-                Creviewdata.numberoflikes=currentreview.numberoflikes
-                Creviewdata.lastupdate=currentreview.lastupdate
-                Creviewdata.rating=currentreview.rating
-                Creviewdata.numberofcomments=currentreview.numberofcomments
-                Creviewdata.reviewid=currentreview.reviewid
-                Creviewdata.userId=currentreview.userId
-                Creviewdata.username=currentreview.username
-                Creviewdata.userimageurl=currentreview.userimageurl
-                Creviewdata.reviewbody=currentreview.reviewbody
-                startActivity(intent)
             }
             myview.likereviewtxtui.setOnClickListener {
                 var likes:Int=myview.numberoflikesreviewtxtui.text.toString().toInt()
@@ -230,6 +219,31 @@ fun feedReviewDataFromURL(bookid:Int)
         }
 
     }
+
+    fun deleteReview(reviewid: Int)
+    {
+
+        val queue = Volley.newRequestQueue(this)
+        var url =Urls.deletereview(reviewid.toString())
+        val stringRequest = StringRequest(Request.Method.POST,url,
+                Response.Listener<String> { response ->
+                    var jsonresponse=JSONObject(response)
+                    if(jsonresponse.getString("status")=="true")
+                        Toast.makeText(this,"you review have been deleted shokran ya mo7tarm ",Toast.LENGTH_SHORT).show()
+                    else if(jsonresponse.getString("status")=="false")
+                    {
+                        Toast.makeText(this,jsonresponse.getString("Message"),Toast.LENGTH_SHORT).show()
+                    }
+                },
+                Response.ErrorListener {
+                    Toast.makeText(this,"Something went wrong with the server",Toast.LENGTH_SHORT).show()
+                }
+        )
+
+        queue.add(stringRequest)
+    }
+
+
     fun likeservicies(reviewid:Int)
     {
 
@@ -251,16 +265,6 @@ fun feedReviewDataFromURL(bookid:Int)
     }
 
 
-    /**
-     * git the data from json string and rety=urn it as json object
-     *
-     */
-    fun getdummyjson():JSONObject
-    {
-        var dummy="{\"status\": \"success\",\"pages\": [{ \"id\": 3,\"bookId\": 1,\"body\": \"This is a great book\",\"rating\": 4,\"lastUpdate\": \"2019-03-06 00:00:00\",            \"numberLikes\": 4,            \"numberComments\": 5,            \"userId\": 2,            \"username\": \"dsds\",            \"userimagelink\": \"https://upload.wikimedia.org/wikipedia/commons/c/c9/Moon.jpg\"        },        {            \"id\": 1,            \"bookId\": 1,            \"body\": \"3ash gdn elktab da ya shbab\",            \"rating\": 1,            \"lastUpdate\": \"2019-03-20 00:00:00\",            \"numberLikes\": 0,            \"numberComments\": 0,            \"userId\": 9,            \"username\": \"Nassar\",            \"userimagelink\": \"https://upload.wikimedia.org/wikipedia/commons/c/c9/Moon.jpg\"        },        {            \"id\": 5,            \"bookId\": 1,            \"body\": \"Great book from a great Author\",            \"rating\": 9,            \"lastUpdate\": \"2019-03-06 00:00:00\",            \"numberLikes\": 100,            \"numberComments\": 5,            \"userId\": 2,            \"username\": \"hossam\",            \"userimagelink\": \"https://upload.wikimedia.org/wikipedia/commons/c/c9/Moon.jpg\"  }] }"
-
-        return JSONObject(dummy)
-    }
 
     /**
      * THis to check to format of the date returned
