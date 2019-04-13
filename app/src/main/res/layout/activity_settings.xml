@@ -47,7 +47,7 @@
                 android:id="@+id/Settings_profileLayout_Layout"
                 android:layout_width="match_parent"
                 android:layout_height="175dp"
-                android:background="@color/colorCream"
+                android:background="@color/brownish"
                 >
                 <ImageView
                     android:id="@+id/Settings_Image_ImageView"
@@ -80,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
-                    android:text="User name"
+                    android:text="Name"
                     android:textColor="@color/colorBlack"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                     android:fontFamily="sans-serif-black"

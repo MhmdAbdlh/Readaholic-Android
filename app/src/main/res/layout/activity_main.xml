@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     tools:context=".Main">
     <ProgressBar
         android:id="@+id/Main_progressBar"
@@ -26,20 +27,44 @@
             android:orientation="vertical">
 
             <android.support.v7.widget.Toolbar
+                android:id="@+id/Main_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorPrimary"
-                android:id="@+id/Main_toolbar"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:popupTheme = "@style/ThemeOverlay.AppCompat.Light"
-                android:elevation="4dp"></android.support.v7.widget.Toolbar>
+                android:elevation="4dp"
+                android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:titleTextColor="@color/brown"></android.support.v7.widget.Toolbar>
+
+            <android.support.design.widget.TabLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/Main_tabs_tablayout">
+
+                <android.support.design.widget.TabItem
+                    android:id="@+id/Main_updates_tabitem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Updates" />
+
+                <android.support.design.widget.TabItem
+                    android:id="@+id/Main_notification_tabitem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Notifications" />
+
+            </android.support.design.widget.TabLayout>
+
+            <android.support.v4.view.ViewPager
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/Main_views_viewpager"/>
 
             <FrameLayout
                 android:id="@+id/Main_fragmentLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 >
-
             </FrameLayout>
         </LinearLayout>
 
@@ -48,10 +73,13 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:background="@color/colorNearBlack"
+            android:background="@color/brown"
             app:headerLayout="@layout/nav_header"
-            app:itemTextColor="@color/colorWhite"
-            app:menu="@menu/draw_menu" />
+            app:itemTextColor="@color/colorPrimary"
+            app:menu="@menu/draw_menu" >
+
+        </android.support.design.widget.NavigationView>
+
 
 
     </android.support.v4.widget.DrawerLayout>

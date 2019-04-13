@@ -4,26 +4,26 @@ import com.example.android.readaholic.contants_and_static_data.WhoCanSeeContent;
 
 public class SettingData {
 
-    private String mUserName;
+    private String mName;
     private String mBirthDay;
     private String mImage;
-    private String mLocation;
+    private String mCountry;
 
     private WhoCanSeeContent mWhoCanSeeMyBirthDay;
     private WhoCanSeeContent mWhoCanSeeMyLocation;
 
     public SettingData(String mUserName, String mBirthDay, String mImage, String mLocation
                        ,WhoCanSeeContent mWhoCanSeeMyBirthDay, WhoCanSeeContent mWhoCanSeeMyLocation) {
-        this.mUserName = mUserName;
+        this.mName= mUserName;
         this.mBirthDay = mBirthDay;
         this.mImage = mImage;
-        this.mLocation = mLocation;
+        this.mCountry = mLocation;
         this.mWhoCanSeeMyBirthDay = mWhoCanSeeMyBirthDay;
         this.mWhoCanSeeMyLocation = mWhoCanSeeMyLocation;
     }
 
-    public String getmUserName() {
-        return mUserName;
+    public String getmName() {
+        return mName;
     }
 
     public String getmBirthDay() {
@@ -34,8 +34,8 @@ public class SettingData {
         return mImage;
     }
 
-    public String getmLocation() {
-        return mLocation;
+    public String getmCountry() {
+        return mCountry;
     }
 
     public WhoCanSeeContent getmWhoCanSeeMyBirthDay() {

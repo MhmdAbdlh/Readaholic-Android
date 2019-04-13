@@ -17,7 +17,9 @@
             android:layout_height="wrap_content"
             android:padding="6dp"
             tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="8dp"></ListView>
+            tools:layout_editor_absoluteY="8dp"/>
+
+
     </LinearLayout>
 
 </android.support.v7.widget.LinearLayoutCompat>

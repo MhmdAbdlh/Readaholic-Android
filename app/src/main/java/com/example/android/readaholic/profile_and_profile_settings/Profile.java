@@ -28,7 +28,7 @@ public class Profile extends AppCompatActivity {
 
                 Fragment profile = new ProfileFragment();
                 Bundle bundle2 = new Bundle();
-                bundle2.putInt("user-id",user_id);
+                bundle2.putInt("UserId",user_id);
                 profile.setArguments(bundle2);
                 getSupportFragmentManager().beginTransaction().add(R.id.ProfileLayout,profile, "profileFragment").commit();
     }
