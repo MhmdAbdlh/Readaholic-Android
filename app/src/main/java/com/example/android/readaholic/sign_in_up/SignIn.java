@@ -328,8 +328,8 @@ public class SignIn extends AppCompatActivity {
 
 
         //constructing the parameters
-       // parameters += "email=" + email + "&password=" + password;
-        parameters += "email=test@yahoo.com&password=password";
+          parameters += "email=" + email + "&password=" + password;
+      //  parameters += "email=test@yahoo.com&password=password";
         return parameters ;
     }
 
