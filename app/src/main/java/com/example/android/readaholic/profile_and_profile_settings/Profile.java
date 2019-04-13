@@ -22,13 +22,18 @@ public class Profile extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity__profile);
 
-                Bundle bundle = new Bundle();
+                Bundle bundle ;
                 bundle = getIntent().getExtras();
                 int user_id = bundle.getInt("user-idFromFollowingList");
+                boolean followngState = bundle.getBoolean("followingState");
 
                 Fragment profile = new ProfileFragment();
                 Bundle bundle2 = new Bundle();
-                bundle2.putInt("UserId",user_id);
+                bundle2.putInt("user-id",user_id);
+                if(followngState)
+                bundle2.putInt("followingState",1);
+                else
+                    bundle2.putInt("followingState",0);
                 profile.setArguments(bundle2);
                 getSupportFragmentManager().beginTransaction().add(R.id.ProfileLayout,profile, "profileFragment").commit();
     }
