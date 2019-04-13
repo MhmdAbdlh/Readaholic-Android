@@ -1,14 +1,18 @@
 package com.example.android.readaholic.sign_in_up;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -43,12 +47,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SignUp extends AppCompatActivity {
 
     public DatePickerDialog.OnDateSetListener mDateSetListener;
+    //for unit testing
+    public AlertDialog alertDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +66,7 @@ public class SignUp extends AppCompatActivity {
 
         initializeSpinners();
         setClickListeners();
+
  
     }
 
@@ -176,15 +186,16 @@ public class SignUp extends AppCompatActivity {
         String password = ((EditText)findViewById(R.id.SignUp_Pass_edittext)).getText().toString();
         String confirmPassword = ((EditText)findViewById(R.id.SignUp_rePass_edittext)).getText().toString();
         String birthday = ((Button)findViewById(R.id.SignUp_birthday_Button)).getText().toString();
+        String city = ((EditText)findViewById(R.id.SignUp_city_edittext)).getText().toString();
         /**********************************getting data -> close*********************************/
 
 
         //checking if all fields are filled or not
         /**********************************checking filled -> open*********************************/
-        if( email.length() == 0 || firstName.length() == 0 || birthday.length() == 0
+        if( email.length() == 0 || firstName.length() == 0 || birthday.length() == 0 || city.length() ==0
                 || lastName.length() == 0 || password.length() == 0 || confirmPassword.length() ==0  ) {
 
-            showErrorMessage("Please fill all fields");
+            showMessage("Please fill all fields");
             return false;
         }
         /*********************************checking filled -> close***********************************/
@@ -194,14 +205,14 @@ public class SignUp extends AppCompatActivity {
         if(email.length() > email.replaceAll("\\s+","").length()
         || password.length() > password.replaceAll("\\s+","").length()) {
 
-            showErrorMessage("Email , username and password should not contain spaces");
+            showMessage("Email , username and password should not contain spaces");
             return false;
         }
         /**********************************checking spaces -> close*******************************/
 
         /**********************************checking password -> open ******************************/
         if(!password.equals(confirmPassword)) {
-            showErrorMessage("The two passwords you entered don't match");
+            showMessage("The two passwords you entered don't match");
             return false;
         }
         /*********************************checking password ->close ****************************/
@@ -232,24 +243,15 @@ public class SignUp extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        String url = Urls.ROOT + Urls.SIGN_UP + "?" + urlController.getSignUpParameters() ;
+        String url = Urls.ROOT + Urls.SIGN_UP ;//+ "?" + getSignUpParameters() ;
 
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //checking if the signup process succeeded or not
-                        boolean parseResponse = parseSignUpResponse(response);
-                        //if it succeeded user should verify the email
-                        if(parseResponse == true){
-                            finish();
-                            //TODO you should make a new layout to inform the user to validate his email
-                        } else {
-                            //show the original layout
-                            showLayout();
-                        }
-
+                     showLayout();
+                     showMessage("You signed up successfully ! please login to continue");
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -275,16 +277,56 @@ public class SignUp extends AppCompatActivity {
                 if (networkResponse != null && networkResponse.statusCode == HttpURLConnection.HTTP_BAD_METHOD) {
                     if(error.networkResponse.data!=null) {
                         //getting the error message provided by the backend
-                        message = parseErrorResponse(error.networkResponse.data.toString());
+                        try {
+                            String response = new String(error.networkResponse.data, "UTF-8");
+                            message = parseErrorResponse(response);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 }
 
-                showErrorMessage(message);
+                showMessage(message);
+                showLayout();
 
             }
 
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
 
-        });
+                //getting user data
+                /**********************************************************************************/
+                String email = ((EditText)findViewById(R.id.SignUp_email_edittext)).getText().toString();
+                String password = ((EditText)findViewById(R.id.SignUp_Pass_edittext)).getText().toString();
+                String confPassword = ((EditText)findViewById(R.id.SignUp_rePass_edittext)).getText().toString();
+                String birthday = ((Button)findViewById(R.id.SignUp_birthday_Button)).getText().toString();
+                String country = ((Spinner)findViewById(R.id.SignUp_location_Spinner)).getSelectedItem().toString();
+                String city = ((EditText)findViewById(R.id.SignUp_city_edittext)).getText().toString();
+                String gender = ((Spinner)findViewById(R.id.SignUp_gender_Spinner)).getSelectedItem().toString();
+                String firstName = ((EditText)findViewById(R.id.SignUp_firstName_edittext)).getText().toString();
+                String lastName = ((EditText)findViewById(R.id.SignUp_lastName_edittext)).getText().toString();
+
+                //getting full name from first and last name
+                String name = firstName + " " + lastName;
+                /**********************************************************************************/
+
+                //constructing parameters
+                params.put("email", email);
+                params.put("name", name);
+                params.put("password",password);
+                params.put("password_confirmation", confPassword);
+                params.put("country",country);
+                params.put("city",city);
+                params.put("birthday",birthday);
+                params.put("gender",gender);
+
+
+                return params;
+            }
+        };
 
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
@@ -294,44 +336,7 @@ public class SignUp extends AppCompatActivity {
     //endregion
 
     //region parse json responses
-    /**
-     * parsing the sign up request
-     *
-     * if the status is true -> it should return true indicating that the sign up was successfull
-     *
-     * if the status was false -> error message should be displayed informing the user what was
-     * wrong in the data
-     */
-    public boolean parseSignUpResponse(String response)
-    {
-        try {
-            JSONObject root = new JSONObject(response);
-            //if the sign up process succeeded return true
-            if (root.getString("status").equals("true") ) {
-               return true;
-            }
-            else {
-                //if the sign up process failed show error message
-                String error = "";
 
-                //getting error messages
-                JSONArray errorMessage = root.getJSONArray("errors");
-                for (int i =0;i<errorMessage.length() ; i++)
-                {
-                    error += errorMessage.getString(i) + '\n';
-                }
-
-                //display them to the user
-                showErrorMessage(error);
-                return false;
-            }
-        }
-        catch (JSONException E)
-        {
-            showErrorMessage("Parsing error! Please try again after some time!!");
-            return false;
-        }
-    }
 
     private String parseErrorResponse(String response) {
         String errorMessage = "";
@@ -339,15 +344,11 @@ public class SignUp extends AppCompatActivity {
         try {
 
             JSONObject root = new JSONObject(response);
-            JSONArray errors = root.getJSONArray("errors");
+            errorMessage = root.getString("errors");
 
-            for(int i = 0 ;i<errors.length() ; i++)
-            {
-                errorMessage+=errors.get(i) + "\n" ;
-            }
 
         } catch (JSONException e) {
-            showErrorMessage("server error");
+            errorMessage = "Please try again later";
         }
 
         return errorMessage;
@@ -390,7 +391,7 @@ public class SignUp extends AppCompatActivity {
      * showing error message to the user
      * @param errorMessage error message to be shown
      */
-    public void showErrorMessage(String errorMessage)
+    public void showMessage(String errorMessage)
     {
         AlertDialog alertDialog = new AlertDialog.Builder(SignUp.this).create();
         alertDialog.setTitle("Error");
@@ -402,10 +403,21 @@ public class SignUp extends AppCompatActivity {
                     }
                 });
         alertDialog.show();
+
+        this.alertDialog = alertDialog;
     }
     //endregion
 
-
+    public AlertDialog getAlertDialog()
+    {
+        return this.alertDialog;
+    }
+    private void hideSoftKeyboard() {
+        if(getCurrentFocus()!=null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+    }
 
 
 }

@@ -34,6 +34,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 
 
@@ -96,7 +97,13 @@ public class SignIn extends AppCompatActivity {
                     if (networkResponse != null && networkResponse.statusCode == HttpURLConnection.HTTP_BAD_METHOD) {
                         if(error.networkResponse.data!=null) {
                             //getting the error message provided by the backend
-                            message = parseErrorResponse(error.networkResponse.data.toString());
+                            try {
+                                String response = new String(error.networkResponse.data, "UTF-8");
+                                message = parseErrorResponse(response);
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+
                         }
                     }
 
@@ -146,28 +153,22 @@ public class SignIn extends AppCompatActivity {
 
 
     }
-
     private String parseErrorResponse(String response) {
         String errorMessage = "";
 
         try {
 
             JSONObject root = new JSONObject(response);
-            JSONArray errors = root.getJSONArray("errors");
+            errorMessage = root.getString("errors");
 
-            for(int i = 0 ;i<errors.length() ; i++)
-            {
-                errorMessage+=errors.get(i) + "\n" ;
-            }
 
         } catch (JSONException e) {
-            showErrorMessage("server error");
+            errorMessage = "Please try again later";
         }
 
         return errorMessage;
 
     }
-
 
     /**
      * this method hides the keyboard

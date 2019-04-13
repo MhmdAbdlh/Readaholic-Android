@@ -25,6 +25,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.R;
+import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.WhoCanSeeContent;
 import com.example.android.readaholic.settings.edit_Birthday.BirthdaySettings;
 import com.example.android.readaholic.settings.edit_Location.LocationSettings;
@@ -47,6 +48,11 @@ public class Settings extends AppCompatActivity {
         setClicklisteners();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        settingsRequest();
+    }
     //region initializations
     /**
      * sets the click listeners for different setting items(username,birthday,location)
@@ -61,7 +67,7 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), UserNameSettings.class);
-                intent.putExtra("userName",mSettingData.getmUserName());
+                intent.putExtra("userName",mSettingData.getmName());
 
                 startActivity(intent);
             }
@@ -90,7 +96,7 @@ public class Settings extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), LocationSettings.class);
                 //sending location and who can see the location to the new activity
-                intent.putExtra("location",mSettingData.getmLocation());
+                intent.putExtra("country",mSettingData.getmCountry());
                 intent.putExtra("whoCanSeeMyLocation",mSettingData.getmWhoCanSeeMyLocation().toString());
 
                 startActivity(intent);
@@ -118,12 +124,15 @@ public class Settings extends AppCompatActivity {
     private void settingsRequest()
     {
         Loading();
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://api.myjson.com/bins/91qo2";
 
-        /*
-           String url = Urls.ROOT + Urls.showSetting + "?" + urlController.constructTokenParameters();
-        */
+        Urls urlController = new Urls(this,this);
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+       // String url ="https://api.myjson.com/bins/91qo2";
+
+
+           String url = Urls.ROOT + Urls.SHOW_SETTINGS + "?" + urlController.constructTokenParameters();
+
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -182,12 +191,12 @@ public class Settings extends AppCompatActivity {
                 JSONObject root = new JSONObject(response);
                 JSONObject userObject = root.getJSONObject("user");
 
-                String userName = userObject.getString("userName");
+                String name = userObject.getString("name");
                 String birthDay = userObject.getString("birthday");
-                String location = userObject.getString("location");
-                String image = userObject.optString("image");
-                String seeMyBirthDay = userObject.getString("seeMyBirthday");
-                String seeMyLocation = userObject.getString("seeMyCountry");
+                String country = userObject.getString("country");
+                String image = userObject.optString("image_link");
+                String seeMyBirthDay = userObject.getString("see_my_birthday");
+                String seeMyLocation = userObject.getString("see_my_country");
                 //converting who can see my birthday and who can see my location to the enum
                 WhoCanSeeContent whoCanSeeMyBirthDay =
                      WhoCanSeeContent.valueOf(seeMyBirthDay.toUpperCase());
@@ -195,7 +204,7 @@ public class Settings extends AppCompatActivity {
                         WhoCanSeeContent.valueOf(seeMyLocation.toUpperCase());
 
                 //setting the collected data to mSettingData to view the data in the layout
-                mSettingData = new SettingData(userName,birthDay,image,location
+                mSettingData = new SettingData(name,birthDay,image,country
                                               ,whoCanSeeMyBirthDay,whoCanSeeMyLocation);
 
 
@@ -218,13 +227,13 @@ public class Settings extends AppCompatActivity {
     {
         //loading the username , birth day ,location
         TextView userName = (TextView)findViewById(R.id.Settings_userNameContent_TextView);
-        userName.setText(mSettingData.getmUserName());
+        userName.setText(mSettingData.getmName());
 
         TextView birthDay = (TextView)findViewById(R.id.Settings_birthDayContent_TextView);
         birthDay.setText(mSettingData.getmBirthDay());
 
         TextView location = (TextView)findViewById(R.id.Settings_locationContent_TextView);
-        location.setText(mSettingData.getmLocation());
+        location.setText(mSettingData.getmCountry());
 
         //if the user doesn`t have an image -> load default image
         if(mSettingData.getmImage() == "") {

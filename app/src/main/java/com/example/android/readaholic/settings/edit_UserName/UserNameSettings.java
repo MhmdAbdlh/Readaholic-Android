@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -27,12 +28,16 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Countries;
+import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserNameSettings extends AppCompatActivity {
 
@@ -149,22 +154,25 @@ public class UserNameSettings extends AppCompatActivity {
     private void saveUserNameRequest()
     {
         Loading();
+
+        Urls urlController = new Urls(this,this);
+
+        //getting new name added by user
+        String newName = ((EditText)findViewById(R.id.UserName_EditTex)).getText().toString();
+
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://api.myjson.com/bins/91qo2";
+
+        String url = Urls.ROOT + Urls.CHANGE_NAME + "?" + urlController.constructTokenParameters()
+                + "&newName=" + newName;
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        boolean result = parseUserNameResponse(response);
-                        if(result == true) {
 
                             Toast.makeText(UserNameSettings.this, "user name saved successfully"
                                     , Toast.LENGTH_SHORT).show();
-                        }
-                       else {
-                           error("Parsing error! Please try again after some time!!");
-                        }
+                    showLayout();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -184,6 +192,22 @@ public class UserNameSettings extends AppCompatActivity {
                     message = "Cannot connect to Internet...Please check your connection!";
                 }
 
+                //if error code is 405 i should show the error message to the user provided
+                //by the backend
+                NetworkResponse networkResponse = error.networkResponse;
+                if (networkResponse != null && networkResponse.statusCode == HttpURLConnection.HTTP_BAD_METHOD) {
+                    if(error.networkResponse.data!=null) {
+                        //getting the error message provided by the backend
+                        try {
+                            String response = new String(error.networkResponse.data, "UTF-8");
+                            message = parseErrorResponse(response);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+
                 //showing error message to the user
                 error(message);
 
@@ -198,30 +222,25 @@ public class UserNameSettings extends AppCompatActivity {
     }
     //endregion
 
-    //region responses
-    /**
-     * getting the response of changing the user name
-     * @param response
-     * @return true -> if the name changed successfully (status = true)
-     *         false -> if there was
-     *
-     */
-    private boolean parseUserNameResponse(String response) {
+    //region response
+    private String parseErrorResponse(String response) {
+        String errorMessage = "";
+
         try {
+
             JSONObject root = new JSONObject(response);
-            if (root.getString("status").equals("true")) {
-
-                return true;
-            }
-            else {
-                return  false;
-            }
+            errorMessage = root.getString("errors");
 
 
-        } catch (JSONException E) {
-            return false;
+        } catch (JSONException e) {
+            errorMessage = "Please try again later";
         }
+
+        return errorMessage;
+
     }
+
     //endregion
+
 
 }
