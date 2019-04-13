@@ -23,6 +23,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.R;
+import com.example.android.readaholic.contants_and_static_data.Urls;
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.example.android.readaholic.home.Updates;
 import com.example.android.readaholic.home.UpdatesAdapter;
 import com.example.android.readaholic.profile_and_profile_settings.Followers_fragment;
@@ -483,13 +485,13 @@ public class HomeFragment extends Fragment {
      */
     public void request(){
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = "https://api.myjson.com/bins/19y576";
+        String url = Urls.ROOT+"/api/updates?token="+ UserInfo.sToken +"&type="+UserInfo.sTokenType;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                         new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
-                        arrayOfUpadates1 = onResposeAction(response);
+                        //arrayOfUpadates1 = onResposeAction(response);
 
                         Toast.makeText(getContext(),response,Toast.LENGTH_SHORT).show();
                         adapter.notifyDataSetChanged();
