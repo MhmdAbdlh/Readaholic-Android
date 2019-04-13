@@ -72,16 +72,17 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:paddingLeft="4dp">
-                <TextView
-                    android:id="@+id/UpdatesActivity_followernamelikedpost_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="4dp"
-                    android:text="Salma"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorUserNameGreen"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/UpdatesActivity_followernamelikedpost_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="4dp"
+                        android:text="Salma"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/colorUserNameGreen"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textView"
@@ -293,7 +294,8 @@
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_weight="0"
-                        android:background="@drawable/icons">
+                        android:background="@drawable/icons"
+                        android:padding="20dp">
 
                     </Spinner>
 
@@ -301,7 +303,7 @@
 
                 <Space
                     android:layout_width="match_parent"
-                    android:layout_height="40dp" />
+                    android:layout_height="50dp" />
 
             </LinearLayout>
 

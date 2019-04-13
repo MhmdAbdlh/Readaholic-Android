@@ -35,6 +35,7 @@ import com.example.android.readaholic.books.Creviewdata;
 import com.example.android.readaholic.books.ReviewActivity;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
+import com.example.android.readaholic.profile_and_profile_settings.Profile;
 import com.example.android.readaholic.profile_and_profile_settings.ProfileFragment;
 import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
@@ -46,6 +47,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.support.v4.content.ContextCompat.startActivity;
 
 public class UpdatesAdapter extends ArrayAdapter<Updates> {
     private Context activity;
@@ -267,12 +270,17 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
              * @param v View: The view that was clicked
              */
             public void onClick(View v){
+
+                Intent profileIntent = new Intent(v.getContext(), Profile.class);
+                profileIntent.putExtra("user-idFromFollowingList",Item.getmUserId());
+                v.getContext().startActivity(profileIntent);
+                /*
                 Fragment fragment = new ProfileFragment();
                 ((FragmentActivity)v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
                     fragment).commit();
                 Bundle bundle = new Bundle();
                 bundle.putInt("UserId", Item.getmUserId());
-                fragment.setArguments(bundle);
+                fragment.setArguments(bundle);*/
             }
         });
         userimg.setOnClickListener(new View.OnClickListener(){
@@ -394,12 +402,15 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
              * @param v View: The view that was clicked
              */
             public void onClick(View v){
-                Fragment fragment = new ProfileFragment();
+                Intent profileIntent = new Intent(v.getContext(), Profile.class);
+                profileIntent.putExtra("user-idFromFollowingList",Item.getmUserId());
+                v.getContext().startActivity(profileIntent);
+                /*Fragment fragment = new ProfileFragment();
                 ((FragmentActivity)v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
                         fragment).commit();
                 Bundle bundle = new Bundle();
                 bundle.putInt("UserId", Item.getmUserId());
-                fragment.setArguments(bundle);
+                fragment.setArguments(bundle);*/
             }
         });
         updateType.setOnClickListener(new View.OnClickListener() {
@@ -435,22 +446,21 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
 
                 boolean flag = true;
                 String selecteditem = adapter.getItemAtPosition(i).toString();
-                shelfview(1);
-                if (selecteditem == "WANT TO READ") {
+                if (i == 1 ) {
                     flag = requestshelf(2,Item.getmBookId());
                     shelfview(2);
-                } else if (selecteditem == "CURRENTLY READING") {
+                } else if (i == 2) {
                     flag = requestshelf(1, Item.getmBookId());
                     shelfview(1);
-                } else if (selecteditem == "READ") {
+                } else if (i == 3) {
                     flag = requestshelf(0, Item.getmBookId());
                     shelfview(0);
                 }
-
-                Toast.makeText(getContext(), selecteditem, Toast.LENGTH_LONG).show();
+                shelfview(i);
+                //Toast.makeText(getContext(), selecteditem, Toast.LENGTH_LONG).show();
                 //or this can be also right: selecteditem = level[i];
                 if (flag == false) {
-                    Toast.makeText(getContext(), "Wrrrrrong", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Change the shelf", Toast.LENGTH_LONG).show();
                 }
             }
 

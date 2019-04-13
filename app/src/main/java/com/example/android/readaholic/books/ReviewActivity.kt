@@ -37,6 +37,11 @@ class ReviewActivity : AppCompatActivity() {
             swiperefreshcomment.isRefreshing=false
         }
     }
+
+    /**
+     * get all review info from the end point (Server)
+     *
+     */
     fun getReviewInfo()
     {
         val queue = Volley.newRequestQueue(this)
@@ -81,6 +86,12 @@ class ReviewActivity : AppCompatActivity() {
         Picasso.get().load(Creviewdata.userimageurl).into(reviewerimage)
     }
 
+    /**
+     * feed it from the url
+     *
+     * @param jsonreaponse
+     */
+
     fun feedCreview(jsonreaponse: JSONObject)
     {
 
@@ -94,18 +105,35 @@ class ReviewActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * feed user info who posted that review
+     *
+     * @param jsonreaponsebook
+     */
+
     fun feeduser(jsonreaponsebook: JSONObject)
     {
         Creviewdata.username=jsonreaponsebook.getString("user_name")
         Creviewdata.userimageurl=jsonreaponsebook.getString("image_link")
 
     }
+
+    /**
+     * feed book info which the review posted on it
+     *
+     * @param jsonreaponsebook
+     */
     fun feedbook(jsonreaponsebook: JSONObject)
     {
         Creviewdata.book_name=jsonreaponsebook.getString("book_name")
         Creviewdata.book_image=jsonreaponsebook.getString("book_image")
-
     }
+
+    /**
+     * Author info of that book
+     *
+     * @param jsonreaponsebook
+     */
     fun feedauthor(jsonreaponsebook: JSONObject)
     {
         Creviewdata.author_name=jsonreaponsebook.getString("author_name")

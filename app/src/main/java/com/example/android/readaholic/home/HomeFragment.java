@@ -483,7 +483,7 @@ public class HomeFragment extends Fragment {
         //arrayOfUpadates1 = onResposeAction(newjson);
         //arrayOfUpadates1 = onResposeAction1(jsonFile);
         request();
-        Toast.makeText(getContext(),"salma",Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getContext(),"salma",Toast.LENGTH_SHORT).show();
 
     }
 
@@ -504,14 +504,14 @@ public class HomeFragment extends Fragment {
                         adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
                         listUpadtes.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
-                        Toast.makeText(getContext(),response,Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(),response,Toast.LENGTH_SHORT).show();
                         listUpadtes.setVisibility(View.VISIBLE);
                         loading.setVisibility(View.GONE);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-               // Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
+               Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -548,10 +548,12 @@ public class HomeFragment extends Fragment {
                     //review or raring update
                     case 0:
                         updateItem.setmUserShelf(updateItemJson.getInt("shelf"));
+                        updateItem.setmReviewID(updateItemJson.getInt("review_id"));
                         updateItem.setmBookCover(updateItemJson.getString("img_url"));
                         updateItem.setmBookName(updateItemJson.getString("title"));
                         updateItem.setmRatingValue(updateItemJson.getInt("rating"));
                         updateItem.setmAuthorName(updateItemJson.getString("author_name"));
+                        updateItem.setmBookId(updateItemJson.getInt("book_id"));
                         if(updateItem.getmRatingValue() == 0){
                             //if type of only revies Disable rating value and assign review
                             updateItem.setmReview(updateItemJson.getString("body"));
@@ -563,6 +565,7 @@ public class HomeFragment extends Fragment {
                         updateItem.setmBookCover(updateItemJson.getString("img_url"));
                         updateItem.setmBookName(updateItemJson.getString("title"));
                         updateItem.setmAuthorName(updateItemJson.getString("author_name"));
+                        updateItem.setmBookId(updateItemJson.getInt("book_id"));
                         updateItem.setmShelfUpdateType(updateItemJson.getInt("shelf_type"));//shelf
                         break;
                     //follwing
@@ -588,8 +591,9 @@ public class HomeFragment extends Fragment {
                                 updateItem.setmRatingValue(updateItemJson.getInt("rating"));
                                 updateItem.setmInnerImgUrl(updateItemJson.getString("rev_user_imageLink"));
                                 updateItem.setmAuthorName(updateItemJson.getString("author_name"));
+                                updateItem.setmBookId(updateItemJson.getInt("book_id"));
                                 if (updateItem.getmRatingValue() == 0) {
-                                    updateItem.setmReview(updateItemJson.getString("author_name"));
+                                    updateItem.setmReview(updateItemJson.getString("body"));
                                 }
                                 break;
                             //shelves
@@ -597,6 +601,7 @@ public class HomeFragment extends Fragment {
                                 updateItem.setmUserShelf(updateItemJson.getInt("shelf"));
                                 updateItem.setmBookCover(updateItemJson.getString("imgUrl"));
                                 updateItem.setmBookName(updateItemJson.getString("title"));
+                                updateItem.setmBookId(updateItemJson.getInt("book_id"));
                                 updateItem.setmAuthorName(updateItemJson.getString("author_name"));
                                 updateItem.setmShelf(updateItemJson.getString("shelf"));
                                 break;

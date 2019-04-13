@@ -44,7 +44,10 @@ public class Followingtab_Fragment extends Fragment {
      LinearLayoutManager mLayoutManger;
      FollowingLiastAdapter mAdapter;
     RequestQueue mRequestQueue;
+    TextView Title;
     View view;
+    int userId;
+    int followingNum;
     private static ProgressDialog mProgressDialog;
     String FollowesResponse = "{\n" +
             "  \"GoodreadsResponse\": {\n" +
@@ -92,12 +95,23 @@ public class Followingtab_Fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view =  inflater.inflate(R.layout.followingtab_fragment,container,false);
+        Title = (TextView)view.findViewById(R.id.Followingtab_fragment_Followings_TextView);
 
         mNotAvaliableTextView = (TextView) view.findViewById(R.id.Followingtab_fragment_NotAvaliableTextView);
         mNotAvaliableTextView.setVisibility(View.INVISIBLE);
 
         //TextView FollowingNumber = (TextView)view.findViewById(R.id.Followingtab_fragment_Followings_TextView);
         //FollowingNumber.setText(FollowingNumber+" Following");
+
+        Bundle bundle = getArguments();
+        if(bundle == null)
+            userId =0;
+        else {
+            userId = bundle.getInt("user-id");
+            followingNum = bundle.getInt("following-num");
+        }
+        ExtractFollowingsArray(userId);
+
         return view;
     }
 
@@ -105,14 +119,13 @@ public class Followingtab_Fragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ExtractFollowingsArray();
 
     }
 
     /**
      * function to extract followings array of users from response
      */
-    private void ExtractFollowingsArray()
+    private void ExtractFollowingsArray(int id)
     {
 
         mUser = new ArrayList<>();
@@ -120,8 +133,14 @@ public class Followingtab_Fragment extends Fragment {
         BasicNetwork network = new BasicNetwork(new HurlStack());
         mRequestQueue = new RequestQueue(cache, network);
         mRequestQueue.start();
-        String mRequestUrl =  Urls.ROOT + "/api/following?"+"token="+
+        String mRequestUrl;
+        if(id == 0)
+        mRequestUrl = Urls.ROOT  + "/api/following?"+"token="+
                 UserInfo.sToken+"&type="+ UserInfo.sTokenType;
+
+        else
+            mRequestUrl = Urls.ROOT  + "/api/following?id="+Integer.toString(id)+"&token="+
+                    UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
         //showSimpleProgressDialog(getContext(),"Loading.....","Loading Followings",false);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null,
@@ -167,6 +186,7 @@ public class Followingtab_Fragment extends Fragment {
         }
         else {
 
+            Title.setText("FOLLOWING "+Integer.toString(followingNum)+" READERS");
             mRecyclerView = (RecyclerView) view.findViewById(R.id.Followingtab_fragment_FollowingsList_RecyclerView);
 
             //mRecyclerView.setHasFixedSize(true);

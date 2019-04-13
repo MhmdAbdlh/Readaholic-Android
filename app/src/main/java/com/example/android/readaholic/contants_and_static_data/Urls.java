@@ -6,7 +6,6 @@ package com.example.android.readaholic.contants_and_static_data;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -19,7 +18,12 @@ public class Urls {
     private Activity mActivity;
     private Context mContext;
 
-    public static final String ROOT = "http://972c6e5d.ngrok.io";
+
+   public static final String ROOT = "http://972c6e5d.ngrok.io";
+
+
+
+
     //Login url
     public static String LOG_IN = "/api/login";
     //sign up url
@@ -34,7 +38,6 @@ public class Urls {
     public static String CHANGE_COUNTRY = "/api/changeCountry";
     //who can see my country url
     public static String WHO_CAN_SEE_MY_COUNTRY = "/api/whoCanSeeMyCountry";
-
 
     public Urls(Activity activity, Context context) {
         mActivity = activity;
@@ -57,18 +60,23 @@ public class Urls {
 
     }
 
-    public static String deletereview(String reviewid) {
-        return ROOT + "/api/reviwes/delete?reviewId=" + reviewid + "&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
-    }
-
     public static String editreview(String reviewid, String rating, String body) {
-        return ROOT + "api/reviwes/edit?reviewId=" + reviewid + "&body=" + body + "&rating=" + rating + "&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+        return ROOT + "/api/reviwes/edit?reviewId=" + reviewid + "&body=" + body + "&rating=" + rating + "&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
     }
 
     public static String getShowReview(String review_id) {
         return ROOT + "/api/showReviewOfBook?reviewId=" + review_id + "&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
 
     }
+    public static String getShowReviewForBookForUser(String Book_id) {
+        return ROOT + "/api/showReviewForBookForUser?bookId="+Book_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+
+    }
+    public static String deleteMyReview(String review_id) {
+        return ROOT + "/api/reviwes/delete?reviewId="+review_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+
+    }
+
 
 
     public String constructTokenParameters() {
@@ -199,7 +207,6 @@ public class Urls {
         return parameters;
     }
 }
-
 
 
 

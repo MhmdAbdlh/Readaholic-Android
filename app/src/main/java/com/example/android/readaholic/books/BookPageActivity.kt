@@ -1,18 +1,15 @@
 package com.example.android.readaholic.books
-
-//import com.daimajia.androidanimations.library.Techniques
-//import com.daimajia.androidanimations.library.YoYo
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.support.annotation.RequiresPermission
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.daimajia.androidanimations.library.Techniques
-import com.daimajia.androidanimations.library.YoYo
 import com.example.android.readaholic.R
 import com.example.android.readaholic.contants_and_static_data.Urls
 import com.squareup.picasso.Picasso
@@ -20,6 +17,11 @@ import kotlinx.android.synthetic.main.activity_book_page.*
 import org.json.JSONObject
 import com.android.volley.Request
 import com.android.volley.Response
+import com.example.android.readaholic.Editreview
+import com.google.gson.JsonObject
+import kotlinx.android.synthetic.main.activity_book_reviews.*
+
+
 /**
  * This Activity is for showing book information
  *
@@ -42,34 +44,20 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
     }
     var bookinfo: BookPageInfo?=null
     var bookreview:ArrayList<BookReview>?=null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_page)
         var spinneradapter: ArrayAdapter<CharSequence> =ArrayAdapter.createFromResource(this, R.array.Shelves,android.R.layout.simple_spinner_item)
         spinneradapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        activitybook_sheleve_spinner.adapter=spinneradapter
-        activitybook_sheleve_spinner.onItemSelectedListener=this
+        activitybook_sheleve_spinner1.adapter=spinneradapter
+        activitybook_sheleve_spinner1.onItemSelectedListener=this
         /////////////////////////////
         bookinfo= BookPageInfo()
        /* var intent:Intent= Intent()
          Cbookdata!!.bookid=intent.getIntExtra("BookId",2)*/
         bookreview= ArrayList()
         feedBookInfoFromApi(Cbookdata.bookid)
-        rateittext.setOnClickListener {
-            writeareviewbtn.visibility=View.VISIBLE
-        }
 
-        ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
-        Cbookdata.bookrating=ratingBar.rating.toInt()
-            setshelve()
-            writeareviewbtn.visibility=View.VISIBLE
-            rateittext.text="My Rating"
-            bookreadbtnui.text="READ"
-            bookreadbtnui.setBackgroundResource(R.drawable.btnselectedshape); // From android.graphics.Color
-            bookreadbtnui.setTextColor(Color.BLACK)
-            animate()
-        }
         seeallreviewstxtui.setOnClickListener {
             Cbookdata.author_name=bookinfo!!.author_name
             Cbookdata.book_title=bookinfo!!.book_title
@@ -77,7 +65,7 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
             var intent=Intent(this, BookReviewsActivity::class.java)
             startActivity(intent)
         }
-
+        getReviewforABookforAUser()
     }
 
     /**
@@ -91,23 +79,124 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
             "CURRENTLY READING"->   Cbookdata.shelf=1
             "WANT TO READ" ->   Cbookdata.shelf=2
         }
+        Toast.makeText(this,Cbookdata.shelf.toString(),Toast.LENGTH_SHORT).show()
     }
 
+    fun getshelve()
+    {
+        when( Cbookdata.shelf) {
+            0 ->bookreadbtnui.text ="READ"
+            1-> bookreadbtnui.text = "CURRENTLY READING"
+            2-> bookreadbtnui.text  = "WANT TO READ"
+        }
+        Toast.makeText(this,Cbookdata.shelf.toString(),Toast.LENGTH_SHORT).show()
+    }
+
+    /**
+     *
+     *
+     * @param view
+     */
     fun refreshBookPage(view: View)
     {
         feedBookInfoFromApi(Cbookdata.bookid)
     }
 
+    /**
+     * Got to write review activity
+     *
+     * @param view
+     */
+
     fun writeReview(view:View)
     {
-        var intent=Intent(this, BookReviewsActivity::class.java)
+        var intent=Intent(this, Editreview::class.java)
+        setshelve()
         startActivity(intent)
     }
-    fun animate() {
-        YoYo.with(Techniques.FadeIn)
-                .duration(1000)
-                .playOn(writeareviewbtn);
+
+    /**
+     * get a the review for a user for a book
+     *
+     */
+    fun getReviewforABookforAUser()
+    {
+        val queue = Volley.newRequestQueue(this)
+        var url = Urls.getShowReviewForBookForUser(Cbookdata.bookid.toString())
+        val stringRequest = StringRequest(Request.Method.GET, url,
+                Response.Listener<String> { response ->
+                    var jsonresponse= JSONObject(response)
+                    myReview(jsonresponse)
+
+                },
+                Response.ErrorListener {
+
+                }
+        )
+        queue.add(stringRequest)
     }
+
+    /**
+     * deleting my review
+     *
+     * @param view
+     */
+
+    fun deletemyreview(view: View)
+    {
+        val queue = Volley.newRequestQueue(this)
+        var url = Urls. deleteMyReview(Cbookdata.reviewid.toString())
+        val stringRequest = StringRequest(Request.Method.DELETE, url,
+                Response.Listener<String> { response ->
+                    var jsonresponse= JSONObject(response)
+                    if(jsonresponse.getString("status")=="true")
+                    {
+                     Toast.makeText(this,"Your review has been deleted",Toast.LENGTH_SHORT).show()
+                        finish();
+                        startActivity(getIntent());
+                    }
+                    else{
+                        Toast.makeText(this,jsonresponse.getString("Message"),Toast.LENGTH_SHORT).show()
+                    }
+                },
+                Response.ErrorListener {
+
+
+
+                }
+        )
+        queue.add(stringRequest)
+
+
+
+
+    }
+
+    /**
+     * take my review data from json and feed the UI
+     *
+     * @param json
+     */
+
+    fun myReview(json:JSONObject)
+    {
+        var status=json.getString("status")
+        if(status=="success")
+        {
+            myreviewlayout.visibility=View.VISIBLE
+           var myreview=json.getJSONArray("pages").getJSONObject(0)
+            myreviewbody.text=myreview.getString("body")
+            myrating.rating=myreview.getInt("rating").toFloat()
+            writeareviewbtn.text="Edit Your  Review"
+            Cbookdata.shelf=myreview.getInt("shelf_name")
+            Cbookdata.reviewid=myreview.getInt("id")
+            getshelve()
+        }
+
+    }
+
+
+
     /**
      * get the book info from the url as a json file or show error messege in failiar case     *
      */
@@ -157,7 +246,7 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
         bookinfo!!.description =jsonobject.getString("description")
         bookinfo!!.image_url =jsonobject.getString("img_url")
         bookinfo!!.average_rating=jsonobject.getString("ratings_avg").toFloat()
-        bookinfo!!.isbn =jsonobject.getString("isbn").toInt()
+        bookinfo!!.isbn =jsonobject.getInt("isbn")
         bookinfo!!.publication_date =jsonobject.getString("publication_date")
         bookinfo!!.publisher =jsonobject.getString("publisher")
         bookinfo!!.ratings_count =jsonobject.getString("ratings_count").toInt()

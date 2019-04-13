@@ -54,11 +54,7 @@ public class ProfileFragment extends Fragment {
     private ImageView mUserImage;
     private TextView mUserName;
     private TextView mUserBookNumber;
-    ArrayList<Updates> arayOfUpdates = new ArrayList<Updates>();
-    private ListView mListOfUpdates;
-    private UpdatesAdapter adapterForUpdatesList;
     View view;
-git commit -m "ABCDEFG"
     com.example.android.readaholic.VolleyHelper.volleyRequestHelper volleyRequestHelper;
     private String jsonFile = "{\n" +
             "   \"updates\":{\n" +
@@ -331,22 +327,25 @@ git commit -m "ABCDEFG"
         mUserName =(TextView)view.findViewById(R.id.ProfileActivity_UserName_TextView);
 
 
+/*
         //Loading Fragments
         loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId());
         loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId());
         loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId());
+*/
+        mUserBookNumber = (TextView)view.findViewById(R.id.ProfileActivity_UserBooksNumber_TextView);
+
 ///////////////////////////////////////////////////////////////////////////////
         //Take user id when click in his name in Updates (user could be different from the current user)
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             mUser_Id = bundle.getInt("UserId");
         }
-
         Picasso.get().load("https://s.gr-assets.com/assets/nophoto/user/" +
                     "u_111x148-9394ebedbb3c6c218f64be9549657029.png").transform(new CircleTransform()).into(mUserImage);
 
            // mUser_Id = getArguments().getInt("user-id");
-            Log.e("userid",Integer.toString(mUser_Id));
+            //Log.e("userid",Integer.toString(mUser_Id));
 
         requestProfileView(mUser_Id);
 
@@ -357,31 +356,7 @@ git commit -m "ABCDEFG"
         Toast.makeText(getContext(),String.valueOf(mUser_Id),Toast.LENGTH_SHORT).show();
         UpdateData(mProfileUser);
 
-        ///////////////////////////////////////////////////////////////////////////////////////////////
-        mListOfUpdates = (ListView) view.findViewById(R.id.Profile_updateslist_listview);
-        mListOfUpdates.setOnTouchListener(new ListView.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Disallow ScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        break;
 
-                    case MotionEvent.ACTION_UP:
-                        // Allow ScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                        break;
-                }
-
-                // Handle ListView touch events.
-                v.onTouchEvent(event);
-                return true;
-            }
-        });
-
-        mListOfUpdates.setAdapter(adapterForUpdatesList);
 
         return view;
 
@@ -391,32 +366,7 @@ git commit -m "ABCDEFG"
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        request();
-    }
-
-    private void request() {
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = Urls.ROOT+"/api/updates?user_id=9"+"&token="+ UserInfo.sToken +"&type="+UserInfo.sTokenType;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                        arayOfUpdates = HomeFragment.onResposeAction(response);
-                        adapterForUpdatesList = new UpdatesAdapter(getContext(),arayOfUpdates);
-                        mListOfUpdates.setAdapter(adapterForUpdatesList);
-                        adapterForUpdatesList.notifyDataSetChanged();
-                        Toast.makeText(view.getContext(),response,Toast.LENGTH_SHORT).show();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
+       // request();
     }
 
     /**
@@ -427,8 +377,17 @@ git commit -m "ABCDEFG"
     @Override
     public Context getViewContext() {
         return view.getContext();
-    }*/
+    }*//*
+        if(savedInstanceState == null) {
+            if (getArguments() == null)
+                mUser_Id = 0;
+            else
+                mUser_Id = getArguments().getInt("user-id");
+            Log.e("userid", Integer.toString(mUser_Id));
+            requestProfileView(mUser_Id);
+        }
 
+    }*/
 
     /**
      * loadFragment function to initialize the Fragment
@@ -437,11 +396,21 @@ git commit -m "ABCDEFG"
      * to initialize the Fragment argument and replace FrameLayout with it.
      * and id to assign it to certain fragment layout.
      */
-    private void loadFragment(Fragment fragment,int ID) {
+    private void loadFragment(Fragment fragment,int ID,int userID) {
         // create a FragmentManager
         FragmentManager fm = getActivity().getSupportFragmentManager();
         // create a FragmentTransaction to begin the transaction and replace the Fragment
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putInt("user-id",userID);
+        if(ID == view.findViewById(R.id.Profile_Books_Fragment).getId())
+            bundle.putInt("books-num",mProfileUser.getmUsernumberOfBooks());
+        else if(ID == view.findViewById(R.id.Profile_Friends_Fragment).getId())
+        {
+            bundle.putInt("followers-num",mProfileUser.getmNumberOfFollowers());
+            bundle.putInt("followers-num",mProfileUser.getGetmNumberOfFolloweings());
+        }
+        fragment.setArguments(bundle);
         // replace the FrameLayout with new Fragment
         fragmentTransaction.add(ID, fragment);
         fragmentTransaction.commit(); // save the changes
@@ -465,14 +434,14 @@ git commit -m "ABCDEFG"
     public void requestProfileView(int user_id)
 {
     if(user_id != 0)
-    mRequestUrl = Urls.ROOT + "/api/showProfile?"+"id="+Integer.toString(user_id)+"&token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
+    mRequestUrl =Urls.ROOT + "/api/showProfile?"+"id="+Integer.toString(user_id)+"&token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
     else
-        mRequestUrl = Urls.ROOT + "/api/showProfile?"+"token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
+        mRequestUrl = Urls.ROOT  + "/api/showProfile?"+"token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
     Toast.makeText(getContext(),String.valueOf(mUser_Id),Toast.LENGTH_SHORT).show();
     mProfileUser = new Users();
-    DiskBasedCache cache = new DiskBasedCache(view.getContext().getCacheDir(), 1024 * 1024);
+    DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(), 1024 * 1024);
     BasicNetwork network = new BasicNetwork(new HurlStack());
     mRequestQueue = new RequestQueue(cache, network);
     mRequestQueue.start();
@@ -483,10 +452,18 @@ git commit -m "ABCDEFG"
             mProfileUser.setmUserName(Response.optString("name"));
             Log.e("Test" ,mProfileUser.getmUserName());
             mProfileUser.setmUserImageUrl(Response.optString("small_image_link"));
-            mProfileUser.setmUsernumberOfBooks(Response.optInt("book-count"));
 
+            mProfileUser.setmUsernumberOfBooks(Response.optInt("books_count"));
+            mProfileUser.setmNumberOfFollowers(Response.optInt("followers_count"));
+            mProfileUser.setGetmNumberOfFolloweings(Response.optInt("following_count"));
             Log.e("showprofileResponseName",mProfileUser.getmUserName());
             UpdateData(mProfileUser);
+
+            //Loading Fragments
+            loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId(),mUser_Id);
+            loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId(),mUser_Id);
+            loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId(),mUser_Id);
+
             mRequestQueue.stop();
         }
     }, new Response.ErrorListener() {
@@ -498,6 +475,7 @@ git commit -m "ABCDEFG"
             mRequestQueue.stop();
         }
     });
+
     mRequestQueue.add(jsonObjectRequest);
 
 }

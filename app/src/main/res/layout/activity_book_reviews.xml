@@ -41,22 +41,6 @@
         android:layout_height="wrap_content">
 
 
-        <EditText
-            android:id="@+id/writerreview"
-            style="@style/EditTextStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:gravity="center"
-            android:hint="Write a review" />
-
-        <ImageView
-            android:id="@+id/sendreviewbtn"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:onClick="sendReview"
-            app:srcCompat="@drawable/sendreview" />
 
 
     </LinearLayout>
