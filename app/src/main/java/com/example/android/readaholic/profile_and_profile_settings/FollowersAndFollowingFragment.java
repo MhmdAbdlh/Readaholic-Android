@@ -61,7 +61,6 @@ import java.util.List;
                 Log.e("ERROR ","mSectionpagerAdapter Error");
             mSectionsPagerAdapter.AddFragment(new Followingtab_Fragment(),"Following");
             mSectionsPagerAdapter.AddFragment(new FollowersTab_Fragment(),"Followers");
-
             // Set up the ViewPager with the sections adapter.
             mViewPager = (ViewPager)view.findViewById(R.id.FollowersAndFollowing_Container);
 
@@ -91,6 +90,7 @@ import java.util.List;
         public class SectionsPagerAdapter extends FragmentPagerAdapter {
             List<Fragment> ListFragments = new ArrayList<>();
             List<String> ListTitels = new ArrayList<>();
+
             public SectionsPagerAdapter(FragmentManager fm) {
                 super(fm);
             }

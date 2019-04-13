@@ -1,7 +1,5 @@
 package com.example.android.readaholic.contants_and_static_data;
 
-import android.support.design.widget.NavigationView;
-
 /**
  * this class holds the info of a user
  * we fill the data when a user signs in
@@ -15,6 +13,7 @@ public class UserInfo {
     //token required for post requests
     public static String sToken;
     public static String sTokenType;
+
 
     /**
      * adding the user data

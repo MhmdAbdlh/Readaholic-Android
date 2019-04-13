@@ -22,12 +22,12 @@ import java.util.List;
 public class FollowingLiastAdapter extends RecyclerView.Adapter<FollowingLiastAdapter.MyViewHolder> {
     private List<Users> mUsers;
     private Context mcontext;
-
+    private customItemCLickLisenter customItemCLickLisenter;
     /**
      * MyViewHolder classe to hold the view elements
      * @author Hossam Ahmed
      */
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // each data item is just a string in this case
         private ImageView userImageView;
         private TextView userNameTextView;
@@ -42,6 +42,12 @@ public class FollowingLiastAdapter extends RecyclerView.Adapter<FollowingLiastAd
             userNameTextView = (TextView) v.findViewById(R.id.FollowingList_UserIName_TextView);
             userImageView =(ImageView) v.findViewById(R.id.FollowingList_UserImage_ImageView);
             userBooksNumberTextView = (TextView) v.findViewById(R.id.FollowingList_UserBooksNumber_TextView);
+
+        }
+
+        @Override
+        public void onClick(View v) {
+
         }
     }
 
@@ -49,10 +55,12 @@ public class FollowingLiastAdapter extends RecyclerView.Adapter<FollowingLiastAd
      * Adpater constructor
      * @param context context of the layout
      * @param users user object to fill the layout with their data
+     * @param Listener interface of custom item click listener to hold click events on list items.
      */
-    public FollowingLiastAdapter(Context context, List<Users> users) {
+    public FollowingLiastAdapter(Context context, List<Users> users , customItemCLickLisenter Listener) {
         mUsers = users;
         mcontext = context;
+        this.customItemCLickLisenter = Listener;
     }
 
     /**
@@ -66,8 +74,14 @@ public class FollowingLiastAdapter extends RecyclerView.Adapter<FollowingLiastAd
         // create a new view
         View v =  LayoutInflater.from(mcontext)
                 .inflate(R.layout.following_list, parent, false);
-
-        return new MyViewHolder(v);
+        final MyViewHolder mViewHolder = new MyViewHolder(v);
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customItemCLickLisenter.onItemClick(v,mViewHolder.getPosition());
+            }
+        });
+        return mViewHolder;
     }
 
     /**
@@ -77,16 +91,11 @@ public class FollowingLiastAdapter extends RecyclerView.Adapter<FollowingLiastAd
      */
     @Override
     public void onBindViewHolder(@NonNull FollowingLiastAdapter.MyViewHolder myViewHolder, int i) {
-        if(mUsers.get(i).getmUserImageUrl() == null)
-        {
-            myViewHolder.userImageView.setImageResource(R.drawable.reader);
-        }
-        else {
-           Picasso.get().load(mUsers.get(i).getmUserImageUrl()).transform(new CircleTransform()).into(myViewHolder.userImageView);
-        }
+
+        Picasso.get().load(mUsers.get(i).getmUserImageUrl()).transform(new CircleTransform()).into(myViewHolder.userImageView);
         myViewHolder.userNameTextView.setText( mUsers.get(i).getmUserName());
         myViewHolder.userBooksNumberTextView.setText( mUsers.get(i).getmUsernumberOfBooks()+" Books");
-        //following button todo.
+
     }
 
     /**
@@ -98,5 +107,13 @@ public class FollowingLiastAdapter extends RecyclerView.Adapter<FollowingLiastAd
          return mUsers.size();
     }
 
+    public interface customItemCLickLisenter
+    {
+        public void onItemClick(View v,int position);
+    }
+
 }
+
+
+
 

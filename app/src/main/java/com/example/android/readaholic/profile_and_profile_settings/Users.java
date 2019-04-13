@@ -9,6 +9,8 @@ import java.util.ArrayList;
  * @author Hossam Ahmed
  */
 public class Users {
+    private int mUserId;
+
     @SerializedName("mUsername")
     private String mUserName;
     @SerializedName("mUsernumberofBooks")
@@ -18,6 +20,7 @@ public class Users {
     private int mNumberOfFollowers;
     private int getmNumberOfFolloweings;
     private ArrayList<UserUpdate> mUpdates;
+    private boolean mFollowerState;
 
 
     private ArrayList<String> mCurrentlyReadingImageUrl;
@@ -115,6 +118,22 @@ public class Users {
         return mUsernumberOfBooks;
     }
 
+    public void setmUserId(int mUserId) {
+        this.mUserId = mUserId;
+    }
+
+    public int getmUserId() {
+        return mUserId;
+    }
+
+    public void setmFollowerState(boolean mFollowerState) {
+        this.mFollowerState = mFollowerState;
+    }
+
+    public boolean ismFollowerState() {
+        return mFollowerState;
+    }
+
     /**
      * Users Constructor
      * @param Name user name
@@ -155,5 +174,37 @@ public class Users {
         setmUsernumberOfBooks(numberofbooks);
         setmUserName(mUserName);
         setmUserImageUrl(mUserImageUrl);
+    }
+
+    /**
+     * constructor of profile
+     * @param id user id
+     * @param mUserName user name
+     * @param mUserImageUrl user image url
+     * @param numberofbooks user number of books
+     */
+    public Users(int id,String mUserName,String mUserImageUrl,int numberofbooks)
+    {
+        setmUsernumberOfBooks(numberofbooks);
+        setmUserId(id);
+        setmUserName(mUserName);
+        setmUserImageUrl(mUserImageUrl);
+    }
+
+    /**
+     * constructor for followers
+     * @param id user id
+     * @param mUserName user name
+     * @param mUserImageUrl user image url
+     * @param numberofbooks user total number of books
+     * @param mFollowerState following state
+     */
+    public Users(int id,String mUserName,String mUserImageUrl,int numberofbooks,boolean mFollowerState)
+    {
+        setmUserName(mUserName);
+        setmUserId(id);
+        setmUserImageUrl(mUserImageUrl);
+        setmFollowerState(mFollowerState);
+        setmUsernumberOfBooks(numberofbooks);
     }
 }

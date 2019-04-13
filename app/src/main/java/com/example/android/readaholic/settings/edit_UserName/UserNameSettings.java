@@ -12,9 +12,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -25,20 +32,11 @@ import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.HttpURLConnection;
+
 public class UserNameSettings extends AppCompatActivity {
 
-    //TODO change the responses when the backend identify all the responses
 
-    /**
-     * all possible responses of change username request
-     *  SUCCESS -> Username changed successfully
-     */
-    enum ChangeUserNameResponses {
-        SUCCESS,
-        FAILED,
-        SERVER_ERROR
-
-    }
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,23 +156,37 @@ public class UserNameSettings extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        ChangeUserNameResponses result = parseUserNameResponse(response);
-                        if(result == ChangeUserNameResponses.SUCCESS) {
+                        boolean result = parseUserNameResponse(response);
+                        if(result == true) {
 
                             Toast.makeText(UserNameSettings.this, "user name saved successfully"
                                     , Toast.LENGTH_SHORT).show();
                         }
-                        else if(result == ChangeUserNameResponses.FAILED) {
-                            error("Saving failed");
-
-                        } else if(result == ChangeUserNameResponses.SERVER_ERROR) {
-                            error("Server error");
+                       else {
+                           error("Parsing error! Please try again after some time!!");
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error("Connection error");
+
+                //checking what caused the error providing the user with appropriate message
+                String message = null;
+
+                if (error instanceof NetworkError || error instanceof NoConnectionError
+                        || error instanceof TimeoutError) {
+                    message = "Connection error...Please check your connection!";
+                } else if (error instanceof ServerError) {
+                    message = "The server could not be found. Please try again after some time!!";
+                } else if (error instanceof ParseError) {
+                    message = "Parsing error! Please try again after some time!!";
+                } else if (error instanceof AuthFailureError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                }
+
+                //showing error message to the user
+                error(message);
+
 
             }
 
@@ -190,24 +202,24 @@ public class UserNameSettings extends AppCompatActivity {
     /**
      * getting the response of changing the user name
      * @param response
-     * @return SUCCESS -> if the name changed successfully (status = true)
-     *         FAILED -> if there was
+     * @return true -> if the name changed successfully (status = true)
+     *         false -> if there was
      *
      */
-    private ChangeUserNameResponses parseUserNameResponse(String response)
-    {
+    private boolean parseUserNameResponse(String response) {
         try {
             JSONObject root = new JSONObject(response);
-            if (root.getString("status").equals("true") ) {
+            if (root.getString("status").equals("true")) {
 
-                return ChangeUserNameResponses.SUCCESS;
+                return true;
             }
-            else return ChangeUserNameResponses.FAILED;
+            else {
+                return  false;
+            }
 
-        }
-        catch (JSONException E)
-        {
-            return ChangeUserNameResponses.SERVER_ERROR;
+
+        } catch (JSONException E) {
+            return false;
         }
     }
     //endregion

@@ -18,9 +18,16 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -28,6 +35,7 @@ import com.example.android.readaholic.Main;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Countries;
 import com.example.android.readaholic.contants_and_static_data.Gender;
+import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.example.android.readaholic.settings.edit_Birthday.BirthdaySettings;
 
@@ -35,6 +43,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.HttpURLConnection;
 import java.util.Calendar;
 
 public class SignUp extends AppCompatActivity {
@@ -162,7 +171,6 @@ public class SignUp extends AppCompatActivity {
         //getting data that the user entered
         /***********************************getting data -> open**********************************/
         String email = ((EditText)findViewById(R.id.SignUp_email_edittext)).getText().toString();
-        String userName = ((EditText)findViewById(R.id.SignUp_userName_edittext)).getText().toString();
         String firstName = ((EditText)findViewById(R.id.SignUp_firstName_edittext)).getText().toString();
         String lastName = ((EditText)findViewById(R.id.SignUp_lastName_edittext)).getText().toString();
         String password = ((EditText)findViewById(R.id.SignUp_Pass_edittext)).getText().toString();
@@ -173,7 +181,7 @@ public class SignUp extends AppCompatActivity {
 
         //checking if all fields are filled or not
         /**********************************checking filled -> open*********************************/
-        if( email.length() == 0 || userName.length() == 0 || firstName.length() == 0 || birthday.length() == 0
+        if( email.length() == 0 || firstName.length() == 0 || birthday.length() == 0
                 || lastName.length() == 0 || password.length() == 0 || confirmPassword.length() ==0  ) {
 
             showErrorMessage("Please fill all fields");
@@ -181,10 +189,9 @@ public class SignUp extends AppCompatActivity {
         }
         /*********************************checking filled -> close***********************************/
 
-        //checking if there are spaces in the email or username or the password
+        //checking if there are spaces in the email  or the password
         /********************************checking spaces -> open***********************************/
         if(email.length() > email.replaceAll("\\s+","").length()
-        || userName.length() > userName.replaceAll("\\s+","").length()
         || password.length() > password.replaceAll("\\s+","").length()) {
 
             showErrorMessage("Email , username and password should not contain spaces");
@@ -221,9 +228,11 @@ public class SignUp extends AppCompatActivity {
     {
         //showing the progress bar
         whileLoading();
+        Urls urlController = new Urls(this,this.getBaseContext());
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://api.myjson.com/bins/1hdk";
+
+        String url = Urls.ROOT + Urls.SIGN_UP + "?" + urlController.getSignUpParameters() ;
 
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -245,15 +254,43 @@ public class SignUp extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                showErrorMessage("Error in Connection");
-                showLayout();
+
+                //checking what caused the error providing the user with appropriate message
+                String message = null;
+
+                if (error instanceof NetworkError || error instanceof NoConnectionError
+                        || error instanceof TimeoutError) {
+                    message = "Connection error...Please check your connection!";
+                } else if (error instanceof ServerError) {
+                    message = "The server could not be found. Please try again after some time!!";
+                } else if (error instanceof ParseError) {
+                    message = "Parsing error! Please try again after some time!!";
+                } else if (error instanceof AuthFailureError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                }
+
+                //if error code is 405 i should show the error message to the user privided
+                //by the backend
+                NetworkResponse networkResponse = error.networkResponse;
+                if (networkResponse != null && networkResponse.statusCode == HttpURLConnection.HTTP_BAD_METHOD) {
+                    if(error.networkResponse.data!=null) {
+                        //getting the error message provided by the backend
+                        message = parseErrorResponse(error.networkResponse.data.toString());
+                    }
+                }
+
+                showErrorMessage(message);
+
             }
+
 
         });
 
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
+
+
     //endregion
 
     //region parse json responses
@@ -291,10 +328,32 @@ public class SignUp extends AppCompatActivity {
         }
         catch (JSONException E)
         {
-            showErrorMessage("Server error");
+            showErrorMessage("Parsing error! Please try again after some time!!");
             return false;
         }
     }
+
+    private String parseErrorResponse(String response) {
+        String errorMessage = "";
+
+        try {
+
+            JSONObject root = new JSONObject(response);
+            JSONArray errors = root.getJSONArray("errors");
+
+            for(int i = 0 ;i<errors.length() ; i++)
+            {
+                errorMessage+=errors.get(i) + "\n" ;
+            }
+
+        } catch (JSONException e) {
+            showErrorMessage("server error");
+        }
+
+        return errorMessage;
+
+    }
+
     //endregion
 
     //region ui control

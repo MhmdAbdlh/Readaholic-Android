@@ -13,14 +13,21 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Countries;
+import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.settings.edit_Birthday.BirthdaySettings;
 
 import org.json.JSONException;
@@ -28,27 +35,7 @@ import org.json.JSONObject;
 
 public class LocationSettings extends AppCompatActivity {
 
-    //TODO change the possible responses when the back end gives more info
-    /**
-     *All possible Change location responses
-     * SUCCESS-> Location changed successfully
-     */
-    enum ChangeLocationResponses {
-        SUCCESS,
-        FAILED,
-        SERVER_ERROR
-    }
 
-    //TODO change the possible responses when the back end gives more info
-    /**
-     * all possible responses of change who can see my location request
-     * SUCCESS-> Location changed successfully
-     */
-    enum ChangeWhoCanSeeMyLocationResponses {
-        SUCCESS,
-        FAILED,
-        SERVER_ERROR
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,30 +195,45 @@ public class LocationSettings extends AppCompatActivity {
     private void changeLocationRequest()
     {
         Loading();
+        Urls urlController = new Urls(this,this.getBaseContext());
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://api.myjson.com/bins/91qo2";
+        String url = Urls.ROOT + Urls.CHANGE_COUNTRY + "?" + urlController.constructTokenParameters()
+                +"&" + urlController.getChangeLocationParameters();
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        ChangeLocationResponses result = parseLocationResponse(response);
-                        if(result == ChangeLocationResponses.SUCCESS) {
+                        boolean result = parseLocationResponse(response);
+                        if(result == true) {
 
                             Toast.makeText(LocationSettings.this, "Birthday saved successfully"
                                     , Toast.LENGTH_SHORT).show();
                         }
-                        else if(result == ChangeLocationResponses.FAILED) {
-                            error("Saving failed");
-
-                        } else if(result == ChangeLocationResponses.SERVER_ERROR) {
-                            error("Server error");
+                        else {
+                            error("Parsing error! Please try again after some time!!");
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error("Connection error");
+                //checking what caused the error providing the user with appropriate message
+                String message = null;
+
+                if (error instanceof NetworkError || error instanceof NoConnectionError
+                        || error instanceof TimeoutError) {
+                    message = "Connection error...Please check your connection!";
+                } else if (error instanceof ServerError) {
+                    message = "The server could not be found. Please try again after some time!!";
+                } else if (error instanceof ParseError) {
+                    message = "Parsing error! Please try again after some time!!";
+                } else if (error instanceof AuthFailureError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                }
+
+                //showing error message to the user
+                error(message);
+
 
             }
 
@@ -247,31 +249,45 @@ public class LocationSettings extends AppCompatActivity {
     private void changeWhoCanSeeMyLocationRequest()
     {
         Loading();
+        Urls urlController = new Urls(this,this.getBaseContext());
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="https://api.myjson.com/bins/91qo2";
+        String url = Urls.ROOT + Urls.WHO_CAN_SEE_MY_COUNTRY + "?" + urlController.constructTokenParameters()
+                +"&" + urlController.getWhoCanSeeMyLocationParameters();
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        ChangeWhoCanSeeMyLocationResponses result = parseWhoCanSeeMyLocationResponse(response);
-                        if(result == ChangeWhoCanSeeMyLocationResponses.SUCCESS) {
+                        boolean result = parseWhoCanSeeMyLocationResponse(response);
+                        if(result == true) {
 
                             Toast.makeText(LocationSettings.this
                                     ,"Who can see my birthday saved successfully"
                                     , Toast.LENGTH_SHORT).show();
                         }
-                        else if(result == ChangeWhoCanSeeMyLocationResponses.FAILED) {
-                            error("Saving failed");
-
-                        } else if(result == ChangeWhoCanSeeMyLocationResponses.SERVER_ERROR) {
-                            error("Server error");
+                        else {
+                            error("Parsing error! Please try again after some time!!");
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error("Connection error");
+                //checking what caused the error providing the user with appropriate message
+                String message = null;
+
+                if (error instanceof NetworkError || error instanceof NoConnectionError
+                        || error instanceof TimeoutError) {
+                    message = "Connection error...Please check your connection!";
+                } else if (error instanceof ServerError) {
+                    message = "The server could not be found. Please try again after some time!!";
+                } else if (error instanceof ParseError) {
+                    message = "Parsing error! Please try again after some time!!";
+                } else if (error instanceof AuthFailureError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                }
+
+                //showing error message to the user
+                error(message);
 
             }
 
@@ -287,48 +303,48 @@ public class LocationSettings extends AppCompatActivity {
     /**
      * getting the response of changing location
      * @param response
-     * @return SUCCESS -> if the location successfully (status = true)
-     *         FAILED -> if there was
+     * @return true -> if the location successfully (status = true)
+     *         false -> if there was
      *
      */
-    private ChangeLocationResponses parseLocationResponse(String response)
+    private boolean parseLocationResponse(String response)
     {
         try {
             JSONObject root = new JSONObject(response);
             if (root.getString("status").equals("true") ) {
 
-                return ChangeLocationResponses.SUCCESS;
+                return true;
             }
-            else return ChangeLocationResponses.FAILED;
+            else return false;
 
         }
         catch (JSONException E)
         {
-            return ChangeLocationResponses.SERVER_ERROR;
+            return false;
         }
     }
 
     /**
      * getting the response of changing the location
      * @param response
-     * @return SUCCESS -> if the  location changed successfully (status = true)
-     *         FAILED -> if there was
+     * @return true -> if the  location changed successfully (status = true)
+     *         false -> if there was
      *
      */
-    private ChangeWhoCanSeeMyLocationResponses parseWhoCanSeeMyLocationResponse(String response)
+    private boolean parseWhoCanSeeMyLocationResponse(String response)
     {
         try {
             JSONObject root = new JSONObject(response);
             if (root.getString("status").equals("true") ) {
 
-                return ChangeWhoCanSeeMyLocationResponses.SUCCESS;
+                return true;
             }
-            else return ChangeWhoCanSeeMyLocationResponses.FAILED;
+            else return false;
 
         }
         catch (JSONException E)
         {
-            return ChangeWhoCanSeeMyLocationResponses.SERVER_ERROR;
+            return false;
         }
     }
     //endregion
