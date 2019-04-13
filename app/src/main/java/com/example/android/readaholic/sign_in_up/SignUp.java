@@ -120,7 +120,7 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 //updating the text when a date is selected
-                date.setText(dayOfMonth + "/" + (month+1) + "/" + year);
+                date.setText(year + "-" + (month + 1) + "-" + dayOfMonth);
             }
         };
         /*********************************dialog click listener -> close**************************/
