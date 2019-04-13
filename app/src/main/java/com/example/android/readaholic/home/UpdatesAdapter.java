@@ -1,39 +1,56 @@
 package com.example.android.readaholic.home;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.android.readaholic.HomeFragment;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.books.BookPageActivity;
 
 import com.example.android.readaholic.R;
-import com.squareup.picasso.Picasso;
+import com.example.android.readaholic.books.ReviewActivity;
+import com.example.android.readaholic.contants_and_static_data.Urls;
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.example.android.readaholic.profile_and_profile_settings.ProfileFragment;
+import com.google.gson.JsonObject;
+import com.squareup.picasso.Picasso;
 
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UpdatesAdapter extends ArrayAdapter<Updates> {
     private Context activity;
     public static LinearLayout likedpost;
     public static TextView commentView;
+    private Button wantToRead;
+    private Spinner wantToReadSpinner;
     public UpdatesAdapter(Context context, ArrayList<Updates> objects) {
         super(context,0, objects);
         activity = context;
@@ -72,7 +89,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
         likedpost = (LinearLayout) ListItemView.findViewById(R.id.UpdatesActivity_likedpost_LinearLayout);
         final TextView likeButton = (TextView) ListItemView.findViewById(R.id.UpdatesActivity_likebutton_textveie);
         final TextView commentButton = (TextView) ListItemView.findViewById(R.id.UpdatesActivity_commentbutton_textveie);
-        final Button wantToRead = (Button) ListItemView.findViewById(R.id.UpdateActivity_wanttoread_button);
+        wantToRead = (Button) ListItemView.findViewById(R.id.UpdateActivity_wanttoread_button);
          TextView numOfLike = (TextView)ListItemView.findViewById(R.id.UpdatesActivity_numberoflikes_textview);
         TextView numOfComment = (TextView)ListItemView.findViewById(R.id.UpdatesActivity_numberofcomments_textview);
         TextView userLikedPost = (TextView) ListItemView.findViewById(R.id.UpdatesActivity_namelikedpost_textview);
@@ -82,10 +99,13 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
         ImageView bookImage = (ImageView) ListItemView.findViewById(R.id.UpdatesActivity_bookimage_imageview);
 
         ImageView bookCover = (ImageView) ListItemView.findViewById(R.id.UpdatesActivity_bookimage_imageview);
-
-        Spinner wantToReadSpinner = (Spinner) ListItemView.findViewById(R.id.activitybook_sheleve_spinner);
+        ImageView imgUrlInner = (ImageView) ListItemView.findViewById(R.id.UpdatesActivity_profilepicturelikedpost_imageView);
+        wantToReadSpinner = (Spinner) ListItemView.findViewById(R.id.UpdateActivity_sheleve_spinner);
 
         ImageView userimg = (ImageView) ListItemView.findViewById(R.id.UpdatesActivity_profilepicture_imageView);
+
+        LinearLayout NoLikesandComment = (LinearLayout) ListItemView.findViewById(R.id.NoLikesandComment);
+        NoLikesandComment.setVisibility(View.GONE);
 
         Name.setText(Item.getmNameOfUser());
         date.setText(Item.getmDateOfUpdates());
@@ -109,7 +129,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
         wantToRead.setTextColor(Color.parseColor("#F4F1EC"));
 
         //update's type review or rating
-    // Picasso.get().load(Item.getmUserimg()).into(userimg);
+     Picasso.get().load(Item.getmUserimg()).into(userimg);
 
 
         if (Item.getmTypeOfUpdates() == 0){
@@ -129,15 +149,23 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
             }
             authorName.setText(Item.getmAuthorName());
             bookName.setText(Item.getmBookName());
-         //   Picasso.get().load(Item.getmBookCover()).into(bookCover);
+            shelfview(Item.getmUserShelf());
+            Picasso.get().load(Item.getmBookCover()).into(bookCover);
             viewOfBook.setVisibility(View.VISIBLE);
             likedpost.setVisibility(View.GONE);
         }
         //updates's type shelves
         else if (Item.getmTypeOfUpdates() == 1){
-            Type.setText(Item.getmNameofFollow());
+            if(Item.getmShelfUpdateType() == 3){
+                Type.setText("Want to read");
+            }else if(Item.getmShelfUpdateType() == 2){
+                Type.setText("is reading");
+            }else if(Item.getmShelfUpdateType() == 1){
+                Type.setText("Read");
+            }
             bookName.setText(Item.getmBookName());
-         //   Picasso.get().load(Item.getmBookCover()).into(bookCover);
+            shelfview(Item.getmUserShelf());
+            Picasso.get().load(Item.getmBookCover()).into(bookCover);
             authorName.setText(Item.getmAuthorName());
             viewOfBook.setVisibility(View.VISIBLE);
             followerName.setVisibility(View.GONE);
@@ -148,10 +176,14 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
         //updates's type likes or comment on update
         else if (Item.getmTypeOfUpdates() == 3 || Item.getmTypeOfUpdates() == 4){
             likedPostType.setText("Liked");
+            Picasso.get().load(Item.getmUserimg()).into(imgUrlInner);
+            Picasso.get().load(Item.getmInnerImgUrl()).into(userimg);
             innerdate.setText(Item.getmDateOfUpdates());
-            date.setText(Item.getmInnerDate());
-            followerLikedPost.setText(Item.getmNameOfUser());
-            userLikedPost.setText(Item.getmNameofFollow());
+            Name.setText(Item.getmNameofFollow());
+            date.setText(Item.getmDateOfUpdates());
+            innerdate.setText(Item.getmInnerDate());
+            followerLikedPost.setText(Item.getmNameofFollow());
+            userLikedPost.setText(Item.getmNameOfUser());
             rateBar.setVisibility(View.GONE);
             review.setVisibility(View.GONE);
             viewOfBook.setVisibility(View.VISIBLE);
@@ -171,7 +203,8 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
                         review.setVisibility(View.GONE);
                     }
                     bookName.setText(Item.getmBookName());
-                  //  Picasso.get().load(Item.getmBookCover()).into(bookCover);
+                    shelfview(Item.getmUserShelf());
+                    Picasso.get().load(Item.getmBookCover()).into(bookCover);
                     authorName.setText(Item.getmAuthorName());
                     break;
                 //Inner updates's type shelves(want to read ,reading , read)
@@ -179,7 +212,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
                     updateType.setText("status update");
                     innerUpdatetype.setText("Want to read");
                     bookName.setText(Item.getmBookName());
-                  //  Picasso.get().load(Item.getmBookCover()).into(bookCover);
+                    Picasso.get().load(Item.getmBookCover()).into(bookCover);
                     authorName.setText(Item.getmAuthorName());
                     followerName.setVisibility(View.GONE);
                     break;
@@ -261,8 +294,8 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
              * @param v View: The view that was clicked
              */
             public void onClick(View v){
-                wantToRead.setBackgroundResource(R.color.colorPrimary);
-                wantToRead.setTextColor(Color.BLACK);
+                requestshelf(2,Item.getmBookId());
+                shelfview("WANT TO READ");
             }
         });
 
@@ -367,22 +400,184 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
              * @param v View: The view that was clicked
              */
             public void onClick(View v) {
+                Intent i = new Intent(v.getContext(), ReviewActivity.class);
+                i.putExtra("ReviewID",Item.getmReviewID());
+                v.getContext().startActivity(i);
+
                 //we already in update page if it equal 1
-                if (Item.getmNewActivity() != 1) {
+                /*if (Item.getmNewActivity() != 1) {
                     Fragment fragment = new UpdatePageFragment();
                     ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
                             fragment).commit();
                     Bundle bundle = new Bundle();
                     bundle.putParcelable("UpdateItem", Item);
                     fragment.setArguments(bundle);
-                }
+                }*/
             }
         });
         if(Item.getmNewActivity() == 1){
             likedpost.setVisibility(View.GONE);
             commentView.setVisibility(View.GONE);
         }
+        wantToReadSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView adapter, View v, int i, long lng) {
+
+                boolean flag = true;
+                String selecteditem = adapter.getItemAtPosition(i).toString();
+                if (selecteditem == "WANT TO READ") {
+                    // requestshelf(2,Item.getmBookId());
+                    //shelfview(selecteditem);
+                } else if (selecteditem == "CURRENTLY READING") {
+
+                    flag = requestshelf(1, Item.getmBookId());
+                    shelfview(1);
+                } else if (selecteditem == "READ") {
+                    flag = requestshelf(0, Item.getmBookId());
+                    shelfview(0);
+                }
+
+                //or this can be also right: selecteditem = level[i];
+                if (flag == false) {
+                    Toast.makeText(getContext(), "Wrrrrrong", Toast.LENGTH_LONG).show();
+                }
+            }
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView)
+            {
+
+                Toast.makeText(getContext(),"salma",Toast.LENGTH_LONG).show();
+            }
+        });
 
         return ListItemView;
+    }
+    public boolean requestshelf(final int shelf, final int bookid){
+        final boolean[] flag = {true};
+      /*  RequestQueue queue = Volley.newRequestQueue(getContext());
+        String url = Urls.ROOT+"/api/shelf/add_book?shelf_id="+shelf+"&book_id=4"+"&token="+ UserInfo.sToken +"&type="+UserInfo.sTokenType;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
+                        JSONObject r = null;
+                        try {
+                            r = new JSONObject(response);
+                            if(r.getString("status") == "false"){
+                                flag[0] = false;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
+            }
+        });*/
+
+        // Add the request to the RequestQueue.
+        //queue.add(stringRequest);
+       /* RequestQueue queue = Volley.newRequestQueue(getContext());
+        String url = Urls.ROOT+"/api/shelf/add_book";
+        StringRequest sr = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("shelf_id",String.valueOf(shelf));
+                params.put("book_id",String.valueOf(bookid));
+                params.put("token", UserInfo.sToken);
+                params.put("type",UserInfo.sTokenType);
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                return params;
+            }
+        };
+        queue.add(sr);*/
+
+        StringRequest request = new StringRequest(Request.Method.POST, Urls.ROOT+"/api/shelf/add_book", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+
+            //This is for Headers If You Needed
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json");
+                params.put("token", UserInfo.sToken);
+                params.put("type", UserInfo.sTokenType);
+                return params;
+            }
+
+            //Pass Your Parameters here
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("shelf_id",String.valueOf(shelf));
+                params.put("book_id",String.valueOf(bookid));
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        queue.add(request);
+        return flag[0];
+    }
+
+    public void shelfview(String shelf){
+        wantToRead.setBackgroundResource(R.color.colorPrimary);
+        wantToRead.setTextColor(Color.BLACK);
+        wantToRead.setText(shelf);
+    }
+    @SuppressLint("ResourceAsColor")
+    public void shelfview(int shelf){
+        if(shelf == 3){
+            wantToRead.setBackgroundResource(R.color.colorGreen);
+            wantToReadSpinner.setBackgroundResource(R.drawable.icons);
+            wantToRead.setTextColor(R.color.colorPrimary);
+            wantToRead.setText("WANT TO READ");
+        }else if(shelf == 2){
+            wantToRead.setBackgroundResource(R.color.colorPrimary);
+            wantToRead.setTextColor(Color.BLACK);
+            wantToReadSpinner.setBackgroundResource(R.drawable.iconss);
+            wantToRead.setText("WANT TO READ");
+        }else if(shelf == 1){
+            wantToRead.setBackgroundResource(R.color.colorPrimary);
+            wantToRead.setTextColor(Color.BLACK);
+            wantToReadSpinner.setBackgroundResource(R.drawable.iconss);
+            wantToRead.setText("READING");
+        }else if(shelf == 0){
+            wantToRead.setBackgroundResource(R.color.colorPrimary);
+            wantToRead.setTextColor(Color.BLACK);
+            wantToReadSpinner.setBackgroundResource(R.drawable.iconss);
+            wantToRead.setText("READ");
+        }
     }
 }

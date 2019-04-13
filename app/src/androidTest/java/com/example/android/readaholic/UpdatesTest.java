@@ -1,19 +1,11 @@
 package com.example.android.readaholic;
 
-import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.widget.ListView;
 
-import com.example.android.readaholic.books.BookReviewsActivity;
-import com.example.android.readaholic.home.UpdatePage;
-import com.example.android.readaholic.home.UpdatePageFragment;
+import com.example.android.readaholic.home.HomeFragment;
 import com.example.android.readaholic.home.Updates;
-import com.example.android.readaholic.home.UpdatesActivity;
-import com.example.android.readaholic.sign_in_up.SignIn;
 
 import org.hamcrest.Matcher;
 import org.json.JSONException;
@@ -24,15 +16,12 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.core.internal.deps.dagger.internal.Preconditions.checkNotNull;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;

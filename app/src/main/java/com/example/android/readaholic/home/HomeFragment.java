@@ -1,4 +1,4 @@
-package com.example.android.readaholic;
+package com.example.android.readaholic.home;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +13,8 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +42,7 @@ public class HomeFragment extends Fragment {
 
     public ArrayList<Updates> arrayOfUpadates1 = new ArrayList<Updates>();
     UpdatesAdapter adapter = null;
+    ProgressBar loading ;
     ListView listUpadtes;
     View view;
     public static String newjson ="{\n" +
@@ -449,12 +452,17 @@ public class HomeFragment extends Fragment {
        // adapter = new MaterialAdapter(getContext(),MaterialList);
        // ListView list = (ListView) myview.findViewById(R.id.MaterialstList);
        // list.setAdapter(adapter);
-
+        loading = (ProgressBar) view.findViewById(R.id.UpdatesActivity_loading_progbar);
         adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
 
         listUpadtes = (ListView) view.findViewById(R.id.UpadtesActivity_updateslist_listview);
         listUpadtes.setEmptyView(view.findViewById(R.id.empty));
         listUpadtes.setAdapter(adapter);
+
+        listUpadtes.setVisibility(View.GONE);
+        loading.setVisibility(View.VISIBLE);
+
+
 
 
         return view;
@@ -472,12 +480,13 @@ public class HomeFragment extends Fragment {
      */
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
         //arrayOfUpadates1 = onResposeAction(newjson);
         //arrayOfUpadates1 = onResposeAction1(jsonFile);
         request();
+        Toast.makeText(getContext(),"salma",Toast.LENGTH_SHORT).show();
 
     }
+    
     /**
      * request the json file of updates list to be displayed.
      * in the response we call the function that create the array of updates
@@ -491,15 +500,18 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
 
-                        //arrayOfUpadates1 = onResposeAction(response);
-
-                        Toast.makeText(getContext(),response,Toast.LENGTH_SHORT).show();
+                        arrayOfUpadates1 = onResposeAction(response);
+                        adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
+                        listUpadtes.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
+                        Toast.makeText(getContext(),response,Toast.LENGTH_SHORT).show();
+                        listUpadtes.setVisibility(View.VISIBLE);
+                        loading.setVisibility(View.GONE);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -520,8 +532,7 @@ public class HomeFragment extends Fragment {
         JSONArray updatesArray  = null;
 
         try {
-            root = new JSONObject(response);
-            updatesArray = root.getJSONArray("updates");
+            updatesArray = new JSONArray(response);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -530,69 +541,74 @@ public class HomeFragment extends Fragment {
 
                 JSONObject updateItemJson = updatesArray.getJSONObject(i);
 
-                Updates updateItem = new Updates(updateItemJson.getInt("update_type"), updateItemJson.getString("name"),updateItemJson.getString("updated_at"),updateItemJson.getInt("likes_count"),updateItemJson.getInt("comments_count"),updateItemJson.getInt("id"));
+                Updates updateItem = new Updates(updateItemJson.getInt("update_type"), updateItemJson.getString("name"),updateItemJson.getString("updated_at"),9,10,updateItemJson.getInt("user_id"));
+                if(updateItemJson.getString("image_link") == null){updateItem.setmUserimg("0");}
+                updateItem.setmUserimg(updateItemJson.getString("image_link"));
                 switch (updateItem.getmTypeOfUpdates()){
                     //review or raring update
                     case 0:
+                        updateItem.setmUserShelf(updateItemJson.getInt("shelf"));
                         updateItem.setmBookCover(updateItemJson.getString("img_url"));
                         updateItem.setmBookName(updateItemJson.getString("title"));
-                        updateItem.setmRatingValue(updateItemJson.getInt("ratings_count"));
+                        updateItem.setmRatingValue(updateItemJson.getInt("rating"));
                         updateItem.setmAuthorName(updateItemJson.getString("author_name"));
                         if(updateItem.getmRatingValue() == 0){
                             //if type of only revies Disable rating value and assign review
-                            updateItem.setmReview(updateItemJson.getString("reviews_count"));
+                            updateItem.setmReview(updateItemJson.getString("body"));
                         }
                         break;
                      //shelves
                     case 1:
+                        updateItem.setmUserShelf(updateItemJson.getInt("shelf"));
                         updateItem.setmBookCover(updateItemJson.getString("img_url"));
                         updateItem.setmBookName(updateItemJson.getString("title"));
                         updateItem.setmAuthorName(updateItemJson.getString("author_name"));
-                        updateItem.setmNameofFollow(updateItemJson.getString("shelf_type"));//shelf
+                        updateItem.setmShelfUpdateType(updateItemJson.getInt("shelf_type"));//shelf
                         break;
                     //follwing
                     case 2:
                         updateItem.setmNameofFollow(updateItemJson.getString("followed_name"));
+                        updateItem.setmInnerImgUrl(updateItemJson.getString("followed_image_link"));
+                        updateItem.setmInnerUserId(updateItemJson.getInt("followed_id"));
                         break;
                     //liked or commented on post
                     case 3: case 4:
-                        JSONObject innerupdate = updateItemJson.getJSONObject("update");
-                        JSONObject inneraction = innerupdate.getJSONObject("action");
-                        JSONObject inneractor = innerupdate.getJSONObject("actor");
-                        updateItem.setmInnerUserId(inneractor.getInt("id"));
-                        updateItem.setmInnerUpdate(inneraction.getInt("type"));
-                        updateItem.setmNameofFollow(inneractor.getString("name"));
-                        updateItem.setmInnerDate(innerupdate.getString("updated_at"));
+                        updateItem.setmInnerUserId(updateItemJson.getInt("rev_user_id"));
+                        updateItem.setmInnerUpdate(0);//always in reviews
+                        updateItem.setmNameofFollow(updateItemJson.getString("rev_user_name"));
+                        updateItem.setmInnerDate(updateItemJson.getString("review_updated_at"));
                         //type of the inner post
                         switch (updateItem.getmInnerUpdate()) {
                             //review or rating
                             case 0:
-                                JSONObject innerbook = inneraction.getJSONObject("book");
-                                updateItem.setmBookCover(innerbook.getString("imgUrl"));
-                                updateItem.setmBookName(innerbook.getString("title"));
-                                updateItem.setmRatingValue(inneraction.getInt("rating"));
-                                updateItem.setmAuthorName(innerbook.getString("author"));
+                                updateItem.setmUserShelf(updateItemJson.getInt("shelf"));
+                                updateItem.setmReviewID(updateItemJson.getInt("review_id"));
+                                updateItem.setmBookCover(updateItemJson.getString("img_url"));
+                                updateItem.setmBookName(updateItemJson.getString("title"));
+                                updateItem.setmRatingValue(updateItemJson.getInt("rating"));
+                                updateItem.setmInnerImgUrl(updateItemJson.getString("rev_user_imageLink"));
+                                updateItem.setmAuthorName(updateItemJson.getString("author_name"));
                                 if (updateItem.getmRatingValue() == 0) {
-                                    updateItem.setmReview(updateItemJson.getString("review"));
+                                    updateItem.setmReview(updateItemJson.getString("author_name"));
                                 }
                                 break;
                             //shelves
                             case 1:
-                                JSONObject innerbook1 = inneraction.getJSONObject("book");
-                                updateItem.setmBookCover(innerbook1.getString("imgUrl"));
-                                updateItem.setmBookName(innerbook1.getString("title"));
-                                updateItem.setmAuthorName(innerbook1.getString("author"));
-                                updateItem.setmShelf(inneraction.getString("shelf"));
+                                updateItem.setmUserShelf(updateItemJson.getInt("shelf"));
+                                updateItem.setmBookCover(updateItemJson.getString("imgUrl"));
+                                updateItem.setmBookName(updateItemJson.getString("title"));
+                                updateItem.setmAuthorName(updateItemJson.getString("author_name"));
+                                updateItem.setmShelf(updateItemJson.getString("shelf"));
                                 break;
                             //follwing
                             case 2:
-                                JSONObject user1 = inneraction.getJSONObject("user");
+                                JSONObject user1 = updateItemJson.getJSONObject("user");
                                 updateItem.setmNameofFollow(user1.getString("name"));
                                 break;
                         }
                         //commented on post assign comment to show it
                         if(updateItem.getmTypeOfUpdates() == 4){
-                            updateItem.setmComment(updateItemJson.getString("comment"));
+                            updateItem.setmComment(updateItemJson.getString("comment_body"));
                         }
                         break;
                 }
@@ -645,7 +661,7 @@ public class HomeFragment extends Fragment {
                         updateItem.setmBookCover(book1.getString("imgUrl"));
                         updateItem.setmBookName(book1.getString("title"));
                         updateItem.setmAuthorName(book1.getString("author"));
-                        updateItem.setmNameofFollow(action.getString("shelf"));//shelf
+                        updateItem.setmShelfUpdateType(action.getInt("shelf_type"));//shelf
                         break;
                     //follwing
                     case 2:
@@ -702,4 +718,7 @@ public class HomeFragment extends Fragment {
         }
         return arrayOfUpadates;
     }
+
+
 }
+

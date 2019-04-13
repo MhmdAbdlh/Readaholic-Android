@@ -41,4 +41,23 @@ public class NotificationFragment  extends Fragment {
         listNotif = (ListView) view.findViewById(R.id.Notificationfragment_list_listview);
         return view;
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //adapter = new NotificationAdapter(getContext(), arrayOfNotif);
+        arrayOfNotif.add(new Notification(1,"www.jlk.com","Dean"));
+        arrayOfNotif.add(new Notification(2,"www.jlk.com","Dean"));
+        arrayOfNotif.add(new Notification(3,"www.jlk.com","Dean"));
+        arrayOfNotif.add(new Notification(2,"www.jlk.com","Dean"));
+        arrayOfNotif.add(new Notification(3,"www.jlk.com","Dean"));
+        arrayOfNotif.add(new Notification(1,"www.jlk.com","Dean"));
+        arrayOfNotif.add(new Notification(1,"www.jlk.com","Dean"));
+        arrayOfNotif.add(new Notification(2,"www.jlk.com","Dean"));
+        arrayOfNotif.add(new Notification(3,"www.jlk.com","Dean"));
+        arrayOfNotif.add(new Notification(1,"www.jlk.com","Dean"));
+
+       // listNotif.setAdapter(adapter);
+    }
 }

@@ -9,6 +9,7 @@ public class Updates implements Parcelable {
     private int mTypeOfUpdates;
     private String mNameOfUser;
     private String mNameofFollow;
+    private String mInnerImgUrl;
     private String mBookName;
     private String mReview;
     private String mDateOfUpdates;
@@ -19,8 +20,10 @@ public class Updates implements Parcelable {
     private int mNumOfComments;
     private int mRatingValue;
     private String mShelf;
+    private int mUserShelf;
     private String mInnerDate;
     private int mBookId;
+    private int mReviewID;
     private int mNewActivity = 0;
 
     private String mBookCover;
@@ -28,6 +31,8 @@ public class Updates implements Parcelable {
 
     private int mUserId = 0;
     private int mInnerUserId;
+
+    private int mShelfUpdateType;
     /**
      * Constructor of Updates object.
      *
@@ -68,6 +73,9 @@ public class Updates implements Parcelable {
         mShelf = in.readString();
         mInnerDate = in.readString();
         mBookId = in.readInt();
+        mInnerImgUrl = in.readString();
+        mReviewID = in.readInt();
+        mUserShelf = in.readInt();
     }
 
     public static final Creator<Updates> CREATOR = new Creator<Updates>() {
@@ -104,8 +112,11 @@ public class Updates implements Parcelable {
 
     public void setmNewActivity(int mNewActivity) {this.mNewActivity = mNewActivity;}
 
-
+    public void setmUserShelf(int mUserShelf){this.mUserShelf = mUserShelf;}
+    public void setmReviewID(int mReviewID){this.mReviewID = mReviewID;}
+    public void setmShelfUpdateType(int mShelfUpdateType){this.mShelfUpdateType = mShelfUpdateType;}
     public void setmUserimg(String mUserimg){this.mUserimg = mUserimg;}
+    public void setmInnerImgUrl(String mInnerImgUrl){this.mInnerImgUrl = mInnerImgUrl;}
     public void setmBookCover(String mBookCover){this.mBookCover = mBookCover;}
     /**
      *Set review when type of update equals 0 .
@@ -165,7 +176,11 @@ public class Updates implements Parcelable {
      */
     public String getmDateOfUpdates(){ return mDateOfUpdates; }
     public String getmBookCover() { return mBookCover; }
+    public int getmUserShelf(){return mUserShelf;}
+    public int getmReviewID(){return mReviewID;}
     public String getmUserimg(){return mUserimg;}
+    public int getmShelfUpdateType(){return mShelfUpdateType;}
+    public String getmInnerImgUrl(){return mInnerImgUrl;}
     /**
      * get BookId of the update.
      * @return BookId
@@ -279,5 +294,6 @@ public class Updates implements Parcelable {
         dest.writeString(mShelf);
         dest.writeString(mInnerDate);
         dest.writeInt(mBookId);
+        dest.writeInt(mReviewID);
     }
 }

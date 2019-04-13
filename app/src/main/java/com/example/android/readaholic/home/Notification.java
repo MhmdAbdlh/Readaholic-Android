@@ -8,17 +8,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class Notification extends Fragment {
+public class Notification {
+    int mType;              //1 = followed 2 = liked  3 = commented
+    String mImageUrl;
+    String mName;
+    String mBookName;
+    String mFollowerName;
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+    public Notification(int mType,String mImageUrl,String mName){
+        this.mType = mType;
+        this.mImageUrl = mImageUrl;
+        this.mName = mName;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    public void setmBookName(String mBookName){this.mBookName = mBookName;}
+    public void setmFollowerName(String mFollowerName){this.mFollowerName = mFollowerName;}
+
+    public int getmType(){return this.mType;}
+    public String getmImageUrl(){return this.mImageUrl;}
+    public String getmName(){return this.mName;}
+    public String getmBookName(){return this.mBookName;}
+    public String getmFollowerName(){return this.mFollowerName;}
 }
 

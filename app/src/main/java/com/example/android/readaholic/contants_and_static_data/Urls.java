@@ -1,7 +1,7 @@
 package com.example.android.readaholic.contants_and_static_data;
 
 public class Urls {
-    public static final String ROOT = "http://f53a8477.ngrok.io";
+    public static final String ROOT = "http://972c6e5d.ngrok.io";
     //Login url
-    public static String LOG_IN = "http://f53a8477.ngrok.io/api/login";
+    public static String LOG_IN = "http://972c6e5d.ngrok.io/api/login";
 }

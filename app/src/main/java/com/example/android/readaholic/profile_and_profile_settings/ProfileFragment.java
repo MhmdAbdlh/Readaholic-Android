@@ -14,10 +14,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.CircleTransform;
-import com.example.android.readaholic.HomeFragment;
+import com.example.android.readaholic.contants_and_static_data.Urls;
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
+import com.example.android.readaholic.home.HomeFragment;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.VolleyHelper.volleyRequestHelper;
 import com.example.android.readaholic.home.Updates;
@@ -44,6 +52,7 @@ public class ProfileFragment extends Fragment implements ProfileView{
     private UpdatesAdapter adapterForUpdatesList;
     private ProfilePresenter mProfilePresenter;
     View view;
+
     volleyRequestHelper volleyRequestHelper;
     private String jsonFile = "{\n" +
             "   \"updates\":{\n" +
@@ -329,7 +338,7 @@ public class ProfileFragment extends Fragment implements ProfileView{
         //Take user id when click in his name in Updates (user could be different from the current user)
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            int myInt = bundle.getInt("UserId", mUser_Id);
+            mUser_Id = bundle.getInt("UserId");
         }
        // mProfileUser = new Users();
 
@@ -340,8 +349,7 @@ public class ProfileFragment extends Fragment implements ProfileView{
         loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId());
         loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId());
         ////////////////////////////////////////////////////////////////////////////////////////////////
-        arayOfUpdates = HomeFragment.onResposeAction1(jsonFile);
-        adapterForUpdatesList = new UpdatesAdapter(getContext(),arayOfUpdates);
+
         mListOfUpdates = (ListView) view.findViewById(R.id.Profile_updateslist_listview);
         mListOfUpdates.setOnTouchListener(new ListView.OnTouchListener() {
             @Override
@@ -364,10 +372,41 @@ public class ProfileFragment extends Fragment implements ProfileView{
                 return true;
             }
         });
-        mListOfUpdates.setAdapter(adapterForUpdatesList);
 
         return view;
 
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        request();
+    }
+
+    private void request() {
+        RequestQueue queue = Volley.newRequestQueue(getContext());
+        String url = Urls.ROOT+"/api/updates?user_id=2"+"&token="+ UserInfo.sToken +"&type="+UserInfo.sTokenType;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        arayOfUpdates = HomeFragment.onResposeAction(response);
+                        adapterForUpdatesList = new UpdatesAdapter(getContext(),arayOfUpdates);
+                        mListOfUpdates.setAdapter(adapterForUpdatesList);
+                        adapterForUpdatesList.notifyDataSetChanged();
+                        Toast.makeText(view.getContext(),response,Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
     /**

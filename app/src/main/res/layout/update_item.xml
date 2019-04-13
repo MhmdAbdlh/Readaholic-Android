@@ -16,22 +16,23 @@
             android:onClick="salma"
             android:clickable="true">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/UpdatesActivity_profilepicturelikedpost_imageView"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:id="@+id/UpdatesActivity_profilepicturelikedpost_imageView"
                 android:src="@drawable/profileicon"
-                android:background="@drawable/circleimage" />
+                app:civ_border_color="@color/colorBackgroundWhite"
+                app:civ_border_width="2dp" />
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/UpdatesActivity_namelikedpost_textview"
@@ -46,64 +47,72 @@
                         android:textStyle="bold" />
 
                     <LinearLayout
-                        android:orientation="horizontal"
+                        android:id="@+id/UpdatesActivity_typeofupdatelikedpost_linearlayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:paddingLeft="4dp"
-                        android:id="@+id/UpdatesActivity_typeofupdatelikedpost_linearlayout">
+                        android:orientation="horizontal"
+                        android:paddingLeft="4dp">
 
                         <TextView
+                            android:id="@+id/UpdatesActivity_typeofupdatelikedpost_textview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:text="liked"
-                            android:textSize="15sp"
                             android:paddingLeft="2dp"
-                            android:id="@+id/UpdatesActivity_typeofupdatelikedpost_textview" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="4dp"
+                            android:text="liked"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:text="Salma"
-                            android:textSize="15sp"
-                            android:id="@+id/UpdatesActivity_followernamelikedpost_textview"
-                            android:textColor="@color/colorUserNameGreen"
-                            android:textStyle="bold" />
+                            android:textSize="15sp" />
 
-                        <TextView
-                            android:id="@+id/textView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="4dp"
-                            android:text="'s"
-                            android:textSize="15sp"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@android:color/black" />
-
-                        <TextView
-                            android:id="@+id/UpdatesActivity_updatetype_textview"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingLeft="4dp"
-                            android:text="Salma"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:textColor="@color/colorUserNameGreen"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
 
                     </LinearLayout>
-                </LinearLayout>
 
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/UpdatesActivity_typeofupdatelikedpost1_linearlayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingLeft="4dp">
+                <TextView
+                    android:id="@+id/UpdatesActivity_followernamelikedpost_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:text="Salma"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorUserNameGreen"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:text="'s"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/UpdatesActivity_updatetype_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="4dp"
+                    android:text="Salma"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorUserNameGreen"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                </LinearLayout>
                 <TextView
                     android:id="@+id/UpdateActivity_updatedatelikedpost_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:paddingLeft="12dp"
-                    android:textSize="12sp"
-                    android:text="sat at 8:00AM" />
+                    android:text="sat at 8:00AM"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -123,13 +132,13 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/UpdatesActivity_profilepicture_imageView"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:id="@+id/UpdatesActivity_profilepicture_imageView"
                 android:src="@drawable/profileicon"
-                android:background="@drawable/circleimage" />
-
+                app:civ_border_color="@color/colorBackgroundWhite"
+                app:civ_border_width="2dp" />
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -223,6 +232,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0"
                 android:paddingBottom="6dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/bookcover" />
 
             <LinearLayout
@@ -279,11 +289,11 @@
                         android:textColor="@color/colorPrimary" />
 
                     <Spinner
-                        android:id="@+id/activitybook_sheleve_spinner"
-                        android:layout_width="30dp"
+                        android:id="@+id/UpdateActivity_sheleve_spinner"
+                        android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_weight="0"
-                        android:background="@drawable/bookbottonshape">
+                        android:background="@drawable/icons">
 
                     </Spinner>
 
@@ -319,6 +329,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingTop="4dp"
+                    android:id="@+id/NoLikesandComment"
                     android:paddingBottom="6dp">
 
                     <TextView
