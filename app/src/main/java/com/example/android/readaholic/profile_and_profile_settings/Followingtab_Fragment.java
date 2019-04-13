@@ -160,7 +160,6 @@ public class Followingtab_Fragment extends Fragment {
                                 user.setmFollowerState(true);
                                 mUser.add(user);
                             }
-                            Log.e("following Test",mUser.get(1).getmUserName());
                             UpdateList();
                         }
 

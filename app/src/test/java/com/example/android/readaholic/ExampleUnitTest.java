@@ -1,22 +1,18 @@
 package com.example.android.readaholic;
 
-import android.support.v4.app.Fragment;
-
 import com.example.android.readaholic.VolleyHelper.volleyRequestHelper;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
-import com.example.android.readaholic.profile_and_profile_settings.Profile;
 import com.example.android.readaholic.profile_and_profile_settings.ProfileFragment;
 import com.example.android.readaholic.profile_and_profile_settings.Users;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.util.FragmentTestUtil;
+import org.robolectric.annotation.Config;
 
 import static org.junit.Assert.assertEquals;
 
@@ -26,13 +22,14 @@ import static org.junit.Assert.assertEquals;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(RobolectricTestRunner.class)
+@Config(manifest= Config.NONE)
 public class ExampleUnitTest  {
 
 private Users user;
 private ProfileFragment profile;
 private volleyRequestHelper volleyRequestHelper;
 String url = Urls.ROOT + "/api/showProfile?"+"token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
-JsonObject response;
+JSONObject response;
 String ProfileResponse="{\"id\":1,\"name\":\"test\",\"username\":\"test\"" +
         ",\"email\":\"test@yahoo.com\",\"email_verified_at\":null,\"link\":null" +
         ",\"image_link\":\"default.jpg\",\"small_image_link\":null,\"about\":null" +
@@ -45,10 +42,21 @@ public void init()
 {
     user = new Users();
     profile = new ProfileFragment();
-    JsonParser parser = new JsonParser();
-    response = (JSONObject)parser.parse(ProfileResponse);
-    profile.ExtractUser(response);
+    try {
+        response = new JSONObject(ProfileResponse);
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
 }
+
+
+@Test
+public void testExtractUserInProfileFragmentUserName()
+{
+    user = profile.ExtractUser(response);
+    assertEquals("test",user.getmUserName());
+}
+/*
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
@@ -134,5 +142,5 @@ public void init()
 
 
 
-
+*/
 }

@@ -173,13 +173,16 @@ public class Followers_fragment extends Fragment {
         BasicNetwork network = new BasicNetwork(new HurlStack());
         mRequestQueue = new RequestQueue(cache,network);
         mRequestQueue.start();
-        String mRequestUrl;
+        final String mRequestUrl;
         if(userId == 0) {
+            Log.e("followingsInProfile","user id is sent equal to 0");
             mRequestUrl =Urls.ROOT + "/api/following?" + "token=" +
                     UserInfo.sToken + "&type=" + UserInfo.sTokenType;
         }
         else
+
             {
+                Log.e("followingsInProfile","user id is sent equal to  "+Integer.toString(userId));
                 mRequestUrl =Urls.ROOT + "/api/following?id="+Integer.toString(userId) + "&token=" +
                         UserInfo.sToken + "&type=" + UserInfo.sTokenType;
             }
@@ -191,6 +194,8 @@ public class Followers_fragment extends Fragment {
             public void onResponse(JSONObject response) {
                 Log.d("FollowingInProfile", "user id is "+Integer.toString(userId));
                 Log.e("FollowingInProfile",response.toString());
+                Log.e("FollowingInProfile",mRequestUrl);
+
                 JSONArray followings = response.optJSONArray("following");
                 if (followings == null) {
                     mUsers = null ;
