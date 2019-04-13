@@ -40,7 +40,8 @@
             android:name=".sign_in_up.SignIn"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible|adjustPan" />
-        <activity android:name=".sign_in_up.SignUp" />
+        <activity android:name=".sign_in_up.SignUp"
+            android:windowSoftInputMode="stateVisible|adjustPan"/>
         <activity android:name=".books.BookPageActivity" />
         <activity android:name=".books.BookReviewsActivity"
             android:windowSoftInputMode="adjustResize"/>

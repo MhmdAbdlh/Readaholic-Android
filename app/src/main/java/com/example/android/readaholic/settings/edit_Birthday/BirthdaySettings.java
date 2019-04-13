@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -38,6 +39,8 @@ import com.example.android.readaholic.settings.edit_UserName.UserNameSettings;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.util.Calendar;
 
 public class BirthdaySettings extends AppCompatActivity {
@@ -137,7 +140,7 @@ public class BirthdaySettings extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 //updating the text when a date is selected
-                date.setText(dayOfMonth + "/" + (month+1) + "/" + year);
+                date.setText(year + "-" + (month + 1) + "-" + dayOfMonth);
             }
         };
 
@@ -230,19 +233,13 @@ public class BirthdaySettings extends AppCompatActivity {
         String url = Urls.ROOT + Urls.CHANGE_BIRTHDAY + "?" + urlController.constructTokenParameters()
                    +"&" + urlController.getChangeBirthdayParameters();
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        boolean result = parseBirthDayResponse(response);
-                        if(result == true) {
-
                             Toast.makeText(BirthdaySettings.this, "Birthday saved successfully"
                                     , Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            error("Parsing error! Please try again after some time!!");
-                        }
+                            showLayout();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -260,6 +257,25 @@ public class BirthdaySettings extends AppCompatActivity {
                 } else if (error instanceof AuthFailureError) {
                     message = "Cannot connect to Internet...Please check your connection!";
                 }
+
+                //if error code is 405 i should show the error message to the user provided
+                //by the backend
+                NetworkResponse networkResponse = error.networkResponse;
+                if (networkResponse != null && networkResponse.statusCode == HttpURLConnection.HTTP_BAD_METHOD) {
+                    if(error.networkResponse.data!=null) {
+                        //getting the error message provided by the backend
+                        try {
+                            String response = new String(error.networkResponse.data, "UTF-8");
+                            message = parseErrorResponse(response);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+
+
+
 
                 //showing error message to the user
                 error(message);
@@ -286,20 +302,13 @@ public class BirthdaySettings extends AppCompatActivity {
                    + "&" + urlController.getWhoCanSeeMyBirthdayParameters();
 
         // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        boolean result = parseWhoCanSeeMyBirthDayResponse(response);
-                        if(result == true) {
-
-                            Toast.makeText(BirthdaySettings.this
-                                    ,"Who can see my birthday saved successfully"
-                                    , Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            error("Parsing error! Please try again after some time!!");
-                        }
+                       Toast.makeText(BirthdaySettings.this,
+                               "Who can see my birthday saved successfully",Toast.LENGTH_SHORT).show();
+                       showLayout();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -318,6 +327,24 @@ public class BirthdaySettings extends AppCompatActivity {
                     message = "Cannot connect to Internet...Please check your connection!";
                 }
 
+
+                //if error code is 405 i should show the error message to the user provided
+                //by the backend
+                NetworkResponse networkResponse = error.networkResponse;
+                if (networkResponse != null && networkResponse.statusCode == HttpURLConnection.HTTP_BAD_METHOD) {
+                    if(error.networkResponse.data!=null) {
+                        //getting the error message provided by the backend
+                        try {
+                            String response = new String(error.networkResponse.data, "UTF-8");
+                            message = parseErrorResponse(response);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+
+
                 //showing error message to the user
                 error(message);
 
@@ -333,53 +360,22 @@ public class BirthdaySettings extends AppCompatActivity {
     //endregion
 
     //region parse responses
-    /**
-     * getting the response of changing the birth day
-     * @param response
-     * @return true -> if the name changed successfully (status = true)
-     *         false -> if there was
-     *
-     */
-    private boolean parseBirthDayResponse(String response)
-    {
+    private String parseErrorResponse(String response) {
+        String errorMessage = "";
+
         try {
+
             JSONObject root = new JSONObject(response);
-            if (root.getString("status").equals("true") ) {
+            errorMessage = root.getString("errors");
 
-                return true;
-            }
-            else return false;
 
+        } catch (JSONException e) {
+            errorMessage = "Please try again later";
         }
-        catch (JSONException E)
-        {
-            return false;
-        }
+
+        return errorMessage;
+
     }
-
-    /**
-     * getting the response of changing the user name
-     * @param response
-     * @return true -> if the name changed successfully (status = true)
-     *         false -> if there was
-     *
-     */
-    private boolean parseWhoCanSeeMyBirthDayResponse(String response)
-    {
-        try {
-            JSONObject root = new JSONObject(response);
-            if (root.getString("status").equals("true") ) {
-
-                return true;
-            }
-            else return false;
-
-        }
-        catch (JSONException E)
-        {
-            return false;
-        }
-    }
-
     //endregion
+
 }
