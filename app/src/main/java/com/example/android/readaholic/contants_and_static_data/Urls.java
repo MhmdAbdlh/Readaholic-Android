@@ -6,7 +6,6 @@ package com.example.android.readaholic.contants_and_static_data;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -20,7 +19,7 @@ public class Urls {
     private Context mContext;
 
 
-   public static final String ROOT = "http://0f626498.ngrok.io";
+   public static final String ROOT = "http://972c6e5d.ngrok.io";
 
 
 
