@@ -17,10 +17,7 @@ public class Urls {
 
     private Activity mActivity;
     private Context mContext;
-
    public static final String ROOT = "http://972c6e5d.ngrok.io";
-
-
     //Login url
     public static String LOG_IN = "/api/login";
     //sign up url
