@@ -1,5 +1,7 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -45,6 +47,7 @@ public class ProfileFragment extends Fragment {
     private TextView mUserBookNumber;
     private TextView profileSettingtofollowingState;
     private ImageView profilerEditToRightSign;
+    private static ProgressDialog mProgressDialog;
 
     ArrayList<Updates> arayOfUpdates = new ArrayList<Updates>();
     private ListView mListOfUpdates;
@@ -409,6 +412,7 @@ public class ProfileFragment extends Fragment {
      * @param user holding data from request.
      */
     public void UpdateData(Users user ,int id) {
+        removeSimpleProgressDialog();
         if(id != 0)
         {
             if(userFollowingState == 1)//user is following this profile.
@@ -450,9 +454,11 @@ public class ProfileFragment extends Fragment {
     BasicNetwork network = new BasicNetwork(new HurlStack());
     mRequestQueue = new RequestQueue(cache, network);
     mRequestQueue.start();
+    showSimpleProgressDialog(getContext(),"Loading.....","Loading Profile",false);
     final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null, new Response.Listener<JSONObject>() {
         @Override
         public void onResponse(JSONObject Response) {
+
             ExtractUser(Response);
             UpdateData(mProfileUser,user_id);
 
@@ -483,16 +489,57 @@ public class ProfileFragment extends Fragment {
      */
     public Users ExtractUser(JSONObject Response)
 {
+    Users users = new Users();
     Log.e("profileResponse",Response.toString());
-    mProfileUser.setmUserName(Response.optString("name"));
-    Log.e("Test" ,mProfileUser.getmUserName());
-    mProfileUser.setmUserImageUrl(Response.optString("image_link"));
-    mProfileUser.setmUsernumberOfBooks(Response.optInt("books_count"));
-    mProfileUser.setmNumberOfFollowers(Response.optInt("followers_count"));
-    mProfileUser.setGetmNumberOfFolloweings(Response.optInt("following_count"));
-    Log.e("showprofileResponseName",mProfileUser.getmUserName());
-
-    return mProfileUser;
+    users.setmUserName(Response.optString("name"));
+    Log.e("Test" ,users.getmUserName());
+    users.setmUserImageUrl(Response.optString("image_link"));
+    users.setmUsernumberOfBooks(Response.optInt("books_count"));
+    users.setmNumberOfFollowers(Response.optInt("followers_count"));
+    users.setGetmNumberOfFolloweings(Response.optInt("following_count"));
+    Log.e("showprofileResponseName",users.getmUserName());
+    mProfileUser = users;
+    return users;
 
 }
+
+    public static void removeSimpleProgressDialog() {
+        try {
+            if (mProgressDialog != null) {
+                if (mProgressDialog.isShowing()) {
+                    mProgressDialog.dismiss();
+                    mProgressDialog = null;
+                }
+            }
+        } catch (IllegalArgumentException ie) {
+            ie.printStackTrace();
+
+        } catch (RuntimeException re) {
+            re.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void showSimpleProgressDialog(Context context, String title,
+                                                String msg, boolean isCancelable) {
+        try {
+            if (mProgressDialog == null) {
+                mProgressDialog = ProgressDialog.show(context, title, msg);
+                mProgressDialog.setCancelable(isCancelable);
+            }
+
+            if (!mProgressDialog.isShowing()) {
+                mProgressDialog.show();
+            }
+
+        } catch (IllegalArgumentException ie) {
+            ie.printStackTrace();
+        } catch (RuntimeException re) {
+            re.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

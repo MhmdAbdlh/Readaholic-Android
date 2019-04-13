@@ -137,7 +137,7 @@ public class Followingtab_Fragment extends Fragment {
                 UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
         else
-            mRequestUrl = Urls.ROOT  + "/api/following?id="+Integer.toString(id)+"&token="+
+            mRequestUrl = Urls.ROOT  + "/api/following?user_id="+Integer.toString(id)+"&token="+
                     UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
         //showSimpleProgressDialog(getContext(),"Loading.....","Loading Followings",false);

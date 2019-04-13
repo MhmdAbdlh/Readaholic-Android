@@ -183,8 +183,9 @@ public class Followers_fragment extends Fragment {
 
             {
                 Log.e("followingsInProfile","user id is sent equal to  "+Integer.toString(userId));
-                mRequestUrl =Urls.ROOT + "/api/following?id="+Integer.toString(userId) + "&token=" +
+                mRequestUrl =Urls.ROOT + "/api/following?user_id="+Integer.toString(userId) + "&token=" +
                         UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+                Log.e("FollowingInProfile",mRequestUrl);
             }
 
         mUsers = new ArrayList<>();
@@ -194,7 +195,7 @@ public class Followers_fragment extends Fragment {
             public void onResponse(JSONObject response) {
                 Log.d("FollowingInProfile", "user id is "+Integer.toString(userId));
                 Log.e("FollowingInProfile",response.toString());
-                Log.e("FollowingInProfile",mRequestUrl);
+
 
                 JSONArray followings = response.optJSONArray("following");
                 if (followings == null) {

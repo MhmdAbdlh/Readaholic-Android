@@ -99,10 +99,10 @@ public class FollowersTab_Fragment extends Fragment {
                 UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
         else
-            mRequestUrl = Urls.ROOT + "/api/followers?id="+Integer.toString(userId)+"&token="+
+            mRequestUrl = Urls.ROOT + "/api/followers?user_id="+Integer.toString(userId)+"&token="+
                     UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
-        showSimpleProgressDialog(getContext(),"Loading.....","Loading Followers",false);
+        showSimpleProgressDialog(getContext(),"Loading.....","Loading Followers And Followings",false);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null,
                 new Response.Listener<JSONObject>() {
                     @Override
