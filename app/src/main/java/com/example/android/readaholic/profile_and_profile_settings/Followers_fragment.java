@@ -43,7 +43,9 @@ public class Followers_fragment extends Fragment {
      TextView mNotAvaliable ;
      RequestQueue mRequestQueue;
      View view;
+     int userId;
      int FollowingNumber;
+    int FollowersNumber;
      String FollowesResponse = "{\n" +
             "  \"GoodreadsResponse\": {\n" +
             "    \"Request\": {\n" +
@@ -98,15 +100,19 @@ public class Followers_fragment extends Fragment {
         mNotAvaliable.setVisibility(View.INVISIBLE);
 
 
+        Bundle bundle = getArguments();
+        userId = bundle.getInt("user-id");
+        FollowingNumber = bundle.getInt("following-num");
+        FollowersNumber = bundle.getInt("followers-num");
 
-        //TextView FollowingNumber = (TextView)view.findViewById(R.id.FollowersFragment_FollowingNumber_TextView);
-        //FollowingNumber.setText(FollowingNumber +" Following");
+        Log.e("FollowersFragment","followers: "+Integer.toString(FollowersNumber)+" followings: "+Integer.toString(FollowingNumber));
 
 
 
 
 
         TextView followersTextView = (TextView) view.findViewById(R.id.FollowersFragment_FollowersNumber_TextView);
+        followersTextView.setText(Integer.toString(FollowersNumber)+" FOLLOWERS");
         followersTextView.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -115,6 +121,9 @@ public class Followers_fragment extends Fragment {
                 Fragment FollowersAndFollowing = new FollowersAndFollowingFragment();
                 Bundle bundle =new Bundle();
                 bundle.putInt("section_number",1);
+                bundle.putInt("user-id",userId);
+                bundle.putInt("following-num",FollowingNumber);
+                bundle.putInt("followers-num",FollowersNumber);
                 FollowersAndFollowing.setArguments(bundle);
 
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ProfileLayout,FollowersAndFollowing,"FollowersFragment").addToBackStack("FollowersToFollowersAndFollowing").commit();
@@ -122,6 +131,7 @@ public class Followers_fragment extends Fragment {
 
         });
         TextView followingsTextView = (TextView) view.findViewById(R.id.FollowersFragment_FollowingNumber_TextView);
+        followingsTextView.setText(Integer.toString(FollowingNumber)+" FOLLOWINGS");
         followingsTextView.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -129,12 +139,15 @@ public class Followers_fragment extends Fragment {
                 Fragment FollowersAndFollowing = new FollowersAndFollowingFragment();
                 Bundle bundle = new Bundle();
                 bundle.putInt("section_number", 0);
+                bundle.putInt("user-id",userId);
+                bundle.putInt("following-num",FollowingNumber);
+                bundle.putInt("followers-num",FollowersNumber);
                 FollowersAndFollowing.setArguments(bundle);
 
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.ProfileLayout, FollowersAndFollowing,"FollowersFragment").addToBackStack("FollowersToFollowersAndFollowing").commit();
             }
         });
-        ExtractFollowings();
+        ExtractFollowings(userId);
         return view;
     }
 
@@ -154,21 +167,31 @@ public class Followers_fragment extends Fragment {
     /**
      * function to do the communication process
      */
-    private void ExtractFollowings()
+    private void ExtractFollowings(int id)
     {
         DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(),1024*1024);
         BasicNetwork network = new BasicNetwork(new HurlStack());
         mRequestQueue = new RequestQueue(cache,network);
         mRequestQueue.start();
-        String mRequestUrl =  Urls.ROOT + "/api/following?"+"token="+
-                UserInfo.sToken+"&type="+ UserInfo.sTokenType;
+        String mRequestUrl;
+        if(userId == 0) {
+            mRequestUrl =Urls.ROOT + "/api/following?" + "token=" +
+                    UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+        }
+        else
+            {
+                mRequestUrl =Urls.ROOT + "/api/following?id="+Integer.toString(userId) + "&token=" +
+                        UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+            }
+
         mUsers = new ArrayList<>();
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null, new com.android.volley.Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
-                JSONArray followings = response.optJSONArray("followings");
+                Log.d("FollowingInProfile", "user id is "+Integer.toString(userId));
+                Log.e("FollowingInProfile",response.toString());
+                JSONArray followings = response.optJSONArray("following");
                 if (followings == null) {
                     mUsers = null ;
                 } else {

@@ -65,6 +65,24 @@
                     android:paddingTop="3dp"
                     android:stepSize="0.1" />
 
+                <ImageButton
+                    android:id="@+id/editreviewbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:background="@color/colorBackgroundWhite"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/editmyreview" />
+
+                <ImageButton
+                    android:id="@+id/deletereview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:background="@color/colorBackgroundWhite"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/deletereview" />
+
             </LinearLayout>
 
             <TextView

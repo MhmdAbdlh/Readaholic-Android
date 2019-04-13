@@ -1,8 +1,11 @@
 package com.example.android.readaholic.contants_and_static_data;
 
+
+
+
+
 import android.app.Activity;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -10,14 +13,14 @@ import android.widget.Spinner;
 
 import com.example.android.readaholic.R;
 
-public class Urls  {
+public class Urls {
 
     private Activity mActivity;
-    private Context  mContext;
+    private Context mContext;
 
 
+   public static final String ROOT = "http://972c6e5d.ngrok.io";
 
-    public static final String ROOT = "http://0f626498.ngrok.io";
     //Login url
     public static String LOG_IN = "/api/login";
     //sign up url
@@ -35,12 +38,43 @@ public class Urls  {
     //change name
     public static String CHANGE_NAME = "/api/changename";
 
-
-
-    public Urls(Activity activity,Context context){
+    public Urls(Activity activity, Context context) {
         mActivity = activity;
         mContext = context;
     }
+
+    public static String getShowBook(String Bookid) {
+        return ROOT + "/api/books/show?book_id=" + Bookid + "&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+
+    }
+
+    public static String getShowReviewsForaBook(String Bookid) {
+        return ROOT + "/api/showReviewsForABook?bookId=" + Bookid + "&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+
+    }
+
+    public static String createreview(String Bookid, String reviewbody, String rating, String shelf) {
+        return ROOT + "/api/reviwes/create?bookId=" + Bookid + "&body=" + reviewbody + "&rating=" + rating + "&shelf=" + shelf + "&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+
+    }
+
+    public static String editreview(String reviewid, String rating, String body) {
+        return ROOT + "/api/reviwes/edit?reviewId=" + reviewid + "&body=" + body + "&rating=" + rating + "&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+    }
+
+    public static String getShowReview(String review_id) {
+        return ROOT + "/api/showReviewOfBook?reviewId=" + review_id + "&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+
+    }
+    public static String getShowReviewForBookForUser(String Book_id) {
+        return ROOT + "/api/showReviewForBookForUser?bookId="+Book_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+
+    }
+    public static String deleteMyReview(String review_id) {
+        return ROOT + "/api/reviwes/delete?reviewId="+review_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+
+    }
+
 
 
     public String constructTokenParameters() {
@@ -57,14 +91,14 @@ public class Urls  {
         String parameters = "";
 
         //getting email and password entered by user
-        String email = ((EditText)mActivity.findViewById(R.id.SignUp_email_edittext)).getText().toString();
-        String password = ((EditText)mActivity.findViewById(R.id.SignIn_password_edittext)).getText().toString();
+        String email = ((EditText) mActivity.findViewById(R.id.SignUp_email_edittext)).getText().toString();
+        String password = ((EditText) mActivity.findViewById(R.id.SignIn_password_edittext)).getText().toString();
 
 
         //constructing the parameters
         parameters += "email=" + email + "&password=" + password;
 
-        return parameters ;
+        return parameters;
     }
 
     public String getSignUpParameters() {
@@ -72,14 +106,14 @@ public class Urls  {
 
         //getting data entered by user
         /*****************************************************************************************/
-        String email = ((EditText)mActivity.findViewById(R.id.SignUp_email_edittext)).getText().toString();
-        String password = ((EditText)mActivity.findViewById(R.id.SignUp_Pass_edittext)).getText().toString();
-        String confPassword = ((EditText)mActivity.findViewById(R.id.SignUp_rePass_edittext)).getText().toString();
-        String birthday = ((Button)mActivity.findViewById(R.id.SignUp_birthday_Button)).getText().toString();
-        String location = ((Spinner)mActivity.findViewById(R.id.SignUp_location_Spinner)).getSelectedItem().toString();
-        String gender = ((Spinner)mActivity.findViewById(R.id.SignUp_gender_Spinner)).getSelectedItem().toString();
-        String firstName = ((EditText)mActivity.findViewById(R.id.SignUp_firstName_edittext)).getText().toString();
-        String lastName = ((EditText)mActivity.findViewById(R.id.SignUp_lastName_edittext)).getText().toString();
+        String email = ((EditText) mActivity.findViewById(R.id.SignUp_email_edittext)).getText().toString();
+        String password = ((EditText) mActivity.findViewById(R.id.SignUp_Pass_edittext)).getText().toString();
+        String confPassword = ((EditText) mActivity.findViewById(R.id.SignUp_rePass_edittext)).getText().toString();
+        String birthday = ((Button) mActivity.findViewById(R.id.SignUp_birthday_Button)).getText().toString();
+        String location = ((Spinner) mActivity.findViewById(R.id.SignUp_location_Spinner)).getSelectedItem().toString();
+        String gender = ((Spinner) mActivity.findViewById(R.id.SignUp_gender_Spinner)).getSelectedItem().toString();
+        String firstName = ((EditText) mActivity.findViewById(R.id.SignUp_firstName_edittext)).getText().toString();
+        String lastName = ((EditText) mActivity.findViewById(R.id.SignUp_lastName_edittext)).getText().toString();
 
         //getting full name from first and last name
         String name = firstName + " " + lastName;
@@ -87,36 +121,34 @@ public class Urls  {
         /***************************************************************************************/
 
 
-
         //constructing the parameters
         parameters += "email=" + email +  "&fullName=" + name + "&password=" + password
                     + "&password_confirmation=" + confPassword + "&gender=" + gender
                     + "&location=" + location + "&birthday=" + birthday;
-
-        return parameters ;
+        return parameters;
     }
 
     //endregion
 
     //region settings
 
-    public  String getChangeBirthdayParameters() {
+    public String getChangeBirthdayParameters() {
         String parameters = "";
 
-        String birthday = ((Button)mActivity.findViewById(R.id.Birthday_Button)).getText().toString();
+        String birthday = ((Button) mActivity.findViewById(R.id.Birthday_Button)).getText().toString();
 
         parameters += "newBirthday=" + birthday;
 
         return parameters;
     }
 
-    public  String getWhoCanSeeMyBirthdayParameters() {
+    public String getWhoCanSeeMyBirthdayParameters() {
         String parameters = "";
 
         //getting the radio buttons for who can see my birth day
         /***************************************************************************************/
-        RadioButton everyone = ((RadioButton)mActivity.findViewById(R.id.Birthday_everyone_RadioButton));
-        RadioButton onlyme = ((RadioButton)mActivity.findViewById(R.id.Birthday_onlyMe_RadioButton));
+        RadioButton everyone = ((RadioButton) mActivity.findViewById(R.id.Birthday_everyone_RadioButton));
+        RadioButton onlyme = ((RadioButton) mActivity.findViewById(R.id.Birthday_onlyMe_RadioButton));
         /***************************************************************************************/
 
         //checking which radio button is clicked
@@ -136,10 +168,10 @@ public class Urls  {
         return parameters;
     }
 
-    public  String getChangeLocationParameters() {
+    public String getChangeLocationParameters() {
         String parameters = "";
 
-        String location = ((Spinner)mActivity.findViewById(R.id.Location_spinner)).getSelectedItem().toString();
+        String location = ((Spinner) mActivity.findViewById(R.id.Location_spinner)).getSelectedItem().toString();
 
         parameters += "location=" + location;
 
@@ -151,8 +183,8 @@ public class Urls  {
 
         //getting the radio buttons for who can see my birth day
         /***************************************************************************************/
-        RadioButton everyone = ((RadioButton)mActivity.findViewById(R.id.Location_everynone_RadioButton));
-        RadioButton onlyme = ((RadioButton)mActivity.findViewById(R.id.Location_onlyMe_RadioButton));
+        RadioButton everyone = ((RadioButton) mActivity.findViewById(R.id.Location_everynone_RadioButton));
+        RadioButton onlyme = ((RadioButton) mActivity.findViewById(R.id.Location_onlyMe_RadioButton));
         /***************************************************************************************/
 
         //checking which radio button is clicked
@@ -172,13 +204,12 @@ public class Urls  {
         return parameters;
     }
 
+    }
 
 
 
 
 
-    //endregion
 
 
 
-}

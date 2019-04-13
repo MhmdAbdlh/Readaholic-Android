@@ -8,5 +8,7 @@ object Cbookdata {
     var image_url:String="unknown"
     var bookid:Int=0
     var author_name:String="unknown"
-
+    var bookrating:Int=0
+    var shelf:Int=0
+    var reviewid:Int=0
 }

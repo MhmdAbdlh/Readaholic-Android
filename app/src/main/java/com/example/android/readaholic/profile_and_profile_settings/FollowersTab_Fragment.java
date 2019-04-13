@@ -2,6 +2,7 @@ package com.example.android.readaholic.profile_and_profile_settings;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -45,6 +46,9 @@ public class FollowersTab_Fragment extends Fragment {
      FollowersListAdapter mAdapter;
      RequestQueue mRequestQueue;
      View view;
+     int userId;
+     int followersNum;
+     TextView followersTitle;
      private static ProgressDialog mProgressDialog;
      /**
      * onCreateView called when the view is created
@@ -59,28 +63,44 @@ public class FollowersTab_Fragment extends Fragment {
         view = inflater.inflate(R.layout.followerstab_fragment,container,false);
         mNotAvaliableTextView = (TextView) view.findViewById(R.id.FollowersTab_fragment_NotAvaliable_TextView);
         mNotAvaliableTextView.setVisibility(View.INVISIBLE);
+        followersTitle = (TextView) view.findViewById(R.id.FollowersTab_fragment_Followers_TextView);
 
+        Bundle bundle = getArguments();
+        if( bundle == null)
+            userId =0;
+
+        else {
+            userId = bundle.getInt("user-id");
+            followersNum = bundle.getInt("followers-num");
+        }
+        ExtractFollowersArray(userId);
         return view;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ExtractFollowersArray();
+
     }
 
     /**
      * function to extract followers array of users from response
      */
-    private void ExtractFollowersArray()
+    private void ExtractFollowersArray(int userId)
     {
         followers = new ArrayList<>();
         DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(), 1024 * 1024);
         BasicNetwork network = new BasicNetwork(new HurlStack());
         mRequestQueue = new RequestQueue(cache, network);
         mRequestQueue.start();
-        String mRequestUrl =  Urls.ROOT + "/api/followers?"+"token="+
+        String mRequestUrl;
+        if(userId == 0)
+        mRequestUrl = Urls.ROOT + "/api/followers?"+"token="+
                 UserInfo.sToken+"&type="+ UserInfo.sTokenType;
+
+        else
+            mRequestUrl = Urls.ROOT + "/api/followers?id="+Integer.toString(userId)+"&token="+
+                    UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
         showSimpleProgressDialog(getContext(),"Loading.....","Loading Followers",false);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null,
@@ -123,7 +143,7 @@ public class FollowersTab_Fragment extends Fragment {
             mNotAvaliableTextView.setVisibility(View.VISIBLE);
         }
         else {
-
+            followersTitle.setText(Integer.toString(followersNum) + " FOLLOWERS");
             mRecyclerView = (RecyclerView) view.findViewById(R.id.FollowersTab_fragment_FollowersList_RecyclerView);
 
             //mRecyclerView.setHasFixedSize(true);
@@ -133,7 +153,15 @@ public class FollowersTab_Fragment extends Fragment {
             mRecyclerView.setLayoutManager(mLayoutManger);
 
             // specify an adapter
-            mAdapter = new FollowersListAdapter(getContext(),followers);
+            mAdapter = new FollowersListAdapter(getContext(), followers, new FollowersListAdapter.customItemCLickLisenter() {
+                @Override
+                public void onItemClick(View v, int position) {
+                    int userId = followers.get(position).getmUserId();
+                    Intent profileIntent = new Intent(getContext(), Profile.class);
+                    profileIntent.putExtra("user-idFromFollowingList",userId);
+                    startActivity(profileIntent);
+                }
+            });
             mRecyclerView.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
         }

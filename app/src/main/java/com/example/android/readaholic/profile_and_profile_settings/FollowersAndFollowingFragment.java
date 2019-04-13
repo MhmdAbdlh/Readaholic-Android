@@ -52,15 +52,33 @@ import java.util.List;
             View view =  inflater.inflate(R.layout.followersandfollowingfragment,container,false);
 
             Bundle bundle = getArguments();
-            if(bundle!=null)
-            mSectionNumber = bundle.getInt("section_number");
+            int followings_num=0;
+            int followers_num=0;
+            if(bundle!=null) {
+                mSectionNumber = bundle.getInt("section_number");
+                followings_num = bundle.getInt("following-num");
+                followers_num = bundle.getInt("followers-num");
+                Log.e("followersandfollowing", "followers: "+Integer.toString(followers_num)+" followings: "+Integer.toString(followings_num));
+            }
             // Create the adapter that will return a fragment for each of the two
             // primary sections of the activity.
             mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
             if(mSectionsPagerAdapter ==null)
                 Log.e("ERROR ","mSectionpagerAdapter Error");
-            mSectionsPagerAdapter.AddFragment(new Followingtab_Fragment(),"Following");
-            mSectionsPagerAdapter.AddFragment(new FollowersTab_Fragment(),"Followers");
+
+            Bundle bundle1 =new Bundle();
+            bundle1.putInt("following-num",followings_num);
+            Fragment followingFragment = new Followingtab_Fragment();
+            followingFragment.setArguments(bundle1);
+
+            Bundle bundle2 =new Bundle();
+            bundle2.putInt("followers-num",followers_num);
+            Fragment followersFragment = new FollowersTab_Fragment();
+            followersFragment.setArguments(bundle2);
+
+
+            mSectionsPagerAdapter.AddFragment(followingFragment,"Following");
+            mSectionsPagerAdapter.AddFragment(followersFragment,"Followers");
             // Set up the ViewPager with the sections adapter.
             mViewPager = (ViewPager)view.findViewById(R.id.FollowersAndFollowing_Container);
 

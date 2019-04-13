@@ -2,8 +2,6 @@ package com.example.android.readaholic.sign_in_up;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,7 +11,6 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -30,11 +27,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.Main;
 import com.example.android.readaholic.R;
-
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,9 +58,8 @@ public class SignIn extends AppCompatActivity {
 
         Urls urlController = new Urls(this ,this.getBaseContext());
         RequestQueue queue = Volley.newRequestQueue(this);
+
         String url = Urls.ROOT + Urls.LOG_IN + "?" + getLogInParameters() ;
-
-
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -78,7 +71,6 @@ public class SignIn extends AppCompatActivity {
                             startActivity(intent);
                             finish();
                         }
-
 
                     }
                 }, new Response.ErrorListener() {
@@ -336,8 +328,8 @@ public class SignIn extends AppCompatActivity {
 
 
         //constructing the parameters
-        parameters += "email=" + email + "&password=" + password;
-
+       // parameters += "email=" + email + "&password=" + password;
+        parameters += "email=test@yahoo.com&password=password";
         return parameters ;
     }
 
@@ -353,7 +345,7 @@ public class SignIn extends AppCompatActivity {
         String pass = ((EditText)findViewById(R.id.SignIn_password_edittext)).getText().toString();
         // return "?email=Ahmed@yahoo.com&password=Waled21";
         //concatenating parameters and sending them
-        return "http://f53a8477.ngrok.io/api/login?email=zwiza@example.net&password=password" ;
+        return "http://ffb1e410.ngrok.io/api/login?email=zachariah72@example.net&password=password" ;
     }
 
     /**
