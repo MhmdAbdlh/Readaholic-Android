@@ -8,8 +8,8 @@
     tools:context=".Main">
     <ProgressBar
         android:id="@+id/Main_progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:visibility="gone"
         ></ProgressBar>

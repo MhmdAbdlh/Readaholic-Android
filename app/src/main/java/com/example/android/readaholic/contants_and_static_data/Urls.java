@@ -20,6 +20,8 @@ public class Urls {
    public static final String ROOT = "http://972c6e5d.ngrok.io";
     //Login url
     public static String LOG_IN = "/api/login";
+    //Logout url
+    public static String LOG_OUT = "/api/logout";
     //sign up url
     public static String SIGN_UP = "/api/signup";
     //show settings url
