@@ -46,8 +46,8 @@ public void init()
     user = new Users();
     profile = new ProfileFragment();
     JsonParser parser = new JsonParser();
-    response = (JSONObject)parser.parse(ProfileResponse);
-    profile.ExtractUser(response);
+  //  response = (JSONObject)parser.parse(ProfileResponse);
+   // profile.ExtractUser(response);
 }
     @Test
     public void addition_isCorrect() {
@@ -102,7 +102,7 @@ public void init()
     public void testVolleyUserName()
     {
         Users testUser = new Users();
-        testUser = volleyRequestHelper.getmUser();
+       // testUser = volleyRequestHelper.getmUser();
 
         user.setmUserName("Hossam Ahmed");
         assertEquals(user.getmUserName(),testUser.getmUserName());
@@ -115,7 +115,7 @@ public void init()
     public void testVolleyUserImageView()
     {
         Users testUser = new Users();
-        testUser = volleyRequestHelper.getmUser();
+      //  testUser = volleyRequestHelper.getmUser();
 
         user.setmUserImageUrl("https://s.gr-assets.com/assets/nophoto/user/u_111x148-9394ebedbb3c6c218f64be9549657029.png");
         assertEquals(user.getmUserImageUrl(),testUser.getmUserImageUrl());
@@ -127,7 +127,7 @@ public void init()
     public void testVolleyUserNumberOfBooks()
     {
         Users testUser = new Users();
-        testUser = volleyRequestHelper.getmUser();
+       // testUser = volleyRequestHelper.getmUser();
         user.setmUsernumberOfBooks(7);
         assertEquals(user.getmUsernumberOfBooks(),testUser.getmUsernumberOfBooks());
     }

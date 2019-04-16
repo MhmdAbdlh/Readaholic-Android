@@ -25,6 +25,9 @@ android {
         skipDeprecated = true
         reportUndocumented = true
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }

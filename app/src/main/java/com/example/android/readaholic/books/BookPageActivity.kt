@@ -181,17 +181,39 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
         {
             myreviewlayout.visibility=View.VISIBLE
            var myreview=json.getJSONArray("pages").getJSONObject(0)
-            myreviewbody.text=myreview.getString("body")
-            myrating.rating=myreview.getInt("rating").toFloat()
+            if(myreview.getString("body")=="")
+            {
+                myreviewbody.text="NO BODY FOR THE REVIEW"
+            }
+            else{
+                myreviewbody.text=myreview.getString("body")
+            }
+            if(myreview.getString("rating").toFloat()<=0)
+            {
+                myrating.rating=1.0f
+            }
+            else{
+                myrating.rating=myreview.getInt("rating").toFloat()
+            }
+            if(myreview.getInt("shelf_name")!=0||myreview.getInt("shelf_name")!=1||myreview.getInt("shelf_name")!=2||myreview.getInt("shelf_name")!=3)
+            {
+                Cbookdata.shelf=1
+            }
+            else{
+                Cbookdata.shelf=myreview.getInt("shelf_name")
+            }
+            if(myreview.getInt("id")<0)
+            {
+                Cbookdata.reviewid=1
+
+            }else{
+                Cbookdata.reviewid=myreview.getInt("id")
+            }
             writeareviewbtn.text="Edit Your  Review"
-            Cbookdata.shelf=myreview.getInt("shelf_name")
-            Cbookdata.reviewid=myreview.getInt("id")
             getshelve()
         }
 
     }
-
-
 
     /**
      * get the book info from the url as a json file or show error messege in failiar case     *

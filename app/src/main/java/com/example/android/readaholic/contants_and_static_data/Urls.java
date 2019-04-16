@@ -17,7 +17,7 @@ public class Urls {
 
     private Activity mActivity;
     private Context mContext;
-   public static final String ROOT = "http://972c6e5d.ngrok.io";
+   public static final String ROOT = "http://ec2-52-90-5-77.compute-1.amazonaws.com";
     //Login url
     public static String LOG_IN = "/api/login";
     //sign up url
