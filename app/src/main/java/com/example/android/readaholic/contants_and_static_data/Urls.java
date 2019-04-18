@@ -1,25 +1,22 @@
 package com.example.android.readaholic.contants_and_static_data;
-
-
-
-
-
 import android.app.Activity;
 import android.content.Context;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
-
 import com.example.android.readaholic.R;
-
 public class Urls {
 
     private Activity mActivity;
     private Context mContext;
+
    public static final String ROOT = "http://ec2-52-90-5-77.compute-1.amazonaws.com";
+
     //Login url
     public static String LOG_IN = "/api/login";
+    //Logout url
+    public static String LOG_OUT = "/api/logout";
     //sign up url
     public static String SIGN_UP = "/api/signup";
     //show settings url

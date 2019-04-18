@@ -26,20 +26,6 @@ public class BookActivityTest {
 
     }
 
-    @Test
-    public void myreview() throws  Exception
-    {
-        BookPageActivity b = new BookPageActivity();
-        String test1="{\"status\":\"success\",\"pages\":[{\"id\":4,\"rating\":-1,\"shelf_name\":5,\"body\":\"Mahazaaaaq\"}]}";
-        String test2="{\"status\":\"success\",\"pages\":[{\"id\":5,\"rating\":-2,\"shelf_name\":5,\"body\":\"Mahazaaaaq\"}]}";
-        JSONObject  t1=new JSONObject(test1);
-        b.myReview(t1);
-     //   assertEquals(Cbookdata.INSTANCE.getShelf(),1);
-     //   assertEquals(Cbookdata.INSTANCE.getShelf(),1);
-      //  assertEquals(Cbookdata.INSTANCE.getShelf(),1);
-       // assertEquals(Cbookdata.INSTANCE.getReviewid(),1);
-    }
-
 
 
     @Test

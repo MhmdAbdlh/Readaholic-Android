@@ -1,5 +1,7 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -45,6 +47,7 @@ public class ProfileFragment extends Fragment {
     private TextView mUserBookNumber;
     private TextView profileSettingtofollowingState;
     private ImageView profilerEditToRightSign;
+    private static ProgressDialog mProgressDialog;
 
     ArrayList<Updates> arayOfUpdates = new ArrayList<Updates>();
     private ListView mListOfUpdates;
@@ -320,11 +323,42 @@ public class ProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.profile_fragment,container,false);
         mUserImage = (ImageView)view.findViewById(R.id.profileActivity_ProfilePic_ImageView);
         mUserName =(TextView)view.findViewById(R.id.ProfileActivity_UserName_TextView);
+
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            mUser_Id = bundle.getInt("UserId");
+        }
+
+        //Loading Fragments
+      // loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId(),mUser_Id);
+      // loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId(),mUser_Id);
+        loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId(),mUser_Id);
+
         mUserBookNumber = (TextView)view.findViewById(R.id.ProfileActivity_UserBooksNumber_TextView);
         profilerEditToRightSign = (ImageView)view.findViewById(R.id.Profile_Settings_ImageView);
         profileSettingtofollowingState = (TextView)view.findViewById(R.id.Profile_Settings_TextView);
 ///////////////////////////////////////////////////////////////////////////////
         //Take user id when click in his name in Updates (user could be different from the current user)
+
+
+        Picasso.get().load("https://s.gr-assets.com/assets/nophoto/user/" +
+                    "u_111x148-9394ebedbb3c6c218f64be9549657029.png").transform(new CircleTransform()).into(mUserImage);
+
+           // mUser_Id = getArguments().getInt("user-id");
+            //Log.e("userid",Integer.toString(mUser_Id));
+
+        requestProfileView(mUser_Id);
+
+
+
+        Log.e("UserImageUrl",String.valueOf(mUser_Id));
+
+        //Toast.makeText(getContext(),String.valueOf(mUser_Id),Toast.LENGTH_SHORT).show();
+        //UpdateData(mProfileUser);
+
+
+
         /*Bundle bundle = this.getArguments();
         if (bundle != null) {
             int myInt = bundle.getInt("UserId", mUser_Id);
@@ -409,6 +443,7 @@ public class ProfileFragment extends Fragment {
      * @param user holding data from request.
      */
     public void UpdateData(Users user ,int id) {
+        removeSimpleProgressDialog();
         if(id != 0)
         {
             if(userFollowingState == 1)//user is following this profile.
@@ -450,16 +485,18 @@ public class ProfileFragment extends Fragment {
     BasicNetwork network = new BasicNetwork(new HurlStack());
     mRequestQueue = new RequestQueue(cache, network);
     mRequestQueue.start();
+    showSimpleProgressDialog(getContext(),"Loading.....","Loading Profile",false);
     final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null, new Response.Listener<JSONObject>() {
         @Override
         public void onResponse(JSONObject Response) {
+
             ExtractUser(Response);
             UpdateData(mProfileUser,user_id);
 
             //Loading Fragments
-            loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId(),mUser_Id);
-            loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId(),mUser_Id);
-            loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId(),mUser_Id);
+            loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId(),user_id);
+            loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId(),user_id);
+            loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId(),user_id);
 
             mRequestQueue.stop();
         }
@@ -467,6 +504,8 @@ public class ProfileFragment extends Fragment {
         @Override
         public void onErrorResponse(VolleyError error) {
 
+            //Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
+           // mProfileUser=null;
 
             mProfileUser=null;
             mRequestQueue.stop();
@@ -483,16 +522,57 @@ public class ProfileFragment extends Fragment {
      */
     public Users ExtractUser(JSONObject Response)
 {
+    Users users = new Users();
     Log.e("profileResponse",Response.toString());
-    mProfileUser.setmUserName(Response.optString("name"));
-    Log.e("Test" ,mProfileUser.getmUserName());
-    mProfileUser.setmUserImageUrl(Response.optString("small_image_link"));
-    mProfileUser.setmUsernumberOfBooks(Response.optInt("books_count"));
-    mProfileUser.setmNumberOfFollowers(Response.optInt("followers_count"));
-    mProfileUser.setGetmNumberOfFolloweings(Response.optInt("following_count"));
-    Log.e("showprofileResponseName",mProfileUser.getmUserName());
-
-    return mProfileUser;
+    users.setmUserName(Response.optString("name"));
+    Log.e("Test" ,users.getmUserName());
+    users.setmUserImageUrl(Response.optString("image_link"));
+    users.setmUsernumberOfBooks(Response.optInt("books_count"));
+    users.setmNumberOfFollowers(Response.optInt("followers_count"));
+    users.setGetmNumberOfFolloweings(Response.optInt("following_count"));
+    Log.e("showprofileResponseName",users.getmUserName());
+    mProfileUser = users;
+    return users;
 
 }
+
+    public static void removeSimpleProgressDialog() {
+        try {
+            if (mProgressDialog != null) {
+                if (mProgressDialog.isShowing()) {
+                    mProgressDialog.dismiss();
+                    mProgressDialog = null;
+                }
+            }
+        } catch (IllegalArgumentException ie) {
+            ie.printStackTrace();
+
+        } catch (RuntimeException re) {
+            re.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void showSimpleProgressDialog(Context context, String title,
+                                                String msg, boolean isCancelable) {
+        try {
+            if (mProgressDialog == null) {
+                mProgressDialog = ProgressDialog.show(context, title, msg);
+                mProgressDialog.setCancelable(isCancelable);
+            }
+
+            if (!mProgressDialog.isShowing()) {
+                mProgressDialog.show();
+            }
+
+        } catch (IllegalArgumentException ie) {
+            ie.printStackTrace();
+        } catch (RuntimeException re) {
+            re.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

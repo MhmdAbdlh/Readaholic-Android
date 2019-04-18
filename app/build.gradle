@@ -5,6 +5,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 28
+
     defaultConfig {
         applicationId "com.example.android.readaholic"
         minSdkVersion 22
@@ -25,17 +26,13 @@ android {
         skipDeprecated = true
         reportUndocumented = true
     }
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
+
 }
 repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 }
 
-dependencies {
-    testImplementation "org.robolectric:robolectric:4.3-SNAPSHOT"
-}
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -84,4 +81,8 @@ dependencies {
 
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:+'
+}
+
+dependencies {
+    implementation 'com.android.support:support-v4:28.+'
 }

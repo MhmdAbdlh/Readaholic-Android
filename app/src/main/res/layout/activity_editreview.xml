@@ -43,11 +43,14 @@
 
     <Button
         android:id="@+id/savereview"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:background="@drawable/button_rounded_corners_brownish"
         android:onClick="sendReview"
-        android:paddingTop="10dp"
+        android:paddingLeft="9dp"
+        android:paddingRight="9dp"
         android:text="Save Review"
+        android:textColor="@color/colorBackgroundWhite"
         android:textSize="24sp" />
 </LinearLayout>

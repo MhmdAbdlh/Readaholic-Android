@@ -45,6 +45,9 @@ public class Updates_fragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Bundle bundle = getArguments();
+        userId = bundle.getInt("user-id");
+        //Toast.makeText(getContext(),String.valueOf(userId),Toast.LENGTH_SHORT).show();
         request();
     }
     /**
@@ -60,8 +63,6 @@ public class Updates_fragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_updates_fragment, container, false);
 
-        Bundle bundle = getArguments();
-        userId = bundle.getInt("user-id");
        /* recyclerView = (RecyclerView) view.findViewById(R.id.FollowersFragment_FollowersList_RecyclerView);
 
         recyclerView.setHasFixedSize(true);
@@ -107,7 +108,7 @@ public class Updates_fragment extends Fragment {
 
     private void request() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = Urls.ROOT+"/api/updates?user_id="+ userId+"&token="+ UserInfo.sToken +"&type="+UserInfo.sTokenType;
+        String url = Urls.ROOT+"/api/updates?user_id="+userId+"&token="+ UserInfo.sToken +"&type="+UserInfo.sTokenType;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -117,12 +118,12 @@ public class Updates_fragment extends Fragment {
                         adapterForUpdatesList = new UpdatesAdapter(getContext(),arayOfUpdates);
                         mListOfUpdates.setAdapter(adapterForUpdatesList);
                         adapterForUpdatesList.notifyDataSetChanged();
-                        Toast.makeText(getContext(),response,Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(),response,Toast.LENGTH_SHORT).show();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
             }
         });
 

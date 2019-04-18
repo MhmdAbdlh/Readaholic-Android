@@ -307,7 +307,9 @@ public class SignIn extends AppCompatActivity {
                 //in case of connected to the server
                 /**************************server connected -> open***************************************/
 
-                if(validateFields()) {
+                if(validateFields())
+
+                {
                     //hides the keyboard when user clicks on sign in
                     hideSoftKeyboard(SignIn.this, v);
                     //checking if the user data is correct or not

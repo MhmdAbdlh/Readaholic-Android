@@ -32,6 +32,7 @@ public class UpdatesActivity extends Activity {
         setContentView(R.layout.activity_updates);
 
 
+
      /* jsonFile[0] = "{\n" +
                 "   \"updates\":{\n" +
                 "      \"update\":[\n" +
