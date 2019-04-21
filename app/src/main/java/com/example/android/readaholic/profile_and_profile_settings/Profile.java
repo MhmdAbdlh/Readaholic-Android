@@ -38,6 +38,7 @@ public class Profile extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().add(R.id.ProfileLayout,profile, "profileFragment").commit();
     }
 
+
     /**
      * onBackPressed that called we back button pressed .
      * to hold the fragments movements

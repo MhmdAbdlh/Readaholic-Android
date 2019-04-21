@@ -4,22 +4,31 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.StringRequest;
 import com.example.android.readaholic.CircleTransform;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -131,6 +140,7 @@ public class FollowersListAdapter extends RecyclerView.Adapter<FollowersListAdap
             Picasso.get().load(mUsers.get(i).getmUserImageUrl()).transform(new CircleTransform()).into(myViewHolder.userImageView);
             myViewHolder.userNameTextView.setText( mUsers.get(i).getmUserName());
             myViewHolder.userBooksNumberTextView.setText( mUsers.get(i).getmNumberOfFollowers()+" Books");
+
             if(!mUsers.get(i).ismFollowerState())//the user is not  following u.
                 {
                     myViewHolder.userFollowingStatusButton.setText("FOLLOW");
@@ -140,20 +150,25 @@ public class FollowersListAdapter extends RecyclerView.Adapter<FollowersListAdap
                 myViewHolder.userFollowingStatusButton.setText("FOLLOWING");
                 myViewHolder.userFollowingStatusButton.setTextColor(ContextCompat.getColor(mcontext,R.color.colorWhite));
                 }
+
+
             myViewHolder.userFollowingStatusButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     if(mUsers.get(i).ismFollowerState())//the user is following u.
                     {
                         mUsers.get(i).setmFollowerState(false);//the user  un-follow u.
+                        unfollowUser(mUsers.get(i).getmUserId());
                         myViewHolder.userFollowingStatusButton.setText("FOLLOW");
                         myViewHolder.userFollowingStatusButton.setTextColor(ContextCompat.getColor(mcontext,R.color.colorBlack));
 
                         /// TODO: post Request to change the list of followings
                     }
                     else if(!mUsers.get(i).ismFollowerState())
-                    {
+                   {
                         mUsers.get(i).setmFollowerState(true);//the user follow u.
+                        followUser(mUsers.get(i).getmUserId());
                         myViewHolder.userFollowingStatusButton.setText("FOLLOWING");
                         myViewHolder.userFollowingStatusButton.setTextColor(ContextCompat.getColor(mcontext,R.color.colorWhite));
                         /// TODO: post Request to change the list of followings
@@ -164,14 +179,79 @@ public class FollowersListAdapter extends RecyclerView.Adapter<FollowersListAdap
 
         }
 
-    /**
-     * getItemsCount to get the list items number.
-     * @return the size of users list
-     */
-    @Override
+        boolean followUser(int userId) {
+            mRequestUrl = Urls.ROOT + "/api/follow?" + "user_id=" + Integer.toString(userId) + "&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+            Log.e("followUserUrl",mRequestUrl);
+            DiskBasedCache cache = new DiskBasedCache(mcontext.getCacheDir(), 1024 * 1024);
+            BasicNetwork network = new BasicNetwork(new HurlStack());
+            mRequestQueue = new RequestQueue(cache, network);
+            mRequestQueue.start();
+            final boolean[] status = new boolean[1];
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, mRequestUrl, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    JSONObject Response = null;
+                    try {
+                        Response = new JSONObject(response);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    status[0] = Response.optBoolean("status");
+                    Toast.makeText(mcontext,Response.optString("message"),Toast.LENGTH_SHORT).show();
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    status[0] = false;
+                }
+            });
+            mRequestQueue.add(stringRequest);
+
+            return status[0];
+        }
+    boolean unfollowUser(int userId) {
+        mRequestUrl = Urls.ROOT + "/api/unfollow?" + "user_id=" + Integer.toString(userId) + "&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+
+        DiskBasedCache cache = new DiskBasedCache(mcontext.getCacheDir(), 1024 * 1024);
+        BasicNetwork network = new BasicNetwork(new HurlStack());
+        mRequestQueue = new RequestQueue(cache, network);
+        mRequestQueue.start();
+        final boolean[] status = new boolean[1];
+        StringRequest stringRequest = new StringRequest(Request.Method.DELETE, mRequestUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                JSONObject Response = null;
+                try {
+                    Response = new JSONObject(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                status[0] = Response.optBoolean("status");
+                Toast.makeText(mcontext,Response.optString("message"),Toast.LENGTH_SHORT).show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                status[0] = false;
+            }
+        });
+        mRequestQueue.add(stringRequest);
+        return status[0];
+    }
+
+                    /**
+                     * getItemsCount to get the list items number.
+                     * @return the size of users list
+                     */
+            @Override
         public int getItemCount() {
          return mUsers.size();
         }
 
     }
+
+
+
 

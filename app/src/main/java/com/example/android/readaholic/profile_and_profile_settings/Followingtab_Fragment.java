@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,11 +24,13 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -202,7 +205,7 @@ public class Followingtab_Fragment extends Fragment {
                     Intent profileIntent = new Intent(getContext(), Profile.class);
                     profileIntent.putExtra("user-idFromFollowingList",userId);
                     profileIntent.putExtra("followingState",true);
-                    Log.e("Followng_tab","following tab user id"+Integer.toString(userId));
+                    Log.e("Following_tab","following tab user id"+Integer.toString(userId));
                     startActivity(profileIntent);
                 }
             });
@@ -252,5 +255,35 @@ public class Followingtab_Fragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    boolean followUser(int userId) {
+        String mRequestUrl = Urls.ROOT + "/api/follow?" + "user_id=" + Integer.toString(userId) + "&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+        Log.e("followUserUrl",mRequestUrl);
+        DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(), 1024 * 1024);
+        BasicNetwork network = new BasicNetwork(new HurlStack());
+        mRequestQueue = new RequestQueue(cache, network);
+        mRequestQueue.start();
+        final boolean[] status = new boolean[1];
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, mRequestUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                JSONObject Response = null;
+                try {
+                    Response = new JSONObject(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                status[0] = Response.optBoolean("status");
+                Toast.makeText(getContext(),Response.optString("message"),Toast.LENGTH_SHORT);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                status[0] = false;
+            }
+        });
+        mRequestQueue.add(stringRequest);
+        return status[0];
     }
 }
