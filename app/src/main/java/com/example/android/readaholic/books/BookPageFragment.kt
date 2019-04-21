@@ -1,31 +1,36 @@
 package com.example.android.readaholic.books
+
+import android.content.Context
 import android.content.Intent
+import android.content.Intent.getIntent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.app.AppCompatActivity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.ProgressBar
 import android.widget.Toast
+import com.android.volley.Request
+import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.android.readaholic.R
 import com.example.android.readaholic.contants_and_static_data.Urls
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_book_page.*
+import kotlinx.android.synthetic.main.fragment_book_page.*
 import org.json.JSONObject
-import com.android.volley.Request
-import com.android.volley.Response
 
-/**
- * This Activity is for showing book information
- *
- */
-class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListener {
+class BookPageFragment : Fragment(), AdapterView.OnItemSelectedListener {
+
+
     override fun onNothingSelected(parent: AdapterView<*>?) {
-    }
 
+    }
     /**
      * Handling the book btn ui between cuurently reading ,read and want to read
      */
@@ -38,41 +43,47 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
             bookreadbtnui.setTextColor(Color.BLACK)
         }
     }
-    override fun onRestart() {
-        super.onRestart()
-        getReviewforABookforAUser()
-    }
     var bookinfo: BookPageInfo?=null
     var bookreview:ArrayList<BookReview>?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_book_page)
-        var spinneradapter: ArrayAdapter<CharSequence> =ArrayAdapter.createFromResource(this, R.array.Shelves,android.R.layout.simple_spinner_item)
-        spinneradapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        activitybook_sheleve_spinner1.adapter=spinneradapter
-        activitybook_sheleve_spinner1.onItemSelectedListener=this
-        whenconnection.visibility=View.GONE
-        /////////////////////////////
-        bookinfo= BookPageInfo()
-       /* var intent:Intent= Intent()
-         Cbookdata!!.bookid=intent.getIntExtra("BookId",2)*/
-        bookreview= ArrayList()
-        feedBookInfoFromApi(Cbookdata.bookid)
 
-        seeallreviewstxtui.setOnClickListener {
-            Cbookdata.author_name=bookinfo!!.author_name
-            Cbookdata.book_title=bookinfo!!.book_title
-            Cbookdata.image_url=bookinfo!!.image_url
-            var intent=Intent(this, BookReviewsActivity::class.java)
-            startActivity(intent)
         }
-        getReviewforABookforAUser()
-    }
 
-    /**
-     * Set the shelf type
-     *
-     */
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        // Inflate the layout for this fragment
+        var view= inflater.inflate(R.layout.fragment_book_page, container, false)
+            super.onCreate(savedInstanceState)
+            var spinneradapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(context, R.array.Shelves,android.R.layout.simple_spinner_item)
+            spinneradapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            activitybook_sheleve_spinner1.adapter=spinneradapter
+            activitybook_sheleve_spinner1.onItemSelectedListener=this
+            /////////////////////////////
+            bookinfo= BookPageInfo()
+            /* var intent:Intent= Intent()
+              Cbookdata!!.bookid=intent.getIntExtra("BookId",2)*/
+            bookreview= ArrayList()
+            feedBookInfoFromApi(Cbookdata.bookid)
+            seeallreviewstxtui.setOnClickListener {
+                Cbookdata.author_name=bookinfo!!.author_name
+                Cbookdata.book_title=bookinfo!!.book_title
+                Cbookdata.image_url=bookinfo!!.image_url
+               // var intent= Intent(this, BookReviewsActivity::class.java)
+              //  startActivity(intent)
+            }
+            getReviewforABookforAUser()
+            return view
+
+        }
+
+/**
+ * This Activity is for showing book information
+ *
+ */
+
+
     fun setshelve()
     {
         when( bookreadbtnui.text) {
@@ -80,7 +91,7 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
             "CURRENTLY READING"->   Cbookdata.shelf=1
             "WANT TO READ" ->   Cbookdata.shelf=2
         }
-        Toast.makeText(this,Cbookdata.shelf.toString(),Toast.LENGTH_SHORT).show()
+        Toast.makeText(context,Cbookdata.shelf.toString(), Toast.LENGTH_SHORT).show()
     }
 
     fun getshelve()
@@ -90,7 +101,7 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
             1-> bookreadbtnui.text = "CURRENTLY READING"
             2-> bookreadbtnui.text  = "WANT TO READ"
         }
-        Toast.makeText(this,Cbookdata.shelf.toString(),Toast.LENGTH_SHORT).show()
+        Toast.makeText(context,Cbookdata.shelf.toString(), Toast.LENGTH_SHORT).show()
     }
 
     /**
@@ -111,9 +122,9 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
 
     fun writeReview(view:View)
     {
-        var intent=Intent(this, Editreview::class.java)
-        setshelve()
-        startActivity(intent)
+      //  var intent= Intent(context, Editreview::class.java)
+      //  setshelve()
+     //   startActivity(intent)
     }
 
     /**
@@ -122,7 +133,7 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
      */
     fun getReviewforABookforAUser()
     {
-        val queue = Volley.newRequestQueue(this)
+        val queue = Volley.newRequestQueue(context)
         var url = Urls.getShowReviewForBookForUser(Cbookdata.bookid.toString())
         val stringRequest = StringRequest(Request.Method.GET, url,
                 Response.Listener<String> { response ->
@@ -145,19 +156,18 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
 
     fun deletemyreview(view: View)
     {
-        val queue = Volley.newRequestQueue(this)
+        val queue = Volley.newRequestQueue(context)
         var url = Urls. deleteMyReview(Cbookdata.reviewid.toString())
         val stringRequest = StringRequest(Request.Method.DELETE, url,
                 Response.Listener<String> { response ->
                     var jsonresponse= JSONObject(response)
                     if(jsonresponse.getString("status")=="true")
                     {
-                     Toast.makeText(this,"Your review has been deleted",Toast.LENGTH_SHORT).show()
-                        finish();
-                        startActivity(getIntent());
+                        Toast.makeText(context,"Your review has been deleted", Toast.LENGTH_SHORT).show()
+
                     }
                     else{
-                        Toast.makeText(this,jsonresponse.getString("Message"),Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context,jsonresponse.getString("Message"), Toast.LENGTH_SHORT).show()
                     }
                 },
                 Response.ErrorListener {
@@ -179,13 +189,13 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
      * @param json
      */
 
-    fun myReview(json:JSONObject)
+    fun myReview(json: JSONObject)
     {
         var status=json.getString("status")
         if(status=="success")
         {
             myreviewlayout.visibility=View.VISIBLE
-           var myreview=json.getJSONArray("pages").getJSONObject(0)
+            var myreview=json.getJSONArray("pages").getJSONObject(0)
             if(myreview.getString("body")=="")
             {
                 myreviewbody.text="NO BODY FOR THE REVIEW"
@@ -225,14 +235,11 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
      */
     fun feedBookInfoFromApi(BookId:Int)
     {
-    val progressBar = findViewById(R.id.bookpage_loading_progbar) as ProgressBar
-    progressBar.setVisibility(View.VISIBLE)
-
-        val queue = Volley.newRequestQueue(this)
+        var v=view;
+        val queue = Volley.newRequestQueue(context)
         var url = Urls.getShowBook(Cbookdata.bookid.toString())
         val stringRequest = StringRequest(Request.Method.GET, url,
                 Response.Listener<String> { response ->
-                    progressBar.visibility=View.GONE
                     whenconnection.visibility=View.VISIBLE
                     noconnection.visibility=View.GONE
                     var jsonresponse= JSONObject(response)
@@ -256,14 +263,14 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
      */
     fun importImage()
     {
-       Picasso.get().load(bookinfo!!.image_url).into(bookimageui)
+        Picasso.get().load(bookinfo!!.image_url).into(bookimageui)
     }
 
     /**
      * fitch the bookobject info from the jsonobject
      * @param jsonobject
      */
-    fun feedFromApi(jsonresponce:JSONObject)
+    fun feedFromApi(jsonresponce: JSONObject)
     {
 
         var jsonobject=jsonresponce.getJSONArray("pages").getJSONObject(0)
@@ -284,7 +291,7 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
     /**
      * fetch book info into the UI
      *
-      */
+     */
     fun feedBookUi()
     {
         tiltetxtui.text= bookinfo!!.book_title
@@ -295,6 +302,7 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
         boojsideinfotxtui.text="number of pages :"+bookinfo!!.num_pages.toString()+" . First published "+bookinfo!!.publication_month+
                 " "+bookinfo!!.publication_date+" , "+bookinfo!!.publication_year+" ISBN13 "+bookinfo!!.isbn
         seeallreviewstxtui.text=bookinfo!!.reviewscount.toString()+" community reviews"
-     }
+    }
 
 }
+

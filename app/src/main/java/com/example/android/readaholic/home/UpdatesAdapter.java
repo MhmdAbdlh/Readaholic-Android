@@ -365,6 +365,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
                 Cbookdata.INSTANCE.setBookid(Item.getmBookId());
                 //intent.putExtra("BookID",Item.getmBookId());
                 v.getContext().startActivity(intent);
+                
             }
         });
         followerName.setOnClickListener(new View.OnClickListener(){

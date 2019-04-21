@@ -10,15 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
-
 import com.example.android.readaholic.R;
-
 public class Urls {
 
     private Activity mActivity;
     private Context mContext;
-  // public static final String ROOT = "http://23ea9845.ngrok.io";
-   public static final String ROOT ="http://ec2-52-90-5-77.compute-1.amazonaws.com";
+
+   public static final String ROOT = "http://ec2-52-90-5-77.compute-1.amazonaws.com";
+
     //Login url
     public static String LOG_IN = "/api/login";
     //Logout url
