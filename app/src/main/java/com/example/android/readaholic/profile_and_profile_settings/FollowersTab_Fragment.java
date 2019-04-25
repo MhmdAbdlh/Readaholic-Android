@@ -120,6 +120,11 @@ public class FollowersTab_Fragment extends Fragment {
                                 user.setmUserName(Followers.optJSONObject(i).optString("name"));
                                 user.setmUserId(Followers.optJSONObject(i).optInt("id"));
                                 user.setmUserImageUrl(Followers.optJSONObject(i).optString("image_link"));
+                                int state =Followers.optJSONObject(i).optInt("is_followed");
+                                if(state==1)
+                                    user.setmFollowerState(true);
+                                else
+                                    user.setmFollowerState(false);
                                 followers.add(user);
                             }
                             UpdateList();

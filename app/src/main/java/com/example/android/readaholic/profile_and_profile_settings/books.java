@@ -76,17 +76,18 @@ public class books extends Fragment {
         }
         else {
             mCurrentlyReadingRecyclerView = (RecyclerView) mView.findViewById(R.id.BookFragment_CurrentlyReading_RecyclerView);
-            mCurrentlyReadingRecyclerView.setHasFixedSize(true);
+            //mCurrentlyReadingRecyclerView.setHasFixedSize(true);
 
             // use a linear layout manager
             mCurrentlyReadinglayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
-
+            mCurrentlyReadinglayoutManager.setReverseLayout(true);
+            mCurrentlyReadinglayoutManager.setStackFromEnd(true);
             mCurrentlyReadingRecyclerView.setLayoutManager(mCurrentlyReadinglayoutManager);
 
             // specify an adapter
             mCurrentlyReadingAdapter = new BooksListsAdapter3(getContext(),mCurrentlyReadingImageUrl);
-            mCurrentlyReadingRecyclerView.setAdapter(mCurrentlyReadingAdapter);
             mCurrentlyReadingAdapter.notifyDataSetChanged();
+            mCurrentlyReadingRecyclerView.setAdapter(mCurrentlyReadingAdapter);
         }
 
 
@@ -97,10 +98,12 @@ public class books extends Fragment {
         }
         else {
             mWantToReadRecyclerView = (RecyclerView) mView.findViewById(R.id.BookFragment_WantToRead_RecyclerView);
-            mWantToReadRecyclerView.setHasFixedSize(true);
+            //mWantToReadRecyclerView.setHasFixedSize(true);
 
             // use a linear layout manager
-            mWantToReadlayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+            mWantToReadlayoutManager = new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false);
+            mWantToReadlayoutManager.setReverseLayout(true);
+            mWantToReadlayoutManager.setStackFromEnd(true);
             mWantToReadRecyclerView.setLayoutManager(mWantToReadlayoutManager);
 
             // specify an adapter
@@ -120,10 +123,12 @@ public class books extends Fragment {
         else {
             mReadRecyclerView = (RecyclerView) mView.findViewById(R.id.BookFragment_Read_RecyclerView);
 
-            mReadRecyclerView.setHasFixedSize(true);
+            //mReadRecyclerView.setHasFixedSize(true);
 
             // use a linear layout manager
             mReadlayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+            mReadlayoutManager.setReverseLayout(true);
+            mReadlayoutManager.setStackFromEnd(true);
             mReadRecyclerView.setLayoutManager(mReadlayoutManager);
 
             // specify an adapter

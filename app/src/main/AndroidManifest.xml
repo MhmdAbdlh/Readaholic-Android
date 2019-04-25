@@ -28,7 +28,8 @@
         <activity
             android:name=".Main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".profile_and_profile_settings.Profile" />
+        <activity android:name=".profile_and_profile_settings.Profile"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".sign_in_up.Start"
             android:theme="@style/AppTheme.NoActionBar">
