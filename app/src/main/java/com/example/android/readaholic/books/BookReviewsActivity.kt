@@ -12,6 +12,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.android.readaholic.R
 import com.example.android.readaholic.contants_and_static_data.Urls
+import com.example.android.readaholic.contants_and_static_data.Urls.makeLikeUnlike
 import com.example.android.readaholic.profile_and_profile_settings.Profile
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_book_reviews.*
@@ -122,19 +123,30 @@ fun feedReviewDataFromURL(bookid:Int)
             }
             myview.likereviewtxtui.setOnClickListener {
                 var likes:Int=myview.numberoflikesreviewtxtui.text.toString().toInt()
-                if( myview.likereviewtxtui.text=="like")
+                if(likeservicies(currentreview.reviewid))
                 {
-                    likeservicies(Creviewdata.reviewid)
+                    Toast.makeText(baseContext,"11111",Toast.LENGTH_SHORT).show()
+                    if( myview.likereviewtxtui.text=="like")
+                    {
 
-                    likes+=1
-                    myview.likereviewtxtui.text="unlike"
+                        likes+=1
+                        myview.likereviewtxtui.text="unlike"
+                    }
+                    else{
+                        likes-=1
+                        myview.likereviewtxtui.text="like"
+
+                    }
+                    myview.numberoflikesreviewtxtui.text=likes.toString()
+
                 }
                 else{
-                    likes-=1
-                    myview.likereviewtxtui.text="like"
+
+                    Toast.makeText(baseContext,"0000000",Toast.LENGTH_SHORT).show()
 
                 }
-                myview.numberoflikesreviewtxtui.text=likes.toString()
+
+
 
             }
             return myview
@@ -155,23 +167,27 @@ fun feedReviewDataFromURL(bookid:Int)
     }
 
 
-    fun likeservicies(reviewid:Int)
+    fun likeservicies(reviewid:Int):Boolean
     {
 
         val queue = Volley.newRequestQueue(this)
-        var url = "http://"+"localhost"+":8000/api/makeLike?id="+reviewid.toString()+"&type?=2"
+        var url =makeLikeUnlike(reviewid.toString())
+        var success=false
         val stringRequest = StringRequest(Request.Method.POST,url,
                 Response.Listener<String> { response ->
                     var jsonresponse=JSONObject(response)
                     if(jsonresponse.getString("status")=="true")
-                        Toast.makeText(this,"Like added",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this,jsonresponse.getString("Message"),Toast.LENGTH_SHORT).show()
+                         success=true
                 },
                 Response.ErrorListener {
                     Toast.makeText(this,"Someething went wrong with the server",Toast.LENGTH_SHORT).show()
                 }
         )
 
+
         queue.add(stringRequest)
+        return success
 
     }
 

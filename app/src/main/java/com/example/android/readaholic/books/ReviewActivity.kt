@@ -31,13 +31,39 @@ class ReviewActivity : AppCompatActivity() {
         commentlist.adapter=commentadapter
         getReviewInfo()
 
-
         swiperefreshcomment.setOnRefreshListener {
             CommentList!!.clear()
             swiperefreshcomment.isRefreshing=false
         }
     }
 
+    fun makeReviewLike(view:View)
+    {
+        var likes:Int=numberoflikesreviewtxtui.text.toString().toInt()
+        if(likeservicies(Creviewdata.reviewid))
+        {
+
+
+            if( likereviewtxtui.text=="like")
+            {
+
+                likes+=1
+                likereviewtxtui.text="unlike"
+            }
+            else{
+                likes-=1
+                likereviewtxtui.text="like"
+
+            }
+            numberoflikesreviewtxtui.text=likes.toString()
+
+
+        }
+
+
+
+
+    }
     /**
      * get all review info from the end point (Server)
      *
@@ -141,7 +167,29 @@ class ReviewActivity : AppCompatActivity() {
     }
 
 
+    fun likeservicies(reviewid:Int):Boolean
+    {
 
+        val queue = Volley.newRequestQueue(this)
+        var url = Urls.makeLikeUnlike(reviewid.toString())
+        var success=false
+        val stringRequest = StringRequest(Request.Method.POST,url,
+                Response.Listener<String> { response ->
+                    var jsonresponse=JSONObject(response)
+                    if(jsonresponse.getString("status")=="true")
+                        Toast.makeText(this,jsonresponse.getString("Message"),Toast.LENGTH_SHORT).show()
+                    success=true
+                },
+                Response.ErrorListener {
+                    Toast.makeText(this,"Someething went wrong with the server",Toast.LENGTH_SHORT).show()
+                }
+        )
+
+
+        queue.add(stringRequest)
+        return success
+
+    }
 
 
     /**
@@ -178,13 +226,20 @@ class ReviewActivity : AppCompatActivity() {
     {
         var success=false
         val queue = Volley.newRequestQueue(this)
-          var url = "http://"+"localhost"+":8000/api/makeComment/id"+Creviewdata.reviewid+"&type=0&body="+commentbody;
+        var url = Urls.makecomment(Creviewdata.reviewid.toString(),commentbody)
         val stringRequest = StringRequest(Request.Method.POST, url,
                 Response.Listener<String> { response ->
                     var jsonresponse=JSONObject(response)
-                    if(jsonresponse.getString("status")=="true")
-                        success=true
+                    if(jsonresponse.getString("status")=="true") {
+                        Toast.makeText(this, "Your comment have been added ,Thank you.", Toast.LENGTH_SHORT).show()
+                        success = true
+                    }
+                    else if(jsonresponse.getString("status")=="false")
+                    {
+                            Toast.makeText(this,jsonresponse.getString("error"),Toast.LENGTH_SHORT).show()
 
+
+                    }
 
                 },
                 Response.ErrorListener {
@@ -193,7 +248,6 @@ class ReviewActivity : AppCompatActivity() {
                 }
 
         )
-
         queue.add(stringRequest)
         return success
 
@@ -246,6 +300,30 @@ class ReviewActivity : AppCompatActivity() {
             CommentList!!.add(CommentInfo(jsonobject.getString("id").toInt(),jsonobject.getJSONObject("user").getString("id").toInt(),jsonobject.getJSONObject("user").getString("name")
             ,jsonobject.getJSONObject("user").getString("image_url"),jsonobject.getString("body")))
         }
+
+    }
+    fun deletecomment(commentid:Int)
+    {
+        val queue = Volley.newRequestQueue(this)
+        var url=Urls.deletecomment(commentid.toString())
+        val stringRequest = StringRequest(Request.Method.DELETE,url,
+                Response.Listener<String> { response ->
+                    var  jsonresponse= JSONObject(response)
+                   if(jsonresponse.getString("status")=="true")
+                   {
+                        Toast.makeText(this,jsonresponse.getString("Message"),Toast.LENGTH_SHORT).show()
+                       commentadapter!!.notifyDataSetChanged()
+                   }
+                    else if(jsonresponse.getString("status")=="false")
+                       Toast.makeText(this,jsonresponse.getString("errors"),Toast.LENGTH_SHORT).show()
+                },
+                Response.ErrorListener {
+
+                })
+
+        queue.add(stringRequest)
+
+
 
     }
 

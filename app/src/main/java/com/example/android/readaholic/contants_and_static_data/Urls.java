@@ -68,9 +68,18 @@ public class Urls {
         return ROOT + "/api/reviwes/delete?reviewId="+review_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
 
     }
-
-
-
+    public static String makeLikeUnlike(String review_id) {
+        return ROOT + "/api/LikeOrUnLike?id="+review_id+"&type=0"+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+    }
+    public static String makecomment(String review_id,String body) {
+        return ROOT + "/api/makeComment?id="+review_id+"&type=0&body="+body+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+    }
+    public static String deletecomment(String commentid) {
+        return ROOT + "/api/deleteComment?id="+commentid+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+    }
+    public static String getselfbooks(String shlef_name) {
+        return ROOT + "/api/shelf?shelf_name="+shlef_name+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+    }
     public String constructTokenParameters() {
         String parameters = "";
 

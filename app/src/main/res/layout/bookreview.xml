@@ -5,7 +5,8 @@
     android:id="@+id/back"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorBackgroundWhite"
+    android:layout_margin="15dp"
+    android:background="@drawable/btnselectedshape"
     android:orientation="vertical"
     android:padding="15dp">
 
@@ -125,7 +126,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0"
-            android:background="@drawable/reviewlist"
+            android:background="@color/colorBackgroundWhite"
             app:srcCompat="@drawable/rightarrow" />
     </LinearLayout>
 
@@ -139,6 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@color/colorBackgroundWhite"
             android:paddingLeft="24dp"
             android:text="like"
             android:textColor="@color/colorGreen" />
@@ -148,6 +150,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@color/colorBackgroundWhite"
+            android:foregroundGravity="center"
+            android:gravity="center"
             android:text="comment"
             android:textColor="@color/colorGreen" />
 
@@ -156,7 +161,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/reviewlist"
+            android:background="@color/colorBackgroundWhite"
             app:srcCompat="@drawable/likeicon" />
 
         <TextView
@@ -172,7 +177,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/reviewlist"
+            android:background="@color/colorBackgroundWhite"
             app:srcCompat="@drawable/commenticon" />
 
         <TextView

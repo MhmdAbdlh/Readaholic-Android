@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".books.Editreview"></activity>
-        <activity android:name=".myshelves.BookShelves" />
+        <activity android:name=".myshelves.BookShelves"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity android:name=".explore.ExploreActivity"
             android:theme="@style/AppTheme.NoActionBar" ></activity>
         <activity android:name=".settings.edit_Location.LocationSettings" />
@@ -42,13 +44,18 @@
             android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity android:name=".sign_in_up.SignUp"
             android:windowSoftInputMode="stateVisible|adjustPan"/>
-        <activity android:name=".books.BookPageActivity" />
+        <activity android:name=".books.BookPageActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+          />
         <activity
             android:name=".books.BookReviewsActivity"
-            android:windowSoftInputMode="adjustResize" />
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <activity
             android:name=".books.ReviewActivity"
-            android:windowSoftInputMode="adjustResize" />
+            android:theme="@style/AppTheme.NoActionBar"
+             />
+
     </application>
 
 </manifest>

@@ -21,7 +21,7 @@
         android:layout_height="2dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@drawable/reviewlist"
         android:paddingBottom="100dp" />
 
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"

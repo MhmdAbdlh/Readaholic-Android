@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
+    android:padding="3dp"
     tools:context=".myshelves.ShelvesFragment">
 
     <ImageView
@@ -30,6 +31,114 @@
         android:layout_height="1dp"
         android:layout_marginLeft="100dp"
         android:layout_marginRight="100dp"
-        android:background="@color/colorPrimaryDark" />
+        android:background="@drawable/reviewlist" />
+
+    <LinearLayout
+        android:id="@+id/Readlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/btnselectedshape"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:text="Read"
+            android:textColor="@color/brown"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/Rcountbooks"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="10"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:text="numofbooks" />
+
+        <ImageButton
+            android:id="@+id/Readnbtn"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:layout_weight="2"
+            android:background="@color/colorBackgroundWhite"
+            android:src="@drawable/righticon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Clayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/btnselectedshape"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:text="Currently Reading"
+            android:textColor="@color/brown"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/Ccountbooks"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:text="numofbooks" />
+
+        <ImageButton
+            android:id="@+id/Creadbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:layout_weight="3"
+            android:background="@color/colorBackgroundWhite"
+            android:src="@drawable/righticon" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Wlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btnselectedshape"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/Ranttoread"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:text="Want to Read"
+            android:textColor="@color/brown"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/Wbooknumber"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:text="numofbooks" />
+
+        <ImageButton
+            android:id="@+id/Wreadbtn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:layout_weight="7"
+            android:background="@color/colorBackgroundWhite"
+            android:src="@drawable/righticon" />
+    </LinearLayout>
 
 </LinearLayout>
