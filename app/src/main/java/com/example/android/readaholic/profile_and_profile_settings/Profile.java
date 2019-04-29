@@ -4,6 +4,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.example.android.readaholic.R;
 
@@ -21,6 +25,9 @@ public class Profile extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity__profile);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.Profile_toolbar);
+        setSupportActionBar(myToolbar);
 
                 Bundle bundle ;
                 bundle = getIntent().getExtras();
@@ -54,5 +61,34 @@ public class Profile extends AppCompatActivity {
         else
         super.onBackPressed();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+    /**
+     * function to handle the behaviour of each item in options menu.
+     * @param item menu item which is selected
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.search:
+                //start search dialog
+                boolean result =super.onSearchRequested();
+                return result;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onSearchRequested() {
+        return true;
     }
 }
