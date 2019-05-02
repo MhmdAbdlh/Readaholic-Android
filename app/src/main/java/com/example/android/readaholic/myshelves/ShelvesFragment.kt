@@ -81,21 +81,21 @@ class ShelvesFragment : Fragment() {
 
             myview.Readnbtn.setOnClickListener {
                 var intent=Intent(context,BookShelves::class.java)
-                intent.putExtra("Shelve",0)
+                Cbookdata.shelf=0
                 startActivity(intent)
 
 
             }
         myview.Creadbtn.setOnClickListener {
             var intent=Intent(context,BookShelves::class.java)
-            intent.putExtra("Shelve",1)
+           Cbookdata.shelf=1
             startActivity(intent)
 
 
         }
         myview.Wreadbtn.setOnClickListener {
             var intent=Intent(context,BookShelves::class.java)
-            intent.putExtra("Shelve",2)
+            Cbookdata.shelf=2
             startActivity(intent)
         }
         var Rnumbooks=getnumber("read");

@@ -31,13 +31,55 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
      */
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         var shelftype:String=parent!!.getItemAtPosition(position).toString()
-        bookreadbtnui.text=shelftype
-        if(position!=0)
+
+        Toast.makeText(this,"position number"+position.toString(),Toast.LENGTH_SHORT).show()
+        if(position!=0&&position!=4)
         {
+            bookreadbtnui.text=shelftype
             bookreadbtnui.setBackgroundResource(R.drawable.btnselectedshape); // From android.graphics.Color
             bookreadbtnui.setTextColor(Color.BLACK)
+            setshelve()
+            addBookShelf(Cbookdata.bookid,Cbookdata.shelf)
+        }
+        else if(position==4){
+            deleteBookShelf(Cbookdata.bookid,Cbookdata.shelf)
         }
     }
+
+    fun addBookShelf(bookid:Int,shelf:Int)
+    {
+        val queue = Volley.newRequestQueue(this)
+        var url = Urls.addbooktoshelf(shelf.toString(),bookid.toString())
+        val stringRequest = StringRequest(Request.Method.POST, url,
+                Response.Listener<String> { response ->
+                    var jsonresponse= JSONObject(response)
+                        Toast.makeText(this,jsonresponse.getString("message"),Toast.LENGTH_SHORT).show()
+                },
+                Response.ErrorListener {
+
+                }
+        )
+        queue.add(stringRequest)
+
+
+
+    }
+    fun deleteBookShelf(bookid:Int,shelf:Int)
+    {
+        val queue = Volley.newRequestQueue(this)
+        var url = Urls.deletebooktoshelf(shelf.toString(),bookid.toString())
+        val stringRequest = StringRequest(Request.Method.DELETE, url,
+                Response.Listener<String> { response ->
+                    var jsonresponse= JSONObject(response)
+                    Toast.makeText(this,jsonresponse.getString("message"),Toast.LENGTH_SHORT).show()
+                },
+                Response.ErrorListener {
+
+                }
+        )
+        queue.add(stringRequest)
+    }
+
     override fun onRestart() {
         super.onRestart()
         getReviewforABookforAUser()
@@ -54,11 +96,8 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
         whenconnection.visibility=View.GONE
         /////////////////////////////
         bookinfo= BookPageInfo()
-       /* var intent:Intent= Intent()
-         Cbookdata!!.bookid=intent.getIntExtra("BookId",2)*/
         bookreview= ArrayList()
         feedBookInfoFromApi(Cbookdata.bookid)
-
         seeallreviewstxtui.setOnClickListener {
             Cbookdata.author_name=bookinfo!!.author_name
             Cbookdata.book_title=bookinfo!!.book_title
@@ -90,7 +129,6 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
             1-> bookreadbtnui.text = "CURRENTLY READING"
             2-> bookreadbtnui.text  = "WANT TO READ"
         }
-        Toast.makeText(this,Cbookdata.shelf.toString(),Toast.LENGTH_SHORT).show()
     }
 
     /**
@@ -200,13 +238,8 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
             else{
                 myrating.rating=myreview.getInt("rating").toFloat()
             }
-            if(myreview.getInt("shelf_name")!=0||myreview.getInt("shelf_name")!=1||myreview.getInt("shelf_name")!=2||myreview.getInt("shelf_name")!=3)
-            {
-                Cbookdata.shelf=1
-            }
-            else{
-                Cbookdata.shelf=myreview.getInt("shelf_name")
-            }
+
+
             if(myreview.getInt("id")<0)
             {
                 Cbookdata.reviewid=1
@@ -215,7 +248,11 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
                 Cbookdata.reviewid=myreview.getInt("id")
             }
             writeareviewbtn.text="Edit Your  Review"
+            Cbookdata.shelf=myreview.getInt("shelf_name")
+            bookreadbtnui.setBackgroundResource(R.drawable.btnselectedshape); // From android.graphics.Color
+            bookreadbtnui.setTextColor(Color.BLACK)
             getshelve()
+
         }
 
     }

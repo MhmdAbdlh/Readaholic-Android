@@ -24,5 +24,6 @@
         <item>WANT TO READ</item>
         <item>CURRENTLY READING</item>
         <item>READ</item>
+        <item>Remove From shelf</item>
     </string-array>
 </resources>

@@ -125,24 +125,21 @@ fun feedReviewDataFromURL(bookid:Int)
                 var likes:Int=myview.numberoflikesreviewtxtui.text.toString().toInt()
                 if(likeservicies(currentreview.reviewid))
                 {
-                    Toast.makeText(baseContext,"11111",Toast.LENGTH_SHORT).show()
                     if( myview.likereviewtxtui.text=="like")
                     {
-
                         likes+=1
                         myview.likereviewtxtui.text="unlike"
                     }
                     else{
                         likes-=1
                         myview.likereviewtxtui.text="like"
-
                     }
                     myview.numberoflikesreviewtxtui.text=likes.toString()
 
                 }
                 else{
 
-                    Toast.makeText(baseContext,"0000000",Toast.LENGTH_SHORT).show()
+                  Toast.makeText(baseContext,"Error with the server .. try again later",Toast.LENGTH_SHORT).show()
 
                 }
 
@@ -172,23 +169,22 @@ fun feedReviewDataFromURL(bookid:Int)
 
         val queue = Volley.newRequestQueue(this)
         var url =makeLikeUnlike(reviewid.toString())
-        var success=false
+        var success=true
         val stringRequest = StringRequest(Request.Method.POST,url,
                 Response.Listener<String> { response ->
                     var jsonresponse=JSONObject(response)
-                    if(jsonresponse.getString("status")=="true")
-                        Toast.makeText(this,jsonresponse.getString("Message"),Toast.LENGTH_SHORT).show()
-                         success=true
+                    if(jsonresponse.getString("status")=="true") {
+                        Toast.makeText(this, jsonresponse.getString("Message"), Toast.LENGTH_SHORT).show()
+
+                    }
                 },
                 Response.ErrorListener {
                     Toast.makeText(this,"Someething went wrong with the server",Toast.LENGTH_SHORT).show()
+                    success=false
                 }
         )
-
-
         queue.add(stringRequest)
         return success
-
     }
 
 

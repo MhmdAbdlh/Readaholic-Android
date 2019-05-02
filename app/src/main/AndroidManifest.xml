@@ -13,7 +13,8 @@
         android:roundIcon="@drawable/readholicloh"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".books.Editreview"></activity>
+        <activity android:name=".books.Editreview"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".myshelves.BookShelves"
             android:theme="@style/AppTheme.NoActionBar"
             />

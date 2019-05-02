@@ -8,6 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.Toast
 import com.example.android.readaholic.R
 import com.example.android.readaholic.books.BookPageInfo
+import com.example.android.readaholic.books.Cbookdata
 import kotlinx.android.synthetic.main.activity_book_shelves.*
 import kotlinx.android.synthetic.main.bookticket.view.*
 
@@ -19,7 +20,7 @@ protected var shelvetype:Int?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_shelves)
-        shelvetype=Intent().getIntExtra("Shelve",2)
+        shelvetype=Cbookdata.shelf
         Toast.makeText(this,shelvetype.toString(),Toast.LENGTH_SHORT).show()
         booklist= ArrayList()
         booklist!!.add(BookPageInfo())
