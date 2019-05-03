@@ -1,13 +1,15 @@
 package com.example.android.readaholic;
 
-import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -34,10 +36,20 @@ public class SearchableActivity extends AppCompatActivity {
 
     private ListView listView;
     ArrayList<Users> Users = new ArrayList<Users>();
+    SearchView SearchView;
+    TextView noResult;
+    TextView numOfResult;
+    ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchable);
+
+        noResult = (TextView)findViewById(R.id.Search_NoResults_TextView);
+        numOfResult=(TextView)findViewById(R.id.Search_ResultNumber_TextView);
+        progressBar = (ProgressBar)findViewById(R.id.Search_ProgressBar);
+        noResult.setVisibility(View.INVISIBLE);
+        numOfResult.setVisibility(View.INVISIBLE);
         // Get the intent, verify the action and get the query
         listView = findViewById(R.id.Search_listView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -56,28 +68,37 @@ public class SearchableActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
-        Intent intent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            Log.e("inSearchableActivity","there  is intent");
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            Log.e("inSearchableActivity",query);
-             doMySearch(query);
 
+        SearchView=(SearchView)findViewById(R.id.Profile_searchView);
+        SearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.e("inQuerySubmit","query text is submitted");
+                doMySearch(query);
+                return false;
+            }
 
-        }
+            @Override
+            public boolean onQueryTextChange(String newText) {
 
+                return false;
+            }
+        });
 
     }
+
+
+
 
     /**
      * to execute the search query
      * @param query parameter which is came from search view.
      */
-    void doMySearch(String query )
+    void doMySearch(final String query )
 {
     final int[] ID = new int[1];
     final String mRequestUrl = Urls.ROOT+"/api/search_by_name_username?"+"name="+query+"&token="+ UserInfo.sToken+"&type="+UserInfo.sTokenType;
-
+    progressBar.setVisibility(View.VISIBLE);
     Log.e("inSearch",mRequestUrl);
     final RequestQueue mRequestQueue = Volley.newRequestQueue(this);
     final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null, new Response.Listener<JSONObject>() {
@@ -85,27 +106,41 @@ public class SearchableActivity extends AppCompatActivity {
         public void onResponse(JSONObject Response) {
             Log.e("inSearch",Response.toString());
             JSONArray users = Response.optJSONArray("users");
-            for(int i=0;i<users.length();i++) {
-                Users user = new Users();
+            if(users.length()>0) {
+                for (int i = 0; i < users.length(); i++) {
+                    Users user = new Users();
 
-                user.setmUserId( users.optJSONObject(i).optInt("id"));
-                user.setmUserName(users.optJSONObject(i).optString("name"));
-                user.setmUserImageUrl(users.optJSONObject(i).optString("image_link"));
-                Users.add(user);
+                    user.setmUserId(users.optJSONObject(i).optInt("id"));
+                    user.setmUserName(users.optJSONObject(i).optString("name"));
+                    user.setmUserImageUrl(users.optJSONObject(i).optString("image_link"));
+                    Users.add(user);
+                }
+                numOfResult.setVisibility(View.INVISIBLE);
+                numOfResult.setText(Integer.toString(users.length())+" results to "+'"'+query+'"');
+                listView.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
+                CustomSearchAdapter adapter = new CustomSearchAdapter(getBaseContext(),
+                        android.R.layout.simple_dropdown_item_1line,
+                        Users);
+                listView.setAdapter(adapter);
             }
-            CustomSearchAdapter adapter = new CustomSearchAdapter(getBaseContext(),
-                    android.R.layout.simple_dropdown_item_1line,
-                    Users);
-            listView.setAdapter(adapter);
+            else
+                {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    listView.setVisibility(View.INVISIBLE);
+                    numOfResult.setVisibility(View.INVISIBLE);
+                    noResult.setText(" 0 results to "+'"'+query+'"');
+                    noResult.setVisibility(View.VISIBLE);
+                }
         mRequestQueue.stop();
             }
     }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-
-            //Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
-            // mProfileUser=null;
-
+            listView.setVisibility(View.VISIBLE);
+            numOfResult.setVisibility(View.VISIBLE);
+            noResult.setText(" 0 results to "+'"'+query+'"');
+            noResult.setVisibility(View.VISIBLE);
             mRequestQueue.stop();
         }
     });
