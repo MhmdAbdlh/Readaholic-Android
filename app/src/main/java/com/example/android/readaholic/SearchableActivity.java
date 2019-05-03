@@ -80,7 +80,7 @@ public class SearchableActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
+                //doMySearch(newText);
                 return false;
             }
         });
@@ -99,6 +99,10 @@ public class SearchableActivity extends AppCompatActivity {
     final int[] ID = new int[1];
     final String mRequestUrl = Urls.ROOT+"/api/search_by_name_username?"+"name="+query+"&token="+ UserInfo.sToken+"&type="+UserInfo.sTokenType;
     progressBar.setVisibility(View.VISIBLE);
+    numOfResult.setVisibility(View.GONE);
+    noResult.setVisibility(View.GONE);
+    listView.setVisibility(View.GONE);
+    Users.clear();
     Log.e("inSearch",mRequestUrl);
     final RequestQueue mRequestQueue = Volley.newRequestQueue(this);
     final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null, new Response.Listener<JSONObject>() {
@@ -115,10 +119,10 @@ public class SearchableActivity extends AppCompatActivity {
                     user.setmUserImageUrl(users.optJSONObject(i).optString("image_link"));
                     Users.add(user);
                 }
-                numOfResult.setVisibility(View.INVISIBLE);
+                numOfResult.setVisibility(View.VISIBLE);
                 numOfResult.setText(Integer.toString(users.length())+" results to "+'"'+query+'"');
                 listView.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.GONE);
                 CustomSearchAdapter adapter = new CustomSearchAdapter(getBaseContext(),
                         android.R.layout.simple_dropdown_item_1line,
                         Users);
@@ -126,9 +130,9 @@ public class SearchableActivity extends AppCompatActivity {
             }
             else
                 {
-                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
                     listView.setVisibility(View.INVISIBLE);
-                    numOfResult.setVisibility(View.INVISIBLE);
+                    numOfResult.setVisibility(View.GONE);
                     noResult.setText(" 0 results to "+'"'+query+'"');
                     noResult.setVisibility(View.VISIBLE);
                 }
@@ -137,8 +141,8 @@ public class SearchableActivity extends AppCompatActivity {
     }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            listView.setVisibility(View.VISIBLE);
-            numOfResult.setVisibility(View.VISIBLE);
+            listView.setVisibility(View.INVISIBLE);
+            numOfResult.setVisibility(View.GONE);
             noResult.setText(" 0 results to "+'"'+query+'"');
             noResult.setVisibility(View.VISIBLE);
             mRequestQueue.stop();

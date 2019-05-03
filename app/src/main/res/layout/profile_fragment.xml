@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<<<<<<< HEAD
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-=======
-
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
->>>>>>> 85942ac0ed0c300a08998c3f2b5d522652441f36
+
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <LinearLayout
+        android:id="@+id/ProfileContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
 
         <LinearLayout
@@ -58,6 +55,7 @@
 
 
             <View
+                android:id="@+id/upperSetting"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="@color/colorPrimaryDark"
@@ -100,6 +98,7 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/belowSetting"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/colorPrimaryDark"
@@ -135,9 +134,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-<<<<<<< HEAD
-        </FrameLayout>
-=======
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -151,6 +148,5 @@
             </LinearLayout>
         </FrameLayout>
 
->>>>>>> 85942ac0ed0c300a08998c3f2b5d522652441f36
     </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+</ScrollView>

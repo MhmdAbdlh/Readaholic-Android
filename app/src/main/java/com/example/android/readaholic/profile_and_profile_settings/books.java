@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -26,6 +27,7 @@ import com.example.android.readaholic.books.Cbookdata;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.example.android.readaholic.explore.BookModel;
+import com.example.android.readaholic.myshelves.ShelvesFragment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -57,6 +59,7 @@ public class books extends Fragment {
     private BooksListsAdapter3 mCurrentlyReadingAdapter;
     public int NumberOfBooks;
     private RequestQueue mRequestQueue;
+    private FrameLayout BookFragment_SeeMore_FrameLayout;
     /**
      * onCreateView called when the view is created
      * @param inflater inflate the layout
@@ -69,11 +72,28 @@ public class books extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
          mView = inflater.inflate(R.layout.fragment_books, container, false);
-         int ID = getArguments().getInt("user-id");
+         final int ID = getArguments().getInt("user-id");
          NumberOfBooks = getArguments().getInt("books-num");
         TextView BookNumber = (TextView)mView.findViewById(R.id.BookFragment_BookNumbers_TextView);
         BookNumber.setText(Integer.toString(NumberOfBooks)+" Books");
+        BookFragment_SeeMore_FrameLayout =(FrameLayout) mView.findViewById(R.id.BookFragment_SeeMore_FrameLayout);
+        if(UserInfo.mIsGuest)
+            BookFragment_SeeMore_FrameLayout.setVisibility(View.GONE);
+        else
+            {
+                BookFragment_SeeMore_FrameLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Fragment ShelvesFragment = new ShelvesFragment();
+                        Bundle bundle=new Bundle();
+                        bundle.putInt("USER_ID",ID);
+                        ShelvesFragment.setArguments(bundle);
+                        getFragmentManager().beginTransaction().replace(R.id.ProfileLayout,
+                                ShelvesFragment,"ShelvesFragment").addToBackStack("FromProfileToShelves").commit();
 
+                    }
+                });
+            }
         ExtractBooks(ID);
 
 
@@ -130,7 +150,7 @@ public class books extends Fragment {
         final String mRequestWantsToReadUrl;
         final String mRequestCurrentlyReadingUrl;
         if(id == 0) {
-            mRequestReadsUrl =Urls.getselfbooks(Integer.toString(0));
+             mRequestReadsUrl =Urls.getselfbooks(Integer.toString(0));
             mRequestWantsToReadUrl =Urls.getselfbooks(Integer.toString(2));
             mRequestCurrentlyReadingUrl =Urls.getselfbooks(Integer.toString(1));
         }
@@ -163,9 +183,10 @@ public class books extends Fragment {
                         mReadImageUrl.add(book);
                     }
                     //updateLists();
+                    UpdateList1();
                 }
 
-                mRequestQueue.stop();
+            //    mRequestQueue.stop();
 
             }
         },
@@ -194,10 +215,11 @@ public class books extends Fragment {
                         mCurrentlyReadingImageUrl.add(book);
                     }
 
-                   // updateLists();
+                    //updateLists();
+                    UpdateList2();
                 }
 
-                mRequestQueue.stop();
+              //  mRequestQueue.stop();
 
             }
         },
@@ -225,10 +247,11 @@ public class books extends Fragment {
                         book.setmId(pages.optJSONObject(i).optInt("id"));
                         mWantToReadImageUrl.add(book);
                     }
-                    updateLists();
+                    //updateLists();
+                    UpdateList3();
                 }
 
-                mRequestQueue.stop();
+                //mRequestQueue.stop();
 
             }
         },
@@ -486,8 +509,7 @@ public class books extends Fragment {
             mWantToReadAdapter.notifyDataSetChanged();
         }
 
-        TextView BookNumber = (TextView)mView.findViewById(R.id.BookFragment_BookNumbers_TextView);
-        BookNumber.setText(Integer.toString(NumberOfBooks)+" Books");
 
     }
+
 }

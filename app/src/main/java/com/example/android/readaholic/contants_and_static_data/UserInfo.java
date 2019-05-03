@@ -13,6 +13,7 @@ public class UserInfo {
     //token required for post requests
     public static String sToken;
     public static String sTokenType;
+
     public static boolean IsMemic = true;
     public static int Memicid = 1;
 
