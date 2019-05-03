@@ -1,10 +1,14 @@
 package com.example.android.readaholic;
 
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -36,6 +40,19 @@ import com.example.android.readaholic.profile_and_profile_settings.FollowersAndF
 import com.example.android.readaholic.profile_and_profile_settings.Profile;
 import com.example.android.readaholic.settings.Settings;
 import com.example.android.readaholic.sign_in_up.Start;
+
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
+
+import com.example.android.readaholic.myshelves.ShelvesFragment;
+import com.pusher.client.Pusher;
+import com.pusher.client.PusherOptions;
+import com.pusher.client.channel.Channel;
+import com.pusher.client.channel.SubscriptionEventListener;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -54,6 +71,65 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        final String[] textTitle = {"   "};
+        final String[] textContent = {""};
+
+        PusherOptions options = new PusherOptions();
+        options.setCluster("eu");
+        Pusher pusher = new Pusher("aa5ca7b55f8f7685a9cc", options);
+        Channel channel = pusher.subscribe("user.1");
+        String d;
+        channel.bind("notify", new SubscriptionEventListener() {
+            @Override
+            public void onEvent(String channelName, String eventName, final String data) {
+                System.out.println(data);
+                try {
+                    JSONObject i = new JSONObject(data);
+                    JSONObject d = i.getJSONObject("message");
+                    String user ;
+                    int t = d.getInt("type");
+                    String action;
+                    if(t == 0){
+                            if(d.getInt("review_user_id") == 0){
+                            user = "your";
+                        }else{
+                            user = d.getString("review_user_name");
+                        }
+                        action = " Commented on "+user + "'s review";
+                    }else if(t == 1){
+                        if(d.getInt("review_user_id") == 0){
+                            user = "your";
+                        }else{
+                            user = d.getString("review_user_name");
+                        }
+                        action = " Liked "+user + "'s review";
+                    }
+                    else{
+                        action = " is now following you";
+                    }
+                    textContent [0]= d.getString("user_name")+action;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext(), "user.1")
+                        .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                        .setContentTitle("Readaholic")
+                        .setContentText(textContent[0])
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                builder.setOnlyAlertOnce(true);
+                Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                builder.setSound(uri);
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getBaseContext());
+// notificationId is a unique int for each notification that you must define
+                notificationManager.notify(2, builder.build());
+            }
+        });
+
+        pusher.connect();
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.Main_toolbar);
         setSupportActionBar(toolbar);

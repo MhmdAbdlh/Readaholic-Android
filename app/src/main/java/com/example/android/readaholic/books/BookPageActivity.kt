@@ -54,7 +54,7 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
         val stringRequest = StringRequest(Request.Method.POST, url,
                 Response.Listener<String> { response ->
                     var jsonresponse= JSONObject(response)
-                        Toast.makeText(this,jsonresponse.getString("message"),Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,jsonresponse.getString("message"),Toast.LENGTH_SHORT).show()
                 },
                 Response.ErrorListener {
 
@@ -202,7 +202,7 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
                     var jsonresponse= JSONObject(response)
                     if(jsonresponse.getString("status")=="true")
                     {
-                     Toast.makeText(this,"Your review has been deleted",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this,"Your review has been deleted",Toast.LENGTH_SHORT).show()
                         finish();
                         startActivity(getIntent());
                     }
@@ -277,7 +277,7 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
         if(status=="success"&&!UserInfo.mIsGuest)
         {
             myreviewlayout.visibility=View.VISIBLE
-           var myreview=json.getJSONArray("pages").getJSONObject(0)
+            var myreview=json.getJSONArray("pages").getJSONObject(0)
             if(myreview.getString("body")=="")
             {
                 myreviewbody.text="NO BODY FOR THE REVIEW"
@@ -303,9 +303,9 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
             }
 
             writeareviewbtn.text="Edit Your  Review"
-           // Cbookdata.shelf=myreview.getInt("shelf_name")
-          //  bookreadbtnui.setBackgroundResource(R.drawable.btnselectedshape); // From android.graphics.Color
-          //  bookreadbtnui.setTextColor(Color.BLACK)
+            // Cbookdata.shelf=myreview.getInt("shelf_name")
+            //  bookreadbtnui.setBackgroundResource(R.drawable.btnselectedshape); // From android.graphics.Color
+            //  bookreadbtnui.setTextColor(Color.BLACK)
             getshelve()
 
         }
@@ -317,8 +317,8 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
      */
     fun feedBookInfoFromApi()
     {
-    val progressBar = findViewById(R.id.bookpage_loading_progbar) as ProgressBar
-    progressBar.setVisibility(View.VISIBLE)
+        val progressBar = findViewById(R.id.bookpage_loading_progbar) as ProgressBar
+        progressBar.setVisibility(View.VISIBLE)
 
         val queue = Volley.newRequestQueue(this)
         var url = Urls.getShowBook(Cbookdata.bookid.toString())
@@ -348,7 +348,7 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
      */
     fun importImage()
     {
-       Picasso.get().load(bookinfo!!.image_url).into(bookimageui)
+        Picasso.get().load(bookinfo!!.image_url).into(bookimageui)
     }
 
     /**
@@ -375,7 +375,7 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
     /**
      * fetch book info into the UI
      *
-      */
+     */
     fun feedBookUi()
     {
         tiltetxtui.text= bookinfo!!.book_title
@@ -386,6 +386,6 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
         boojsideinfotxtui.text="number of pages :"+bookinfo!!.num_pages.toString()+" . First published "+bookinfo!!.publication_month+
                 " "+bookinfo!!.publication_date+" , "+bookinfo!!.publication_year+" ISBN13 "+bookinfo!!.isbn
         seeallreviewstxtui.text=bookinfo!!.reviewscount.toString()+" community reviews"
-     }
+    }
 
 }

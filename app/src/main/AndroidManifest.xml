@@ -13,6 +13,13 @@
         android:roundIcon="@drawable/readholicloh"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".home.AddShelf"></activity>
+        <activity android:name=".books.Editreview" />
+        <activity android:name=".myshelves.BookShelves" />
+        <activity
+            android:name=".explore.ExploreActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".books.Editreview"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".myshelves.BookShelves"
@@ -64,7 +71,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -82,6 +88,17 @@
         <activity
             android:name=".books.ReviewActivity"
             android:windowSoftInputMode="adjustResize" />
+        <service
+            android:name=".home.FirbaseManagerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+        android:name="com.google.firebase.messaging.default_notification_color"
+        android:resource="@color/colorAccent" />
     </application>
 
 </manifest>

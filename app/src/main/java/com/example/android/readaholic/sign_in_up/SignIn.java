@@ -39,6 +39,7 @@ import java.net.HttpURLConnection;
 
 
 public class SignIn extends AppCompatActivity {
+    String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -333,7 +334,7 @@ public class SignIn extends AppCompatActivity {
         String parameters = "";
 
         //getting email and password entered by user
-        String email = ((EditText)findViewById(R.id.SignIn_email_edittext)).getText().toString();
+        email = ((EditText)findViewById(R.id.SignIn_email_edittext)).getText().toString();
         String password = ((EditText)findViewById(R.id.SignIn_password_edittext)).getText().toString();
 
 

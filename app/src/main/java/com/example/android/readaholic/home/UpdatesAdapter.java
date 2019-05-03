@@ -1,6 +1,7 @@
 package com.example.android.readaholic.home;
 
 import android.annotation.SuppressLint;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -52,6 +53,7 @@ import static android.support.v4.content.ContextCompat.startActivity;
 
 public class UpdatesAdapter extends ArrayAdapter<Updates> {
     private Context activity;
+    private Updates Item;
     public static LinearLayout likedpost;
     public static TextView commentView;
     private Button wantToRead;
@@ -72,7 +74,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
      */
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        final Updates Item = getItem(position);
+        Item = getItem(position);
         View ListItemView = convertView;
         if(ListItemView == null)
         {
@@ -149,8 +151,12 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
                 Type.setText("Rated it");
                 rateBar.setVisibility(View.VISIBLE);
                 followerName.setVisibility(View.GONE);
-                review.setVisibility(View.GONE);
                 rateBar.setRating(Item.getmRatingValue());
+                if(Item.getmReview() == ""){
+                    review.setVisibility(View.GONE);
+                }else{
+                    review.setVisibility(View.VISIBLE);
+                }
             }
             authorName.setText(Item.getmAuthorName());
             bookName.setText(Item.getmBookName());
@@ -164,8 +170,10 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
             if(Item.getmShelfUpdateType() == 3){
                 Type.setText("Want to read");
             }else if(Item.getmShelfUpdateType() == 2){
-                Type.setText("is reading");
+                Type.setText("Want to read");
             }else if(Item.getmShelfUpdateType() == 1){
+                Type.setText("Reading");
+            }else if(Item.getmShelfUpdateType() == 0){
                 Type.setText("Read");
             }
             bookName.setText(Item.getmBookName());
@@ -200,12 +208,18 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
                         updateType.setText("review");
                         innerUpdatetype.setText("wrote a review");
                         review.setText(Item.getmReview());
+                        review.setVisibility(View.VISIBLE);
                     }else{
                         updateType.setText("rating");
                         innerUpdatetype.setText("rated it");
                         rateBar.setRating(Item.getmRatingValue());
                         rateBar.setVisibility(View.VISIBLE);
-                        review.setVisibility(View.GONE);
+                        if(Item.getmReview() == "") {
+                            review.setVisibility(View.GONE);
+                        }else {
+                            review.setText(Item.getmReview());
+                            review.setVisibility(View.VISIBLE);
+                        }
                     }
                     bookName.setText(Item.getmBookName());
                     shelfview(Item.getmUserShelf());
@@ -305,26 +319,12 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
          * when we click on the image of the user we move to the profile fragment.
          * @param v View: The view that was clicked
          */
-            public void onClick(View v){
-                Fragment fragment = new ProfileFragment();
-                ((FragmentActivity)v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
-                        fragment).commit();
-                Bundle bundle = new Bundle();
-                bundle.putInt("UserId", Item.getmUserId());
-                fragment.setArguments(bundle);
+            public void onClick(View v){     Intent profileIntent = new Intent(v.getContext(), Profile.class);
+                profileIntent.putExtra("user-idFromFollowingList", Item.getmUserId());
+                v.getContext().startActivity(profileIntent);
             }
         });
 
-        wantToRead.setOnClickListener(new View.OnClickListener(){
-            /**
-             * when we click on want to read buuton we assign this book to the user shelf
-             * @param v View: The view that was clicked
-             */
-            public void onClick(View v){
-                requestshelf(2,Item.getmBookId());
-                shelfview(1);
-            }
-        });
 
         commentButton.setOnClickListener(new View.OnClickListener(){
             /**
@@ -374,41 +374,23 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
              * @param v View: The view that was clicked
              */
             public void onClick(View v){
-                if(Item.getmTypeOfUpdates() == 0 ) {
-                    /*Fragment fragment = new UpdatePageFragment();
-                    ((FragmentActivity)v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
-                            fragment).commit();
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelable("UpdateItem", Item);
-                    fragment.setArguments(bundle);*/
+                if(Item.getmTypeOfUpdates() == 0 &&  Item.getmRatingValue() == 0) {
                     Intent i = new Intent(v.getContext(), ReviewActivity.class);
                     Creviewdata.INSTANCE.setReviewid(Item.getmReviewID());
-                    //i.putExtra("ReviewID",Item.getmReviewID());
                     v.getContext().startActivity(i);
 
                 }else if(Item.getmTypeOfUpdates() == 2){
 
                     Intent profileIntent = new Intent(v.getContext(), Profile.class);
                     profileIntent.putExtra("user-idFromFollowingList",Item.getmInnerUserId());
+                    Toast.makeText(getContext(),"Profile = "+ Integer.toString(Item.getmInnerUserId()),Toast.LENGTH_LONG);
                     v.getContext().startActivity(profileIntent);
                 }else if(Item.getmTypeOfUpdates() == 3 || Item.getmTypeOfUpdates() == 4){
-                    if(Item.getmInnerUpdate() == 0) {
+                    if(Item.getmInnerUpdate() == 0 && Item.getmRatingValue() == 0) {
                         Intent i = new Intent(v.getContext(), ReviewActivity.class);
                         Creviewdata.INSTANCE.setReviewid(Item.getmReviewID());
+                        Toast.makeText(getContext(),"Reviewe = "+ Integer.toString(Item.getmReviewID()),Toast.LENGTH_LONG);
                         v.getContext().startActivity(i);
-                        /*Fragment fragment = new UpdatePageFragment();
-                        ((FragmentActivity)v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
-                                fragment).commit();
-                        Bundle bundle = new Bundle();
-                        bundle.putParcelable("UpdateItem", Item);
-                        fragment.setArguments(bundle);*/
-                    }else if(Item.getmInnerUpdate() == 2){
-                        Fragment fragment = new ProfileFragment();
-                        ((FragmentActivity)v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
-                                fragment).commit();
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("UserId", Item.getmInnerUserId());
-                        fragment.setArguments(bundle);
                     }
                 }
 
@@ -424,12 +406,6 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
                 Intent profileIntent = new Intent(v.getContext(), Profile.class);
                 profileIntent.putExtra("user-idFromFollowingList",Item.getmInnerUserId());
                 v.getContext().startActivity(profileIntent);
-                /*Fragment fragment = new ProfileFragment();
-                ((FragmentActivity)v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
-                        fragment).commit();
-                Bundle bundle = new Bundle();
-                bundle.putInt("UserId", Item.getmUserId());
-                fragment.setArguments(bundle);*/
             }
         });
         updateType.setOnClickListener(new View.OnClickListener() {
@@ -458,29 +434,45 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
             likedpost.setVisibility(View.GONE);
             commentView.setVisibility(View.GONE);
         }
-        wantToReadSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        wantToRead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(),AddShelf.class);
+                i.putExtra("idBook",Item.getmBookId());
+                i.putExtra("bookName",Item.getmBookName());
+                i.putExtra("bookImg",Item.getmBookCover());
+                i.putExtra("bookshelf",Item.getmUserShelf());
+                i.putExtra("author",Item.getmAuthorName());
+                v.getContext().startActivity(i);
+            }
+        });
+        final boolean[] start = {false};
+        /*wantToReadSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
             public void onItemSelected(AdapterView adapter, View v, int i, long lng) {
+                if(start[0] == true) {
+                    boolean flag = true;
+                    String selecteditem = adapter.getItemAtPosition(i).toString();
 
-                boolean flag = true;
-                String selecteditem = adapter.getItemAtPosition(i).toString();
-                if (i == 1 ) {
-                    flag = requestshelf(2,Item.getmBookId());
-                    shelfview(2);
-                } else if (i == 2) {
-                    flag = requestshelf(1, Item.getmBookId());
-                    shelfview(1);
-                } else if (i == 3) {
-                    flag = requestshelf(0, Item.getmBookId());
-                    shelfview(0);
+                    //Toast.makeText(getContext(), selecteditem, Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getContext(), i, Toast.LENGTH_LONG).show();
+
+                    if (i == 0) {
+                        flag = requestshelf(2, Item.getmBookId());
+                    }
+                    else if (i == 1) {
+                        flag = requestshelf(1, Item.getmBookId());
+                    } else if (i == 2) {
+                        flag = requestshelf(0, Item.getmBookId());
+                    }
+                    //Toast.makeText(getContext(), selecteditem, Toast.LENGTH_LONG).show();
+                    //or this can be also right: selecteditem = level[i];
+                    if (flag == false) {
+                        Toast.makeText(getContext(), "Change the shelf", Toast.LENGTH_LONG).show();
+                    }
                 }
-                shelfview(i);
-                //Toast.makeText(getContext(), selecteditem, Toast.LENGTH_LONG).show();
-                //or this can be also right: selecteditem = level[i];
-                if (flag == false) {
-                    Toast.makeText(getContext(), "Change the shelf", Toast.LENGTH_LONG).show();
-                }
+                start[0] = true;
             }
 
 
@@ -490,55 +482,16 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
 
                 Toast.makeText(getContext(),"salma",Toast.LENGTH_LONG).show();
             }
-        });
+        });*/
 
         return ListItemView;
     }
-    public boolean requestshelf(final int shelf, final int bookid){
-        final boolean[] flag = {true};
 
-        StringRequest request = new StringRequest(Request.Method.POST, Urls.ROOT+"/api/shelf/add_book", new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                //Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
-            }
-
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show();
-            }
-        }) {
-
-            //This is for Headers If You Needed
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                return params;
-            }
-
-            //Pass Your Parameters here
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("shelf_id",String.valueOf(shelf));
-                params.put("book_id",String.valueOf(bookid));
-                params.put("token", UserInfo.sToken);
-                params.put("type", UserInfo.sTokenType);
-                return params;
-            }
-        };
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-        queue.add(request);
-        return flag[0];
-    }
-
-    @SuppressLint("ResourceAsColor")
     public void shelfview(int shelf){
         if(shelf == 3){
             wantToRead.setBackgroundResource(R.color.colorGreen);
             wantToReadSpinner.setBackgroundResource(R.drawable.icons);
-            wantToRead.setTextColor(R.color.colorPrimary);
+            //wantToRead.setTextColor(R.color.colorPrimary);
             wantToRead.setText("WANT TO READ");
         }else if(shelf == 2){
             wantToRead.setBackgroundResource(R.color.colorPrimary);
@@ -556,5 +509,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
             wantToReadSpinner.setBackgroundResource(R.drawable.iconss);
             wantToRead.setText("READ");
         }
+        wantToReadSpinner.invalidate();
+        wantToRead.invalidate();
     }
 }
