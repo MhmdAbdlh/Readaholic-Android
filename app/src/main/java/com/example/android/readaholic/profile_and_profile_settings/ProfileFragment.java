@@ -1,7 +1,6 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -58,6 +58,7 @@ public class ProfileFragment extends Fragment {
     private int userFollowingState;
     View view;
     ProgressBar progressBar;
+    RelativeLayout settingsLayout;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,6 +69,7 @@ public class ProfileFragment extends Fragment {
         profilerEditToRightSign = (ImageView)view.findViewById(R.id.Profile_Settings_ImageView);
         profileSettingtofollowingState = (TextView)view.findViewById(R.id.Profile_Settings_TextView);
         progressBar=(ProgressBar)view.findViewById(R.id.Profile_ProgressBar);
+        settingsLayout = (RelativeLayout)view.findViewById(R.id.Profile_SeetingsLayout);
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -128,25 +130,26 @@ public class ProfileFragment extends Fragment {
      */
     public void UpdateData(Users user ,int id) {
         progressBar.setVisibility(View.INVISIBLE);
-        if(id != 0)
-        {
-            if(userFollowingState == 1)//user is following this profile.
+        if(UserInfo.mIsGuest ==false) {
+            if (id != 0) {
+                if (userFollowingState == 1)//user is following this profile.
                 {
                     profileSettingtofollowingState.setText(" FOLLOWING");
                     profilerEditToRightSign.setImageResource(R.drawable.check);
+                } else //user is not following this profile user.
+                {
+                    profileSettingtofollowingState.setText(" FOLLOW");
+                    profilerEditToRightSign.setImageResource(R.drawable.check);
                 }
-                else //user is not following this profile user.
-                    {
-                        profileSettingtofollowingState.setText(" FOLLOW");
-                        profilerEditToRightSign.setImageResource(R.drawable.check);
-                    }
 
+            } else {
+
+            }
         }
         else
-        {
-
-        }
-
+            {
+                settingsLayout.setVisibility(View.GONE);
+            }
         final AtomicBoolean loaded = new AtomicBoolean();
         Picasso.get().load(user.getmUserImageUrl()).transform(new CircleTransform()).into(mUserImage, new Callback.EmptyCallback() {
             @Override public void onSuccess() {
@@ -236,44 +239,5 @@ public class ProfileFragment extends Fragment {
 
 }
 
-    public static void removeSimpleProgressDialog() {
-        try {
-            if (mProgressDialog != null) {
-                if (mProgressDialog.isShowing()) {
-                    mProgressDialog.dismiss();
-                    mProgressDialog = null;
-                }
-            }
-        } catch (IllegalArgumentException ie) {
-            ie.printStackTrace();
-
-        } catch (RuntimeException re) {
-            re.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public static void showSimpleProgressDialog(Context context, String title,
-                                                String msg, boolean isCancelable) {
-        try {
-            if (mProgressDialog == null) {
-                mProgressDialog = ProgressDialog.show(context, title, msg);
-                mProgressDialog.setCancelable(isCancelable);
-            }
-
-            if (!mProgressDialog.isShowing()) {
-                mProgressDialog.show();
-            }
-
-        } catch (IllegalArgumentException ie) {
-            ie.printStackTrace();
-        } catch (RuntimeException re) {
-            re.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 }
