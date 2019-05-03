@@ -10,15 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
-
 import com.example.android.readaholic.R;
-
 public class Urls {
 
     private Activity mActivity;
     private Context mContext;
    //public static final String ROOT = "http://972c6e5d.ngrok.io";
    public static final String ROOT ="http://ec2-52-90-5-77.compute-1.amazonaws.com";
+
     //Login url
     public static String LOG_IN = "/api/login";
     //Logout url
@@ -74,9 +73,32 @@ public class Urls {
         return ROOT + "/api/reviwes/delete?reviewId="+review_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
 
     }
+    public static String makeLikeUnlike(String review_id) {
+        return ROOT + "/api/LikeOrUnLike?id="+review_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+    }
+    public static String makecomment(String review_id,String body) {
+        return ROOT + "/api/makeComment?id="+review_id+"&type=0&body="+body+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+    }
+    public static String deletecomment(String commentid) {
+        return ROOT + "/api/deleteComment?id="+commentid+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+    }
+    public static String getselfbooks(String shlef_name) {
+        return ROOT + "/api/shelf?shelf_name="+shlef_name+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+    }
+    public static String addbooktoshelf(String shelf_id,String book_id) {
+        return ROOT + "/api/shelf/add_book?shelf_id="+shelf_id+"&book_id="+book_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+    }
 
+    public static String deletebooktoshelf(String shelf_id,String book_id) {
+        return ROOT + "/api/shelf/remove_book?shelf_id="+shelf_id+"&book_id="+book_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+    }
+    public static String getlistofcomments(String book_id) {
+        return ROOT + "/api/listComments?id="+book_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+    }
 
-
+    public static String getshelfonbook(String book_id) {
+        return ROOT + "/api/showShelf?bookId="+book_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+    }
     public String constructTokenParameters() {
         String parameters = "";
 

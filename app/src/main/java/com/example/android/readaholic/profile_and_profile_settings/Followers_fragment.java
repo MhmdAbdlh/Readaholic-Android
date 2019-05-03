@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -46,6 +47,7 @@ public class Followers_fragment extends Fragment {
      int userId;
      int FollowingNumber;
     int FollowersNumber;
+    ProgressBar progressBar;
      String FollowesResponse = "{\n" +
             "  \"GoodreadsResponse\": {\n" +
             "    \"Request\": {\n" +
@@ -95,7 +97,7 @@ public class Followers_fragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_followers_fragment, container, false);
         //make the TextView of not available message at first invisible.
-
+        progressBar=(ProgressBar)view.findViewById(R.id.FollowersFragment_progressBar);
         mNotAvaliable =(TextView)view.findViewById(R.id.NotAvaliableTextView);
         mNotAvaliable.setVisibility(View.INVISIBLE);
 
@@ -189,12 +191,12 @@ public class Followers_fragment extends Fragment {
             }
 
         mUsers = new ArrayList<>();
-
+        progressBar.setVisibility(View.VISIBLE);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null, new com.android.volley.Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("FollowingInProfile", "user id is "+Integer.toString(userId));
-                Log.e("FollowingInProfile",response.toString());
+                Log.e("FollowingInProfileRes",response.toString());
 
 
                 JSONArray followings = response.optJSONArray("following");
@@ -226,6 +228,7 @@ public class Followers_fragment extends Fragment {
     }
 private void UpdateList()
 {
+    progressBar.setVisibility(View.INVISIBLE);
     if(mUsers.isEmpty())
     {
         Log.e("not available ","not available in following and followers ");

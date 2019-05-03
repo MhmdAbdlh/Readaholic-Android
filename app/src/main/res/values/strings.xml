@@ -3,6 +3,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="search_hint">Type Name</string>
     <string name="title_activity_updates">UpdatesActivity</string>
 
     <string name="title_activity_profile">Profile</string>
@@ -23,5 +24,6 @@
         <item>WANT TO READ</item>
         <item>CURRENTLY READING</item>
         <item>READ</item>
+        <item>Remove From shelf</item>
     </string-array>
 </resources>

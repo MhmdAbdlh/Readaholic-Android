@@ -19,16 +19,53 @@
         <activity
             android:name=".explore.ExploreActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".books.Editreview"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".myshelves.BookShelves"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+
+
+        <activity android:name=".SearchableActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+
+        <activity
+            android:name=".explore.ExploreActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        <meta-data android:name="android.app.default_searchable"
+            android:value=".SearchableActivity" />
+        </activity>
         <activity android:name=".settings.edit_Location.LocationSettings" />
         <activity android:name=".settings.edit_Birthday.BirthdaySettings" />
         <activity android:name=".settings.edit_UserName.UserNameSettings" />
         <activity android:name=".settings.Settings" />
         <activity android:name=".home.UpdatePage" />
-        <activity android:name=".home.UpdatesActivity" />
+        <activity android:name=".home.UpdatesActivity" >
+            <meta-data android:name="android.app.default_searchable"
+                android:value=".SearchableActivity" />
+        </activity>
+
         <activity
             android:name=".Main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".profile_and_profile_settings.Profile" />
+        <activity
+            android:name=".profile_and_profile_settings.Profile"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data android:name="android.app.default_searchable"
+                android:value=".SearchableActivity" />
+        </activity>
+
         <activity
             android:name=".sign_in_up.Start"
             android:theme="@style/AppTheme.NoActionBar">

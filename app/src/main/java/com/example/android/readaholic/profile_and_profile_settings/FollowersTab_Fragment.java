@@ -1,7 +1,5 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -49,7 +48,7 @@ public class FollowersTab_Fragment extends Fragment {
      int userId;
      int followersNum;
      TextView followersTitle;
-     private static ProgressDialog mProgressDialog;
+     ProgressBar progressBar;
      /**
      * onCreateView called when the view is created
      * @param inflater inflate the layout
@@ -64,7 +63,7 @@ public class FollowersTab_Fragment extends Fragment {
         mNotAvaliableTextView = (TextView) view.findViewById(R.id.FollowersTab_fragment_NotAvaliable_TextView);
         mNotAvaliableTextView.setVisibility(View.INVISIBLE);
         followersTitle = (TextView) view.findViewById(R.id.FollowersTab_fragment_Followers_TextView);
-
+        progressBar =(ProgressBar)view.findViewById(R.id.FollowersTab_progressBar);
         Bundle bundle = getArguments();
         if( bundle == null)
             userId =0;
@@ -102,7 +101,8 @@ public class FollowersTab_Fragment extends Fragment {
             mRequestUrl = Urls.ROOT + "/api/followers?user_id="+Integer.toString(userId)+"&token="+
                     UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
-        showSimpleProgressDialog(getContext(),"Loading.....","Loading Followers And Followings",false);
+        progressBar.setVisibility(View.VISIBLE);
+        //showSimpleProgressDialog(getContext(),"Loading.....","Loading Followers And Followings",false);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -120,6 +120,11 @@ public class FollowersTab_Fragment extends Fragment {
                                 user.setmUserName(Followers.optJSONObject(i).optString("name"));
                                 user.setmUserId(Followers.optJSONObject(i).optInt("id"));
                                 user.setmUserImageUrl(Followers.optJSONObject(i).optString("image_link"));
+                                int state =Followers.optJSONObject(i).optInt("is_followed");
+                                if(state==1)
+                                    user.setmFollowerState(true);
+                                else
+                                    user.setmFollowerState(false);
                                 followers.add(user);
                             }
                             UpdateList();
@@ -137,7 +142,8 @@ public class FollowersTab_Fragment extends Fragment {
     }
     private void UpdateList()
     {
-        removeSimpleProgressDialog();
+        progressBar.setVisibility(View.INVISIBLE);
+        //removeSimpleProgressDialog();
         if(followers.isEmpty())
         {
             mNotAvaliableTextView.setVisibility(View.VISIBLE);
@@ -168,43 +174,5 @@ public class FollowersTab_Fragment extends Fragment {
 
     }
 
-    public static void removeSimpleProgressDialog() {
-        try {
-            if (mProgressDialog != null) {
-                if (mProgressDialog.isShowing()) {
-                    mProgressDialog.dismiss();
-                    mProgressDialog = null;
-                }
-            }
-        } catch (IllegalArgumentException ie) {
-            ie.printStackTrace();
 
-        } catch (RuntimeException re) {
-            re.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public static void showSimpleProgressDialog(Context context, String title,
-                                                String msg, boolean isCancelable) {
-        try {
-            if (mProgressDialog == null) {
-                mProgressDialog = ProgressDialog.show(context, title, msg);
-                mProgressDialog.setCancelable(isCancelable);
-            }
-
-            if (!mProgressDialog.isShowing()) {
-                mProgressDialog.show();
-            }
-
-        } catch (IllegalArgumentException ie) {
-            ie.printStackTrace();
-        } catch (RuntimeException re) {
-            re.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

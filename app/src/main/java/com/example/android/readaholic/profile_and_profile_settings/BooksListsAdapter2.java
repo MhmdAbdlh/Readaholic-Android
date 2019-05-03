@@ -97,5 +97,14 @@ public class BooksListsAdapter2 extends RecyclerView.Adapter<BooksListsAdapter2.
         return mUsers.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
 }
 

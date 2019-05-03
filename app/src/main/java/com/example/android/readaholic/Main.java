@@ -3,6 +3,7 @@ package com.example.android.readaholic;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -13,12 +14,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
-
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -31,18 +29,18 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
 import com.example.android.readaholic.contants_and_static_data.Urls;
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
+import com.example.android.readaholic.explore.ExploreActivity;
 import com.example.android.readaholic.home.HomeFragment;
 import com.example.android.readaholic.home.NotificationFragment;
 import com.example.android.readaholic.home.ViewPageAdapter;
-
-
-import com.example.android.readaholic.explore.ExploreActivity;
+import com.example.android.readaholic.myshelves.ShelvesFragment;
 import com.example.android.readaholic.profile_and_profile_settings.FollowersAndFollowingFragment;
 import com.example.android.readaholic.profile_and_profile_settings.Profile;
 import com.example.android.readaholic.settings.Settings;
 import com.example.android.readaholic.sign_in_up.Start;
+
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 
 import com.example.android.readaholic.myshelves.ShelvesFragment;
@@ -54,6 +52,11 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -137,9 +140,31 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         View Header = ((NavigationView)findViewById(R.id.Main_navView)).getHeaderView(0);
         ProfileImage = (ImageView)Header.findViewById(R.id.NavHeader_ProfilePhoto_ImageView);
         mUsername = (TextView) Header.findViewById(R.id.NavHeader_Profile_TextView);
-        Picasso.get().load(UserInfo.sImageUrl).into(ProfileImage);
+        final AtomicBoolean loaded = new AtomicBoolean();
+        Picasso.get().load(UserInfo.sImageUrl).transform(new CircleTransform()).into(ProfileImage, new Callback.EmptyCallback() {
+            @Override public void onSuccess() {
+                loaded.set(true);
+            }
+        });
+        if (!loaded.get()) {
+            // The image was immediately available.
+            Picasso.get().load("https://s.gr-assets.com/assets/nophoto/user/u_111x148-9394ebedbb3c6c218f64be9549657029.png")
+                    .transform(new CircleTransform()).into(ProfileImage);
+        }
+
+
+        //Picasso.get().load(UserInfo.sImageUrl).into(ProfileImage);
         mUsername.setText(UserInfo.sName);
         ProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent profileIntent = new Intent(v.getContext(), Profile.class);
+                profileIntent.putExtra("user-idFromFollowingList",0);
+                startActivity(profileIntent);
+            }
+        });
+
+        mUsername.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent profileIntent = new Intent(v.getContext(), Profile.class);
@@ -201,9 +226,14 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             case R.id.draw_followers_menu:
                 mTabs.setVisibility(View.GONE);
                 mPages.setVisibility(View.GONE);
+               /* Intent profileIntent = new Intent(getBaseContext(), Profile.class);
+                profileIntent.putExtra("FromMenu",1);
+                startActivity(profileIntent);
+*/
                 getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
                         new FollowersAndFollowingFragment(),"FollowersAndFollowings").addToBackStack("MainToFollowersAndFollowings").commit();
                 break;
+
             case R.id.draw_settings_menu:
                 mTabs.setVisibility(View.GONE);
                 mPages.setVisibility(View.GONE);

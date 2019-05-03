@@ -1,18 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ProfileContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
-    tools:context=".profile_and_profile_settings.Profile">
+    android:orientation="vertical"
+    tools:context=".profile_and_profile_settings.Profile"
+    >
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/Profile_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:titleTextColor="@color/brown">
+        android:paddingTop="?attr/actionBarSize"
+    </android.support.v7.widget.Toolbar>
+
 
     <FrameLayout
         android:id="@+id/ProfileLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp">
+        >
 
     </FrameLayout>
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

@@ -16,6 +16,7 @@ public class UserInfo {
     public static boolean IsMemic = true;
     public static int Memicid = 1;
 
+    public static Boolean mIsGuest=false;
 
     /**
      * adding the user data

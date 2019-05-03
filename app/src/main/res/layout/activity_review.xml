@@ -132,6 +132,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:onClick="makeReviewLike"
             android:paddingLeft="24dp"
             android:text="like"
             android:textColor="@color/colorGreen" />
@@ -193,8 +194,15 @@
         android:layout_height="2dp"
         android:layout_marginLeft="80dp"
         android:layout_marginRight="80dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@drawable/reviewlist"
         android:paddingBottom="3dp" />
+
+    <TextView
+        android:id="@+id/noreviewtext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:visibility="gone" />
 
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swiperefreshcomment"
@@ -210,6 +218,7 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <LinearLayout
+        android:id="@+id/Addcomentlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

@@ -1,7 +1,6 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -30,11 +31,13 @@ import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.example.android.readaholic.home.Updates;
 import com.example.android.readaholic.home.UpdatesAdapter;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class ProfileFragment extends Fragment {
@@ -54,276 +57,14 @@ public class ProfileFragment extends Fragment {
     private UpdatesAdapter adapterForUpdatesList;
     private int userFollowingState;
     View view;
-    private String jsonFile = "{\n" +
-            "   \"updates\":{\n" +
-            "      \"update\":[\n" +
-            "         {\n" +
-            "            \"id\":\"0000000\",\n" +
-            "            \"actor\":{\n" +
-            "               \"id\":\"65993249\",\n" +
-            "               \"name\":\"Salma Ibrahim\",\n" +
-            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "            },\n" +
-            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "            \"numComments\":\"11\",\n" +
-            "            \"numLikes\":\"77\",\n" +
-            "            \"action\":{\n" +
-            "               \"id\":\"5\",\n" +
-            "               \"type\":\"0\",\n" +
-            "               \"rating\":\"5\",\n" +
-            "               \"body\":\"\",\n" +
-            "               \"book\":{\n" +
-            "                  \"id\":\"31087\",\n" +
-            "                  \"title\":\"American Duchess\",\n" +
-            "\t\t\t\t  \"author\":\"Karen Harper\",\n" +
-            "                  \"imgUrl\":\"https://i.harperapps.com/covers/9780062884299/y648.jpg\",\n" +
-            "                  \"shelf\":\"\",\n" +
-            "                  \"rating\":\"\"\n" +
-            "               }\n" +
-            "            }\n" +
-            "         },\n" +
-            "\t\t {\n" +
-            "            \"id\":\"0000000\",\n" +
-            "            \"actor\":{\n" +
-            "               \"id\":\"65993249\",\n" +
-            "               \"name\":\"Salma Ibrahim\",\n" +
-            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "            },\n" +
-            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "            \"numComments\":\"11\",\n" +
-            "            \"numLikes\":\"9\",\n" +
-            "            \"action\":{\n" +
-            "               \"id\":\"5\",\n" +
-            "               \"type\":\"0\",\n" +
-            "               \"rating\":\"0\",\n" +
-            "\t\t\t   \"review\":\"salma\",\n" +
-            "               \"body\":\"\",\n" +
-            "               \"book\":{\n" +
-            "                  \"id\":\"31087\",\n" +
-            "                  \"title\":\"American Duchess\",\n" +
-            "\t\t\t\t  \"author\":\"Karen Harper\",\n" +
-            "                  \"imgUrl\":\"https://i.harperapps.com/covers/9780062884299/y648.jpg\",\n" +
-            "                  \"shelf\":\"want to read\",\n" +
-            "                  \"rating\":\"\"\n" +
-            "               }\n" +
-            "            }\n" +
-            "         },\n" +
-            "         {\n" +
-            "            \"id\":\"000001\",\n" +
-            "            \"actor\":{\n" +
-            "               \"id\":\"65993249\",\n" +
-            "               \"name\":\"Salma Ibrahim\",\n" +
-            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "            },\n" +
-            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "            \"numComments\":\"7\",\n" +
-            "            \"numLikes\":\"9\",\n" +
-            "            \"action\":{\n" +
-            "               \"id\":\"\",\n" +
-            "               \"type\":\"2\",\n" +
-            "               \"user\":{\n" +
-            "                  \"name\":\"salma\",\n" +
-            "                  \"imageLink\":\"\",\n" +
-            "                  \"ratingAvg\":\"\",\n" +
-            "                  \"ratingCount\":\"\"\n" +
-            "               }\n" +
-            "            }\n" +
-            "         },\n" +
-            "         {\n" +
-            "            \"id\":\"0000000\",\n" +
-            "            \"actor\":{\n" +
-            "               \"id\":\"65993249\",\n" +
-            "               \"name\":\"Salma Ibrahim\",\n" +
-            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "            },\n" +
-            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "            \"numComments\":\"2\",\n" +
-            "            \"numLikes\":\"12\",\n" +
-            "            \"action\":{\n" +
-            "               \"id\":\"5\",\n" +
-            "               \"type\":\"1\",\n" +
-            "               \"shelf\":\"wants to read\",\n" +
-            "               \"book\":{\n" +
-            "                  \"id\":\"31087\",\n" +
-            "                  \"title\":\"The Last Boleyn\",\n" +
-            "                  \"imgUrl\":\"\",\n" +
-            "\t\t\t\t  \"author\":\"karen\",\n" +
-            "                  \"shelf\":\"\",\n" +
-            "                  \"rating\":\"\"\n" +
-            "               }\n" +
-            "            }\n" +
-            "         },\n" +
-            "         {\n" +
-            "            \"id\":\"0000000\",\n" +
-            "            \"actor\":{\n" +
-            "               \"id\":\"65993249\",\n" +
-            "               \"name\":\"Salma Ibrahim\",\n" +
-            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "            },\n" +
-            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "                  \"numComments\":\"127\",\n" +
-            "                  \"numLikes\":\"6123\",\n" +
-            "            \"action\":{\n" +
-            "               \"id\":\"7\",\n" +
-            "               \"type\":\"3\",\n" +
-            "               \"resourceType\":\"1\",\n" +
-            "\t\t\t\t\t \"comment\":\"the best book ever <3\",\n" +
-            "               \"update\":{\n" +
-            "                  \"id\":\"0000000\",\n" +
-            "                  \"actor\":{\n" +
-            "                     \"id\":\"65993249\",\n" +
-            "                     \"name\":\"Salma Ibrahim\",\n" +
-            "                     \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "                  },\n" +
-            "                  \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "                  \"action\":{\n" +
-            "                     \"id\":\"5\",\n" +
-            "                     \"type\":\"1\",\n" +
-            "                     \"shelf\":\"wants to read\",\n" +
-            "                     \"book\":{\n" +
-            "                        \"id\":\"31087\",\n" +
-            "\t\t\t\t\t\t\"author\":\"Karen\",\n" +
-            "                        \"title\":\"The Last Boleyn\",\n" +
-            "                        \"imgUrl\":\"\",\n" +
-            "                        \"shelf\":\"\",\n" +
-            "                        \"rating\":\"\"\n" +
-            "                     }\n" +
-            "                  }\n" +
-            "               }\n" +
-            "            }\n" +
-            "         },\n" +
-            "\t\t {\n" +
-            "            \"id\":\"0000000\",\n" +
-            "            \"actor\":{\n" +
-            "               \"id\":\"65993249\",\n" +
-            "               \"name\":\"Salma Ibrahim\",\n" +
-            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "            },\n" +
-            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "                  \"numComments\":\"127\",\n" +
-            "                  \"numLikes\":\"6123\",\n" +
-            "            \"action\":{\n" +
-            "               \"id\":\"7\",\n" +
-            "               \"type\":\"3\",\n" +
-            "               \"resourceType\":\"1\",\n" +
-            "\t\t\t\t\t \"comment\":\"the best book ever <3\",\n" +
-            "               \"update\":{\"id\":\"000001\",\n" +
-            "            \"actor\":{\n" +
-            "               \"id\":\"65993249\",\n" +
-            "               \"name\":\"Salma Ibrahim\",\n" +
-            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "            },\n" +
-            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "            \"numComments\":\"7\",\n" +
-            "            \"numLikes\":\"9\",\n" +
-            "            \"action\":{\n" +
-            "               \"id\":\"\",\n" +
-            "               \"type\":\"2\",\n" +
-            "               \"user\":{\n" +
-            "                  \"name\":\"Farah\",\n" +
-            "                  \"imageLink\":\"\",\n" +
-            "                  \"ratingAvg\":\"\",\n" +
-            "                  \"ratingCount\":\"\"\n" +
-            "               }\n" +
-            "            }\n" +
-            "         }\n" +
-            "            }\n" +
-            "         },\n" +
-            "         {\n" +
-            "            \"id\":\"0000000\",\n" +
-            "            \"actor\":{\n" +
-            "               \"id\":\"65993249\",\n" +
-            "               \"name\":\"Salma Ibrahim\",\n" +
-            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "            },\n" +
-            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "            \"numComments\":\"5\",\n" +
-            "            \"numLikes\":\"9\",\n" +
-            "            \"action\":{\n" +
-            "               \"id\":\"7\",\n" +
-            "               \"type\":\"4\",\n" +
-            "\t\t\t   \"comment\":\"the best book\",\n" +
-            "               \"resourceType\":\"0\",\n" +
-            "               \"body\":\"\",\n" +
-            "               \"update\":{\n" +
-            "                  \"id\":\"0000000\",\n" +
-            "                  \"actor\":{\n" +
-            "                     \"id\":\"65993249\",\n" +
-            "                     \"name\":\"Salma Ibrahim\",\n" +
-            "                     \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "                  },\n" +
-            "                  \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "                  \"action\":{\n" +
-            "                     \"id\":\"5\",\n" +
-            "                     \"type\":\"0\",\n" +
-            "                     \"rating\":\"3\",\n" +
-            "                     \"body\":\"\",\n" +
-            "                     \"book\":{\n" +
-            "                        \"id\":\"31087\",\n" +
-            "                        \"title\":\"The Last Boleyn\",\n" +
-            "\t\t\t\t\t\t\"author\":\"Harry\",\n" +
-            "                        \"imgUrl\":\"\",\n" +
-            "                        \"shelf\":\"\",\n" +
-            "                        \"rating\":\"\"\n" +
-            "                     }\n" +
-            "                  }\n" +
-            "               }\n" +
-            "            }\n" +
-            "         }, \n" +
-            "\t\t {\n" +
-            "            \"id\":\"0000000\",\n" +
-            "            \"actor\":{\n" +
-            "               \"id\":\"65993249\",\n" +
-            "               \"name\":\"Salma\",\n" +
-            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "            },\n" +
-            "            \"updated_at\":\"sat at 7:00AM\",\n" +
-            "            \"numComments\":\"5\",\n" +
-            "            \"numLikes\":\"9\",\n" +
-            "            \"action\":{\n" +
-            "               \"id\":\"7\",\n" +
-            "               \"type\":\"4\",\n" +
-            "\t\t\t   \"comment\":\"the best book\",\n" +
-            "               \"resourceType\":\"0\",\n" +
-            "               \"body\":\"\",\n" +
-            "               \"update\":{\n" +
-            "                  \"id\":\"0000000\",\n" +
-            "                  \"actor\":{\n" +
-            "                     \"id\":\"65993249\",\n" +
-            "                     \"name\":\"Salma\",\n" +
-            "                     \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "                  },\n" +
-            "                  \"updated_at\":\"Fri at 8:00PM\",\n" +
-            "                  \"action\":{\n" +
-            "                     \"id\":\"5\",\n" +
-            "                     \"type\":\"0\",\n" +
-            "                     \"rating\":\"0\",\n" +
-            "\t\t\t\t\t \"review\":\"the best book ever\",\n" +
-            "                     \"body\":\"\",\n" +
-            "                     \"book\":{\n" +
-            "                        \"id\":\"31087\",\n" +
-            "                        \"title\":\"The Last Boleyn\",\n" +
-            "\t\t\t\t\t\t\"author\":\"Harry\",\n" +
-            "                        \"imgUrl\":\"\",\n" +
-            "                        \"shelf\":\"\",\n" +
-            "                        \"rating\":\"\"\n" +
-            "                     }\n" +
-            "                  }\n" +
-            "               }\n" +
-            "            }\n" +
-            "\t\t }\n" +
-            "      ],\n" +
-            "      \"_type\":\"array\"\n" +
-            "   }\n" +
-            "}";
-
+    ProgressBar progressBar;
+    RelativeLayout settingsLayout;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.profile_fragment,container,false);
         mUserImage = (ImageView)view.findViewById(R.id.profileActivity_ProfilePic_ImageView);
         mUserName =(TextView)view.findViewById(R.id.ProfileActivity_UserName_TextView);
-
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -338,59 +79,25 @@ public class ProfileFragment extends Fragment {
         mUserBookNumber = (TextView)view.findViewById(R.id.ProfileActivity_UserBooksNumber_TextView);
         profilerEditToRightSign = (ImageView)view.findViewById(R.id.Profile_Settings_ImageView);
         profileSettingtofollowingState = (TextView)view.findViewById(R.id.Profile_Settings_TextView);
-///////////////////////////////////////////////////////////////////////////////
-        //Take user id when click in his name in Updates (user could be different from the current user)
+        progressBar=(ProgressBar)view.findViewById(R.id.Profile_ProgressBar);
+        settingsLayout = (RelativeLayout)view.findViewById(R.id.Profile_SeetingsLayout);
 
-
-        Picasso.get().load("https://s.gr-assets.com/assets/nophoto/user/" +
-                    "u_111x148-9394ebedbb3c6c218f64be9549657029.png").transform(new CircleTransform()).into(mUserImage);
-
-           // mUser_Id = getArguments().getInt("user-id");
-            //Log.e("userid",Integer.toString(mUser_Id));
-
-        requestProfileView(mUser_Id);
-
-
-
-        Log.e("UserImageUrl",String.valueOf(mUser_Id));
-
-        //Toast.makeText(getContext(),String.valueOf(mUser_Id),Toast.LENGTH_SHORT).show();
-        //UpdateData(mProfileUser);
-
-
-
-        /*Bundle bundle = this.getArguments();
+        bundle = this.getArguments();
         if (bundle != null) {
-            int myInt = bundle.getInt("UserId", mUser_Id);
+            mUser_Id = bundle.getInt("UserId");
         }
-*/
-        ///////////////////////////////////////////////////////////////////////////////////////////////
-       /* arayOfUpdates = HomeFragment.onResposeAction(jsonFile);
-        adapterForUpdatesList = new UpdatesAdapter(getContext(),arayOfUpdates);
-        mListOfUpdates = (ListView) view.findViewById(R.id.Profile_updateslist_listview);
-        mListOfUpdates.setOnTouchListener(new ListView.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Disallow ScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        break;
 
-                    case MotionEvent.ACTION_UP:
-                        // Allow ScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                        break;
-                }
-
-                // Handle ListView touch events.
-                v.onTouchEvent(event);
-                return true;
+        if(savedInstanceState == null) {
+            if (getArguments() == null)
+                mUser_Id = 0;
+            else {
+                mUser_Id = getArguments().getInt("user-id");
+               // userFollowingState = getArguments().getInt("followingState");
             }
-        });
-        mListOfUpdates.setAdapter(adapterForUpdatesList);
-*/
+            Log.e("userid", Integer.toString(mUser_Id));
+            requestProfileView(mUser_Id);
+        }
+
         return view;
 
     }
@@ -398,16 +105,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState == null) {
-            if (getArguments() == null)
-                mUser_Id = 0;
-            else {
-                mUser_Id = getArguments().getInt("user-id");
-                userFollowingState = getArguments().getInt("followingState");
-            }
-            Log.e("userid", Integer.toString(mUser_Id));
-            requestProfileView(mUser_Id);
-        }
 
     }
 
@@ -443,28 +140,43 @@ public class ProfileFragment extends Fragment {
      * @param user holding data from request.
      */
     public void UpdateData(Users user ,int id) {
-        removeSimpleProgressDialog();
-        if(id != 0)
-        {
-            if(userFollowingState == 1)//user is following this profile.
+        progressBar.setVisibility(View.INVISIBLE);
+        if(UserInfo.mIsGuest ==false) {
+            if (id != 0) {
+                if (userFollowingState == 1)//user is following this profile.
                 {
                     profileSettingtofollowingState.setText(" FOLLOWING");
                     profilerEditToRightSign.setImageResource(R.drawable.check);
+                } else //user is not following this profile user.
+                {
+                    profileSettingtofollowingState.setText(" FOLLOW");
+                    profilerEditToRightSign.setImageResource(R.drawable.check);
                 }
-                else //user is not following this profile user.
-                    {
-                        profileSettingtofollowingState.setText(" FOLLOW");
-                        profilerEditToRightSign.setImageResource(R.drawable.check);
-                    }
 
+            } else {
+
+            }
         }
         else
-        {
-
+            {
+                settingsLayout.setVisibility(View.GONE);
+            }
+        final AtomicBoolean loaded = new AtomicBoolean();
+        Picasso.get().load(user.getmUserImageUrl()).transform(new CircleTransform()).into(mUserImage, new Callback.EmptyCallback() {
+            @Override public void onSuccess() {
+                loaded.set(true);
+            }
+        });
+        if (!loaded.get()) {
+            // The image was immediately available.
+            Picasso.get().
+                    load("https://s.gr-assets.com/assets/nophoto/user/u_111x148-9394ebedbb3c6c218f64be9549657029.png").
+                    transform(new CircleTransform()).into(mUserImage);
         }
-        Log.e("UserImageUrl",user.getmUserImageUrl());
-            Picasso.get().load(user.getmUserImageUrl()).transform(new CircleTransform()).into(mUserImage);
+
         mUserBookNumber.setText(user.getmUsernumberOfBooks()+" Books");
+        Log.e("UserNameInProfile",user.getmUserName());
+
         mUserName.setText(user.getmUserName());
 
     }
@@ -474,6 +186,8 @@ public class ProfileFragment extends Fragment {
      */
     public void requestProfileView(final int user_id)
 {
+    progressBar.setVisibility(View.VISIBLE);
+
     if(user_id != 0)
     mRequestUrl =Urls.ROOT + "/api/showProfile?"+"id="+Integer.toString(user_id)+"&token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
@@ -485,7 +199,6 @@ public class ProfileFragment extends Fragment {
     BasicNetwork network = new BasicNetwork(new HurlStack());
     mRequestQueue = new RequestQueue(cache, network);
     mRequestQueue.start();
-    showSimpleProgressDialog(getContext(),"Loading.....","Loading Profile",false);
     final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null, new Response.Listener<JSONObject>() {
         @Override
         public void onResponse(JSONObject Response) {
@@ -530,49 +243,12 @@ public class ProfileFragment extends Fragment {
     users.setmUsernumberOfBooks(Response.optInt("books_count"));
     users.setmNumberOfFollowers(Response.optInt("followers_count"));
     users.setGetmNumberOfFolloweings(Response.optInt("following_count"));
+    userFollowingState=Response.optInt("is_followed");
     Log.e("showprofileResponseName",users.getmUserName());
     mProfileUser = users;
     return users;
 
 }
 
-    public static void removeSimpleProgressDialog() {
-        try {
-            if (mProgressDialog != null) {
-                if (mProgressDialog.isShowing()) {
-                    mProgressDialog.dismiss();
-                    mProgressDialog = null;
-                }
-            }
-        } catch (IllegalArgumentException ie) {
-            ie.printStackTrace();
 
-        } catch (RuntimeException re) {
-            re.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public static void showSimpleProgressDialog(Context context, String title,
-                                                String msg, boolean isCancelable) {
-        try {
-            if (mProgressDialog == null) {
-                mProgressDialog = ProgressDialog.show(context, title, msg);
-                mProgressDialog.setCancelable(isCancelable);
-            }
-
-            if (!mProgressDialog.isShowing()) {
-                mProgressDialog.show();
-            }
-
-        } catch (IllegalArgumentException ie) {
-            ie.printStackTrace();
-        } catch (RuntimeException re) {
-            re.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

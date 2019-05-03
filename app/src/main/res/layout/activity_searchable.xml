@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    tools:context=".SearchableActivity">
+
+        <android.support.v7.widget.SearchView
+            android:id="@+id/Profile_searchView"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:iconifiedByDefault="true"
+            android:queryHint="Search People"
+            android:paddingBottom="8dp">
+        </android.support.v7.widget.SearchView>
+
+
+
+    <TextView
+        android:layout_below="@id/Profile_searchView"
+        android:id="@+id/Search_ResultNumber_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:paddingBottom="16dp"
+        android:text=" 7 results for ' '  "
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/Search_NoResults_TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text='0 results for " "'
+        android:textSize="18sp"
+        />
+    <ProgressBar
+        android:id="@+id/Search_ProgressBar"
+        android:layout_below="@id/Search_ResultNumber_TextView"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        ></ProgressBar>
+
+
+    <ListView
+
+        android:id="@+id/Search_listView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/Search_ResultNumber_TextView"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="16dp"
+        android:paddingTop="16dp"
+        android:scrollbars="none" />
+</RelativeLayout>

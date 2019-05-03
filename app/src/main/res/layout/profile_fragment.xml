@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
+<<<<<<< HEAD
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+=======
+
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+>>>>>>> 85942ac0ed0c300a08998c3f2b5d522652441f36
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -16,6 +25,7 @@
             android:gravity="center"
             android:orientation="vertical"
             android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
 
             <ImageView
                 android:id="@+id/profileActivity_ProfilePic_ImageView"
@@ -55,6 +65,7 @@
                 android:layout_marginBottom="8dp" />
 
             <RelativeLayout
+                android:id="@+id/Profile_SeetingsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginBottom="8dp">
@@ -94,6 +105,14 @@
             android:background="@color/colorPrimaryDark"
             />
 
+        <ProgressBar
+            android:id="@+id/Profile_ProgressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"/>
+
+
         <FrameLayout
             android:id="@+id/Profile_Books_Fragment"
             android:layout_width="match_parent"
@@ -115,6 +134,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+<<<<<<< HEAD
         </FrameLayout>
+=======
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <ListView
+                    android:id="@+id/Profile_updateslist_listview1"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp" />
+            </LinearLayout>
+        </FrameLayout>
+
+>>>>>>> 85942ac0ed0c300a08998c3f2b5d522652441f36
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

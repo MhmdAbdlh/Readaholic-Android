@@ -14,25 +14,12 @@
         android:id="@+id/All"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/colorBackgroundWhite"
         android:orientation="vertical">
-
-        <ProgressBar
-            android:id="@+id/bookpage_loading_progbar"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:background="@color/colorBackgroundWhite"
-            android:visibility="gone" />
-
 
         <LinearLayout
             android:id="@+id/whenconnection"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorBackgroundWhite"
             android:orientation="vertical">
 
             <ImageView
@@ -81,7 +68,7 @@
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:background="@drawable/reviewlist"
+                android:background="@color/colorPrimaryDark"
                 android:paddingBottom="15dp" />
 
             <LinearLayout
@@ -121,12 +108,11 @@
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:background="@drawable/reviewlist"
+                android:background="@color/colorPrimaryDark"
                 android:paddingTop="15dp"
                 android:paddingBottom="3dp" />
 
             <LinearLayout
-                android:id="@+id/bookshelflayout"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginLeft="80dp"
@@ -162,14 +148,13 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/btnselectedshape"
                 android:orientation="vertical"
-                android:paddingBottom="12dp"
+                android:paddingBottom="5dp"
                 android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:padding="6dp">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -194,7 +179,6 @@
                     android:id="@+id/myreviewbody"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="3dp"
                     android:text="reviewbody"
                     android:textSize="18sp" />
 
@@ -215,16 +199,14 @@
 
             <Button
                 android:id="@+id/writeareviewbtn"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="fill_vertical|center_horizontal|center"
-                android:background="@drawable/btnssemicorners"
+                android:background="@drawable/btnselectedshape"
                 android:foregroundGravity="center_horizontal|fill_horizontal|center"
                 android:gravity="center_horizontal|center"
                 android:onClick="writeReview"
-                android:padding="5dp"
                 android:text="Write a Review"
-                android:textColor="@color/colorBackgroundWhite"
                 android:visibility="visible" />
 
             <TextView
@@ -243,7 +225,7 @@
                 android:layout_height="1dp"
                 android:layout_marginLeft="80dp"
                 android:layout_marginRight="80dp"
-                android:background="@drawable/reviewlist"
+                android:background="@color/colorPrimaryDark"
                 android:paddingBottom="3dp" />
 
             <TextView
@@ -263,7 +245,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
 
-                android:background="@drawable/reviewlist"
+                android:background="@color/colorPrimaryDark"
                 android:paddingBottom="3dp" />
 
             <TextView
@@ -271,7 +253,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="left"
+                android:gravity="center"
                 android:paddingTop="10dp"
                 android:paddingBottom="20dp"
                 android:text="BookInfo" />
@@ -279,7 +261,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@drawable/reviewlist"
+                android:background="@color/colorPrimaryDark"
                 android:paddingBottom="10dp" />
 
             <LinearLayout
@@ -303,6 +285,8 @@
                     app:srcCompat="@drawable/rightarrow" />
 
             </LinearLayout>
+
+
 
 
         </LinearLayout>

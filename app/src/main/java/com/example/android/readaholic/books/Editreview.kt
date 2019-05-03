@@ -19,9 +19,9 @@ class Editreview : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editreview)
-        var intent=Intent()
-       //  reviewid=intent.getIntExtra("REVIEWID",0)
+
     }
+
 
 
     fun saveReview(view:View)
@@ -58,7 +58,6 @@ class Editreview : AppCompatActivity() {
     {
         var reviewtext=writerreview.text.toString()
         Cbookdata.bookrating=raitebookstarts.rating.toInt()
-
         sendReviewService(Cbookdata.bookid,reviewtext, Cbookdata.bookrating, Cbookdata.shelf.toString())
     }
 
@@ -77,7 +76,7 @@ class Editreview : AppCompatActivity() {
                     var jsonresponse=JSONObject(response)
                     if(jsonresponse.getString("status")=="true")
                     {
-                        Toast.makeText(this,"Thanks for your review yasta", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this,"Thanks for your review ", Toast.LENGTH_SHORT).show()
                         writerreview.text.clear()
                         finish()
                     }
