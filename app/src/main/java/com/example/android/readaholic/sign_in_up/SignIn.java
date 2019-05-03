@@ -271,18 +271,14 @@ public class SignIn extends AppCompatActivity {
                 //in case of mocking data
                 /**********************mocking data -> open***************************************/
 
+
 /*
-
                 //getting user name and password
-<<<<<<< HEAD
-
                 Intent intent1 = new Intent(getBaseContext(),Main.class);
                 startActivity(intent1);
 
-                /*EditText username = (EditText) findViewById(R.id.SignIn_userName_edittext);
-=======
                 EditText username = (EditText) findViewById(R.id.SignIn_email_edittext);
->>>>>>> 69069f8888ad988381b96d1750f9cde21a3e5325
+
                 EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
 
                 //checking user name and password fields
@@ -298,8 +294,8 @@ public class SignIn extends AppCompatActivity {
                         //if the user name and password dont match admin , admin show error message
                         showErrorMessage("Please check your email and password");
                     }
-                }*/
-
+                }
+*/
 
                 /**************************mocking data -> close*****************************************/
 
@@ -315,6 +311,7 @@ public class SignIn extends AppCompatActivity {
                     //checking if the user data is correct or not
                     getUserData();
                 }
+
              /***************************server connected -> close***************************************/
 
 

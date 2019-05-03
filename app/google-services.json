@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "412945959110",
+    "firebase_url": "https://readaholic-android.firebaseio.com",
+    "project_id": "readaholic-android",
+    "storage_bucket": "readaholic-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:412945959110:android:b84d169d76729d50",
+        "android_client_info": {
+          "package_name": "com.example.android.readaholic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "412945959110-mr30fmq0r75c0h9jhd4vt767t6n0u5h4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.android.readaholic",
+            "certificate_hash": "933a2f3acf87b59424b7f1185d95ee51b62585b7"
+          }
+        },
+        {
+          "client_id": "412945959110-hvvennnedrt6pb0hvnklu00emg9i3a2r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdOygiU5a7y8aboqQKEbN0wZWlSp37-mE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "412945959110-hvvennnedrt6pb0hvnklu00emg9i3a2r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

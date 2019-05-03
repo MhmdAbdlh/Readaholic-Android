@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".settings.edit_ProfilePicture.ProfilePicture">
+
+    <Button
+        android:id="@+id/ProfilePicture_chooseImage_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        style="@style/Button"
+        android:text="Choose picture" />
+    <ProgressBar
+        android:id="@+id/ProfilePicture_progressBar"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/ProfilePicture_imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/ProfilePicture_chooseImage_Button"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/ProfilePicture_update_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        style="@style/Button"
+        android:text="Update" />
+
+
+</RelativeLayout>

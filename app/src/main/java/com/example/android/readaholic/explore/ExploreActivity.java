@@ -1,9 +1,17 @@
 package com.example.android.readaholic.explore;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.SearchView;
 import android.widget.Spinner;
 
@@ -18,89 +26,61 @@ import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.SearchType;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ExploreActivity extends AppCompatActivity {
+
+    private View parent_view;
+    private RecyclerView recyclerView;
+    private GenreAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explore);
+        parent_view = findViewById(R.id.parent_view);
 
-        initializeSearchTypeSpinner();
-    }
-
-
-    private void initializeSearchTypeSpinner() {
-        Spinner searchTypeSpinner = (Spinner) findViewById(R.id.Explore_searchType_spinner);
-        ArrayAdapter<CharSequence> searchTypeAdapter = new ArrayAdapter(this,
-                android.R.layout.simple_spinner_item, SearchType.types);
-        searchTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        searchTypeSpinner.setAdapter(searchTypeAdapter);
-    }
-
-    private void setClickListeners() {
-
-        /******************************search -> open*****************************/
-        SearchView searchView = (SearchView) findViewById(R.id.Explore_searchView);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-            //must be overriden
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-        });
-        /******************************search -> close*****************************/
-
+        initComponent();
     }
 
 
     /**
-     *sending a request to get the books searched by the user
+     * initializing the recycler grid view and adding the genre items to it
      */
-    private void searchRequest()
-    {
-      //  whileLoading();
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://api.myjson.com/bins/734jo" ;
+    private void initComponent() {
+        //initializing recycler view to be grid view
+        /////////////////////////////////////////////////////////////////////
+        recyclerView = (RecyclerView) findViewById(R.id.explore_recyclerView);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.addItemDecoration(new SpacingItemDecoration(2, dpToPx(this, 8), true));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
+        ///////////////////////////////////////////////////////////////////////
 
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-
-        });
-
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-    }
-
-    private void parseSearchResponse() {
+        //adding the genre items to the recycler view
+        /////////////////////////////////////////////////////////////////////
+        ArrayList<GenreModel> items = new ArrayList<>() ;
+        items.add(new GenreModel("Comedy" , R.drawable.ic_laugh));
+        items.add(new GenreModel("Crime" , R.drawable.ic_handcuff));
+        items.add(new GenreModel("Drama" , R.drawable.ic_drama));
+        items.add(new GenreModel("Horror" , R.drawable.ic_zombie));
+        items.add(new GenreModel("History" , R.drawable.ic_history));
+        items.add(new GenreModel("Music" , R.drawable.ic_music));
+        items.add(new GenreModel("Manga" , R.drawable.ic_mangaa));
+        items.add(new GenreModel("Science" , R.drawable.ic_rocket));
+        mAdapter = new GenreAdapter(items, this);
+        recyclerView.setAdapter(mAdapter);
+        ///////////////////////////////////////////////////////////////////////
 
     }
 
-
-
-    private String  buildSearchUrl() {
-        String url = Urls.ROOT;
-
-        return url;
+    private  int dpToPx(Context c, int dp) {
+        Resources r = c.getResources();
+        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
+
+
 
 
 

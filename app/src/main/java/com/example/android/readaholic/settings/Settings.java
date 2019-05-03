@@ -29,6 +29,8 @@ import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.WhoCanSeeContent;
 import com.example.android.readaholic.settings.edit_Birthday.BirthdaySettings;
 import com.example.android.readaholic.settings.edit_Location.LocationSettings;
+import com.example.android.readaholic.settings.edit_Password.password;
+import com.example.android.readaholic.settings.edit_ProfilePicture.ProfilePicture;
 import com.example.android.readaholic.settings.edit_UserName.UserNameSettings;
 import com.squareup.picasso.Picasso;
 
@@ -62,6 +64,7 @@ public class Settings extends AppCompatActivity {
     private void setClicklisteners()
     {
         //setting username on clock listener
+        ///////////////////////////////////////////////////////////////////////
         TextView userNameEdit = (TextView)findViewById(R.id.Settings_userNameEdit_TextView);
         userNameEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,9 +75,10 @@ public class Settings extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        ///////////////////////////////////////////////////////////////////////
 
         //setting birthday on click listener
+        /////////////////////////////////////////////////////////////////////////
         TextView birthDayEdit = (TextView)findViewById(R.id.Settings_birthDayEdit_TextView);
         birthDayEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,9 +91,10 @@ public class Settings extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        /////////////////////////////////////////////////////////////////////////
 
         //setting location on click listener
+        /////////////////////////////////////////////////////////////////////////
         TextView location = (TextView)findViewById(R.id.Settings_locationEdit_TextView);
         location.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,8 +107,35 @@ public class Settings extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        ///////////////////////////////////////////////////////////////////////////
+
+        //setting edit picture click listener
+        //////////////////////////////////////////////////////////
+        TextView editPicture = (TextView)findViewById(R.id.Settings_editPicture_textView);
+        editPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), ProfilePicture.class);
+                startActivity(intent);
+            }
+        });
+        //////////////////////////////////////////////////////////
+
+        //setting edit password click listener
+        //////////////////////////////////////////////////////////
+        TextView editPassword = (TextView)findViewById(R.id.Settings_editPassword_textView);
+        editPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext(), password.class);
+                startActivity(intent);
+            }
+        });
+        //////////////////////////////////////////////////////////
+
 
         //when user clicks on the reload button the request is sent again
+        //////////////////////////////////////////////////////////
         Button reload = (Button)findViewById(R.id.Settings_reload_Button);
         reload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +143,7 @@ public class Settings extends AppCompatActivity {
                 settingsRequest();
             }
         });
+        //////////////////////////////////////////////////////////
 
     }
     //endregion
