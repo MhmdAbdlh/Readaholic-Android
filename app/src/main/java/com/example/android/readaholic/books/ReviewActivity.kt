@@ -35,12 +35,19 @@ class ReviewActivity : AppCompatActivity() {
         CommentList= ArrayList()
         commentadapter= CommentsAdabterlist()
         commentlist.adapter=commentadapter
-        getReviewInfo()
+        if (UserInfo.ISMemic)
+        {
+            memicReveview()
+        }
+        else{
+            getReviewInfo()
+            feedCommentsDataFromURL(Creviewdata.reviewid)
+        }
         swiperefreshcomment.setOnRefreshListener {
             CommentList!!.clear()
             swiperefreshcomment.isRefreshing=false
         }
-        feedCommentsDataFromURL(Creviewdata.reviewid)
+
         swiperefreshcomment.setOnRefreshListener {
             CommentList!!.clear()
             feedCommentsDataFromURL(Creviewdata.reviewid)
@@ -56,24 +63,23 @@ class ReviewActivity : AppCompatActivity() {
             startActivity(intent)
         }
         reviewerimage.setOnClickListener {
-        //    var intent=Intent(this, Profile::class.java)
-          //  intent.putExtra("user-idFromFollowingList",)
-          //  startActivity(intent)
-
+            var intent=Intent(this, Profile::class.java)
+            intent.putExtra("user-idFromFollowingList",Creviewdata.userId)
+            startActivity(intent)
 
         }
         reviwernametxtui.setOnClickListener {
-            //    var intent=Intent(this, Profile::class.java)
-            //  intent.putExtra("user-idFromFollowingList",)
-            //  startActivity(intent)
+                var intent=Intent(this, Profile::class.java)
+              intent.putExtra("user-idFromFollowingList",Creviewdata.userId)
+              startActivity(intent)
 
 
         }
         if (UserInfo.mIsGuest)
         {
-
             Addcomentlayout.visibility=View.GONE
         }
+
     }
 
     fun makeReviewLike(view:View)
@@ -86,7 +92,7 @@ class ReviewActivity : AppCompatActivity() {
         }
         else {
             var likes: Int = numberoflikesreviewtxtui.text.toString().toInt()
-            if (likeservicies(Creviewdata.reviewid)) {
+            if (likeservicies(Creviewdata.reviewid)||UserInfo.ISMemic) {
 
 
                 if (likereviewtxtui.text == "like") {
@@ -161,7 +167,7 @@ class ReviewActivity : AppCompatActivity() {
         booktitleui.text=Creviewdata.book_name
         authornameui.text=Creviewdata.author_name
         reviwernametxtui.text=Creviewdata.username
-       Picasso.get().load(Creviewdata.book_image).into(bookimage)
+        Picasso.get().load(Creviewdata.book_image).into(bookimage)
         Picasso.get().load(Creviewdata.userimageurl).into(reviewerimage)
     }
 
@@ -216,22 +222,30 @@ class ReviewActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * make a like the the Review or ulike if already liked before
+     *
+     *
+     * @param reviewid the id of the review (badehiat)
+     * @return return true or flase wheather or not the action have been taken
+     */
 
     fun likeservicies(reviewid:Int):Boolean
     {
 
         val queue = Volley.newRequestQueue(this)
         var url = Urls.makeLikeUnlike(reviewid.toString())
-        var success=false
+        var success=true
         val stringRequest = StringRequest(Request.Method.POST,url,
                 Response.Listener<String> { response ->
                     var jsonresponse=JSONObject(response)
                     if(jsonresponse.getString("status")=="true")
                         Toast.makeText(this,jsonresponse.getString("Message"),Toast.LENGTH_SHORT).show()
-                    success=true
+
                 },
                 Response.ErrorListener {
-                    Toast.makeText(this,"Someething went wrong with the server",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"Something went wrong with the server",Toast.LENGTH_SHORT).show()
+                    success=true
                 }
         )
 
@@ -255,17 +269,32 @@ class ReviewActivity : AppCompatActivity() {
             Toast.makeText(this,"Please write something first",Toast.LENGTH_SHORT).show()
         }
         else{
-         var succes= sendCommetService(commenttext)
-            if(succes)
-            {
-           //     Toast.makeText(this,"your comment added to the review",Toast.LENGTH_SHORT).show()
-                writercomment.text.clear()
+                if(UserInfo.ISMemic)
+                {
+                    if(UserInfo.ISMemic)
+                    {
+                        CommentList!!.add(CommentInfo(0,0,"ta7a","ahmed.jpg",commenttext,"7-10-1998",false))
+                        commentadapter!!.notifyDataSetChanged()
+                          Toast.makeText(this,"your comment added to the review",Toast.LENGTH_SHORT).show()
+                    }
+
+
+                }
+                else{
+                    var succes= sendCommetService(commenttext)
+                    if(succes)
+                    {
+
+                        writercomment.text.clear()
+
+                    }
+                    else{
+                        //  Toast.makeText(this,"Something went wrong with the seerver",Toast.LENGTH_SHORT).show()
+                    }
+                }
 
             }
-            else{
-              //  Toast.makeText(this,"Something went wrong with the seerver",Toast.LENGTH_SHORT).show()
-            }
-        }
+
     }
 
     /**
@@ -378,6 +407,10 @@ class ReviewActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * close the keyboard after writing the comment
+     *
+     */
     private fun closeKeyboard() {
         val view = this.currentFocus
         if (view != null) {
@@ -410,6 +443,47 @@ class ReviewActivity : AppCompatActivity() {
                 })
 
         queue.add(stringRequest)
+
+
+
+    }
+    fun memicReveview()
+    {
+        var jsonobject:JSONObject=JSONObject()
+        when(Creviewdata.reviewid)
+        {
+            1-> jsonobject=JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":1,\"user_id\":4,\"book_id\":1,\"body\":\"dECsVckfzg\",\"shelf_name\":2,\"rating\":4,\"likes_count\":1,\"comments_count\":0,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\"}],\"user\":[{\"user_name\":\"Nour\",\"image_link\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"}],\"book\":[{\"book_name\":\"The Bird King\",\"book_image\":\"https://i5.walmartimages.com/asr/8bae6257-b3ed-43ba-b5d4-c55b6479697f_1.c6a36804e0a9cbfd0e408a4b96f8a94e.jpeg?odnHeight=560&odnWidth=560&odnBg=FFFFFF\"}],\"auther\":[{\"author_name\":\"G. Willow Wilson\"}],\"if_liked\":1}")
+
+            2->jsonobject= JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":2,\"user_id\":5,\"book_id\":1,\"body\":\"FFewhMCVy6\",\"shelf_name\":2,\"rating\":5,\"likes_count\":0,\"comments_count\":28,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\"}],\"user\":[{\"user_name\":\"Salma\",\"image_link\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"}],\"book\":[{\"book_name\":\"The Bird King\",\"book_image\":\"https://i5.walmartimages.com/asr/8bae6257-b3ed-43ba-b5d4-c55b6479697f_1.c6a36804e0a9cbfd0e408a4b96f8a94e.jpeg?odnHeight=560&odnWidth=560&odnBg=FFFFFF\"}],\"auther\":[{\"author_name\":\"G. Willow Wilson\"}],\"if_liked\":0}")
+
+            3->jsonobject= JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":3,\"user_id\":7,\"book_id\":4,\"body\":\"U6LXG7PWqZ\",\"shelf_name\":1,\"rating\":4,\"likes_count\":2,\"comments_count\":0,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\"}],\"user\":[{\"user_name\":\"Mohamed\",\"image_link\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"}],\"book\":[{\"book_name\":\"Internment\",\"book_image\":\"https://r.wheelers.co/bk/small/978034/9780349003344.jpg\"}],\"auther\":[{\"author_name\":\"Samira Ahmed\"}],\"if_liked\":1}")
+
+            5->jsonobject= JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":5,\"user_id\":3,\"book_id\":2,\"body\":\"yTukzlyHI0\",\"shelf_name\":2,\"rating\":0,\"likes_count\":0,\"comments_count\":2,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\"}],\"user\":[{\"user_name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"}],\"book\":[{\"book_name\":\"Sherwood\",\"book_image\":\"https:\\/\\/kbimages1-a.akamaihd.net\\/6954f4cc-6e4e-46e3-8bc2-81b93f57a723\\/353\\/569\\/90\\/False\\/sherwood-7.jpg\"}],\"auther\":[{\"author_name\":\"Meagan Spooner\"}],\"if_liked\":0}")
+
+            6->jsonobject= JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":6,\"user_id\":6,\"book_id\":2,\"body\":\"LLgpRopfoc\",\"shelf_name\":2,\"rating\":5,\"likes_count\":0,\"comments_count\":0,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\"}],\"user\":[{\"user_name\":\"TheLeader\",\"image_link\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"}],\"book\":[{\"book_name\":\"Sherwood\",\"book_image\":\"https://kbimages1-a.akamaihd.net/6954f4cc-6e4e-46e3-8bc2-81b93f57a723/353/569/90/False/sherwood-7.jpg\"}],\"auther\":[{\"author_name\":\"Meagan Spooner\"}],\"if_liked\":0}")
+
+            7->jsonobject= JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":7,\"user_id\":3,\"book_id\":4,\"body\":\"evKmmFuJMu\",\"shelf_name\":1,\"rating\":0,\"likes_count\":0,\"comments_count\":4,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\"}],\"user\":[{\"user_name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"}],\"book\":[{\"book_name\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\"}],\"auther\":[{\"author_name\":\"Samira Ahmed\"}],\"if_liked\":0}")
+
+            8->jsonobject= JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":8,\"user_id\":7,\"book_id\":1,\"body\":\"xrPr40QXbQ\",\"shelf_name\":0,\"rating\":1,\"likes_count\":1,\"comments_count\":0,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\"}],\"user\":[{\"user_name\":\"Mohamed\",\"image_link\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"}],\"book\":[{\"book_name\":\"The Bird King\",\"book_image\":\"https://i5.walmartimages.com/asr/8bae6257-b3ed-43ba-b5d4-c55b6479697f_1.c6a36804e0a9cbfd0e408a4b96f8a94e.jpeg?odnHeight=560&odnWidth=560&odnBg=FFFFFF\"}],\"auther\":[{\"author_name\":\"G. Willow Wilson\"}],\"if_liked\":1}")
+
+            9->jsonobject= JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":9,\"user_id\":2,\"book_id\":2,\"body\":\"A8rDP8nSMI\",\"shelf_name\":2,\"rating\":4,\"likes_count\":0,\"comments_count\":0,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\"}],\"user\":[{\"user_name\":\"ta7a\",\"image_link\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"}],\"book\":[{\"book_name\":\"Sherwood\",\"book_image\":\"https://kbimages1-a.akamaihd.net/6954f4cc-6e4e-46e3-8bc2-81b93f57a723/353/569/90/False/sherwood-7.jpg\"}],\"auther\":[{\"author_name\":\"Meagan Spooner\"}],\"if_liked\":0}")
+
+            10->jsonobject= JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":10,\"user_id\":3,\"book_id\":3,\"body\":\"i98eV2lxzG\",\"shelf_name\":0,\"rating\":3,\"likes_count\":0,\"comments_count\":0,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\"}],\"user\":[{\"user_name\":\"waleed\",\"image_link\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"}],\"book\":[{\"book_name\":\"Once & Future\",\"book_image\":\"https://images-na.ssl-images-amazon.com/images/I/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\"}],\"auther\":[{\"author_name\":\"Amy Rose Capetta\"}],\"if_liked\":0}")
+
+            12->jsonobject= JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":12,\"user_id\":6,\"book_id\":3,\"body\":\"EdOCBYW1qm\",\"shelf_name\":2,\"rating\":3,\"likes_count\":0,\"comments_count\":0,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\"}],\"user\":[{\"user_name\":\"TheLeader\",\"image_link\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"}],\"book\":[{\"book_name\":\"Once & Future\",\"book_image\":\"https://images-na.ssl-images-amazon.com/images/I/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\"}],\"auther\":[{\"author_name\":\"Amy Rose Capetta\"}],\"if_liked\":0}")
+
+            13->jsonobject=JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":13,\"user_id\":5,\"book_id\":3,\"body\":\"fCLjnc8tLK\",\"shelf_name\":0,\"rating\":3,\"likes_count\":0,\"comments_count\":0,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\"}],\"user\":[{\"user_name\":\"Salma\",\"image_link\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"}],\"book\":[{\"book_name\":\"Once & Future\",\"book_image\":\"https://images-na.ssl-images-amazon.com/images/I/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\"}],\"auther\":[{\"author_name\":\"Amy Rose Capetta\"}],\"if_liked\":0}")
+
+
+
+        }
+
+        feedCreview(jsonobject.getJSONArray("pages").getJSONObject(0))
+        feeduser(jsonobject.getJSONArray("user").getJSONObject(0))
+        feedbook(jsonobject.getJSONArray("book").getJSONObject(0))
+        feedauthor(jsonobject.getJSONArray("auther").getJSONObject(0))
+        feedliked(jsonobject.getInt("if_liked"))
+        feedReviewDate()
 
 
 

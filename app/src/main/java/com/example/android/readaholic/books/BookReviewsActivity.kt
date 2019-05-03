@@ -11,6 +11,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.android.readaholic.R
+import com.example.android.readaholic.books.Cbookdata.bookid
 import com.example.android.readaholic.contants_and_static_data.Urls
 import com.example.android.readaholic.contants_and_static_data.Urls.makeLikeUnlike
 import com.example.android.readaholic.contants_and_static_data.UserInfo
@@ -31,13 +32,27 @@ class BookReviewsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_book_reviews)
         bookreviews= ArrayList()
         likedreviews= ArrayList()
-       feedReviewDataFromURL(Cbookdata.bookid)
         adapter= ReviewAdabterlist1()
         list.adapter=adapter
         swiperefresh.setOnRefreshListener {
             bookreviews!!.clear()
-            feedReviewDataFromURL(Cbookdata.bookid)
+            if (UserInfo.ISMemic)
+            {
+                memicReviews(Cbookdata.bookid)
+            }
+            else{
+                feedReviewDataFromURL(Cbookdata.bookid)
+            }
             swiperefresh.isRefreshing=false
+
+        }
+        if (UserInfo.ISMemic)
+        {
+            memicReviews(Cbookdata.bookid)
+
+        }
+        else{
+            feedReviewDataFromURL(Cbookdata.bookid)
         }
 
     }
@@ -64,6 +79,12 @@ fun feedReviewDataFromURL(bookid:Int)
     queue.add(stringRequest)
 
 }
+
+    /**
+     * collect all reviews id the the user put a like on it
+     *
+     * @param jsonarray
+     */
    fun feedLikedReviews(jsonarray:JSONArray)
     {
         var likedreview:Int
@@ -127,15 +148,23 @@ fun feedReviewDataFromURL(bookid:Int)
 
                     var intent= Intent(baseContext, ReviewActivity::class.java)
                     Creviewdata.reviewid=currentreview.reviewid
+                    Creviewdata.userId=currentreview.userId
                     startActivity(intent)
 
                 }
+
+            }
+            myview.reviwernametxtui.setOnClickListener {
+                val intent=Intent(baseContext,Profile::class.java)
+                intent.putExtra("user-idFromFollowingList",currentreview.userId)
+                startActivity(intent)
 
             }
             myview.readmoretxtui.setOnClickListener {
 
                 var intent= Intent(baseContext, ReviewActivity::class.java)
                 Creviewdata.reviewid=currentreview.reviewid
+                Creviewdata.userId=currentreview.userId
                 startActivity(intent)
             }
             myview.reviewerimage.setOnClickListener {
@@ -150,9 +179,8 @@ fun feedReviewDataFromURL(bookid:Int)
                 {
                     myview.likereviewtxtui.text = "unlike"
                 }
-
             }
-            //myview.likereviewtxtui.text=
+
             myview.likereviewtxtui.setOnClickListener {
                 var likes:Int=myview.numberoflikesreviewtxtui.text.toString().toInt()
                 if (UserInfo.mIsGuest)
@@ -161,7 +189,7 @@ fun feedReviewDataFromURL(bookid:Int)
                     Toast.makeText(baseContext, "Please Login To be able to like a review", Toast.LENGTH_SHORT).show()
                 }
                 else {
-                    if (likeservicies(currentreview.reviewid)) {
+                    if (likeservicies(currentreview.reviewid)||UserInfo.ISMemic) {
                         if (myview.likereviewtxtui.text == "like") {
                             likes += 1
                             myview.likereviewtxtui.text = "unlike"
@@ -197,6 +225,13 @@ fun feedReviewDataFromURL(bookid:Int)
 
     }
 
+    /**
+     * amke a like or unlike to the review
+     *
+     * @param reviewid
+     * @return true if the action have been done
+     */
+
 
     fun likeservicies(reviewid:Int):Boolean
     {
@@ -213,7 +248,7 @@ fun feedReviewDataFromURL(bookid:Int)
                     }
                 },
                 Response.ErrorListener {
-                    Toast.makeText(this,"Someething went wrong with the server",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"Something went wrong with the server",Toast.LENGTH_SHORT).show()
                     success=false
                 }
         )
@@ -246,6 +281,25 @@ fun feedReviewDataFromURL(bookid:Int)
     fun checknotnigativeintegers(id:Int):Int
     {
         return max(id,1)
+
+    }
+    fun memicReviews(bookid:Int)
+    {
+        var jsonresponse:JSONObject?=null
+        when(bookid)
+        {
+            2->jsonresponse= JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":28,\"book_id\":2,\"body\":null,\"rating\":3,\"shelf_name\":0,\"likes_count\":0,\"comments_count\":0,\"user_id\":1,\"created_at\":\"2019-05-03 14:24:31\",\"updated_at\":\"2019-05-03 14:30:45\",\"username\":\"test\",\"userimagelink\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"},{\"id\":5,\"book_id\":2,\"body\":\"yTukzlyHI0\",\"rating\":0,\"shelf_name\":2,\"likes_count\":0,\"comments_count\":0,\"user_id\":3,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\",\"username\":\"waleed\",\"userimagelink\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"},{\"id\":6,\"book_id\":2,\"body\":\"LLgpRopfoc\",\"rating\":5,\"shelf_name\":2,\"likes_count\":0,\"comments_count\":0,\"user_id\":6,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\",\"username\":\"TheLeader\",\"userimagelink\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"},{\"id\":9,\"book_id\":2,\"body\":\"A8rDP8nSMI\",\"rating\":4,\"shelf_name\":0,\"likes_count\":0,\"comments_count\":0,\"user_id\":2,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\",\"username\":\"ta7a\",\"userimagelink\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"},{\"id\":14,\"book_id\":2,\"body\":\"wthxryziXe\",\"rating\":1,\"shelf_name\":1,\"likes_count\":0,\"comments_count\":0,\"user_id\":7,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\",\"username\":\"Mohamed\",\"userimagelink\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"},{\"id\":15,\"book_id\":2,\"body\":\"pZ96bm5K3t\",\"rating\":0,\"shelf_name\":0,\"likes_count\":0,\"comments_count\":0,\"user_id\":4,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\",\"username\":\"Nour\",\"userimagelink\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"},{\"id\":17,\"book_id\":2,\"body\":\"V1MHvmduq1\",\"rating\":3,\"shelf_name\":2,\"likes_count\":0,\"comments_count\":0,\"user_id\":3,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\",\"username\":\"waleed\",\"userimagelink\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"},{\"id\":19,\"book_id\":2,\"body\":\"c1kxrJBizg\",\"rating\":2,\"shelf_name\":0,\"likes_count\":0,\"comments_count\":0,\"user_id\":3,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\",\"username\":\"waleed\",\"userimagelink\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"}],\"liked_reviews\":[{\"id\":7},{\"id\":27}]}")
+
+            3->jsonresponse= JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":10,\"book_id\":3,\"body\":\"i98eV2lxzG\",\"rating\":3,\"shelf_name\":0,\"likes_count\":0,\"comments_count\":0,\"user_id\":3,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\",\"username\":\"waleed\",\"userimagelink\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":12,\"book_id\":3,\"body\":\"EdOCBYW1qm\",\"rating\":3,\"shelf_name\":2,\"likes_count\":0,\"comments_count\":0,\"user_id\":6,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\",\"username\":\"TheLeader\",\"userimagelink\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":13,\"book_id\":3,\"body\":\"fCLjnc8tLK\",\"rating\":3,\"shelf_name\":0,\"likes_count\":0,\"comments_count\":0,\"user_id\":5,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\",\"username\":\"Salma\",\"userimagelink\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"}],\"liked_reviews\":[{\"id\":7},{\"id\":27}]}")
+            1->jsonresponse= JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":1,\"book_id\":1,\"body\":\"dECsVckfzg\",\"rating\":4,\"shelf_name\":2,\"likes_count\":0,\"comments_count\":0,\"user_id\":4,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\",\"username\":\"Nour\",\"userimagelink\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"},{\"id\":2,\"book_id\":1,\"body\":\"FFewhMCVy6\",\"rating\":5,\"shelf_name\":2,\"likes_count\":0,\"comments_count\":0,\"user_id\":5,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\",\"username\":\"Salma\",\"userimagelink\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"},{\"id\":4,\"book_id\":1,\"body\":\"G2nFegZx6v\",\"rating\":2,\"shelf_name\":0,\"likes_count\":0,\"comments_count\":0,\"user_id\":2,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\",\"username\":\"ta7a\",\"userimagelink\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"},{\"id\":8,\"book_id\":1,\"body\":\"xrPr40QXbQ\",\"rating\":1,\"shelf_name\":0,\"likes_count\":0,\"comments_count\":0,\"user_id\":7,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\",\"username\":\"Mohamed\",\"userimagelink\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"},{\"id\":16,\"book_id\":1,\"body\":\"NAB6cGoqlJ\",\"rating\":4,\"shelf_name\":2,\"likes_count\":0,\"comments_count\":0,\"user_id\":3,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\",\"username\":\"waleed\",\"userimagelink\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"},{\"id\":18,\"book_id\":1,\"body\":\"s2Ol0pFhmA\",\"rating\":4,\"shelf_name\":2,\"likes_count\":0,\"comments_count\":0,\"user_id\":7,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\",\"username\":\"Mohamed\",\"userimagelink\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"},{\"id\":20,\"book_id\":1,\"body\":\"DuFILv2rX4\",\"rating\":1,\"shelf_name\":1,\"likes_count\":0,\"comments_count\":0,\"user_id\":4,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\",\"username\":\"Nour\",\"userimagelink\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"}],\"liked_reviews\":[{\"id\":7},{\"id\":27}]}")
+
+            4->jsonresponse= JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":27,\"book_id\":4,\"body\":\"Hello\",\"rating\":4,\"shelf_name\":2,\"likes_count\":2,\"comments_count\":0,\"user_id\":2,\"created_at\":\"2019-05-03 13:06:10\",\"updated_at\":\"2019-05-03 13:06:10\",\"username\":\"ta7a\",\"userimagelink\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":3,\"book_id\":4,\"body\":\"U6LXG7PWqZ\",\"rating\":4,\"shelf_name\":1,\"likes_count\":0,\"comments_count\":1,\"user_id\":7,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\",\"username\":\"Mohamed\",\"userimagelink\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":7,\"book_id\":4,\"body\":\"evKmmFuJMu\",\"rating\":0,\"shelf_name\":1,\"likes_count\":1,\"comments_count\":2,\"user_id\":3,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\",\"username\":\"waleed\",\"userimagelink\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"}],\"liked_reviews\":[{\"id\":7},{\"id\":27}]}")
+        }
+
+        //
+        feedReviewsFromJson(jsonresponse!!.getJSONArray("pages"))
+        feedLikedReviews(jsonresponse!!.getJSONArray("liked_reviews"))
+        adapter!!.notifyDataSetChanged()
 
     }
 }

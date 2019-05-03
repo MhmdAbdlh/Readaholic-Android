@@ -85,6 +85,10 @@ public class Urls {
     public static String getselfbooks(String shlef_name) {
         return ROOT + "/api/shelf?shelf_name="+shlef_name+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
     }
+
+    public static String getselfbooksanotheruser(String shlef_name,String user_id) {
+        return ROOT + "/api/shelf?shelf_name="+shlef_name+"&user_id="+user_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+    }
     public static String addbooktoshelf(String shelf_id,String book_id) {
         return ROOT + "/api/shelf/add_book?shelf_id="+shelf_id+"&book_id="+book_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
     }

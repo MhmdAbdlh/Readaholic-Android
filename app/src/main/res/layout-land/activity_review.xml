@@ -208,6 +208,35 @@
         android:id="@+id/commentlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+        <TextView
+            android:id="@+id/noreviewtext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:visibility="gone" />
 
+    </android.support.v4.widget.SwipeRefreshLayout>
+    <LinearLayout
+        android:id="@+id/Addcomentlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <EditText
+            android:id="@+id/writercomment"
+            style="@style/EditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:hint="Write a comment" />
+
+        <ImageView
+            android:id="@+id/sendcommentbtn"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:onClick="sendcomment"
+            app:srcCompat="@drawable/sendreview" />
+    </LinearLayout>
 </LinearLayout>

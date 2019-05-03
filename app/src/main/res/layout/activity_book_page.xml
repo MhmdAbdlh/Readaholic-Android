@@ -329,8 +329,8 @@
                 android:background="@drawable/btnselectedshape"
                 android:gravity="center"
                 android:onClick="refreshBookPage"
-                android:text="Connection errror"
-                android:textColor="@color/red" />
+                android:text="Reconnect"
+                android:textColor="@color/brown" />
 
         </LinearLayout>
 

@@ -14,7 +14,7 @@ public class UserInfo {
     public static String sToken;
     public static String sTokenType;
     public static Boolean mIsGuest=false;
-
+    public static Boolean ISMemic=false;
     /**
      * adding the user data
      * called when the user data is received successfully

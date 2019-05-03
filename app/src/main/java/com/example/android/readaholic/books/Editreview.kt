@@ -22,8 +22,6 @@ class Editreview : AppCompatActivity() {
 
     }
 
-
-
     fun saveReview(view:View)
     {
         var rating=raitebookstarts.rating.toInt()
