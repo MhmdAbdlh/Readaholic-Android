@@ -1,6 +1,7 @@
 package com.example.android.readaholic.books
 
 import android.content.Intent
+import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -15,53 +16,95 @@ import com.example.android.readaholic.R
 import com.example.android.readaholic.contants_and_static_data.Urls
 import com.example.android.readaholic.profile_and_profile_settings.Profile
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.activity_book_reviews.*
 import kotlinx.android.synthetic.main.activity_review.*
 import kotlinx.android.synthetic.main.commentticket.view.*
-
 import org.json.JSONArray
 import org.json.JSONObject
+import android.content.Context
+import android.view.inputmethod.InputMethodManager
+import com.example.android.readaholic.contants_and_static_data.UserInfo
+
+
 class ReviewActivity : AppCompatActivity() {
     var CommentList:ArrayList<CommentInfo>?=null
     var commentadapter: CommentsAdabterlist?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_review)
+        setContentView(com.example.android.readaholic.R.layout.activity_review)
         CommentList= ArrayList()
         commentadapter= CommentsAdabterlist()
         commentlist.adapter=commentadapter
         getReviewInfo()
-
         swiperefreshcomment.setOnRefreshListener {
             CommentList!!.clear()
             swiperefreshcomment.isRefreshing=false
+        }
+        feedCommentsDataFromURL(Creviewdata.reviewid)
+        swiperefreshcomment.setOnRefreshListener {
+            CommentList!!.clear()
+            feedCommentsDataFromURL(Creviewdata.reviewid)
+            swiperefreshcomment.isRefreshing=false
+        }
+        bookimage.setOnClickListener {
+            var intent=Intent(this, BookPageActivity::class.java)
+            startActivity(intent)
+
+        }
+        booktitleui.setOnClickListener {
+            var intent=Intent(this, BookPageActivity::class.java)
+            startActivity(intent)
+        }
+        reviewerimage.setOnClickListener {
+        //    var intent=Intent(this, Profile::class.java)
+          //  intent.putExtra("user-idFromFollowingList",)
+          //  startActivity(intent)
+
+
+        }
+        reviwernametxtui.setOnClickListener {
+            //    var intent=Intent(this, Profile::class.java)
+            //  intent.putExtra("user-idFromFollowingList",)
+            //  startActivity(intent)
+
+
+        }
+        if (UserInfo.mIsGuest)
+        {
+
+            Addcomentlayout.visibility=View.GONE
         }
     }
 
     fun makeReviewLike(view:View)
     {
-        var likes:Int=numberoflikesreviewtxtui.text.toString().toInt()
-        if(likeservicies(Creviewdata.reviewid))
+
+        if (UserInfo.mIsGuest)
         {
 
+            Toast.makeText(baseContext, "Please Login To be able to like a review", Toast.LENGTH_SHORT).show()
+        }
+        else {
+            var likes: Int = numberoflikesreviewtxtui.text.toString().toInt()
+            if (likeservicies(Creviewdata.reviewid)) {
 
-            if( likereviewtxtui.text=="like")
-            {
 
-                likes+=1
-                likereviewtxtui.text="unlike"
+                if (likereviewtxtui.text == "like") {
+
+                    likes += 1
+                    likereviewtxtui.text = "unlike"
+                } else {
+                    likes -= 1
+                    likereviewtxtui.text = "like"
+
+                }
+                numberoflikesreviewtxtui.text = likes.toString()
+
+
             }
-            else{
-                likes-=1
-                likereviewtxtui.text="like"
-
-            }
-            numberoflikesreviewtxtui.text=likes.toString()
 
 
         }
-
-
-
 
     }
     /**
@@ -81,6 +124,7 @@ class ReviewActivity : AppCompatActivity() {
                             feeduser(jsonresponse.getJSONArray("user").getJSONObject(0))
                             feedbook(jsonresponse.getJSONArray("book").getJSONObject(0))
                             feedauthor(jsonresponse.getJSONArray("auther").getJSONObject(0))
+                            feedliked(jsonresponse.getInt("if_liked"))
                             feedReviewDate()
                         }
 
@@ -92,6 +136,15 @@ class ReviewActivity : AppCompatActivity() {
         queue.add(stringRequest)
 
     }
+        fun feedliked(isliked:Int)
+        {
+            if(isliked==1)
+            {
+                likereviewtxtui.text="unlike"
+            }
+
+        }
+
 
     /**
      * git the review data and assign them to the ui
@@ -120,15 +173,12 @@ class ReviewActivity : AppCompatActivity() {
 
     fun feedCreview(jsonreaponse: JSONObject)
     {
-
-
         Creviewdata.rating=jsonreaponse.getString("rating").toInt()
         Creviewdata.lastupdate=jsonreaponse.getString("updated_at")
         Creviewdata.reviewbody=jsonreaponse.getString("body")
         Creviewdata.numberoflikes=jsonreaponse.getInt("likes_count")
         Creviewdata.numberofcomments=jsonreaponse.getInt("comments_count")
         Creviewdata.reviewid=jsonreaponse.getInt("id")
-
     }
 
     /**
@@ -208,11 +258,12 @@ class ReviewActivity : AppCompatActivity() {
          var succes= sendCommetService(commenttext)
             if(succes)
             {
-                Toast.makeText(this,"your comment added to the review",Toast.LENGTH_SHORT).show()
+           //     Toast.makeText(this,"your comment added to the review",Toast.LENGTH_SHORT).show()
+                writercomment.text.clear()
 
             }
             else{
-                Toast.makeText(this,"Someething went wrong with the seerver",Toast.LENGTH_SHORT).show()
+              //  Toast.makeText(this,"Something went wrong with the seerver",Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -224,7 +275,7 @@ class ReviewActivity : AppCompatActivity() {
      */
     fun sendCommetService(commentbody:String):Boolean
     {
-        var success=false
+        var success=true
         val queue = Volley.newRequestQueue(this)
         var url = Urls.makecomment(Creviewdata.reviewid.toString(),commentbody)
         val stringRequest = StringRequest(Request.Method.POST, url,
@@ -232,18 +283,19 @@ class ReviewActivity : AppCompatActivity() {
                     var jsonresponse=JSONObject(response)
                     if(jsonresponse.getString("status")=="true") {
                         Toast.makeText(this, "Your comment have been added ,Thank you.", Toast.LENGTH_SHORT).show()
-                        success = true
+                        closeKeyboard()
+
                     }
                     else if(jsonresponse.getString("status")=="false")
                     {
-                            Toast.makeText(this,jsonresponse.getString("error"),Toast.LENGTH_SHORT).show()
-
+                        Toast.makeText(this,jsonresponse.getString("errors"),Toast.LENGTH_SHORT).show()
 
                     }
 
                 },
                 Response.ErrorListener {
-
+                    Toast.makeText(this,"Something went wrong with the server",Toast.LENGTH_SHORT).show()
+                    success = false
 
                 }
 
@@ -271,12 +323,33 @@ class ReviewActivity : AppCompatActivity() {
     fun feedCommentsDataFromURL(bookid:Int)
     {
         val queue = Volley.newRequestQueue(this)
-        var url=""
+        var url=Urls.getlistofcomments(bookid.toString())
         val stringRequest = StringRequest(Request.Method.GET,url,
                 Response.Listener<String> { response ->
                     var  jsonresponse= JSONObject(response)
-                    feedFromJsonReturn(jsonresponse!!.getJSONArray("comment"))
-                    commentadapter!!.notifyDataSetChanged()
+                    if(jsonresponse.getString("status")=="true")
+                    {
+                        if(jsonresponse.has("Message"))
+                        {
+
+                            noreviewtext.visibility=View.VISIBLE
+                            noreviewtext.text=jsonresponse.getString("Message")+" you can be the first on !!"
+                            noreviewtext.setTextColor(Color.GREEN)
+
+                        }
+                        else{
+                            feedFromJsonReturn(jsonresponse!!.getJSONArray("0"))
+                            commentadapter!!.notifyDataSetChanged()
+                            noreviewtext.visibility=View.GONE
+                        }
+
+                    }
+                    else{
+                        noreviewtext.visibility=View.VISIBLE
+                        noreviewtext.text=jsonresponse.getString("Message")
+                        noreviewtext.setTextColor(Color.RED)
+                    }
+
                 },
                 Response.ErrorListener {
                     commentadapter!!.notifyDataSetChanged()
@@ -297,11 +370,25 @@ class ReviewActivity : AppCompatActivity() {
         for( i in 0..jsonarray.length()-1)
         {
             var jsonobject=jsonarray.getJSONObject(i)
-            CommentList!!.add(CommentInfo(jsonobject.getString("id").toInt(),jsonobject.getJSONObject("user").getString("id").toInt(),jsonobject.getJSONObject("user").getString("name")
-            ,jsonobject.getJSONObject("user").getString("image_url"),jsonobject.getString("body")))
+            CommentList!!.add(CommentInfo(jsonobject.getString("id").toInt(),0,jsonobject.getString("username"),jsonobject.getString("image_link")
+            ,jsonobject.getString("body"),jsonobject.getString("created_at"),false))
+            if(jsonobject.getString("have_the_comment")=="Yes")
+                CommentList!![i].havethecomment=true
         }
 
     }
+
+    private fun closeKeyboard() {
+        val view = this.currentFocus
+        if (view != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+    }
+    /**
+     * Delete onlt the owned comment from the review     *
+     * @param commentid
+     */
     fun deletecomment(commentid:Int)
     {
         val queue = Volley.newRequestQueue(this)
@@ -312,6 +399,7 @@ class ReviewActivity : AppCompatActivity() {
                    if(jsonresponse.getString("status")=="true")
                    {
                         Toast.makeText(this,jsonresponse.getString("Message"),Toast.LENGTH_SHORT).show()
+                       onRestart()
                        commentadapter!!.notifyDataSetChanged()
                    }
                     else if(jsonresponse.getString("status")=="false")
@@ -327,25 +415,27 @@ class ReviewActivity : AppCompatActivity() {
 
     }
 
-    /**
-     * This adapter deal with comments list
-     *
-     */
-
     inner class CommentsAdabterlist(): BaseAdapter()
     {
-
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-            var myview=layoutInflater.inflate(R.layout.commentticket,null)
+            var myview=layoutInflater.inflate(com.example.android.readaholic.R.layout.commentticket,null)
             var currentcomment= CommentList!![position]
             myview.reviwernametxtui.text=currentcomment.username
             myview.dateofreviewtxtui.text=currentcomment.commentdate
             myview.descriptionreviewui.text=currentcomment.commentbody
-          //  Picasso.get().load("https://i.ytimg.com/vi/3nmoffllWTw/hqdefault.jpg").into(myview.usercommentimage)
-
+            Picasso.get().load(currentcomment.cuserimageurl).into(myview.usercommentimage)
             myview.usercommentimage.setOnClickListener {
                 var intent= Intent(baseContext, Profile::class.java)
                 startActivity(intent)
+            }
+            if(currentcomment.havethecomment)
+            {
+
+                myview.deletecommentbtn.visibility=View.VISIBLE
+
+            }
+            myview.deletecommentbtn.setOnClickListener {
+                deletecomment(currentcomment.commentid)
             }
             return myview
         }

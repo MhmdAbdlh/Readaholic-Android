@@ -35,9 +35,9 @@
 
                 <TextView
                     android:id="@+id/reviwernametxtui"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0"
+                    android:layout_weight="4"
                     android:text="Name"
                     android:textColor="@color/colorGreen"
                     android:textSize="18sp"
@@ -50,6 +50,14 @@
                     android:layout_gravity="right"
                     android:layout_weight="0"
                     android:foregroundGravity="right"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/deletereview" />
+
+                <ImageView
+                    android:id="@+id/deletecommentbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
                     android:visibility="gone"
                     app:srcCompat="@drawable/deletereview" />
 

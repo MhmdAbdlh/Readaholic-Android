@@ -25,51 +25,52 @@ import kotlinx.android.synthetic.main.fragment_shelves.*
 import kotlinx.android.synthetic.main.fragment_shelves.view.*
 import org.json.JSONObject
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [ShelvesFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [ShelvesFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class ShelvesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
-
-    fun getnumber(shelfname:String) :Int
+    fun setnumbers(num_books:Int,shelfname:Int)
     {
-            var num_books=0
-            val queue = Volley.newRequestQueue(context)
-            var url = Urls.getselfbooks(shelfname)
-            val stringRequest = StringRequest(Request.Method.GET, url,
-                    Response.Listener<String> { response ->
-                        var jsonresponse= JSONObject(response)
-                        var books=jsonresponse.getJSONArray("pages")
-                        num_books= books.length()
-                    },
-                    Response.ErrorListener {
+        when(shelfname)
+        {
+            0->view!!.Rcountbooks.text=num_books.toString()
 
-                    }
-            )
-            queue.add(stringRequest)
-            return num_books
+            1->view!!.Ccountbooks.text=num_books.toString()
+
+            2->view!!.Wbooknumber.text=num_books.toString()
+
+
+        }
+    }
+
+    fun getnumber(shelftype:Int)
+    {
+
+        val queue = Volley.newRequestQueue(context)
+        var url = Urls.getselfbooks(shelftype.toString())
+        val stringRequest = StringRequest(Request.Method.GET, url,
+                Response.Listener<String> { response ->
+                    var jsonresponse= JSONObject(response)
+                    var books=jsonresponse.getJSONArray("pages")
+                    setnumbers(books.length(),shelftype)
+                },
+                Response.ErrorListener {
+
+                }
+        )
+        queue.add(stringRequest)
+
 
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-       var myview= inflater.inflate(R.layout.fragment_shelves, container, false)
-
-            YoYo.with(Techniques.FadeIn)
-                    .duration(1000)
-                    .playOn(myview.Readlayout);
+        var myview= inflater.inflate(R.layout.fragment_shelves, container, false)
+        YoYo.with(Techniques.FadeIn)
+                .duration(1000)
+                .playOn(myview.Readlayout);
 
         YoYo.with(Techniques.FadeIn)
                 .duration(1000)
@@ -79,31 +80,28 @@ class ShelvesFragment : Fragment() {
                 .duration(1000)
                 .playOn(myview.Wlayout);
 
-            myview.Readnbtn.setOnClickListener {
-                var intent=Intent(context,BookShelves::class.java)
-                intent.putExtra("Shelve",0)
-                startActivity(intent)
+        myview.Readnbtn.setOnClickListener {
+            var intent=Intent(context,BookShelves::class.java)
+            Cbookdata.shelf=0
+            startActivity(intent)
 
 
-            }
+        }
         myview.Creadbtn.setOnClickListener {
             var intent=Intent(context,BookShelves::class.java)
-            intent.putExtra("Shelve",1)
+            Cbookdata.shelf=1
             startActivity(intent)
 
 
         }
         myview.Wreadbtn.setOnClickListener {
             var intent=Intent(context,BookShelves::class.java)
-            intent.putExtra("Shelve",2)
+            Cbookdata.shelf=2
             startActivity(intent)
         }
-        var Rnumbooks=getnumber("read");
-        var Cnumbooks=getnumber("currently_reading")
-        var Wnumbooks=getnumber("to_read")
-        myview.Rcountbooks.text=Rnumbooks.toString()
-        myview.Ccountbooks.text=Cnumbooks.toString()
-        myview.Wbooknumber.text=Wnumbooks.toString()
+        getnumber(0)
+        getnumber(1)
+        getnumber(2)
         return myview
     }
 
