@@ -194,7 +194,7 @@ public class Followers_fragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("FollowingInProfile", "user id is "+Integer.toString(userId));
-                Log.e("FollowingInProfile",response.toString());
+                Log.e("FollowingInProfileRes",response.toString());
 
 
                 JSONArray followings = response.optJSONArray("following");

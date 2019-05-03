@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_book_page.*
 import org.json.JSONObject
 import com.android.volley.Request
 import com.android.volley.Response
+import com.example.android.readaholic.contants_and_static_data.UserInfo
 
 /**
  * This Activity is for showing book information
@@ -60,10 +61,14 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
                 }
         )
         queue.add(stringRequest)
-
-
-
     }
+
+    /**
+     * delete a book on a shelf
+     *
+     * @param bookid
+     * @param shelf
+     */
     fun deleteBookShelf(bookid:Int,shelf:Int)
     {
         val queue = Volley.newRequestQueue(this)
@@ -97,7 +102,12 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
         /////////////////////////////
         bookinfo= BookPageInfo()
         bookreview= ArrayList()
-        feedBookInfoFromApi(Cbookdata.bookid)
+        if(UserInfo.mIsGuest)
+        {
+            bookshelflayout.visibility=View.GONE
+            writeareviewbtn.visibility=View.GONE
+        }
+        feedBookInfoFromApi()
         seeallreviewstxtui.setOnClickListener {
             Cbookdata.author_name=bookinfo!!.author_name
             Cbookdata.book_title=bookinfo!!.book_title
@@ -106,6 +116,8 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
             startActivity(intent)
         }
         getReviewforABookforAUser()
+        getshelfname()
+
     }
 
     /**
@@ -138,7 +150,7 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
      */
     fun refreshBookPage(view: View)
     {
-        feedBookInfoFromApi(Cbookdata.bookid)
+        feedBookInfoFromApi()
     }
 
     /**
@@ -195,7 +207,16 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
                         startActivity(getIntent());
                     }
                     else{
-                        Toast.makeText(this,jsonresponse.getString("Message"),Toast.LENGTH_SHORT).show()
+                        if(jsonresponse.has("Message"))
+                        {
+                            Toast.makeText(this,jsonresponse.getString("Message"),Toast.LENGTH_SHORT).show()
+                        }
+                        else if(jsonresponse.has("errors"))
+                        {
+
+                            Toast.makeText(this,jsonresponse.getString("errors"),Toast.LENGTH_SHORT).show()
+                        }
+
                     }
                 },
                 Response.ErrorListener {
@@ -212,6 +233,39 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
     }
 
     /**
+     * this function to get the shelf name
+     */
+
+    fun getshelfname()
+    {
+        val queue = Volley.newRequestQueue(this)
+        var url = Urls.getshelfonbook(Cbookdata.bookid.toString())
+        val stringRequest = StringRequest(Request.Method.GET, url,
+                Response.Listener<String> { response ->
+                    var jsonresponse= JSONObject(response)
+                    if (jsonresponse.getString("status")=="true")
+                    {
+                        if(jsonresponse.has("ShelfName"))
+                        {
+                            Cbookdata.shelf=jsonresponse.getInt("ShelfName")
+                            bookreadbtnui.setBackgroundResource(R.drawable.btnselectedshape); // From android.graphics.Color
+                            bookreadbtnui.setTextColor(Color.BLACK)
+                            getshelve()
+                        }
+
+
+                    }
+
+                },
+                Response.ErrorListener {
+
+                }
+        )
+        queue.add(stringRequest)
+
+    }
+
+    /**
      * take my review data from json and feed the UI
      *
      * @param json
@@ -220,7 +274,7 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
     fun myReview(json:JSONObject)
     {
         var status=json.getString("status")
-        if(status=="success")
+        if(status=="success"&&!UserInfo.mIsGuest)
         {
             myreviewlayout.visibility=View.VISIBLE
            var myreview=json.getJSONArray("pages").getJSONObject(0)
@@ -247,10 +301,11 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
             }else{
                 Cbookdata.reviewid=myreview.getInt("id")
             }
+
             writeareviewbtn.text="Edit Your  Review"
-            Cbookdata.shelf=myreview.getInt("shelf_name")
-            bookreadbtnui.setBackgroundResource(R.drawable.btnselectedshape); // From android.graphics.Color
-            bookreadbtnui.setTextColor(Color.BLACK)
+           // Cbookdata.shelf=myreview.getInt("shelf_name")
+          //  bookreadbtnui.setBackgroundResource(R.drawable.btnselectedshape); // From android.graphics.Color
+          //  bookreadbtnui.setTextColor(Color.BLACK)
             getshelve()
 
         }
@@ -260,7 +315,7 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
     /**
      * get the book info from the url as a json file or show error messege in failiar case     *
      */
-    fun feedBookInfoFromApi(BookId:Int)
+    fun feedBookInfoFromApi()
     {
     val progressBar = findViewById(R.id.bookpage_loading_progbar) as ProgressBar
     progressBar.setVisibility(View.VISIBLE)
@@ -302,7 +357,6 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
      */
     fun feedFromApi(jsonresponce:JSONObject)
     {
-
         var jsonobject=jsonresponce.getJSONArray("pages").getJSONObject(0)
         bookinfo!!.book_title =jsonobject.getString("title")
         bookinfo!!.author_name =jsonobject.getString("author_name")

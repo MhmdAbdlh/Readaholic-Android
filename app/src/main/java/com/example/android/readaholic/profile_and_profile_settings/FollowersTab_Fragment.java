@@ -102,7 +102,7 @@ public class FollowersTab_Fragment extends Fragment {
             mRequestUrl = Urls.ROOT + "/api/followers?user_id="+Integer.toString(userId)+"&token="+
                     UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
-        showSimpleProgressDialog(getContext(),"Loading.....","Loading Followers And Followings",false);
+        //showSimpleProgressDialog(getContext(),"Loading.....","Loading Followers And Followings",false);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -142,7 +142,7 @@ public class FollowersTab_Fragment extends Fragment {
     }
     private void UpdateList()
     {
-        removeSimpleProgressDialog();
+        //removeSimpleProgressDialog();
         if(followers.isEmpty())
         {
             mNotAvaliableTextView.setVisibility(View.VISIBLE);

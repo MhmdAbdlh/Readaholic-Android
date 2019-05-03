@@ -126,6 +126,7 @@
                 android:paddingBottom="3dp" />
 
             <LinearLayout
+                android:id="@+id/bookshelflayout"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginLeft="80dp"

@@ -3,6 +3,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="search_hint">Type Name</string>
     <string name="title_activity_updates">UpdatesActivity</string>
 
     <string name="title_activity_profile">Profile</string>

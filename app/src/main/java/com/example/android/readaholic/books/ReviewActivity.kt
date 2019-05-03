@@ -23,6 +23,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
+import com.example.android.readaholic.contants_and_static_data.UserInfo
 
 
 class ReviewActivity : AppCompatActivity() {
@@ -68,33 +69,42 @@ class ReviewActivity : AppCompatActivity() {
 
 
         }
+        if (UserInfo.mIsGuest)
+        {
+
+            Addcomentlayout.visibility=View.GONE
+        }
     }
 
     fun makeReviewLike(view:View)
     {
-        var likes:Int=numberoflikesreviewtxtui.text.toString().toInt()
-        if(likeservicies(Creviewdata.reviewid))
+
+        if (UserInfo.mIsGuest)
         {
 
+            Toast.makeText(baseContext, "Please Login To be able to like a review", Toast.LENGTH_SHORT).show()
+        }
+        else {
+            var likes: Int = numberoflikesreviewtxtui.text.toString().toInt()
+            if (likeservicies(Creviewdata.reviewid)) {
 
-            if( likereviewtxtui.text=="like")
-            {
 
-                likes+=1
-                likereviewtxtui.text="unlike"
+                if (likereviewtxtui.text == "like") {
+
+                    likes += 1
+                    likereviewtxtui.text = "unlike"
+                } else {
+                    likes -= 1
+                    likereviewtxtui.text = "like"
+
+                }
+                numberoflikesreviewtxtui.text = likes.toString()
+
+
             }
-            else{
-                likes-=1
-                likereviewtxtui.text="like"
-
-            }
-            numberoflikesreviewtxtui.text=likes.toString()
 
 
         }
-
-
-
 
     }
     /**
@@ -114,6 +124,7 @@ class ReviewActivity : AppCompatActivity() {
                             feeduser(jsonresponse.getJSONArray("user").getJSONObject(0))
                             feedbook(jsonresponse.getJSONArray("book").getJSONObject(0))
                             feedauthor(jsonresponse.getJSONArray("auther").getJSONObject(0))
+                            feedliked(jsonresponse.getInt("if_liked"))
                             feedReviewDate()
                         }
 
@@ -125,6 +136,15 @@ class ReviewActivity : AppCompatActivity() {
         queue.add(stringRequest)
 
     }
+        fun feedliked(isliked:Int)
+        {
+            if(isliked==1)
+            {
+                likereviewtxtui.text="unlike"
+            }
+
+        }
+
 
     /**
      * git the review data and assign them to the ui

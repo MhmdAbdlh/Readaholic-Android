@@ -60,74 +60,15 @@ public class ProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.profile_fragment,container,false);
         mUserImage = (ImageView)view.findViewById(R.id.profileActivity_ProfilePic_ImageView);
         mUserName =(TextView)view.findViewById(R.id.ProfileActivity_UserName_TextView);
-
+        mUserBookNumber = (TextView)view.findViewById(R.id.ProfileActivity_UserBooksNumber_TextView);
+        profilerEditToRightSign = (ImageView)view.findViewById(R.id.Profile_Settings_ImageView);
+        profileSettingtofollowingState = (TextView)view.findViewById(R.id.Profile_Settings_TextView);
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             mUser_Id = bundle.getInt("UserId");
         }
 
-        //Loading Fragments
-      // loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId(),mUser_Id);
-      // loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId(),mUser_Id);
- //       loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId(),mUser_Id);
-
-        mUserBookNumber = (TextView)view.findViewById(R.id.ProfileActivity_UserBooksNumber_TextView);
-        profilerEditToRightSign = (ImageView)view.findViewById(R.id.Profile_Settings_ImageView);
-        profileSettingtofollowingState = (TextView)view.findViewById(R.id.Profile_Settings_TextView);
-///////////////////////////////////////////////////////////////////////////////
-        //Take user id when click in his name in Updates (user could be different from the current user)
-
-
-   //     Picasso.get().load("https://s.gr-assets.com/assets/nophoto/user/" +
-     //               "u_111x148-9394ebedbb3c6c218f64be9549657029.png").transform(new CircleTransform()).into(mUserImage);
-
-           // mUser_Id = getArguments().getInt("user-id");
-            //Log.e("userid",Integer.toString(mUser_Id));
-
-        //requestProfileView(mUser_Id);
-
-
-
-        //Log.e("UserImageUrl",String.valueOf(mUser_Id));
-
-        //Toast.makeText(getContext(),String.valueOf(mUser_Id),Toast.LENGTH_SHORT).show();
-        //UpdateData(mProfileUser);
-
-
-
-        /*Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            int myInt = bundle.getInt("UserId", mUser_Id);
-        }
-*/
-        ///////////////////////////////////////////////////////////////////////////////////////////////
-       /* arayOfUpdates = HomeFragment.onResposeAction(jsonFile);
-        adapterForUpdatesList = new UpdatesAdapter(getContext(),arayOfUpdates);
-        mListOfUpdates = (ListView) view.findViewById(R.id.Profile_updateslist_listview);
-        mListOfUpdates.setOnTouchListener(new ListView.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Disallow ScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        break;
-
-                    case MotionEvent.ACTION_UP:
-                        // Allow ScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                        break;
-                }
-
-                // Handle ListView touch events.
-                v.onTouchEvent(event);
-                return true;
-            }
-        });
-        mListOfUpdates.setAdapter(adapterForUpdatesList);
-*/
         if(savedInstanceState == null) {
             if (getArguments() == null)
                 mUser_Id = 0;
@@ -200,6 +141,7 @@ public class ProfileFragment extends Fragment {
         {
 
         }
+
             Picasso.get().load(user.getmUserImageUrl()).transform(new CircleTransform()).into(mUserImage);
         mUserBookNumber.setText(user.getmUsernumberOfBooks()+" Books");
         Log.e("UserNameInProfile",user.getmUserName());
@@ -314,4 +256,5 @@ public class ProfileFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
 }

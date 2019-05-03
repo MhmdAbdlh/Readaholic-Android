@@ -13,7 +13,9 @@ import com.android.volley.toolbox.Volley
 import com.example.android.readaholic.R
 import com.example.android.readaholic.contants_and_static_data.Urls
 import com.example.android.readaholic.contants_and_static_data.Urls.makeLikeUnlike
+import com.example.android.readaholic.contants_and_static_data.UserInfo
 import com.example.android.readaholic.profile_and_profile_settings.Profile
+import com.google.gson.JsonArray
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_book_reviews.*
 import kotlinx.android.synthetic.main.bookreview.view.*
@@ -22,15 +24,16 @@ import org.json.JSONObject
 import kotlin.math.max
 class BookReviewsActivity : AppCompatActivity() {
     var bookreviews:ArrayList<BookReview>?=null
+    var likedreviews:ArrayList<Int>?=null
     var adapter: ReviewAdabterlist1?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_reviews)
         bookreviews= ArrayList()
+        likedreviews= ArrayList()
        feedReviewDataFromURL(Cbookdata.bookid)
         adapter= ReviewAdabterlist1()
         list.adapter=adapter
-
         swiperefresh.setOnRefreshListener {
             bookreviews!!.clear()
             feedReviewDataFromURL(Cbookdata.bookid)
@@ -53,6 +56,7 @@ fun feedReviewDataFromURL(bookid:Int)
             Response.Listener<String> { response1 ->
                 var  jsonresponse= JSONObject(response1)
                 feedReviewsFromJson(jsonresponse!!.getJSONArray("pages"))
+                feedLikedReviews(jsonresponse!!.getJSONArray("liked_reviews"))
                 adapter!!.notifyDataSetChanged()},
             Response.ErrorListener {error ->
                 Toast.makeText(this,error.toString(),Toast.LENGTH_LONG).show()
@@ -60,6 +64,15 @@ fun feedReviewDataFromURL(bookid:Int)
     queue.add(stringRequest)
 
 }
+   fun feedLikedReviews(jsonarray:JSONArray)
+    {
+        var likedreview:Int
+        for( i in 0..jsonarray.length()-1)
+        {
+            likedreview=jsonarray.getJSONObject(i).getInt("id")
+            likedreviews!!.add(likedreview)
+        }
+    }
 
     /**
      *
@@ -105,9 +118,19 @@ fun feedReviewDataFromURL(bookid:Int)
             myview.dateofreviewtxtui.text=currentreview.createdate
            Picasso.get().load(currentreview.userimageurl).into( myview.reviewerimage)
             myview.commentreviewtxtui.setOnClickListener {
-               var intent= Intent(baseContext, ReviewActivity::class.java)
-                Creviewdata.reviewid=currentreview.reviewid
-                startActivity(intent)
+                if (UserInfo.mIsGuest)
+                {
+
+                    Toast.makeText(baseContext, "Please Login To be able to comment on a review", Toast.LENGTH_SHORT).show()
+                }
+                else{
+
+                    var intent= Intent(baseContext, ReviewActivity::class.java)
+                    Creviewdata.reviewid=currentreview.reviewid
+                    startActivity(intent)
+
+                }
+
             }
             myview.readmoretxtui.setOnClickListener {
 
@@ -121,29 +144,40 @@ fun feedReviewDataFromURL(bookid:Int)
                 startActivity(intent)
 
             }
+            for(reviewid in likedreviews!!)
+            {
+                if(reviewid==currentreview.reviewid)
+                {
+                    myview.likereviewtxtui.text = "unlike"
+                }
+
+            }
+            //myview.likereviewtxtui.text=
             myview.likereviewtxtui.setOnClickListener {
                 var likes:Int=myview.numberoflikesreviewtxtui.text.toString().toInt()
-                if(likeservicies(currentreview.reviewid))
+                if (UserInfo.mIsGuest)
                 {
-                    if( myview.likereviewtxtui.text=="like")
-                    {
-                        likes+=1
-                        myview.likereviewtxtui.text="unlike"
+
+                    Toast.makeText(baseContext, "Please Login To be able to like a review", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    if (likeservicies(currentreview.reviewid)) {
+                        if (myview.likereviewtxtui.text == "like") {
+                            likes += 1
+                            myview.likereviewtxtui.text = "unlike"
+                        } else {
+                            likes -= 1
+                            myview.likereviewtxtui.text = "like"
+                        }
+                        myview.numberoflikesreviewtxtui.text = likes.toString()
+
+                    } else {
+
+                        Toast.makeText(baseContext, "Error with the server .. try again later", Toast.LENGTH_SHORT).show()
+
                     }
-                    else{
-                        likes-=1
-                        myview.likereviewtxtui.text="like"
-                    }
-                    myview.numberoflikesreviewtxtui.text=likes.toString()
 
                 }
-                else{
-
-                  Toast.makeText(baseContext,"Error with the server .. try again later",Toast.LENGTH_SHORT).show()
-
-                }
-
-
 
             }
             return myview

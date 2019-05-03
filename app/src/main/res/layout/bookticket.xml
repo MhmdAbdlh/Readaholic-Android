@@ -8,7 +8,7 @@
     android:paddingBottom="7dp">
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/bookimage"
         android:layout_width="130dp"
         android:layout_height="match_parent"
         android:paddingRight="5dp"

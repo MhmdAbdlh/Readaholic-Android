@@ -70,7 +70,7 @@ public class Urls {
 
     }
     public static String deleteMyReview(String review_id) {
-        return ROOT + "/api/reviwes/delete?id="+review_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+        return ROOT + "/api/reviwes/delete?reviewId="+review_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
 
     }
     public static String makeLikeUnlike(String review_id) {
@@ -94,6 +94,10 @@ public class Urls {
     }
     public static String getlistofcomments(String book_id) {
         return ROOT + "/api/listComments?id="+book_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+    }
+
+    public static String getshelfonbook(String book_id) {
+        return ROOT + "/api/showShelf?bookId="+book_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
     }
     public String constructTokenParameters() {
         String parameters = "";

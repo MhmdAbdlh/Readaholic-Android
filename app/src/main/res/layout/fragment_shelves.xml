@@ -58,7 +58,7 @@
             android:layout_weight="10"
             android:gravity="center_vertical"
             android:paddingLeft="10dp"
-            android:text="numofbooks" />
+            android:text="No Books Yet" />
 
         <ImageButton
             android:id="@+id/Readnbtn"
@@ -93,7 +93,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:paddingLeft="10dp"
-            android:text="numofbooks" />
+            android:text="No Books Yet" />
 
         <ImageButton
             android:id="@+id/Creadbtn"
@@ -129,7 +129,7 @@
             android:layout_weight="5"
             android:gravity="center_vertical"
             android:paddingLeft="10dp"
-            android:text="numofbooks" />
+            android:text="No Books Yet" />
 
         <ImageButton
             android:id="@+id/Wreadbtn"

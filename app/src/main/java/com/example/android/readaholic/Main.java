@@ -78,6 +78,15 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
 
+        mUsername.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent profileIntent = new Intent(v.getContext(), Profile.class);
+                profileIntent.putExtra("user-idFromFollowingList",0);
+                startActivity(profileIntent);
+            }
+        });
+
         drawer = findViewById(R.id.Main_drawerlayout);
         NavigationView navigationView = findViewById(R.id.Main_navView);
         navigationView.setNavigationItemSelectedListener(this);
@@ -134,6 +143,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
                         new FollowersAndFollowingFragment(),"FollowersAndFollowings").addToBackStack("MainToFollowersAndFollowings").commit();
                 break;
+
             case R.id.draw_settings_menu:
                 mTabs.setVisibility(View.GONE);
                 mPages.setVisibility(View.GONE);
