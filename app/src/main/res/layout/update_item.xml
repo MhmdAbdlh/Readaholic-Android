@@ -284,6 +284,7 @@
                         android:layout_width="30dp"
                         android:layout_height="35dp"
                         android:layout_weight="0"
+                        android:visibility="gone"
                         android:background="@drawable/icons">
 
                     </Spinner>

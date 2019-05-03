@@ -139,9 +139,10 @@ public class SignIn extends AppCompatActivity {
                 String userName = userObject.getString("username");
                 String name = userObject.getString("name");
                 String imageLink = userObject.optString("image_link");
+                int id = userObject.getInt("id");
                 /****************************getting user info -> close****************************/
                 //adding data to the static class to be used later
-                UserInfo.addUserInfo(userName,name,imageLink,token,tokenType);
+                UserInfo.addUserInfo(userName,name,imageLink,token,tokenType,id);
 
                 return true;
 
@@ -327,7 +328,7 @@ public class SignIn extends AppCompatActivity {
    private void fillDummyData()
     {
         UserInfo.addUserInfo("Ahmed","Waled"
-                ,"https://unsplash.com/photos/HUBofEFQ6CA","1234567","afas");
+                ,"https://unsplash.com/photos/HUBofEFQ6CA","1234567","afas",1);
     }
 
     public String getLogInParameters() {

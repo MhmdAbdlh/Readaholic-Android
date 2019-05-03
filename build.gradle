@@ -11,12 +11,9 @@ buildscript {
         jcenter()
     }
     dependencies {
-<<<<<<< HEAD
         classpath 'com.android.tools.build:gradle:3.3.2'
         classpath 'com.google.gms:google-services:4.0.1'
-=======
-        classpath 'com.android.tools.build:gradle:3.4.0'
->>>>>>> 85942ac0ed0c300a08998c3f2b5d522652441f36
+
         classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokkaVersion"
 
         // NOTE: Do not place your application dependencies here; they belong

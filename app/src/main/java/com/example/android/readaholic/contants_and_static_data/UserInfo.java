@@ -15,6 +15,7 @@ public class UserInfo {
     public static String sTokenType;
     public static boolean IsMemic = true;
     public static int Memicid = 1;
+    public static int sID;
 
     public static Boolean mIsGuest=false;
 
@@ -28,12 +29,13 @@ public class UserInfo {
      * @param tokenType
      */
     public static void addUserInfo(String userName , String name , String imageUrl
-                                 , String token , String tokenType ){
+                                 , String token , String tokenType,int id ){
         sUserName = userName;
         sName = name;
         sImageUrl = imageUrl;
         sToken = token;
         sTokenType = tokenType;
+        sID = id;
     }
 
     /**

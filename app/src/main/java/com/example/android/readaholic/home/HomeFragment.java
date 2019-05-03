@@ -216,39 +216,19 @@ public class HomeFragment extends Fragment {
                         break;
                     //liked or commented on post
                     case 3: case 4:
-                        updateItem.setmInnerUserId(updateItemJson.getInt("rev_user_id"));
                         updateItem.setmInnerUpdate(0);//always in reviews
-                        updateItem.setmNameofFollow(updateItemJson.getString("rev_user_name"));
+                        //updateItem.setmNameofFollow(updateItemJson.getString("rev_user_name"));
                         updateItem.setmInnerDate(updateItemJson.getString("review_updated_at"));
                         //type of the inner post
-                        switch (updateItem.getmInnerUpdate()) {
-                            //review or rating
-                            case 0:
-                                updateItem.setmUserShelf(updateItemJson.getInt("shelf"));
-                                updateItem.setmReviewID(updateItemJson.getInt("review_id"));
-                                updateItem.setmBookCover(updateItemJson.getString("img_url"));
-                                updateItem.setmBookName(updateItemJson.getString("title"));
-                                updateItem.setmRatingValue(updateItemJson.getInt("rating"));
-                                updateItem.setmInnerImgUrl(updateItemJson.getString("rev_user_imageLink"));
-                                updateItem.setmAuthorName(updateItemJson.getString("author_name"));
-                                updateItem.setmBookId(updateItemJson.getInt("book_id"));
-                                updateItem.setmReview(updateItemJson.getString("body"));
-                                break;
-                            //shelves
-                            case 1:
-                                updateItem.setmUserShelf(updateItemJson.getInt("shelf"));
-                                updateItem.setmBookCover(updateItemJson.getString("imgUrl"));
-                                updateItem.setmBookName(updateItemJson.getString("title"));
-                                updateItem.setmBookId(updateItemJson.getInt("book_id"));
-                                updateItem.setmAuthorName(updateItemJson.getString("author_name"));
-                                updateItem.setmShelf(updateItemJson.getString("shelf"));
-                                break;
-                            //follwing
-                            case 2:
-                                JSONObject user1 = updateItemJson.getJSONObject("user");
-                                updateItem.setmNameofFollow(user1.getString("name"));
-                                break;
-                        }
+                        updateItem.setmUserShelf(updateItemJson.getInt("shelf"));
+                        updateItem.setmReviewID(updateItemJson.getInt("review_id"));
+                        updateItem.setmBookCover(updateItemJson.getString("img_url"));
+                        updateItem.setmBookName(updateItemJson.getString("title"));
+                        updateItem.setmRatingValue(updateItemJson.getInt("rating"));
+                        //updateItem.setmInnerImgUrl(updateItemJson.getString("rev_user_imageLink"));
+                        updateItem.setmAuthorName(updateItemJson.getString("author_name"));
+                        updateItem.setmBookId(updateItemJson.getInt("book_id"));
+                        updateItem.setmReview(updateItemJson.getString("body"));
                         //commented on post assign comment to show it
                         if(updateItem.getmTypeOfUpdates() == 4){
                             updateItem.setmComment(updateItemJson.getString("comment_body"));
