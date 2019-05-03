@@ -122,8 +122,9 @@ public class ProfileFragment extends Fragment {
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putInt("user-id",userID);
-        if(ID == view.findViewById(R.id.Profile_Books_Fragment).getId())
-            bundle.putInt("books-num",mProfileUser.getmUsernumberOfBooks());
+        if(ID == view.findViewById(R.id.Profile_Books_Fragment).getId()) {
+            bundle.putInt("books-num", mProfileUser.getmUsernumberOfBooks());
+        }
         else if(ID == view.findViewById(R.id.Profile_Friends_Fragment).getId())
         {
             bundle.putInt("followers-num",mProfileUser.getmNumberOfFollowers());
@@ -140,7 +141,7 @@ public class ProfileFragment extends Fragment {
      * @param user holding data from request.
      */
     public void UpdateData(Users user ,int id) {
-        progressBar.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.GONE);
         if(UserInfo.mIsGuest ==false) {
             if (id != 0) {
                 if (userFollowingState == 1)//user is following this profile.
