@@ -327,7 +327,7 @@ public class ProfileFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            mUser_Id = bundle.getInt("UserId");
+            mUser_Id = bundle.getInt("user-id");
         }
 
         //Loading Fragments

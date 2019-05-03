@@ -2,14 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_margin="8dp"
     tools:context=".profile_and_profile_settings.Updates_fragment">
     <TextView
         android:id="@+id/BookFragment_BookNumbers_TextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:text="Updates"
         android:textAlignment="center"

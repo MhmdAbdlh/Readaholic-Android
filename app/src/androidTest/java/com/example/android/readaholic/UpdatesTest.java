@@ -3,11 +3,14 @@ package com.example.android.readaholic;
 import android.support.test.rule.ActivityTestRule;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.ListView;
 
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.example.android.readaholic.home.HomeFragment;
 import com.example.android.readaholic.home.Updates;
 
 import org.hamcrest.Matcher;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
@@ -16,6 +19,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -38,10 +42,14 @@ public class UpdatesTest {
     public ActivityTestRule<Main> activityTestRule =
             new ActivityTestRule<>(Main.class);
 
+    private HomeFragment fragment = new HomeFragment();
+
+    private String Tokenhaveupdates = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9lYzItNTItOTAtNS03Ny5jb21wdXRlLTEuYW1hem9uYXdzLmNvbVwvYXBpXC9sb2dpbiIsImlhdCI6MTU1NjcwNzc5NiwiZXhwIjoxNTU2Nzk0MTk2LCJuYmYiOjE1NTY3MDc3OTYsImp0aSI6InRhNWRZcWVlRkRQdm53YVkiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.zVZ6TgV-0r9LwF8ivSkvvkt9O-DnqpdWZx6QesxeWcQ";
+    private String TokenwithNoupdates = "";
+    private String TokenType = "bearer";
 
 
     Main mainActivity;
-    HomeFragment homeFragment;
     @Before
     public void yourSetUPFragment() {
         activityTestRule.getActivity()
@@ -69,22 +77,14 @@ public class UpdatesTest {
         }
     }
 
-  /*  @Test
-    public void basicElements() throws JSONException {
-        onView(withId(R.id.UpadtesActivity_updateslist_listview)).check(matches(isEnabled()));
-        ArrayList<Updates> j = HomeFragment.onResposeAction(HomeFragment.jsonFile);
-        for(int i = 0; i < j.size(); i++) {
-            onData(allOf(is(instanceOf(Updates.class)))).atPosition(i+1).equals(j.get(i));
-        }
-    }*/
 
     @Test
     public void UpdatesNumber() throws JSONException {
-        JSONObject i = new JSONObject(HomeFragment.jsonFile);
-        ArrayList<Updates> j = HomeFragment.onResposeAction(HomeFragment.jsonFile);
-        i = i.getJSONObject("updates");
-        int l = i.getJSONArray("update").length()-1;
-        assertEquals(l,j.size());
+        UserInfo.addUserInfo("","","",Tokenhaveupdates,TokenType);
+        String r = HomeFragment.request();
+        JSONArray arr = new JSONArray(r);
+        ListView l = (ListView) activityTestRule.getActivity().findViewById(R.id.UpadtesActivity_updateslist_listview);
+        assertEquals(l.getCount(),arr.length());
     }
 
     @Test

@@ -5,9 +5,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 28
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
+
     defaultConfig {
         applicationId "com.example.android.readaholic"
         minSdkVersion 22
@@ -58,7 +56,12 @@ dependencies {
     testImplementation "org.mockito:mockito-core:1.9.5"
     testImplementation "org.robolectric:robolectric:4.2"
 
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.pusher:pusher-java-client:1.5.0'
+    implementation 'com.pusher:push-notifications-android:1.4.0'
+
     implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'com.google.firebase:firebase-messaging:17.1.0'
 }
 
 dependencies {
@@ -85,3 +88,13 @@ dependencies {
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:+'
 }
+
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
+}
+
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
+}
+
+apply plugin: 'com.google.gms.google-services'

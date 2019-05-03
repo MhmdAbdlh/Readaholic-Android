@@ -13,10 +13,12 @@
         android:roundIcon="@drawable/readholicloh"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".books.Editreview"></activity>
+        <activity android:name=".home.AddShelf"></activity>
+        <activity android:name=".books.Editreview" />
         <activity android:name=".myshelves.BookShelves" />
-        <activity android:name=".explore.ExploreActivity"
-            android:theme="@style/AppTheme.NoActionBar" ></activity>
+        <activity
+            android:name=".explore.ExploreActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".settings.edit_Location.LocationSettings" />
         <activity android:name=".settings.edit_Birthday.BirthdaySettings" />
         <activity android:name=".settings.edit_UserName.UserNameSettings" />
@@ -32,7 +34,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -40,8 +41,9 @@
             android:name=".sign_in_up.SignIn"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible|adjustPan" />
-        <activity android:name=".sign_in_up.SignUp"
-            android:windowSoftInputMode="stateVisible|adjustPan"/>
+        <activity
+            android:name=".sign_in_up.SignUp"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity android:name=".books.BookPageActivity" />
         <activity
             android:name=".books.BookReviewsActivity"
@@ -49,6 +51,17 @@
         <activity
             android:name=".books.ReviewActivity"
             android:windowSoftInputMode="adjustResize" />
+        <service
+            android:name=".home.FirbaseManagerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+        android:name="com.google.firebase.messaging.default_notification_color"
+        android:resource="@color/colorAccent" />
     </application>
 
 </manifest>

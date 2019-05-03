@@ -1,6 +1,8 @@
 package com.example.android.readaholic.sign_in_up;
 
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +13,14 @@ import com.example.android.readaholic.R;
 import com.example.android.readaholic.profile_and_profile_settings.Profile;
 import com.example.android.readaholic.books.BookPageActivity;
 import com.example.android.readaholic.books.BookReviewsActivity;
+import com.pusher.client.Pusher;
+import com.pusher.client.PusherOptions;
+import com.pusher.client.channel.Channel;
+import com.pusher.client.channel.SubscriptionEventListener;
+import com.pusher.pushnotifications.PushNotifications;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Start extends AppCompatActivity {
 
@@ -18,6 +28,7 @@ public class Start extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
 
         //setting Signin button on click listener
         Button signIn = (Button)findViewById(R.id.Start_signIn_btn);
@@ -38,7 +49,7 @@ public class Start extends AppCompatActivity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // Intent intent = new Intent (v.getContext(),BookPageActivity.class);
+                // Intent intent = new Intent (v.getContext(),BookPageActivity.class);
                 Intent intent = new Intent (v.getContext(),SignUp.class);
                 startActivity(intent);
             }
@@ -47,6 +58,5 @@ public class Start extends AppCompatActivity {
 
 
     }
-
 
 }
