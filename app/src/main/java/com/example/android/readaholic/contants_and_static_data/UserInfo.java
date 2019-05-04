@@ -16,10 +16,11 @@ public class UserInfo {
     public static boolean IsMemic = false;
     public static int Memicid = 1;
     public static int sID = 1;
+    public static int USER_ID = -1;
     public static int sVerified ;
-
     public static Boolean mIsGuest=false;
     public static Boolean ISMemic=false;
+
     /**
      * adding the user data
      * called when the user data is received successfully
