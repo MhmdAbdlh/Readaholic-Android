@@ -68,7 +68,7 @@ public class SignIn extends AppCompatActivity {
                     public void onResponse(String response) {
                         boolean parseResponse = parseUserData(response);
                         if(parseResponse == true){
-                            UserInfo.mIsGuest=true;
+                            UserInfo.mIsGuest=false;
                             Intent intent = new Intent(getBaseContext(),Main.class);
                             startActivity(intent);
                             finish();
@@ -164,7 +164,6 @@ public class SignIn extends AppCompatActivity {
 
             JSONObject root = new JSONObject(response);
             errorMessage = root.getString("errors");
-
 
         } catch (JSONException e) {
             errorMessage = "Please try again later";

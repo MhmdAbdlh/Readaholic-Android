@@ -28,6 +28,7 @@ import com.example.android.readaholic.R;
 import com.example.android.readaholic.SearchableActivity;
 import com.example.android.readaholic.contants_and_static_data.SearchType;
 import com.example.android.readaholic.contants_and_static_data.Urls;
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,6 +85,9 @@ public class ExploreActivity extends AppCompatActivity {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
+    /**
+     * setting click listeners
+     */
     private void setOnClickListeners()
     {
         //search for more books click listener
@@ -103,8 +107,13 @@ public class ExploreActivity extends AppCompatActivity {
         searchForPeople.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Intent intent = new Intent(getBaseContext() , SearchableActivity.class);
-               startActivity(intent);
+                if(UserInfo.mIsGuest) {
+
+                } else {
+                    Intent intent = new Intent(getBaseContext() , SearchableActivity.class);
+                    startActivity(intent);
+                }
+
             }
         });
         /////////////////////////////////////////////////////////

@@ -261,6 +261,11 @@ public class ProfilePicture extends AppCompatActivity {
 
     }
 
+    /**
+     * converts image to string
+     * @param bitmap
+     * @return
+     */
     private String imageToString(Bitmap bitmap) {
 
        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

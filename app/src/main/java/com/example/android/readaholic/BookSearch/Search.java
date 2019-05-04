@@ -183,16 +183,10 @@ public class Search extends AppCompatActivity {
                 //if error code is 405 I should show the error message to the user provided
                 //by the backend
                 NetworkResponse networkResponse = error.networkResponse;
-                if (networkResponse != null && networkResponse.statusCode == HttpURLConnection.HTTP_BAD_METHOD) {
+                if (networkResponse != null && networkResponse.statusCode == 400) {
                     if(error.networkResponse.data!=null) {
                         //getting the error message provided by the backend
-                        try {
-                            String response = new String(error.networkResponse.data, "UTF-8");
-                            message = parseErrorResponse(response);
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
-
+                       message = "No books found";
                     }
                 }
 
@@ -259,7 +253,7 @@ public class Search extends AppCompatActivity {
         try {
 
             JSONObject root = new JSONObject(response);
-            errorMessage = root.getString("errors");
+            errorMessage = root.getString("status");
 
 
         } catch (JSONException e) {
