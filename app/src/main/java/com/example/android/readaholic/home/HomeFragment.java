@@ -5,22 +5,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabItem;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -31,10 +24,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
-import com.example.android.readaholic.home.Updates;
-import com.example.android.readaholic.home.UpdatesAdapter;
-import com.example.android.readaholic.profile_and_profile_settings.Followers_fragment;
-import com.example.android.readaholic.profile_and_profile_settings.ProfileFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -236,7 +225,7 @@ public class HomeFragment extends Fragment {
                         break;
                 }
                 arrayOfUpadates.add(updateItem);
-                adapter.notifyDataSetChanged();
+//                adapter.notifyDataSetChanged();
             } catch (JSONException e) {
                 e.printStackTrace();
             }

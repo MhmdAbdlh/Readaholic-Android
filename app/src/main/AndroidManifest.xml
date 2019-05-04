@@ -59,6 +59,7 @@
                 android:name="android.app.default_searchable"
                 android:value=".SearchableActivity" />
         </activity>
+
         <activity
             android:name=".Main"
             android:theme="@style/AppTheme.NoActionBar" />

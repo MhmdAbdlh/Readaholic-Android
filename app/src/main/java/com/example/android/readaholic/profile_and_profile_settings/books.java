@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -26,8 +27,10 @@ import com.example.android.readaholic.books.Cbookdata;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.example.android.readaholic.explore.BookModel;
+import com.example.android.readaholic.myshelves.ShelvesFragment;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -57,6 +60,13 @@ public class books extends Fragment {
     private BooksListsAdapter3 mCurrentlyReadingAdapter;
     public int NumberOfBooks;
     private RequestQueue mRequestQueue;
+    private FrameLayout BookFragment_SeeMore_FrameLayout;
+    private String ReadsBooksResponseAuth="{\"status\":\"success\",\"pages\":[{\"book_id\":3,\"title\":\"Once & Future\",\"id\":3,\"isbn\":9780316449274,\"img_url\":\"https:\\/\\/images-na.ssl-images-amazon.com\\/images\\/I\\/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\",\"reviews_count\":7,\"ratings_count\":7,\"author_id\":3},{\"book_id\":2,\"title\":\"Sherwood\",\"id\":2,\"isbn\":9780062422330,\"img_url\":\"https:\\/\\/kbimages1-a.akamaihd.net\\/6954f4cc-6e4e-46e3-8bc2-81b93f57a723\\/353\\/569\\/90\\/False\\/sherwood-7.jpg\",\"reviews_count\":19,\"ratings_count\":19,\"author_id\":2}]}";
+    private String WantsToReadBooksResponseAuth="{\"status\":\"success\",\"pages\":[{\"book_id\":1,\"title\":\"The Bird King\",\"id\":1,\"isbn\":9780802129031,\"img_url\":\"https:\\/\\/i5.walmartimages.com\\/asr\\/8bae6257-b3ed-43ba-b5d4-c55b6479697f_1.c6a36804e0a9cbfd0e408a4b96f8a94e.jpeg?odnHeight=560&odnWidth=560&odnBg=FFFFFF\",\"reviews_count\":9,\"ratings_count\":9,\"author_id\":1}]}";
+    private String CurrentlyReadingBooksResponseAuth="{\"status\":\"failed, no returned results for the input\",\"pages\":[]}";
+    private String ReadsBooksResponse="{\"status\":\"success\",\"pages\":[{\"book_id\":1,\"title\":\"The Bird King\",\"id\":1,\"isbn\":9780802129031,\"img_url\":\"https:\\/\\/i5.walmartimages.com\\/asr\\/8bae6257-b3ed-43ba-b5d4-c55b6479697f_1.c6a36804e0a9cbfd0e408a4b96f8a94e.jpeg?odnHeight=560&odnWidth=560&odnBg=FFFFFF\",\"reviews_count\":9,\"ratings_count\":9,\"author_id\":1}]}";
+    private String WantsToReadBooksResponse="{\"status\":\"success\",\"pages\":[{\"book_id\":3,\"title\":\"Once & Future\",\"id\":3,\"isbn\":9780316449274,\"img_url\":\"https:\\/\\/images-na.ssl-images-amazon.com\\/images\\/I\\/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\",\"reviews_count\":7,\"ratings_count\":7,\"author_id\":3},{\"book_id\":2,\"title\":\"Sherwood\",\"id\":2,\"isbn\":9780062422330,\"img_url\":\"https:\\/\\/kbimages1-a.akamaihd.net\\/6954f4cc-6e4e-46e3-8bc2-81b93f57a723\\/353\\/569\\/90\\/False\\/sherwood-7.jpg\",\"reviews_count\":19,\"ratings_count\":19,\"author_id\":2}]}";
+    private String CurrentlyReadingBooksResponse="{\"status\":\"failed, no returned results for the input\",\"pages\":[]}";
     /**
      * onCreateView called when the view is created
      * @param inflater inflate the layout
@@ -69,11 +79,28 @@ public class books extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
          mView = inflater.inflate(R.layout.fragment_books, container, false);
-         int ID = getArguments().getInt("user-id");
+         final int ID = getArguments().getInt("user-id");
          NumberOfBooks = getArguments().getInt("books-num");
         TextView BookNumber = (TextView)mView.findViewById(R.id.BookFragment_BookNumbers_TextView);
         BookNumber.setText(Integer.toString(NumberOfBooks)+" Books");
+        BookFragment_SeeMore_FrameLayout =(FrameLayout) mView.findViewById(R.id.BookFragment_SeeMore_FrameLayout);
+        if(UserInfo.mIsGuest)
+            BookFragment_SeeMore_FrameLayout.setVisibility(View.GONE);
+        else
+            {
+                BookFragment_SeeMore_FrameLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Fragment ShelvesFragment = new ShelvesFragment();
+                        Bundle bundle=new Bundle();
+                        bundle.putInt("USER_ID",ID);
+                        ShelvesFragment.setArguments(bundle);
+                        getFragmentManager().beginTransaction().replace(R.id.ProfileLayout,
+                                ShelvesFragment,"ShelvesFragment").addToBackStack("FromProfileToShelves").commit();
 
+                    }
+                });
+            }
         ExtractBooks(ID);
 
 
@@ -130,7 +157,7 @@ public class books extends Fragment {
         final String mRequestWantsToReadUrl;
         final String mRequestCurrentlyReadingUrl;
         if(id == 0) {
-            mRequestReadsUrl =Urls.getselfbooks(Integer.toString(0));
+             mRequestReadsUrl =Urls.getselfbooks(Integer.toString(0));
             mRequestWantsToReadUrl =Urls.getselfbooks(Integer.toString(2));
             mRequestCurrentlyReadingUrl =Urls.getselfbooks(Integer.toString(1));
         }
@@ -148,100 +175,120 @@ public class books extends Fragment {
         mReadImageUrl = new ArrayList<>();
         mWantToReadImageUrl = new ArrayList<>();
         //progressBar.setVisibility(View.VISIBLE);
-        JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.GET, mRequestReadsUrl, null, new com.android.volley.Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.e("BooksReads",response.toString());
-                JSONArray pages = response.optJSONArray("pages");
-                if (pages == null) {
-                    mReadImageUrl = null;
-                } else {
-                    for (int i = 0; i < pages.length(); i++) {
-                        BookModel book = new BookModel();
-                        book.setmImageUrl(pages.optJSONObject(i).optString("img_url"));
-                        book.setmId(pages.optJSONObject(i).optInt("id"));
-                        mReadImageUrl.add(book);
-                    }
+        if(!UserInfo.IsMemic) {
+            JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.GET, mRequestReadsUrl, null, new com.android.volley.Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    ExtractReads(response);
                     //updateLists();
+                    UpdateList1();
+
+                    //mRequestQueue.stop();
+
                 }
+            },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            mReadImageUrl = null;
+                            Log.e("Volly ERROR", "Error in volley request");
 
-                mRequestQueue.stop();
+                        }
+                    });
+            mRequestQueue.add(jsonObjectRequest1);
 
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        mReadImageUrl = null;
-                        Log.e("Volly ERROR","Error in volley request");
+            JsonObjectRequest jsonObjectRequest2 = new JsonObjectRequest(Request.Method.GET, mRequestCurrentlyReadingUrl, null, new com.android.volley.Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    ExtractCurrentlyReading(response);
+                    //updateLists();
+                    UpdateList2();
+                    //  mRequestQueue.stop();
 
-                    }
-                });
-        mRequestQueue.add(jsonObjectRequest1);
-
-        JsonObjectRequest jsonObjectRequest2 = new JsonObjectRequest(Request.Method.GET, mRequestCurrentlyReadingUrl, null, new com.android.volley.Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.e("BooksCurrentlyReading",response.toString());
-                JSONArray pages = response.optJSONArray("pages");
-                if (pages == null) {
-                    mCurrentlyReadingImageUrl = null ;
-                } else {
-                    for (int i = 0; i < pages.length(); i++) {
-                        BookModel book = new BookModel();
-                        book.setmImageUrl(pages.optJSONObject(i).optString("img_url"));
-                        book.setmId(pages.optJSONObject(i).optInt("id"));
-                        mCurrentlyReadingImageUrl.add(book);
-                    }
-
-                   // updateLists();
                 }
+            },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            mCurrentlyReadingImageUrl = null;
+                            Log.e("Volly ERROR", "Error in volley request");
 
-                mRequestQueue.stop();
+                        }
+                    });
+            mRequestQueue.add(jsonObjectRequest2);
 
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        mCurrentlyReadingImageUrl = null;
-                        Log.e("Volly ERROR","Error in volley request");
+            JsonObjectRequest jsonObjectRequest3 = new JsonObjectRequest(Request.Method.GET, mRequestWantsToReadUrl, null, new com.android.volley.Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    ExtractWantToRead(response);
+                    //updateLists();
+                    UpdateList3();
+                    //mRequestQueue.stop();
 
-                    }
-                });
-        mRequestQueue.add(jsonObjectRequest2);
-
-        JsonObjectRequest jsonObjectRequest3 = new JsonObjectRequest(Request.Method.GET, mRequestWantsToReadUrl, null, new com.android.volley.Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.e("BooksWantToReadReading",response.toString());
-                JSONArray pages = response.optJSONArray("pages");
-                if (pages == null) {
-                    mWantToReadImageUrl = null ;
-                } else {
-                    for (int i = 0; i < pages.length(); i++) {
-                        BookModel book = new BookModel();
-                        book.setmImageUrl(pages.optJSONObject(i).optString("img_url"));
-                        book.setmId(pages.optJSONObject(i).optInt("id"));
-                        mWantToReadImageUrl.add(book);
-                    }
-                    updateLists();
                 }
+            },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            mWantToReadImageUrl = null;
+                            Log.e("Volly ERROR", "Error in volley request");
 
-                mRequestQueue.stop();
+                        }
+                    });
+            mRequestQueue.add(jsonObjectRequest3);
+        }
+        else
+            {
+                JSONObject response1 = null,response2=null,response3=null;
 
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        mWantToReadImageUrl = null;
-                        Log.e("Volly ERROR","Error in volley request");
+                if(id==0)
+                {
+                    try {
+                         response1 = new JSONObject(ReadsBooksResponseAuth);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                         response2 = new JSONObject(CurrentlyReadingBooksResponseAuth);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                         response1 = new JSONObject(WantsToReadBooksResponseAuth);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                else
+                    {
+                        try {
+                            response1 = new JSONObject(ReadsBooksResponse);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                             response2 = new JSONObject(CurrentlyReadingBooksResponse);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                             response1 = new JSONObject(WantsToReadBooksResponse);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
-                });
-        mRequestQueue.add(jsonObjectRequest3);
-
+                ExtractReads(response1);
+                //updateLists();
+                UpdateList1();
+                ExtractCurrentlyReading(response2);
+                //updateLists();
+                UpdateList2();
+                ExtractWantToRead(response3);
+                //updateLists();
+                UpdateList3();
+            }
     }
 
 
@@ -486,8 +533,74 @@ public class books extends Fragment {
             mWantToReadAdapter.notifyDataSetChanged();
         }
 
-        TextView BookNumber = (TextView)mView.findViewById(R.id.BookFragment_BookNumbers_TextView);
-        BookNumber.setText(Integer.toString(NumberOfBooks)+" Books");
 
     }
+public void ExtractReads(JSONObject response)
+{
+    Log.e("BooksReads",response.toString());
+    if(response.optString("status") =="success") {
+        JSONArray pages = response.optJSONArray("pages");
+        if (pages == null) {
+            mReadImageUrl = null;
+        } else {
+            for (int i = 0; i < pages.length(); i++) {
+                BookModel book = new BookModel();
+                book.setmImageUrl(pages.optJSONObject(i).optString("img_url"));
+                book.setmId(pages.optJSONObject(i).optInt("id"));
+                mReadImageUrl.add(book);
+            }
+        }
+    }
+    else
+        mReadImageUrl=null;
+
+}
+    public void ExtractWantToRead(JSONObject response)
+    {
+        Log.e("BooksWantToReadReading",response.toString());
+        if(response.optString("status") =="success") {
+            JSONArray pages = response.optJSONArray("pages");
+            if (pages == null) {
+                mWantToReadImageUrl = null;
+            } else {
+                for (int i = 0; i < pages.length(); i++) {
+                    BookModel book = new BookModel();
+                    book.setmImageUrl(pages.optJSONObject(i).optString("img_url"));
+                    book.setmId(pages.optJSONObject(i).optInt("id"));
+                    mWantToReadImageUrl.add(book);
+                }
+
+            }
+        }
+        else
+        {
+            mWantToReadImageUrl=null;
+        }
+
+    }
+
+    public void ExtractCurrentlyReading(JSONObject response)
+    {
+        Log.e("BooksCurrentlyReading",response.toString());
+        if(response.optString("status") =="success") {
+            JSONArray pages = response.optJSONArray("pages");
+            if (pages == null) {
+                mCurrentlyReadingImageUrl = null;
+            } else {
+                for (int i = 0; i < pages.length(); i++) {
+                    BookModel book = new BookModel();
+                    book.setmImageUrl(pages.optJSONObject(i).optString("img_url"));
+                    book.setmId(pages.optJSONObject(i).optInt("id"));
+                    mCurrentlyReadingImageUrl.add(book);
+                }
+
+            }
+        }
+        else
+        {
+            mCurrentlyReadingImageUrl=null;
+        }
+
+    }
+
 }
