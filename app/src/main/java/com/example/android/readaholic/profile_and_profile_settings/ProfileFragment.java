@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -65,6 +66,9 @@ public class ProfileFragment extends Fragment {
     private UpdatesAdapter adapterForUpdatesList;
     private int userFollowingState;
     View view;
+    private FrameLayout BooksFrgament;
+    private FrameLayout updatesFrgament;
+    private FrameLayout followingsFrgament;
     ProgressBar progressBar;
     RelativeLayout settingsLayout;
     LinearLayout ProfileContainer;
@@ -82,7 +86,9 @@ public class ProfileFragment extends Fragment {
         ProfileContainer = (LinearLayout)view.findViewById(R.id.ProfileContainer);
         progressBar=(ProgressBar)view.findViewById(R.id.Profile_ProgressBar);
         progressBar.setVisibility(View.VISIBLE);
-
+        BooksFrgament = (FrameLayout)view.findViewById(R.id.Profile_Books_Fragment);
+        updatesFrgament = (FrameLayout)view.findViewById(R.id.Profile_Updates_Fragment);
+        followingsFrgament = (FrameLayout)view.findViewById(R.id.Profile_Friends_Fragment);
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -232,6 +238,9 @@ public class ProfileFragment extends Fragment {
             {
                 belowSettings.setVisibility(View.GONE);
                 settingsLayout.setVisibility(View.GONE);
+                BooksFrgament.setVisibility(View.GONE);
+                updatesFrgament.setVisibility(View.GONE);
+                followingsFrgament.setVisibility(View.GONE);
             }
         final AtomicBoolean loaded = new AtomicBoolean();
         Picasso.get().load(user.getmUserImageUrl()).transform(new CircleTransform()).into(mUserImage, new Callback.EmptyCallback() {
