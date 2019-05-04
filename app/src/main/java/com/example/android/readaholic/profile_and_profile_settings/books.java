@@ -58,7 +58,7 @@ public class books extends Fragment {
     private BooksListsAdapter mReadAdapter;
     private BooksListsAdapter2 mWantToReadAdapter;
     private BooksListsAdapter3 mCurrentlyReadingAdapter;
-    public int NumberOfBooks;
+    public int NumberOfBooks=0;
     private RequestQueue mRequestQueue;
     private FrameLayout BookFragment_SeeMore_FrameLayout;
     private String ReadsBooksResponseAuth="{\"status\":\"success\",\"pages\":[{\"book_id\":3,\"title\":\"Once & Future\",\"id\":3,\"isbn\":9780316449274,\"img_url\":\"https:\\/\\/images-na.ssl-images-amazon.com\\/images\\/I\\/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\",\"reviews_count\":7,\"ratings_count\":7,\"author_id\":3},{\"book_id\":2,\"title\":\"Sherwood\",\"id\":2,\"isbn\":9780062422330,\"img_url\":\"https:\\/\\/kbimages1-a.akamaihd.net\\/6954f4cc-6e4e-46e3-8bc2-81b93f57a723\\/353\\/569\\/90\\/False\\/sherwood-7.jpg\",\"reviews_count\":19,\"ratings_count\":19,\"author_id\":2}]}";
@@ -586,6 +586,7 @@ public void ExtractReads(JSONObject response)
                     book.setmId(pages.optJSONObject(i).optInt("id"));
                     mReadImageUrl.add(book);
                 }
+                NumberOfBooks+=pages.length();
             }
         //}
          //else if (response.optString("status") == "failed, no returned results for the input")
@@ -615,7 +616,7 @@ public void ExtractReads(JSONObject response)
                         book.setmId(pages.optJSONObject(i).optInt("id"));
                         mWantToReadImageUrl.add(book);
                     }
-
+                    NumberOfBooks+=pages.length();
                 }
             //} else if (response.optString("status") == "failed, no returned results for the input") {
               //  mWantToReadImageUrl = null;
@@ -646,6 +647,7 @@ public void ExtractReads(JSONObject response)
                         book.setmId(pages.optJSONObject(i).optInt("id"));
                         mCurrentlyReadingImageUrl.add(book);
                     }
+                    NumberOfBooks+=pages.length();
 
                 }
             //} else if (response.optString("status") == "failed, no returned results for the input") {

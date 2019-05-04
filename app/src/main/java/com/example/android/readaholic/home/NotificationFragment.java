@@ -94,9 +94,15 @@ public class NotificationFragment  extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Notification selectedItem = (Notification) parent.getItemAtPosition(position);
                 if(selectedItem.getmreadornot() == 0){
-                    requestmark(selectedItem.getMid());
-                    selectedItem.setMreadornot(1);
-                    listNotif.setAdapter(adapter);
+                    if(UserInfo.IsMemic != true) {
+                        requestmark(selectedItem.getMid());
+                        selectedItem.setMreadornot(1);
+                        listNotif.setAdapter(adapter);
+                    }else{
+
+                        selectedItem.setMreadornot(1);
+                        listNotif.setAdapter(adapter);
+                    }
                 }
                 if (selectedItem.getmType() == 2) {
 
@@ -117,7 +123,12 @@ public class NotificationFragment  extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Request();
+        if(UserInfo.IsMemic == true){
+         onResposeAction(Memic.notifiupdatesid1);
+         showlist();
+        }else {
+            Request();
+        }
     }
 
     public void onResume(){
@@ -241,6 +252,8 @@ public class NotificationFragment  extends Fragment {
      * to fill listview with arrayof Notification after request was success
      */
     public void showlist(){
+
+        listNotif = (ListView) view.findViewById(R.id.Notificationfragment_list_listview);
         adapter = new NotificationAdapter(getContext(), arrayOfNotif);
         listNotif.setAdapter(adapter);
         adapter.notifyDataSetChanged();

@@ -250,7 +250,7 @@ public class Followingtab_Fragment extends Fragment {
                 user.setmUserId(followings.optJSONObject(i).optInt("id"));
                 user.setmUserImageUrl(followings.optJSONObject(i).optString("image_link"));
                 user.setmFollowerState(true);
-                mUser.add(user);
+                 mUser.add(user);
             }
         }
 

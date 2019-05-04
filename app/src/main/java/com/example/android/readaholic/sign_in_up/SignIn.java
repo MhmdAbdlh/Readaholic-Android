@@ -140,8 +140,10 @@ public class SignIn extends AppCompatActivity {
                 String userName = userObject.getString("username");
                 String name = userObject.getString("name");
                 String imageLink = userObject.optString("image_link");
+
                 int id = userObject.getInt("id");
                 int verified = userObject.getInt("verified");
+            UserInfo.sID = id;
                 /****************************getting user info -> close****************************/
                 //adding data to the static class to be used later
                 UserInfo.addUserInfo(userName,name,imageLink,token,tokenType ,id,verified);
@@ -164,7 +166,6 @@ public class SignIn extends AppCompatActivity {
 
             JSONObject root = new JSONObject(response);
             errorMessage = root.getString("errors");
-
 
         } catch (JSONException e) {
             errorMessage = "Please try again later";
@@ -288,9 +289,9 @@ public class SignIn extends AppCompatActivity {
 
                     //checking user name and password fields
                     if(validateFields()) {
-                        if (username.getText().toString().equals("admin@yahoo.com")
-                                && pass.getText().toString().equals("admin")) {
-                            UserInfo.addUserInfo("admin@yahoo.com","ahmed nassar",null,"1","bearer" , 1 , 1);
+                        if (username.getText().toString().equals("test@yahoo.com")
+                                && pass.getText().toString().equals("password")) {
+                            UserInfo.addUserInfo("test@yahoo.com","test",null,"1","bearer" , 1 , 1);
                             Intent intent = new Intent(v.getContext(), Main.class);
                             startActivity(intent);
                             finish();

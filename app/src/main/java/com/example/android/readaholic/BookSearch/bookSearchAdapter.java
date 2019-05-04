@@ -18,6 +18,8 @@ import com.example.android.readaholic.R;
 import com.example.android.readaholic.books.BookPageActivity;
 import com.example.android.readaholic.books.BookPageInfo;
 import com.example.android.readaholic.books.Cbookdata;
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
+import com.pusher.client.channel.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -67,11 +69,11 @@ public class bookSearchAdapter extends ArrayAdapter<bookSearchModel> {
         book.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Cbookdata.INSTANCE.setBookid(Item.getBookId());
-                Intent intent = new Intent(mContext , BookPageActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(intent);
 
+                    Cbookdata.INSTANCE.setBookid(Item.getBookId());
+                    Intent intent = new Intent(mContext , BookPageActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mContext.startActivity(intent);
             }
         });
 

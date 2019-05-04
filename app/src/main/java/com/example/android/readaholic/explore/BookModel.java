@@ -1,5 +1,8 @@
 package com.example.android.readaholic.explore;
 
+/**
+ * holds the data of books
+ */
 public class BookModel {
     private String mIsbn ;
     private String mTitle;
