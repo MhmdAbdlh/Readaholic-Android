@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent" >
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <LinearLayout
+        android:id="@+id/ProfileContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
 
         <LinearLayout
@@ -21,6 +27,7 @@
             android:gravity="center"
             android:orientation="vertical"
             android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
 
             <ImageView
                 android:id="@+id/profileActivity_ProfilePic_ImageView"
@@ -60,6 +67,7 @@
                 android:layout_marginBottom="8dp" />
 
             <RelativeLayout
+                android:id="@+id/Profile_SeetingsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginBottom="8dp">
@@ -94,10 +102,20 @@
         </LinearLayout>
 
         <View
+            android:id="@+id/belowSetting"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:background="@color/colorPrimaryDark"
             />
+
+        <ProgressBar
+            android:id="@+id/Profile_ProgressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone"/>
+
 
         <FrameLayout
             android:id="@+id/Profile_Books_Fragment"
@@ -114,23 +132,15 @@
 
         <View style="@style/Divider" />
 
+
         <FrameLayout
             android:id="@+id/Profile_Updates_Fragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"/>
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <ListView
-                    android:id="@+id/Profile_updateslist_listview1"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp" />
-            </LinearLayout>
-        </FrameLayout>
 
     </LinearLayout>
 </ScrollView>
+</android.support.v4.widget.NestedScrollView>
+

@@ -1,5 +1,6 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -24,6 +26,7 @@ import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -39,47 +42,17 @@ public class Followers_fragment extends Fragment {
      RecyclerView recyclerView;
      FollowersAdapter mAdapter;
      RecyclerView.LayoutManager layoutManager;
-     List<String> mUsers;
+     List<Users> mUsers;
      TextView mNotAvaliable ;
      RequestQueue mRequestQueue;
      View view;
      int userId;
      int FollowingNumber;
     int FollowersNumber;
-     String FollowesResponse = "{\n" +
-            "  \"GoodreadsResponse\": {\n" +
-            "    \"Request\": {\n" +
-            "      \"authentication\": \"false\",\n" +
-            "      \"method\": \"\"\n" +
-            "    },\n" +
-            "    \"following\": {\n" +
-            "      \"-start\": \"1\",\n" +
-            "      \"-end\": \"2\",\n" +
-            "      \"-total\": \"2\",\n" +
-            "      \"user\": [\n" +
-            "        {\n" +
-            "          \"id\": \"27948863\",\n" +
-            "          \"name\": \"Ahmed Mahmoud\",\n" +
-            "          \"link\": \"https://www.goodreads.com/user/show/27948863-ahmed-mahmoud\",\n" +
-            "          \"image_url\": \"https://images.gr-assets.com/users/1551035887p3/27948863.jpg\",\n" +
-            "          \"small_image_url\": \"https://images.gr-assets.com/users/1551035887p2/27948863.jpg\",\n" +
-            "          \"friends_count\": \"27\",\n" +
-            "          \"reviews_count\": \"8\",\n" +
-            "          \"created_at\": \"Thu Mar 14 11:30:28 -0700 2019\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "          \"id\": \"7004371\",\n" +
-            "          \"name\": \"Kevin Emerson\",\n" +
-            "          \"link\": \"https://www.goodreads.com/user/show/7004371-kevin-emerson\",\n" +
-            "          \"image_url\": \"https://images.gr-assets.com/users/1507144891p3/7004371.jpg\",\n" +
-            "          \"small_image_url\": \"https://images.gr-assets.com/users/1507144891p2/7004371.jpg\",\n" +
-            "          \"friends_count\": \"361\",\n" +
-            "          \"reviews_count\": \"72\"\n" +
-            "        }\n" +
-            "      ]\n" +
-            "    }\n" +
-            "  }\n" +
-            "}";
+    ProgressBar progressBar;
+     String FollowesResponse = "{\"following\":[{\"id\":1,\"name\":\"test\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":2,\"name\":\"ta7a\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null}],\"_start\":1,\"_end\":4,\"_total\":4}";
+    String FollowesResponseAuth="{\"following\":[{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":5,\"name\":\"Salma\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null}],\"_start\":1,\"_end\":3,\"_total\":3}";
+
 
 
     /**
@@ -95,7 +68,7 @@ public class Followers_fragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_followers_fragment, container, false);
         //make the TextView of not available message at first invisible.
-
+        progressBar=(ProgressBar)view.findViewById(R.id.FollowersFragment_progressBar);
         mNotAvaliable =(TextView)view.findViewById(R.id.NotAvaliableTextView);
         mNotAvaliable.setVisibility(View.INVISIBLE);
 
@@ -189,43 +162,55 @@ public class Followers_fragment extends Fragment {
             }
 
         mUsers = new ArrayList<>();
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null, new com.android.volley.Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d("FollowingInProfile", "user id is "+Integer.toString(userId));
-                Log.e("FollowingInProfileRes",response.toString());
-
-
-                JSONArray followings = response.optJSONArray("following");
-                if (followings == null) {
-                    mUsers = null ;
-                } else {
-                    for (int i = 0; i < followings.length(); i++) {
-                        String userImageUrl = null;
-                        userImageUrl =(followings.optJSONObject(i).optString("image_link"));
-                        mUsers.add(userImageUrl);
-                    }
+        progressBar.setVisibility(View.VISIBLE);
+        if(!UserInfo.IsMemic) {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null, new com.android.volley.Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    ExtractFollowers(response);
                     UpdateList();
+
+                    mRequestQueue.stop();
+
                 }
+            },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            mUsers = null;
+                            Log.e("Volly ERROR", "Error in volley request");
 
-                mRequestQueue.stop();
+                        }
+                    });
+            mRequestQueue.add(jsonObjectRequest);
+        }
+        else
+            {
+                JSONObject response =null;
+                if(id==0) {
 
+                    try {
+                        response = new JSONObject(FollowesResponseAuth);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else
+                    {
+
+                        try {
+                            response = new JSONObject(FollowesResponse);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                ExtractFollowers(response);
+                UpdateList();
             }
-        },
-                new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                mUsers = null;
-                Log.e("Volly ERROR","Error in volley request");
-
-            }
-        });
-        mRequestQueue.add(jsonObjectRequest);
-
     }
 private void UpdateList()
 {
+    progressBar.setVisibility(View.INVISIBLE);
     if(mUsers.isEmpty())
     {
         Log.e("not available ","not available in following and followers ");
@@ -241,7 +226,17 @@ private void UpdateList()
         //       recyclerView.setHasFixedSize(true);
 
         // specify an adapter
-        mAdapter = new FollowersAdapter(getContext(),mUsers);
+        mAdapter = new FollowersAdapter(getContext(), mUsers, new FollowersAdapter.customItemCLickLisenter() {
+            @Override
+            public void onItemClick(View v, int position) {
+                int userId = mUsers.get(position).getmUserId();
+                Intent profileIntent = new Intent(getContext(), Profile.class);
+                profileIntent.putExtra("user-idFromFollowingList",userId);
+                profileIntent.putExtra("followingState",true);
+                Log.e("Following_tab","following tab user id"+Integer.toString(userId));
+                startActivity(profileIntent);
+            }
+        });
         mAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(mAdapter);
 
@@ -249,4 +244,24 @@ private void UpdateList()
 
 
 }
+public void ExtractFollowers(JSONObject response)
+{
+    Log.d("FollowingInProfile", "user id is "+Integer.toString(userId));
+    Log.e("FollowingInProfileRes",response.toString());
+
+
+    JSONArray followings = response.optJSONArray("following");
+    if (followings == null) {
+        mUsers = null ;
+    } else {
+        for (int i = 0; i < followings.length(); i++) {
+            Users user = new Users();
+            user.setmUserImageUrl(followings.optJSONObject(i).optString("image_link"));
+            user.setmUserId(followings.optJSONObject(i).optInt("id"));
+            mUsers.add(user);
+        }
+    }
+
+}
+
 }

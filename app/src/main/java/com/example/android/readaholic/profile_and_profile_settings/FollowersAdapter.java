@@ -9,17 +9,21 @@ import android.widget.ImageView;
 
 import com.example.android.readaholic.CircleTransform;
 import com.example.android.readaholic.R;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * FollowersList Adapter as adapter of followers list
  * @author Hossam Ahmed
  */
 public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.MyViewHolder> {
-    private List<String> mUsers;
+    private List<Users> mUsers;
     private Context mcontext;
+    private customItemCLickLisenter customItemCLickLisenter;
+
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -28,7 +32,7 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.MyVi
      * MyViewHolder class to hold the view elements
      * @author Hossam Ahmed
      */
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         // each data item is just a string in this case
         private ImageView UserImageView;
         ViewGroup viewGroup;
@@ -44,6 +48,10 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.MyVi
         }
 
 
+        @Override
+        public void onClick(View v) {
+
+        }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
@@ -53,9 +61,10 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.MyVi
      * @param context context of the layout
      * @param users user object to fill the layout with their data
      */
-    public FollowersAdapter(Context context,List<String> users) {
+    public FollowersAdapter(Context context,List<Users> users,customItemCLickLisenter Listener) {
         mUsers=users;
         mcontext = context;
+        this.customItemCLickLisenter = Listener;
     }
 
     // Create new views (invoked by the layout manager)
@@ -72,7 +81,15 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.MyVi
                                                      int viewType) {
         // create a new view
         View v =  LayoutInflater.from(mcontext).inflate(R.layout.followerslist, parent, false);
-        return new MyViewHolder(v);
+        final MyViewHolder mViewHolder = new MyViewHolder(v);
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customItemCLickLisenter.onItemClick(v,mViewHolder.getPosition());
+            }
+        });
+
+        return mViewHolder;
 
     }
 
@@ -88,7 +105,19 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.MyVi
         // - get element from my dataset at this position
         // - replace the contents of the view with that element
         holder.viewGroup.removeAllViews();
-       Picasso.get().load(mUsers.get(position)).transform(new CircleTransform()).into(holder.UserImageView);
+        final AtomicBoolean loaded = new AtomicBoolean();
+        Picasso.get().load(mUsers.get(position).getmUserImageUrl()).transform(new CircleTransform()).into(holder.UserImageView, new Callback.EmptyCallback() {
+            @Override public void onSuccess() {
+                loaded.set(true);
+            }
+        });
+        if (!loaded.get()) {
+            // The image was immediately available.
+            Picasso.get().load("https://s.gr-assets.com/assets/nophoto/user/u_111x148-9394ebedbb3c6c218f64be9549657029.png").
+                    transform(new CircleTransform()).into(holder.UserImageView);
+        }
+
+        //Picasso.get().load(mUsers.get(position)).transform(new CircleTransform()).into(holder.UserImageView);
         //((MyViewHolder)holder).UserImageView.setImageResource(R.drawable.reader);
         holder.viewGroup.addView(holder.UserImageView);
     }
@@ -99,6 +128,10 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.MyVi
     @Override
     public int getItemCount() {
         return mUsers.size();
+    }
+    public interface customItemCLickLisenter
+    {
+        public void onItemClick(View v,int position);
     }
 
 }

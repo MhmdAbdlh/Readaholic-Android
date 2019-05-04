@@ -1,7 +1,6 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,8 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,12 +23,10 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,41 +49,9 @@ public class Followingtab_Fragment extends Fragment {
     int userId;
     int followingNum;
     private static ProgressDialog mProgressDialog;
-    String FollowesResponse = "{\n" +
-            "  \"GoodreadsResponse\": {\n" +
-            "    \"Request\": {\n" +
-            "      \"authentication\": \"false\",\n" +
-            "      \"method\": \"\"\n" +
-            "    },\n" +
-            "    \"following\": {\n" +
-            "      \"-start\": \"1\",\n" +
-            "      \"-end\": \"2\",\n" +
-            "      \"-total\": \"2\",\n" +
-            "      \"user\": [\n" +
-            "        {\n" +
-            "          \"id\": \"27948863\",\n" +
-            "          \"name\": \"Ahmed Mahmoud\",\n" +
-            "          \"link\": \"https://www.goodreads.com/user/show/27948863-ahmed-mahmoud\",\n" +
-            "          \"image_url\": \"https://images.gr-assets.com/users/1551035887p3/27948863.jpg\",\n" +
-            "          \"small_image_url\": \"https://images.gr-assets.com/users/1551035887p2/27948863.jpg\",\n" +
-            "          \"friends_count\": \"27\",\n" +
-            "          \"reviews_count\": \"8\",\n" +
-            "          \"created_at\": \"Thu Mar 14 11:30:28 -0700 2019\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "          \"id\": \"7004371\",\n" +
-            "          \"name\": \"Kevin Emerson\",\n" +
-            "          \"link\": \"https://www.goodreads.com/user/show/7004371-kevin-emerson\",\n" +
-            "          \"image_url\": \"https://images.gr-assets.com/users/1507144891p3/7004371.jpg\",\n" +
-            "          \"small_image_url\": \"https://images.gr-assets.com/users/1507144891p2/7004371.jpg\",\n" +
-            "          \"friends_count\": \"361\",\n" +
-            "          \"reviews_count\": \"72\"\n" +
-            "        }\n" +
-            "      ]\n" +
-            "    }\n" +
-            "  }\n" +
-            "}";
-
+    ProgressBar progressBar;
+    String FollowingResponse ="{\"following\":[{\"id\":1,\"name\":\"test\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":2,\"name\":\"ta7a\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null}],\"_start\":1,\"_end\":4,\"_total\":4}";
+    String FollowingResponseAuth="{\"following\":[{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":5,\"name\":\"Salma\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null}],\"_start\":1,\"_end\":3,\"_total\":3}";
     /**
      * onCreateView called when the view is created
      * @param inflater inflate the layout
@@ -99,7 +64,7 @@ public class Followingtab_Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view =  inflater.inflate(R.layout.followingtab_fragment,container,false);
         Title = (TextView)view.findViewById(R.id.Followingtab_fragment_Followings_TextView);
-
+        progressBar=(ProgressBar)view.findViewById(R.id.FollowingTab_progressBar);
         mNotAvaliableTextView = (TextView) view.findViewById(R.id.Followingtab_fragment_NotAvaliableTextView);
         mNotAvaliableTextView.setVisibility(View.INVISIBLE);
 
@@ -142,29 +107,16 @@ public class Followingtab_Fragment extends Fragment {
         else
             mRequestUrl = Urls.ROOT  + "/api/following?user_id="+Integer.toString(id)+"&token="+
                     UserInfo.sToken+"&type="+ UserInfo.sTokenType;
-
+        progressBar.setVisibility(View.VISIBLE);
         //showSimpleProgressDialog(getContext(),"Loading.....","Loading Followings",false);
+        if(!UserInfo.IsMemic)
+        {
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject Response) {
-                        Log.e("following tab response",Response.toString());
-
-                        JSONArray followings = Response.optJSONArray("following");
-                        if (followings == null) {
-                            Log.e("Following tab test","following tab has null following array");
-                            mUser = null;
-                        } else {
-                            for (int i = 0; i < followings.length(); i++) {
-                                Users user = new Users();
-                                user.setmUserName(followings.optJSONObject(i).optString("name"));
-                                user.setmUserId(followings.optJSONObject(i).optInt("id"));
-                                user.setmUserImageUrl(followings.optJSONObject(i).optString("image_link"));
-                                user.setmFollowerState(true);
-                                mUser.add(user);
-                            }
-                            UpdateList();
-                        }
+                        ExtractFollowing(Response);
+                        UpdateList();
 
                         mRequestQueue.stop();
 
@@ -178,8 +130,34 @@ public class Followingtab_Fragment extends Fragment {
         });
         mRequestQueue.add(jsonObjectRequest);
     }
+        else
+            {
+                JSONObject Response =null;
+                if(id!=0)
+                {
+                    try {
+                        Response = new JSONObject(FollowingResponse);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+                else
+                    {
+
+                        try {
+                            Response = new JSONObject(FollowingResponseAuth);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                ExtractFollowing(Response);
+                UpdateList();
+            }
+    }
     private void UpdateList()
     {
+        progressBar.setVisibility(View.INVISIBLE);
         //removeSimpleProgressDialog();
         if(mUser.isEmpty())
         {
@@ -217,73 +195,8 @@ public class Followingtab_Fragment extends Fragment {
 
     }
 
-    public static void removeSimpleProgressDialog() {
-        try {
-            if (mProgressDialog != null) {
-                if (mProgressDialog.isShowing()) {
-                    mProgressDialog.dismiss();
-                    mProgressDialog = null;
-                }
-            }
-        } catch (IllegalArgumentException ie) {
-            ie.printStackTrace();
+    public void ExtractFollowing(JSONObject response)
+    {
 
-        } catch (RuntimeException re) {
-            re.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public static void showSimpleProgressDialog(Context context, String title,
-                                                String msg, boolean isCancelable) {
-        try {
-            if (mProgressDialog == null) {
-                mProgressDialog = ProgressDialog.show(context, title, msg);
-                mProgressDialog.setCancelable(isCancelable);
-            }
-
-            if (!mProgressDialog.isShowing()) {
-                mProgressDialog.show();
-            }
-
-        } catch (IllegalArgumentException ie) {
-            ie.printStackTrace();
-        } catch (RuntimeException re) {
-            re.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    boolean followUser(int userId) {
-        String mRequestUrl = Urls.ROOT + "/api/follow?" + "user_id=" + Integer.toString(userId) + "&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
-        Log.e("followUserUrl",mRequestUrl);
-        DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(), 1024 * 1024);
-        BasicNetwork network = new BasicNetwork(new HurlStack());
-        mRequestQueue = new RequestQueue(cache, network);
-        mRequestQueue.start();
-        final boolean[] status = new boolean[1];
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, mRequestUrl, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                JSONObject Response = null;
-                try {
-                    Response = new JSONObject(response);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                status[0] = Response.optBoolean("status");
-                Toast.makeText(getContext(),Response.optString("message"),Toast.LENGTH_SHORT);
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                status[0] = false;
-            }
-        });
-        mRequestQueue.add(stringRequest);
-        return status[0];
     }
 }

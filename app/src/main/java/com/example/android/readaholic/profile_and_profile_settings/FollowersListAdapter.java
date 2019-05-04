@@ -25,12 +25,14 @@ import com.example.android.readaholic.CircleTransform;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * FollowersList Adapter as adapter of followers list
@@ -137,46 +139,60 @@ public class FollowersListAdapter extends RecyclerView.Adapter<FollowersListAdap
      */
     @Override
         public void onBindViewHolder(@NonNull final FollowersListAdapter.MyViewHolder myViewHolder, final int i) {
-            Picasso.get().load(mUsers.get(i).getmUserImageUrl()).transform(new CircleTransform()).into(myViewHolder.userImageView);
+        final AtomicBoolean loaded = new AtomicBoolean();
+        Picasso.get().load(mUsers.get(i).getmUserImageUrl()).transform(new CircleTransform()).into(myViewHolder.userImageView, new Callback.EmptyCallback() {
+            @Override public void onSuccess() {
+                loaded.set(true);
+            }
+        });
+        if (!loaded.get()) {
+            // The image was immediately available.
+            Picasso.get().load("https://s.gr-assets.com/assets/nophoto/user/u_111x148-9394ebedbb3c6c218f64be9549657029.png").
+                    transform(new CircleTransform()).into(myViewHolder.userImageView);
+        }
+
+        //Picasso.get().load(mUsers.get(i).getmUserImageUrl()).transform(new CircleTransform()).into(myViewHolder.userImageView);
             myViewHolder.userNameTextView.setText( mUsers.get(i).getmUserName());
             myViewHolder.userBooksNumberTextView.setText( mUsers.get(i).getmNumberOfFollowers()+" Books");
 
-            if(!mUsers.get(i).ismFollowerState())//the user is not  following u.
+            if(UserInfo.mIsGuest == false) {
+                if (!mUsers.get(i).ismFollowerState())//the user is not  following u.
                 {
                     myViewHolder.userFollowingStatusButton.setText("FOLLOW");
-                    myViewHolder.userFollowingStatusButton.setTextColor(ContextCompat.getColor(mcontext,R.color.colorBlack));
+                    myViewHolder.userFollowingStatusButton.setTextColor(ContextCompat.getColor(mcontext, R.color.colorBlack));
+                } else {
+                    myViewHolder.userFollowingStatusButton.setText("FOLLOWING");
+                    myViewHolder.userFollowingStatusButton.setTextColor(ContextCompat.getColor(mcontext, R.color.colorWhite));
                 }
-                else {
-                myViewHolder.userFollowingStatusButton.setText("FOLLOWING");
-                myViewHolder.userFollowingStatusButton.setTextColor(ContextCompat.getColor(mcontext,R.color.colorWhite));
-                }
 
 
-            myViewHolder.userFollowingStatusButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+                myViewHolder.userFollowingStatusButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-                    if(mUsers.get(i).ismFollowerState())//the user is following u.
-                    {
-                        mUsers.get(i).setmFollowerState(false);//the user  un-follow u.
-                        unfollowUser(mUsers.get(i).getmUserId());
-                        myViewHolder.userFollowingStatusButton.setText("FOLLOW");
-                        myViewHolder.userFollowingStatusButton.setTextColor(ContextCompat.getColor(mcontext,R.color.colorBlack));
+                        if (mUsers.get(i).ismFollowerState())//the user is following u.
+                        {
+                            mUsers.get(i).setmFollowerState(false);//the user  un-follow u.
+                            unfollowUser(mUsers.get(i).getmUserId());
+                            myViewHolder.userFollowingStatusButton.setText("FOLLOW");
+                            myViewHolder.userFollowingStatusButton.setTextColor(ContextCompat.getColor(mcontext, R.color.colorBlack));
 
-                        /// TODO: post Request to change the list of followings
+                            /// TODO: post Request to change the list of followings
+                        } else if (!mUsers.get(i).ismFollowerState()) {
+                            mUsers.get(i).setmFollowerState(true);//the user follow u.
+                            followUser(mUsers.get(i).getmUserId());
+                            myViewHolder.userFollowingStatusButton.setText("FOLLOWING");
+                            myViewHolder.userFollowingStatusButton.setTextColor(ContextCompat.getColor(mcontext, R.color.colorWhite));
+                            /// TODO: post Request to change the list of followings
+                        }
+
                     }
-                    else if(!mUsers.get(i).ismFollowerState())
-                   {
-                        mUsers.get(i).setmFollowerState(true);//the user follow u.
-                        followUser(mUsers.get(i).getmUserId());
-                        myViewHolder.userFollowingStatusButton.setText("FOLLOWING");
-                        myViewHolder.userFollowingStatusButton.setTextColor(ContextCompat.getColor(mcontext,R.color.colorWhite));
-                        /// TODO: post Request to change the list of followings
-                    }
-
+                });
+            }
+            else
+                {
+                    myViewHolder.userFollowingStatusButton.setVisibility(View.GONE);
                 }
-            });
-
         }
 
         boolean followUser(int userId) {
