@@ -42,7 +42,7 @@ public class ExploreActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explore);
-        parent_view = findViewById(R.id.parent_view);
+        parent_view = findViewById(R.id.exploreTicket_Parent);
 
         initComponent();
         setOnClickListeners();

@@ -123,7 +123,7 @@ public class HomeFragment extends Fragment {
         if(UserInfo.IsMemic == false) {
             request();
         }else{
-            onResposeAction(Memic.getUpdates(UserInfo.Memicid));
+//            onResposeAction(Memic.getUpdates(UserInfo.Memicid));
         }
        // Toast.makeText(getContext(),"salma",Toast.LENGTH_SHORT).show();
 

@@ -71,6 +71,7 @@
                     android:padding="15dp"
                     android:background="@color/colorSilver"
                     style="@style/EditTextStyle"
+                    android:maxLines="1"
                     android:layout_below="@id/Username_name_textview"></EditText>
                 <TextView
                     android:id="@+id/UserName_errorMessage_TextView"

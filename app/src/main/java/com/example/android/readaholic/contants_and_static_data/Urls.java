@@ -24,6 +24,8 @@ public class Urls {
     public static String LOG_OUT = "/api/logout";
     //sign up url
     public static String SIGN_UP = "/api/signup";
+    //fogot password url
+    public static String FORGOT_PASSWORD = "/api/forgotpassword";
     //show settings url
     public static String SHOW_SETTINGS = "/api/showsetting";
     //change birthday url

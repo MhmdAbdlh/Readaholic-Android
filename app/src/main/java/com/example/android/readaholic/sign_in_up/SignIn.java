@@ -29,6 +29,7 @@ import com.example.android.readaholic.Main;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
+import com.example.android.readaholic.profile_and_profile_settings.Users;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -68,7 +69,7 @@ public class SignIn extends AppCompatActivity {
                     public void onResponse(String response) {
                         boolean parseResponse = parseUserData(response);
                         if(parseResponse == true){
-                            UserInfo.mIsGuest=true;
+                            UserInfo.mIsGuest=false;
                             Intent intent = new Intent(getBaseContext(),Main.class);
                             startActivity(intent);
                             finish();
@@ -140,10 +141,11 @@ public class SignIn extends AppCompatActivity {
                 String userName = userObject.getString("username");
                 String name = userObject.getString("name");
                 String imageLink = userObject.optString("image_link");
-            //    int id = userObject.getInt("id");
+                int id = userObject.getInt("id");
+                int verified = userObject.getInt("verified");
                 /****************************getting user info -> close****************************/
                 //adding data to the static class to be used later
-                UserInfo.addUserInfo(userName,name,imageLink,token,tokenType);
+                UserInfo.addUserInfo(userName,name,imageLink,token,tokenType ,id,verified);
 
                 return true;
 
@@ -275,47 +277,44 @@ public class SignIn extends AppCompatActivity {
                 /**********************mocking data -> open***************************************/
 
 
-/*
-                //getting user name and password
-                Intent intent1 = new Intent(getBaseContext(),Main.class);
-                startActivity(intent1);
-
-                EditText username = (EditText) findViewById(R.id.SignIn_email_edittext);
-
-                EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
-
-                //checking user name and password fields
-                if(validateFields()) {
-                    if (true) {
-                        //filling the static class with dummy data
-                      //  fillDummyData();
-                        //starting main activity
-                        Intent intent = new Intent(v.getContext(), Main.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        //if the user name and password dont match admin , admin show error message
-                        showErrorMessage("Please check your email and password");
-                    }
-                }
-*/
-
-                /**************************mocking data -> close*****************************************/
-
-
-                //in case of connected to the server
-                /**************************server connected -> open***************************************/
-
-                if(validateFields())
-
+                if(UserInfo.IsMemic)
                 {
-                    //hides the keyboard when user clicks on sign in
-                    hideSoftKeyboard(SignIn.this, v);
-                    //checking if the user data is correct or not
-                    getUserData();
+                    //in case of mimic
+                    /////////////////////////////////////////////////////////////////////////
+                    //getting user name and password
+                    Intent intent1 = new Intent(getBaseContext(),Main.class);
+
+                    EditText username = (EditText) findViewById(R.id.SignIn_email_edittext);
+                    EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
+
+                    //checking user name and password fields
+                    if(validateFields()) {
+                        if (username.getText().toString().equals("admin@yahoo.com")
+                                && pass.getText().toString().equals("admin")) {
+                            UserInfo.addUserInfo("admin@yahoo.com","ahmed nassar",null,"1","bearer" , 1 , 1);
+                            Intent intent = new Intent(v.getContext(), Main.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            //if the user name and password dont match admin , admin show error message
+                            showErrorMessage("Please check your email and password");
+                        }
+                    }
+                    ///////////////////////////////////////////////////////////////////////
+                } else{
+                    //in case of not mimic
+                    ///////////////////////////////////////////////
+                    if(validateFields()) {
+                        //hides the keyboard when user clicks on sign in
+                        hideSoftKeyboard(SignIn.this, v);
+                        //checking if the user data is correct or not
+                        getUserData();
+                    }
+                    //////////////////////////////////////////////
                 }
 
-             /***************************server connected -> close***************************************/
+
+                /***************************server connected -> close***************************************/
 
 
             }

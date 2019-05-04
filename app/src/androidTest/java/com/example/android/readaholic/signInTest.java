@@ -43,9 +43,9 @@ public class signInTest {
     @Test
     public void testWrongpassword(){
         Espresso.onView(withId(R.id.SignIn_email_edittext))
-                .perform(typeText("admin"));
+                .perform(typeText("admin@yahoo.com"));
         Espresso.onView(withId(R.id.SignIn_password_edittext))
-                .perform(typeText("123456"));
+                .perform(typeText("a12345"));
 
         Espresso.onView(withId(R.id.SignIn_signin_btn))
                 .perform(click());
