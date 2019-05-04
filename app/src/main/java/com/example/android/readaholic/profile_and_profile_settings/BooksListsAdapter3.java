@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.android.readaholic.R;
+import com.example.android.readaholic.explore.BookModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 /**
@@ -15,8 +17,10 @@ import java.util.List;
  * @author Hossam Ahmed
  */
 public class BooksListsAdapter3 extends RecyclerView.Adapter<BooksListsAdapter3.MyViewHolder> {
-    private List<String> mUsers;
+    private List<BookModel> mBooks;
     private Context mcontext;
+    private customItemCLickLisenter customItemCLickLisenter;
+
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -24,7 +28,7 @@ public class BooksListsAdapter3 extends RecyclerView.Adapter<BooksListsAdapter3.
      * MyViewHolder class to hold the view elements
      * @author Hossam Ahmed
      */
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // each data item is just a string in this case
         //@BindView(R.id.CurrentlyReadingList_CurrentlyReadingBook_ImageView)
         private ImageView UserImageView;
@@ -41,16 +45,21 @@ public class BooksListsAdapter3 extends RecyclerView.Adapter<BooksListsAdapter3.
         }
 
 
+        @Override
+        public void onClick(View v) {
+
+        }
     }
     /**
      * Adpater constructor
      * @param context context of the layout
-     * @param users user object to fill the layout with their data
+     * @param books user object to fill the layout with their data
      */
     // Provide a suitable constructor (depends on the kind of dataset)
-    public BooksListsAdapter3(Context context,List<String> users) {
-        mUsers=users;
+    public BooksListsAdapter3(Context context, List<BookModel> books, customItemCLickLisenter Listener) {
+        mBooks=books;
         mcontext = context;
+        this.customItemCLickLisenter = Listener;
     }
     /**
      * onCreateViewHolder to inflate the layout
@@ -64,7 +73,15 @@ public class BooksListsAdapter3 extends RecyclerView.Adapter<BooksListsAdapter3.
                                                              int viewType) {
         // create a new view
         View v =  LayoutInflater.from(mcontext).inflate(R.layout.currentlyreadinglist, parent, false);
-        return new MyViewHolder(v);
+        final BooksListsAdapter3.MyViewHolder mViewHolder = new BooksListsAdapter3.MyViewHolder(v);
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customItemCLickLisenter.onItemClick(v,mViewHolder.getPosition());
+            }
+        });
+
+        return mViewHolder;
 
     }
 
@@ -80,7 +97,7 @@ public class BooksListsAdapter3 extends RecyclerView.Adapter<BooksListsAdapter3.
         // - replace the contents of the view with that element
         holder.viewGroup.removeAllViews();
 
-      //  Picasso.get().load(mUsers.get(position)).into(holder.UserImageView);
+      Picasso.get().load(mBooks.get(position).getmImageUrl()).into(holder.UserImageView);
         //((MyViewHolder)holder).UserImageView.setImageResource(R.drawable.reader);
         holder.viewGroup.addView(holder.UserImageView);
     }
@@ -90,7 +107,11 @@ public class BooksListsAdapter3 extends RecyclerView.Adapter<BooksListsAdapter3.
      */
     @Override
     public int getItemCount() {
-        return mUsers.size();
+        return mBooks.size();
+    }
+    public interface customItemCLickLisenter
+    {
+        public void onItemClick(View v,int position);
     }
 
 }

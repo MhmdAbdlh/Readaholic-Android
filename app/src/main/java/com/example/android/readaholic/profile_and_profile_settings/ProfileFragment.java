@@ -65,13 +65,24 @@ public class ProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.profile_fragment,container,false);
         mUserImage = (ImageView)view.findViewById(R.id.profileActivity_ProfilePic_ImageView);
         mUserName =(TextView)view.findViewById(R.id.ProfileActivity_UserName_TextView);
+
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            mUser_Id = bundle.getInt("user-id");
+        }
+
+        //Loading Fragments
+      // loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId(),mUser_Id);
+      // loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId(),mUser_Id);
+        loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId(),mUser_Id);
+
         mUserBookNumber = (TextView)view.findViewById(R.id.ProfileActivity_UserBooksNumber_TextView);
         profilerEditToRightSign = (ImageView)view.findViewById(R.id.Profile_Settings_ImageView);
         profileSettingtofollowingState = (TextView)view.findViewById(R.id.Profile_Settings_TextView);
         progressBar=(ProgressBar)view.findViewById(R.id.Profile_ProgressBar);
         settingsLayout = (RelativeLayout)view.findViewById(R.id.Profile_SeetingsLayout);
 
-        Bundle bundle = this.getArguments();
+        bundle = this.getArguments();
         if (bundle != null) {
             mUser_Id = bundle.getInt("UserId");
         }
@@ -111,8 +122,9 @@ public class ProfileFragment extends Fragment {
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putInt("user-id",userID);
-        if(ID == view.findViewById(R.id.Profile_Books_Fragment).getId())
-            bundle.putInt("books-num",mProfileUser.getmUsernumberOfBooks());
+        if(ID == view.findViewById(R.id.Profile_Books_Fragment).getId()) {
+            bundle.putInt("books-num", mProfileUser.getmUsernumberOfBooks());
+        }
         else if(ID == view.findViewById(R.id.Profile_Friends_Fragment).getId())
         {
             bundle.putInt("followers-num",mProfileUser.getmNumberOfFollowers());
@@ -129,7 +141,7 @@ public class ProfileFragment extends Fragment {
      * @param user holding data from request.
      */
     public void UpdateData(Users user ,int id) {
-        progressBar.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.GONE);
         if(UserInfo.mIsGuest ==false) {
             if (id != 0) {
                 if (userFollowingState == 1)//user is following this profile.

@@ -53,7 +53,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/BookFragment_CurrentlyReading_RecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="300dp"
                     android:layout_marginBottom="8dp"
                     android:orientation="horizontal" />
 
@@ -85,7 +85,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/BookFragment_WantToRead_RecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="300dp"
                     android:layout_marginBottom="8dp"
                     android:orientation="horizontal" />
 
@@ -116,7 +116,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/BookFragment_Read_RecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="300dp"
                     android:layout_marginBottom="8dp"
                     android:orientation="horizontal" />
 

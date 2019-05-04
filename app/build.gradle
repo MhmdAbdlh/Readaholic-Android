@@ -31,8 +31,9 @@ android {
 }
 repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-    maven { url "https://jitpack.io" }
+    maven{url "https://jitpack.io"}
 }
+
 
 
 dependencies {
@@ -60,9 +61,12 @@ dependencies {
 
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
 
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.pusher:pusher-java-client:1.5.0'
+    implementation 'com.pusher:push-notifications-android:1.4.0'
 
-    //implementation 'com.github.mirrajbai:search-dialog:1.1'
     implementation 'com.android.support:cardview-v7:28.0.0'
+    implementation 'com.google.firebase:firebase-messaging:17.1.0'
 }
 
 dependencies {
@@ -91,6 +95,7 @@ dependencies {
 }
 
 dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
     implementation 'com.android.support:support-v4:28.+'
 }
 
@@ -98,23 +103,4 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:+'
 }
 
-dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:+'
-}
-
-dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:+'
-}
-
-dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:+'
-}
-
-dependencies {
-    implementation 'com.google.firebase:firebase-database:16.0.4'
-}
-
-dependencies {
-    implementation 'com.google.firebase:firebase-storage:16.0.4'
-    implementation 'com.google.firebase:firebase-auth:16.0.5'
-}
+apply plugin: 'com.google.gms.google-services'

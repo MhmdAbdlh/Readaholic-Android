@@ -12,9 +12,11 @@
         android:layout_width="50dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:visibility="gone"
         />
-
+<android.support.v4.widget.SwipeRefreshLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/swiperefresh">
     <ListView
         android:id="@+id/UpadtesActivity_updateslist_listview"
         android:layout_width="match_parent"
@@ -27,6 +29,7 @@
         tools:layout_editor_absoluteY="8dp">
 
     </ListView>
+
     <TextView
         android:id="@+id/empty"
         android:text="Follow some people to see thier updates"
@@ -36,4 +39,6 @@
         style="@android:style/TextAppearance.Large"
         android:gravity="center">
     </TextView>
+
+</android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

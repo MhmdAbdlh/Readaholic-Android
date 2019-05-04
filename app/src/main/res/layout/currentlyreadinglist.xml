@@ -11,7 +11,7 @@
     <ImageView
         android:id="@+id/CurrentlyReadingList_CurrentlyReadingBook_ImageView"
         android:layout_width="150dp"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
         android:scaleType="fitXY"
         android:layout_margin="8dp"
         android:src="@drawable/defaultimage" />

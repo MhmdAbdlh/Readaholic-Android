@@ -44,13 +44,7 @@ import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.example.android.readaholic.settings.edit_Location.LocationSettings;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
-import com.google.firebase.storage.UploadTask;
+
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;

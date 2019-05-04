@@ -22,7 +22,6 @@
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
 
     <string-array name="Shelves">
-        <item></item>
         <item>WANT TO READ</item>
         <item>CURRENTLY READING</item>
         <item>READ</item>

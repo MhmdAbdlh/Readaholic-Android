@@ -39,6 +39,7 @@ import java.net.HttpURLConnection;
 
 
 public class SignIn extends AppCompatActivity {
+    String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,6 +140,7 @@ public class SignIn extends AppCompatActivity {
                 String userName = userObject.getString("username");
                 String name = userObject.getString("name");
                 String imageLink = userObject.optString("image_link");
+            //    int id = userObject.getInt("id");
                 /****************************getting user info -> close****************************/
                 //adding data to the static class to be used later
                 UserInfo.addUserInfo(userName,name,imageLink,token,tokenType);
@@ -321,41 +323,20 @@ public class SignIn extends AppCompatActivity {
         /******************************Signin click listener -> close*********************************************/
     }
 
-   private void fillDummyData()
-    {
-        UserInfo.addUserInfo("Ahmed","Waled"
-                ,"https://unsplash.com/photos/HUBofEFQ6CA","1234567","afas");
-    }
 
     public String getLogInParameters() {
         String parameters = "";
 
         //getting email and password entered by user
-        String email = ((EditText)findViewById(R.id.SignIn_email_edittext)).getText().toString();
+        email = ((EditText)findViewById(R.id.SignIn_email_edittext)).getText().toString();
         String password = ((EditText)findViewById(R.id.SignIn_password_edittext)).getText().toString();
-
 
         //constructing the parameters
         parameters += "email=" + email + "&password=" + password;
-        //parameters += "email=test@yahoo.com&password=password";
         return parameters ;
     }
 
 
-    /**
-     * constructs the structure of the parameters that should be added to the url
-     * @return the parameters that should be concatenated with the root url
-     */
-    private String constructParameters()
-    {
-        //getting parameters
-        String userName = ((EditText)findViewById(R.id.SignIn_email_edittext)).getText().toString();
-        String pass = ((EditText)findViewById(R.id.SignIn_password_edittext)).getText().toString();
-        // return "?email=Ahmed@yahoo.com&password=Waled21";
-        //concatenating parameters and sending them
-
-        return "http://ffb1e410.ngrok.io/api/login?email=zachariah72@example.net&password=password" ;
-    }
 
     /**
      * testing if the user name and password are filled or not

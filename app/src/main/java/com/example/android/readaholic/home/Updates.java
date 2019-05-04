@@ -11,7 +11,7 @@ public class Updates implements Parcelable {
     private String mNameofFollow;
     private String mInnerImgUrl;
     private String mBookName;
-    private String mReview;
+    private String mReview = "";
     private String mDateOfUpdates;
     private String mAuthorName;
     private String mComment;
