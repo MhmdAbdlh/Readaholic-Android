@@ -35,7 +35,6 @@ protected var shelvetype:Int?=null
         setContentView(R.layout.activity_book_shelves)
         val toolbar = findViewById<View>(R.id.Main_toolbarr) as Toolbar
         setSupportActionBar(toolbar)
-
         shelvetype=Cbookdata.shelf
         booklist= ArrayList()
         booklistadapter=BookistAdapter()

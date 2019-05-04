@@ -55,7 +55,7 @@ public class Urls {
     }
 
     public static String getShowBook(String Bookid) {
-        return ROOT + "/api/books/show?book_id=" + Bookid + "&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+        return ROOT + "/api/books/show?book_id=" + Bookid;
 
     }
 

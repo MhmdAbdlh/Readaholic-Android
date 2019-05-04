@@ -25,9 +25,7 @@ class ShelvesFragment : Fragment() {
             getnumber(0)
             getnumber(1)
             getnumber(2)
-
         }
-
     }
 
     /**
