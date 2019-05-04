@@ -294,28 +294,28 @@ class ReviewActivity : AppCompatActivity() {
             Toast.makeText(this,"Please write something first",Toast.LENGTH_SHORT).show()
         }
         else{
-                if(UserInfo.ISMemic)
-                {
-                    if(UserInfo.ISMemic)
-                    {
+
+            if(UserInfo.ISMemic)
+            {
                         CommentList!!.add(CommentInfo(0,0,"ta7a","ahmed.jpg",commenttext,"7-10-1998",false))
                         commentadapter!!.notifyDataSetChanged()
                           Toast.makeText(this,"your comment added to the review",Toast.LENGTH_SHORT).show()
-                    }
+            }
 
 
+
+            else{
+                var succes= sendCommetService(commenttext)
+                if(succes)
+                {
+
+                    writercomment.text.clear()
+                    onRestart()
                 }
                 else{
-                    var succes= sendCommetService(commenttext)
-                    if(succes)
-                    {
-
-                        writercomment.text.clear()
-
-                    }
-                    else{
                         //  Toast.makeText(this,"Something went wrong with the seerver",Toast.LENGTH_SHORT).show()
-                    }
+                }
+
                 }
 
             }
@@ -468,9 +468,6 @@ class ReviewActivity : AppCompatActivity() {
                 })
 
         queue.add(stringRequest)
-
-
-
     }
     fun memicReveview()
     {

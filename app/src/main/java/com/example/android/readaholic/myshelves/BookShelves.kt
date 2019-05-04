@@ -2,6 +2,7 @@ package com.example.android.readaholic.myshelves
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.view.ViewGroup
@@ -47,8 +48,13 @@ protected var shelvetype:Int?=null
             getShelvsBooks(shelvetype!!)
         }
     }
+
+
+
      inner class BookistAdapter(): BaseAdapter()
     {
+
+
         override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
             var myview=layoutInflater.inflate(R.layout.bookticket,null)
             var currentbook:BookPageInfo=booklist!![position]
@@ -115,7 +121,6 @@ protected var shelvetype:Int?=null
             booklist!!.add(BookPageInfo(jsonobject.getString("title"), jsonobject.getInt("isbn"), jsonobject.getString("img_url"), 0, 0.toString(), 0.toString(), 0, 0, jsonobject.getString("reviews_count").toFloat()
                     , jsonobject.getInt("ratings_count"), 0.toString(), jsonobject.getInt("ratings_count"), jsonobject.getString("author_name"), 0.toString(), jsonobject.getInt("book_id"), jsonobject.getInt("reviews_count")))
         }
-
         booklistadapter!!.notifyDataSetChanged()
 
         if(booklist!!.size==0)

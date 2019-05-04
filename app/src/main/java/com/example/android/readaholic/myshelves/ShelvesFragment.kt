@@ -35,6 +35,14 @@ class ShelvesFragment : Fragment() {
         var UserID:Int?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if(!UserInfo.ISMemic)
+        {
+            getnumber(0)
+            getnumber(1)
+            getnumber(2)
+
+        }
+
     }
 
     fun setnumbers(num_books:Int,shelfname:Int)
@@ -80,6 +88,27 @@ class ShelvesFragment : Fragment() {
         )
         queue.add(stringRequest)
 
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(UserInfo.ISMemic)
+        {
+            view!!.Rcountbooks.text=0.toString()
+
+            view!!.Ccountbooks.text=2.toString()
+
+            view!!.Wbooknumber.text=1.toString()
+
+        }
+        else
+        {
+            getnumber(0)
+            getnumber(1)
+            getnumber(2)
+
+        }
 
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
