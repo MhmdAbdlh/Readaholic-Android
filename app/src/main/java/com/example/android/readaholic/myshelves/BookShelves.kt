@@ -43,23 +43,11 @@ protected var shelvetype:Int?=null
         if(UserInfo.ISMemic)
         {
             memicShelves()
-            if(booklist!!.size==0)
-            {
-                NoBooksTextUI.visibility=View.VISIBLE
-                NoBooksTextUI.text="You don't have any books on this shelf yet!!"
 
-
-            }
         }
         else {
             getShelvsBooks(shelvetype!!)
-            if(booklist!!.size==0)
-            {
-                NoBooksTextUI.visibility=View.VISIBLE
-                NoBooksTextUI.text="You don't have any books on this shelf yet!!"
 
-
-            }
         }
     }
 
@@ -134,6 +122,14 @@ protected var shelvetype:Int?=null
             var jsonobject = jsonarray.getJSONObject(i)
             booklist!!.add(BookPageInfo(jsonobject.getString("title"), jsonobject.getInt("isbn"), jsonobject.getString("img_url"), 0, 0.toString(), 0.toString(), 0, 0, jsonobject.getString("reviews_count").toFloat()
                     , jsonobject.getInt("ratings_count"), 0.toString(), jsonobject.getInt("ratings_count"), jsonobject.getString("author_name"), 0.toString(), jsonobject.getInt("book_id"), jsonobject.getInt("reviews_count")))
+        }
+
+        if(booklist!!.size==0)
+        {
+            NoBooksTextUI.visibility=View.VISIBLE
+            NoBooksTextUI.text="You don't have any books on this shelf yet!!"
+
+
         }
         booklistadapter!!.notifyDataSetChanged()
 

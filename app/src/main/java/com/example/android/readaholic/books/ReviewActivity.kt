@@ -432,6 +432,13 @@ class ReviewActivity : AppCompatActivity() {
 
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        CommentList!!.clear()
+        feedCommentsDataFromURL(Creviewdata.reviewid)
+        commentadapter!!.notifyDataSetChanged()
+    }
+
     /**
      * close the keyboard after writing the comment
      *

@@ -114,6 +114,7 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
         {
             bookshelflayout.visibility=View.GONE
             writeareviewbtn.visibility=View.GONE
+            seeallreviewstxtui.visibility=View.GONE
         }
 
         seeallreviewstxtui.setOnClickListener {
