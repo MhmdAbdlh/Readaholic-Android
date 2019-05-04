@@ -3,7 +3,8 @@ package com.example.android.readaholic;
 import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-
+import android.widget.TextView;
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
@@ -17,6 +18,9 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+
+import static junit.framework.TestCase.assertEquals;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 @RunWith(AndroidJUnit4.class)
@@ -49,18 +53,21 @@ public class ReviewTest {
                 .perform(click());
         ReviewActivity activity = activityTestRule.getActivity();
 
-        onView(withText("Something went wrong with the server")).
+        onView(withText("your comment added to the review")).
                 inRoot(withDecorView(not(is(activity.getWindow().getDecorView())))).
                 check(matches(isDisplayed()));
+    }
+    @Test
+    public void testLikeAction(){
+
+        onView(withId(R.id.likereviewtxtui))
+                .perform(click());
+        onView(withId(R.id.likereviewtxtui)).check(matches(withText("unlike")));
 
     }
 
 
-
-
-
-
-
 }
+
 
 

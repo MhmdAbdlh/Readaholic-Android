@@ -6,7 +6,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".books.BookReviewsActivity">
-
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/Main_toolbarr"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:titleTextColor="@color/brown"></android.support.v7.widget.Toolbar>
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
