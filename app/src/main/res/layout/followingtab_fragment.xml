@@ -29,6 +29,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/swipeRefresh">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/Followingtab_fragment_FollowingsList_RecyclerView"
@@ -50,6 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="You haven't any Followings to show yet." />
+        </android.support.v4.widget.SwipeRefreshLayout>
     </RelativeLayout>
 
 </LinearLayout>

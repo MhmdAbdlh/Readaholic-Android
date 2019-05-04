@@ -67,6 +67,9 @@ public class books extends Fragment {
     private String ReadsBooksResponse="{\"status\":\"success\",\"pages\":[{\"book_id\":1,\"title\":\"The Bird King\",\"id\":1,\"isbn\":9780802129031,\"img_url\":\"https:\\/\\/i5.walmartimages.com\\/asr\\/8bae6257-b3ed-43ba-b5d4-c55b6479697f_1.c6a36804e0a9cbfd0e408a4b96f8a94e.jpeg?odnHeight=560&odnWidth=560&odnBg=FFFFFF\",\"reviews_count\":9,\"ratings_count\":9,\"author_id\":1}]}";
     private String WantsToReadBooksResponse="{\"status\":\"success\",\"pages\":[{\"book_id\":3,\"title\":\"Once & Future\",\"id\":3,\"isbn\":9780316449274,\"img_url\":\"https:\\/\\/images-na.ssl-images-amazon.com\\/images\\/I\\/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\",\"reviews_count\":7,\"ratings_count\":7,\"author_id\":3},{\"book_id\":2,\"title\":\"Sherwood\",\"id\":2,\"isbn\":9780062422330,\"img_url\":\"https:\\/\\/kbimages1-a.akamaihd.net\\/6954f4cc-6e4e-46e3-8bc2-81b93f57a723\\/353\\/569\\/90\\/False\\/sherwood-7.jpg\",\"reviews_count\":19,\"ratings_count\":19,\"author_id\":2}]}";
     private String CurrentlyReadingBooksResponse="{\"status\":\"failed, no returned results for the input\",\"pages\":[]}";
+    private String ReadsBooksResponse3="{\"status\":\"success\",\"pages\":[{\"book_id\":3,\"title\":\"Once & Future\",\"id\":3,\"isbn\":9780316449274,\"img_url\":\"https:\\/\\/images-na.ssl-images-amazon.com\\/images\\/I\\/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\",\"reviews_count\":7,\"ratings_count\":7,\"author_id\":3},{\"book_id\":2,\"title\":\"Sherwood\",\"id\":2,\"isbn\":9780062422330,\"img_url\":\"https:\\/\\/kbimages1-a.akamaihd.net\\/6954f4cc-6e4e-46e3-8bc2-81b93f57a723\\/353\\/569\\/90\\/False\\/sherwood-7.jpg\",\"reviews_count\":19,\"ratings_count\":19,\"author_id\":2}]}";
+    private String WantsToReadBooksResponse3="{\"status\":\"success\",\"pages\":[{\"book_id\":3,\"title\":\"Once & Future\",\"id\":3,\"isbn\":9780316449274,\"img_url\":\"https:\\/\\/images-na.ssl-images-amazon.com\\/images\\/I\\/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\",\"reviews_count\":7,\"ratings_count\":7,\"author_id\":3},{\"book_id\":2,\"title\":\"Sherwood\",\"id\":2,\"isbn\":9780062422330,\"img_url\":\"https:\\/\\/kbimages1-a.akamaihd.net\\/6954f4cc-6e4e-46e3-8bc2-81b93f57a723\\/353\\/569\\/90\\/False\\/sherwood-7.jpg\",\"reviews_count\":19,\"ratings_count\":19,\"author_id\":2}]}";
+    private String CurrentlyReadingBooksResponse3="{\"status\":\"failed, no returned results for the input\",\"pages\":[]}";
     private int user_id;
     /**
      * onCreateView called when the view is created
@@ -265,7 +268,7 @@ public class books extends Fragment {
                     }
 
                 }
-                else
+                else if(id == 5)
                     {
                         try {
                             response1 = new JSONObject(ReadsBooksResponse);
@@ -284,6 +287,26 @@ public class books extends Fragment {
                         }
 
                     }
+
+                else if(id == 3)
+                {
+                    try {
+                        response1 = new JSONObject(ReadsBooksResponse3);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        response2 = new JSONObject(CurrentlyReadingBooksResponse3);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        response3 = new JSONObject(WantsToReadBooksResponse3);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
                 ExtractReads(response1);
                 UpdateList1();
                 ExtractCurrentlyReading(response2);

@@ -36,11 +36,19 @@ public class Profile extends AppCompatActivity {
 
         Bundle bundle;
         bundle = getIntent().getExtras();
-        int fromMenu = bundle.getInt("FromMenu");
+//        int fromMenu = bundle.getInt("FromMenu");
         //if (fromMenu!=1) {
-            int user_id = bundle.getInt("user-idFromFollowingList");
-            boolean followngState = bundle.getBoolean("followingState");
-
+        int user_id;
+        boolean followngState;
+        if(bundle!=null) {
+          user_id  = bundle.getInt("user-idFromFollowingList");
+            followngState = bundle.getBoolean("followingState");
+}
+else
+    {
+      user_id = 0;
+     followngState = true;
+    }
             Fragment profile = new ProfileFragment();
             Bundle bundle2 = new Bundle();
             bundle2.putInt("user-id", user_id);

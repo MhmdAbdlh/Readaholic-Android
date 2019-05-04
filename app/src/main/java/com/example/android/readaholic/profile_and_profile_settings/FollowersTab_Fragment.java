@@ -52,7 +52,7 @@ public class FollowersTab_Fragment extends Fragment {
      ProgressBar progressBar;
      String followersResponse="{\"followers\":[{\"id\":1,\"name\":\"test\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":0},{\"id\":2,\"name\":\"ta7a\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0,\"is_followed\":0},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0,\"is_followed\":1},{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":1},{\"id\":6,\"name\":\"TheLeader\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":0},{\"id\":7,\"name\":\"Mohamed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":0}],\"_start\":1,\"_end\":6,\"_total\":6}";
      String followersResponseAuth="{\"followers\":[{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0,\"is_followed\":1},{\"id\":5,\"name\":\"Salma\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":1},{\"id\":6,\"name\":\"TheLeader\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":0},{\"id\":7,\"name\":\"Mohamed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":0}],\"_start\":1,\"_end\":4,\"_total\":4}";
-
+    String followersResponse3="{\"followers\":[{\"id\":1,\"name\":\"test\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":0},{\"id\":2,\"name\":\"ta7a\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0,\"is_followed\":0},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0,\"is_followed\":1},{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":1},{\"id\":6,\"name\":\"TheLeader\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":0},{\"id\":7,\"name\":\"Mohamed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":0}],\"_start\":1,\"_end\":6,\"_total\":6}";
      /**
      * onCreateView called when the view is created
      * @param inflater inflate the layout
@@ -89,7 +89,7 @@ public class FollowersTab_Fragment extends Fragment {
     /**
      * function to extract followers array of users from response
      */
-    private void ExtractFollowersArray(int id)
+    public void ExtractFollowersArray(int id)
     {
         followers = new ArrayList<>();
         DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(), 1024 * 1024);
@@ -130,7 +130,7 @@ public class FollowersTab_Fragment extends Fragment {
         else
             {
                 JSONObject response=null;
-                if(id!=0)
+                if(id==3)
                 {
                     try {
                         response = new JSONObject(followersResponse);
@@ -138,7 +138,7 @@ public class FollowersTab_Fragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-                else
+                else if(id ==0)
                     {
 
                         try {
@@ -148,6 +148,15 @@ public class FollowersTab_Fragment extends Fragment {
                         }
 
                     }
+                else if(id==3)
+                {
+                    try {
+                        response = new JSONObject(followersResponseAuth);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
                 ExtractFollowers(response);
                 UpdateList();
             }

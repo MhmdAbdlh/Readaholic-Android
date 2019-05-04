@@ -155,7 +155,7 @@ public class FollowersListAdapter extends RecyclerView.Adapter<FollowersListAdap
             myViewHolder.userNameTextView.setText( mUsers.get(i).getmUserName());
             myViewHolder.userBooksNumberTextView.setText( mUsers.get(i).getmNumberOfFollowers()+" Books");
 
-            if(UserInfo.mIsGuest == true) {
+            if(UserInfo.mIsGuest == false) {
                 if (!mUsers.get(i).ismFollowerState())//the user is not  following u.
                 {
                     myViewHolder.userFollowingStatusButton.setText("FOLLOW");

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -45,7 +46,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-
+@VisibleForTesting
 public class ProfileFragment extends Fragment {
     private RequestQueue mRequestQueue;
     private String mRequestUrl;
@@ -69,6 +70,8 @@ public class ProfileFragment extends Fragment {
     LinearLayout ProfileContainer;
     String authUserShowProfileResponse="{\"id\":1,\"name\":\"test\",\"username\":\"test\",\"email\":\"test@yahoo.com\",\"email_verified_at\":null,\"link\":null,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"small_image_link\":null,\"about\":null,\"age\":21,\"gender\":\"female\",\"country\":\"Canada\",\"city\":\"Atawwa\",\"joined_at\":\"2019-05-03\",\"followers_count\":-2,\"following_count\":-1,\"rating_avg\":5,\"rating_count\":21,\"book_count\":0,\"birthday\":\"1998-02-21\",\"see_my_birthday\":\"Everyone\",\"see_my_country\":\"Everyone\",\"see_my_city\":\"Everyone\",\"forgot_password_token\":null,\"verified_token\":null,\"verified\":0,\"created_at\":null,\"updated_at\":null}";
     String UserShowProfileResponse="{\"id\":5,\"name\":\"Salma\",\"username\":\"Salma\",\"email\":\"Salma@yahoo.com\",\"email_verified_at\":null,\"link\":null,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"small_image_link\":null,\"about\":null,\"age\":21,\"gender\":\"female\",\"country\":\"Egypt\",\"city\":\"Cairo\",\"joined_at\":\"2019-05-03\",\"followers_count\":0,\"following_count\":0,\"rating_avg\":0,\"rating_count\":0,\"book_count\":0,\"birthday\":\"1998-02-21\",\"see_my_birthday\":\"Everyone\",\"see_my_country\":\"Everyone\",\"see_my_city\":\"Everyone\",\"forgot_password_token\":\"eyJpdiI6ImV3Qjlqb2cyVjh3UG1FbHRDS0F2YWc9PSIsInZhbHVlIjoiSVQ4elQwVVZ6YzlMOStrclJaTHBoQT09IiwibWFjIjoiMDdiNTQyY2MyMzkxMzE4ZjU2ODkyMzJiNmI5NjlmOTA4ZGUzZWI1MzQ4YTQ3YjQzODhjYmJhNzEzMzEwNGVkNCJ9\",\"verified_token\":null,\"verified\":0,\"created_at\":null,\"updated_at\":null,\"is_followed\":1}";
+    String UserShowProfileResponse3="{\"id\":3,\"name\":\"waleed\",\"username\":\"waleed\",\"email\":\"waleed@yahoo.com\",\"email_verified_at\":null,\"link\":null,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"small_image_link\":null,\"about\":null,\"age\":21,\"gender\":\"male\",\"country\":\"Egypt\",\"city\":\"Cairo\",\"joined_at\":\"2019-05-03\",\"followers_count\":-1,\"following_count\":0,\"rating_avg\":0,\"rating_count\":0,\"book_count\":0,\"birthday\":\"1998-02-21\",\"see_my_birthday\":\"Everyone\",\"see_my_country\":\"Everyone\",\"see_my_city\":\"Everyone\",\"forgot_password_token\":null,\"verified_token\":null,\"verified\":0,\"created_at\":null,\"updated_at\":null,\"is_followed\":0}";
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -78,7 +81,6 @@ public class ProfileFragment extends Fragment {
         belowSettings =(View)view.findViewById(R.id.belowSetting);
         ProfileContainer = (LinearLayout)view.findViewById(R.id.ProfileContainer);
         progressBar=(ProgressBar)view.findViewById(R.id.Profile_ProgressBar);
-
         progressBar.setVisibility(View.VISIBLE);
 
 
@@ -209,7 +211,7 @@ public class ProfileFragment extends Fragment {
     public void UpdateData(Users user ,int id) {
         progressBar.setVisibility(View.GONE);
         ProfileContainer.setVisibility(View.VISIBLE);
-        if(UserInfo.mIsGuest ==true) {
+        if(UserInfo.mIsGuest ==false) {
             if (mUser_Id != 0) {
 
                 if (userFollowingState == 1)//user is following this profile.
@@ -308,7 +310,7 @@ public class ProfileFragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-            else
+            else if(mUser_Id==5)
                 {
                     try {
                         Response = new JSONObject(UserShowProfileResponse);
@@ -316,6 +318,15 @@ public class ProfileFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+            else if(mUser_Id==3)
+            {
+                try {
+                    Response = new JSONObject(UserShowProfileResponse3);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
             ExtractUser(Response);
             UpdateData(mProfileUser,user_id);
 

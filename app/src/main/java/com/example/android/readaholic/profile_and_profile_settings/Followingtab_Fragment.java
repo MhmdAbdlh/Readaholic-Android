@@ -2,10 +2,13 @@ package com.example.android.readaholic.profile_and_profile_settings;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -49,10 +52,12 @@ public class Followingtab_Fragment extends Fragment {
     View view;
     int userId;
     int followingNum;
+    private SwipeRefreshLayout swipeView;
     private static ProgressDialog mProgressDialog;
     ProgressBar progressBar;
     String FollowingResponse ="{\"following\":[{\"id\":1,\"name\":\"test\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":2,\"name\":\"ta7a\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null}],\"_start\":1,\"_end\":4,\"_total\":4}";
     String FollowingResponseAuth="{\"following\":[{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":5,\"name\":\"Salma\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null}],\"_start\":1,\"_end\":3,\"_total\":3}";
+    String FollowingResponse3="{\"following\":[{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":5,\"name\":\"Salma\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null}],\"_start\":1,\"_end\":3,\"_total\":3}";
     /**
      * onCreateView called when the view is created
      * @param inflater inflate the layout
@@ -68,6 +73,29 @@ public class Followingtab_Fragment extends Fragment {
         progressBar=(ProgressBar)view.findViewById(R.id.FollowingTab_progressBar);
         mNotAvaliableTextView = (TextView) view.findViewById(R.id.Followingtab_fragment_NotAvaliableTextView);
         mNotAvaliableTextView.setVisibility(View.INVISIBLE);
+
+        swipeView = (SwipeRefreshLayout)view. findViewById(R.id.swipeRefresh);
+
+        swipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    (new Handler()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ExtractFollowingsArray(userId);
+                            swipeView.setRefreshing(false);
+                        }
+                    },3000);
+                }
+
+                }
+        );
+
+            swipeView.setColorSchemeColors(Color.GRAY, Color.GREEN, Color.BLUE,
+                    Color.RED, Color.CYAN);
+            swipeView.setDistanceToTriggerSync(20);// in dips
+            swipeView.setSize(SwipeRefreshLayout.DEFAULT);// LARGE also can be used
+
 
 
         Bundle bundle = getArguments();
@@ -135,7 +163,7 @@ public class Followingtab_Fragment extends Fragment {
         else
             {
                 JSONObject Response =null;
-                if(id!=0)
+                if(id==5)
                 {
                     try {
                         Response = new JSONObject(FollowingResponse);
@@ -144,7 +172,7 @@ public class Followingtab_Fragment extends Fragment {
                     }
 
                 }
-                else
+                else if(id==0)
                     {
 
                         try {
@@ -153,6 +181,15 @@ public class Followingtab_Fragment extends Fragment {
                             e.printStackTrace();
                         }
                     }
+                else if(id==3)
+                {
+                    try {
+                        Response = new JSONObject(FollowingResponse3);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
                 ExtractFollowing(Response);
                 UpdateList();
             }
