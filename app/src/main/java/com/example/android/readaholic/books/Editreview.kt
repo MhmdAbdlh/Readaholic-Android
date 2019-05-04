@@ -3,6 +3,7 @@ package com.example.android.readaholic.books
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.Toast
 import com.android.volley.Request
@@ -19,44 +20,29 @@ class Editreview : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_editreview)
-
+        val toolbar = findViewById<View>(R.id.Main_toolbarr) as Toolbar
+        setSupportActionBar(toolbar)
     }
 
-    fun saveReview(view:View)
-    {
-        var rating=raitebookstarts.rating.toInt()
-        var body=writerreview.text.toString()
-        editReview(rating,body)
-
-    }
-
-    fun editReview(rating:Int,body:String)
-    {
-        val queue = Volley.newRequestQueue(this)
-        var url = Urls.editreview(reviewid!!.toString(),rating.toString(),body)
-
-        val stringRequest = StringRequest(Request.Method.PUT, url,
-                Response.Listener<String> { response ->
-
-                    var jsonresponse= JSONObject(response)
-
-
-                },
-                Response.ErrorListener {
-
-
-                }
-        )
-
-        queue.add(stringRequest)
-
-    }
 
     fun sendReview(view:View)
     {
         var reviewtext=writerreview.text.toString()
-        Cbookdata.bookrating=raitebookstarts.rating.toInt()
-        sendReviewService(Cbookdata.bookid,reviewtext, Cbookdata.bookrating, Cbookdata.shelf.toString())
+        if(reviewtext=="")
+        {
+            Toast.makeText(this,"Please write something first", Toast.LENGTH_SHORT).show()
+
+        }
+        else if(raitebookstarts.rating.toInt()==0)
+        {
+            Toast.makeText(this,"You have to rate at at least with one star", Toast.LENGTH_SHORT).show()
+        }
+        else{
+
+            Cbookdata.bookrating=raitebookstarts.rating.toInt()
+            sendReviewService(Cbookdata.bookid,reviewtext, Cbookdata.bookrating, Cbookdata.shelf.toString())
+        }
+
     }
 
     /**

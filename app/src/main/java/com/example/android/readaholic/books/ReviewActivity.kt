@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.commentticket.view.*
 import org.json.JSONArray
 import org.json.JSONObject
 import android.content.Context
+import android.support.v7.widget.Toolbar
 import android.view.inputmethod.InputMethodManager
 import com.example.android.readaholic.contants_and_static_data.UserInfo
 
@@ -32,6 +33,8 @@ class ReviewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.example.android.readaholic.R.layout.activity_review)
+        val toolbar = findViewById<View>(R.id.Main_toolbarr) as Toolbar
+        setSupportActionBar(toolbar)
         CommentList= ArrayList()
         commentadapter= CommentsAdabterlist()
         commentlist.adapter=commentadapter
@@ -92,7 +95,22 @@ class ReviewActivity : AppCompatActivity() {
         }
         else {
             var likes: Int = numberoflikesreviewtxtui.text.toString().toInt()
-            if (likeservicies(Creviewdata.reviewid)||UserInfo.ISMemic) {
+            if (UserInfo.ISMemic) {
+
+
+                if (likereviewtxtui.text == "like") {
+
+                    likes += 1
+                    likereviewtxtui.text = "unlike"
+                } else {
+                    likes -= 1
+                    likereviewtxtui.text = "like"
+
+                }
+                numberoflikesreviewtxtui.text = likes.toString()
+            }
+            else if(likeservicies(Creviewdata.reviewid))
+            {
 
 
                 if (likereviewtxtui.text == "like") {
@@ -474,7 +492,7 @@ class ReviewActivity : AppCompatActivity() {
 
             13->jsonobject=JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":13,\"user_id\":5,\"book_id\":3,\"body\":\"fCLjnc8tLK\",\"shelf_name\":0,\"rating\":3,\"likes_count\":0,\"comments_count\":0,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\"}],\"user\":[{\"user_name\":\"Salma\",\"image_link\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"}],\"book\":[{\"book_name\":\"Once & Future\",\"book_image\":\"https://images-na.ssl-images-amazon.com/images/I/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\"}],\"auther\":[{\"author_name\":\"Amy Rose Capetta\"}],\"if_liked\":0}")
 
-
+            else->jsonobject=JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":13,\"user_id\":5,\"book_id\":3,\"body\":\"fCLjnc8tLK\",\"shelf_name\":0,\"rating\":3,\"likes_count\":0,\"comments_count\":0,\"created_at\":\"2019-05-03 08:40:29\",\"updated_at\":\"2019-05-03 08:40:29\"}],\"user\":[{\"user_name\":\"Salma\",\"image_link\":\"http://ec2-52-90-5-77.compute-1.amazonaws.com/storage/avatars/default.jpg\"}],\"book\":[{\"book_name\":\"Once & Future\",\"book_image\":\"https://images-na.ssl-images-amazon.com/images/I/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\"}],\"auther\":[{\"author_name\":\"Amy Rose Capetta\"}],\"if_liked\":0}")
 
         }
 

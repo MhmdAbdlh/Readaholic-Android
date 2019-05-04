@@ -46,7 +46,6 @@ import com.squareup.picasso.Picasso;
 
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
     private long mBackPressedTime;
     private DrawerLayout drawer;
     private ImageView ProfileImage;
@@ -57,10 +56,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.Main_toolbar);
         setSupportActionBar(toolbar);
-
         mTabs = findViewById(R.id.Main_tabs_tablayout);
         mPages = findViewById(R.id.Main_views_viewpager);
 

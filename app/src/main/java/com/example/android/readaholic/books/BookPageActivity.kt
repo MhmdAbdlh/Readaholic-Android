@@ -3,6 +3,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -95,6 +96,8 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_page)
+        val toolbar = findViewById<View>(R.id.Main_toolbarr) as Toolbar
+        setSupportActionBar(toolbar)
         var spinneradapter: ArrayAdapter<CharSequence> =ArrayAdapter.createFromResource(this, R.array.Shelves,android.R.layout.simple_spinner_item)
         spinneradapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         activitybook_sheleve_spinner1.adapter=spinneradapter
@@ -140,7 +143,8 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
             "CURRENTLY READING"->   Cbookdata.shelf=1
             "WANT TO READ" ->   Cbookdata.shelf=2
         }
-        Toast.makeText(this,Cbookdata.shelf.toString(),Toast.LENGTH_SHORT).show()
+
+
     }
 
     fun getshelve()

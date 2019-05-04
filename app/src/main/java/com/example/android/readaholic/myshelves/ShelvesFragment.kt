@@ -86,7 +86,6 @@ class ShelvesFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         var myview= inflater.inflate(com.example.android.readaholic.R.layout.fragment_shelves, container, false)
-
         try {
             UserID = arguments!!.getInt("USER_ID",-1)
         } catch (e: NullPointerException) {
