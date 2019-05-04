@@ -17,7 +17,7 @@ import com.example.android.readaholic.contants_and_static_data.UserInfo
 import kotlinx.android.synthetic.main.fragment_shelves.view.*
 import org.json.JSONObject
 class ShelvesFragment : Fragment() {
-        var UserID:Int?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(!UserInfo.ISMemic)
@@ -49,6 +49,15 @@ class ShelvesFragment : Fragment() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        UserInfo.USER_ID=-1
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        UserInfo.USER_ID=-1
+    }
     /**
      * get the number of books for every shelf
      *
@@ -58,12 +67,12 @@ class ShelvesFragment : Fragment() {
     {
         val queue = Volley.newRequestQueue(context)
         var url:String=""
-        if(UserID==-1)
+        if(UserInfo.USER_ID==-1)
         {
              url = Urls.getselfbooks(shelftype.toString())
         }
         else{
-            url = Urls.getselfbooksanotheruser(shelftype.toString(),UserID.toString())
+            url = Urls.getselfbooksanotheruser(shelftype.toString(),UserInfo.USER_ID.toString())
         }
 
         val stringRequest = StringRequest(Request.Method.GET, url,
@@ -105,11 +114,7 @@ class ShelvesFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         var myview= inflater.inflate(com.example.android.readaholic.R.layout.fragment_shelves, container, false)
-        try {
-            UserID = arguments!!.getInt("USER_ID",-1)
-        } catch (e: NullPointerException) {
-            UserID = -1
-        }
+
 
 
         YoYo.with(Techniques.FadeIn)

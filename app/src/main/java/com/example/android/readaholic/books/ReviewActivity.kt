@@ -25,8 +25,6 @@ import android.content.Context
 import android.support.v7.widget.Toolbar
 import android.view.inputmethod.InputMethodManager
 import com.example.android.readaholic.contants_and_static_data.UserInfo
-
-
 class ReviewActivity : AppCompatActivity() {
     var CommentList:ArrayList<CommentInfo>?=null
     var commentadapter: CommentsAdabterlist?=null

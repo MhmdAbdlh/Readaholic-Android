@@ -129,7 +129,6 @@ protected var shelvetype:Int?=null
             NoBooksTextUI.visibility=View.VISIBLE
             NoBooksTextUI.text="You don't have any books on this shelf yet!!"
 
-
         }
         booklistadapter!!.notifyDataSetChanged()
 
