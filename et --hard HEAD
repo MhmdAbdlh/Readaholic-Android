@@ -1,0 +1,270 @@
+[33mcommit 008324518e57f2a72538710ebd322ba215f90868[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Ahmed <ahmed.fattah98@eng-st.cu.edu.eg>
+Date:   Sat May 4 00:40:43 2019 +0200
+
+    First Time ??
+
+[33mcommit d93e09d33652a0a596315088bcdfba896720584c[m
+Merge: aa6ffe4 150540d
+Author: Ahmed <ahmed.fattah98@eng-st.cu.edu.eg>
+Date:   Fri May 3 15:11:35 2019 +0200
+
+    it's alive heeeeeh
+
+[33mcommit aa6ffe4accbf149a913db2be108733ed7f37f711[m
+Author: Ahmed <ahmed.fattah98@eng-st.cu.edu.eg>
+Date:   Thu May 2 12:50:04 2019 +0200
+
+    altf ya rab
+
+[33mcommit 150540dcaaabe64b36ec2f143f5eeb4edcd5ce43[m
+Merge: 2da7bd2 67f6505
+Author: hossam ahmed <hossamahmed201515@gmail.com>
+Date:   Mon Apr 29 03:43:29 2019 +0200
+
+    after search
+
+[33mcommit 2da7bd2b788abe41cb3863768c2611cef174fe98[m
+Author: hossam ahmed <hossamahmed201515@gmail.com>
+Date:   Mon Apr 29 03:42:05 2019 +0200
+
+    after search
+
+[33mcommit 67f6505ee83e070d5e6fd068b6c3787cfe0091c7[m
+Author: Ahmed <ahmed.fattah98@eng-st.cu.edu.eg>
+Date:   Thu Apr 25 15:56:30 2019 +0200
+
+    aaaaa
+
+[33mcommit f69ef129e97ea65a4584deb9e39015d3ceb0ba8f[m
+Merge: 851121d dbf392b
+Author: Ahmed <ahmed.fattah98@eng-st.cu.edu.eg>
+Date:   Thu Apr 25 15:55:31 2019 +0200
+
+    Merge branch 'master' of https://github.com/MhmdAbdlh/Readaholic-Android
+
+[33mcommit 851121d5b92bd54f2e46d8d7ceec973e1072e575[m
+Author: Ahmed <ahmed.fattah98@eng-st.cu.edu.eg>
+Date:   Thu Apr 25 15:54:02 2019 +0200
+
+    some modifications
+
+[33mcommit dbf392b3732daca3378bf46fa9eea6d13aba2aff[m
+Merge: 1844082 f02877d
+Author: hossam ahmed <hossamahmed201515@gmail.com>
+Date:   Sun Apr 21 20:46:10 2019 +0200
+
+    follow and unfollow and fixed profile
+
+[33mcommit 184408281738dd63d82ce95b0776857fc018b674[m
+Author: hossam ahmed <hossamahmed201515@gmail.com>
+Date:   Sun Apr 21 20:43:49 2019 +0200
+
+    follow and unfollow and fixed profile
+
+[33mcommit f02877d4aa93750b4abafcf7e841b6ef8829121d[m
+Merge: 540096d bee09b5
+Author: Ahmed <ahmed.fattah98@eng-st.cu.edu.eg>
+Date:   Fri Apr 19 00:44:40 2019 +0200
+
+    Improvments in the UI
+
+[33mcommit 540096dc5e1c80a86d3061b9c5f5ed2dccf5c376[m
+Author: Ahmed <ahmed.fattah98@eng-st.cu.edu.eg>
+Date:   Tue Apr 16 19:09:09 2019 +0200
+
+    sa
+
+[33mcommit bee09b5cc468154b2193d87beb6b4fc9926cecf9[m
+Author: hossam ahmed <hossamahmed201515@gmail.com>
+Date:   Sun Apr 14 02:13:29 2019 +0200
+
+    final version of phase2
+
+[33mcommit b9997924ac735b09cf3b18d4ad6d35fbaa2898a3[m
+Merge: 283ffaf c66fb2a
+Author: SalmaIbraheem <34141325+SalmaIbraheem@users.noreply.github.com>
+Date:   Sun Apr 14 00:10:01 2019 +0200
+
+    final 1502
+
+[33mcommit c66fb2a75935d43845db4d8d70b579434d880d45[m
+Author: hossam ahmed <hossamahmed201515@gmail.com>
+Date:   Sun Apr 14 02:02:38 2019 +0200
+
+    final version of phase2
+
+[33mcommit 29d709e7d57734911068fc29d877ab41a92140e9[m
+Merge: 120d40e 4c1acda
+Author: hossam ahmed <hossamahmed201515@gmail.com>
+Date:   Sun Apr 14 02:00:44 2019 +0200
+
+    Merge branch 'master' of https://github.com/MhmdAbdlh/Readaholic-Android
+
+[33mcommit 120d40e0e13736a8eb5640e0519e3720b0e5af20[m
+Author: hossam ahmed <hossamahmed201515@gmail.com>
+Date:   Sun Apr 14 01:58:59 2019 +0200
+
+    final version of phase2
+
+[33mcommit 4c1acda6f8d4784e2d9e357e699a5549c4bb30e7[m
+Author: ahmed nassar <ahmed.danger85@gmail.com>
+Date:   Sun Apr 14 00:47:14 2019 +0200
+
+    Modifying settings UI
+
+[33mcommit 992cb3d7f23e05eb5bea6c6bd2216570c7c34b3b[m
+Merge: 68f2be2 ee782d9
+Author: ahmed nassar <ahmed.danger85@gmail.com>
+Date:   Sun Apr 14 00:40:04 2019 +0200
+
+    Merge branch 'master' of https://github.com/MhmdAbdlh/Readaholic-Android
+
+[33mcommit 68f2be240cd8d265d403fa2d731fb13627a0414d[m
+Author: ahmed nassar <ahmed.danger85@gmail.com>
+Date:   Sun Apr 14 00:38:36 2019 +0200
+
+    Logout
+
+[33mcommit ee782d90e3ef260d77cc342e10b17606bc32ef87[m
+Merge: dc57e0a 754776a
+Author: hossam ahmed <hossamahmed201515@gmail.com>
+Date:   Sun Apr 14 00:31:59 2019 +0200
+
+    Merge branch 'master' of https://github.com/MhmdAbdlh/Readaholic-Android
+
+[33mcommit dc57e0adf0c9ac76cf60ac2b1c0ececfa45223c8[m
+Author: hossam ahmed <hossamahmed201515@gmail.com>
+Date:   Sun Apr 14 00:31:29 2019 +0200
+
+    final version of phase2
+
+[33mcommit 283ffaf22cd806e528cf2a4ba336ca237d22f028[m
+Author: SalmaIbraheem <34141325+SalmaIbraheem@users.noreply.github.com>
+Date:   Sun Apr 14 00:02:49 2019 +0200
+
+    final 1501
+
+[33mcommit 754776a28321aa360df39d92930cb9c2e62cba28[m
+Author: Ahmed <ahmed.fattah98@eng-st.cu.edu.eg>
+Date:   Sat Apr 13 23:42:16 2019 +0200
+
+    ma haza
+
+[33mcommit da5cd7e3a91bdf68955cf025ccf1952fcc52a4a9[m
+Merge: 0421bf0 2c5a5e9
+Author: Ahmed <ahmed.fattah98@eng-st.cu.edu.eg>
+Date:   Sat Apr 13 23:37:15 2019 +0200
+
+    Merge branch 'master' of https://github.com/MhmdAbdlh/Readaholic-Android
+
+[33mcommit 2c5a5e916bb8ea95c1ca7f3f7a5445bc894c037b[m
+Merge: 2355f9d 274a2b2
+Author: ahmed nassar <ahmed.danger85@gmail.com>
+Date:   Sat Apr 13 23:28:02 2019 +0200
+
+    Merge branch 'master' of https://github.com/MhmdAbdlh/Readaholic-Android
+
+[33mcommit 0421bf0defb4713e7bd057b519784d1f2a37107f[m
+Merge: d7c523d 274a2b2
+Author: Ahmed <ahmed.fattah98@eng-st.cu.edu.eg>
+Date:   Sat Apr 13 23:27:29 2019 +0200
+
+    Merge branch 'master' of https://github.com/MhmdAbdlh/Readaholic-Android
+
+[33mcommit d7c523d4d35fce203a0a7f7c04b8ec132319779f[m
+Author: Ahmed <ahmed.fattah98@eng-st.cu.edu.eg>
+Date:   Sat Apr 13 23:27:05 2019 +0200
+
+    hello
+
+[33mcommit 2355f9d5d0e4e16ef20a07d78ae8d8b520c051f1[m
+Author: ahmed nassar <ahmed.danger85@gmail.com>
+Date:   Sat Apr 13 23:23:25 2019 +0200
+
+    modification on sign in and sign up
+
+[33mcommit 274a2b277392efcad2c61d1ad4c7e658ff22d02a[m
+Merge: 53187fc 54752ba
+Author: hossam ahmed <hossamahmed201515@gmail.com>
+Date:   Sat Apr 13 22:46:26 2019 +0200
+
+    final version of phase2
+
+[33mcommit 53187fce04d8d6841d95b0af2fe13008ffbdc78e[m
+Author: hossam ahmed <hossamahmed201515@gmail.com>
+Date:   Sat Apr 13 22:42:20 2019 +0200
+
+    final version of phase2
+
+[33mcommit a515c8f9871ec7bd7c8b749fa4591a2da38d6466[m
+Merge: 0b91a82 54752ba
+Author: Ahmed <ahmed.fattah98@eng-st.cu.edu.eg>
+Date:   Sat Apr 13 22:24:03 2019 +0200
+
+    Almost Done Thanks Ya shabab
+
+[33mcommit 0b91a8269a7e7cf94feeb79c0d64d2892080c999[m
+Author: Ahmed <ahmed.fattah98@eng-st.cu.edu.eg>
+Date:   Sat Apr 13 22:22:37 2019 +0200
+
+    aaaa
+
+[33mcommit 54752babd0878ba56186da2a1f201ba9ebc56b51[m
+Merge: 958ffdb beb4241
+Author: SalmaIbraheem <34141325+SalmaIbraheem@users.noreply.github.com>
+Date:   Sat Apr 13 19:16:38 2019 +0200
+
+    Merge branch 'master' of https://github.com/MhmdAbdlh/Readaholic-Android
+
+[33mcommit 958ffdb7251baf9deb9be0749719b240de0a276b[m
+Merge: a309b36 365a4c3
+Author: SalmaIbraheem <34141325+SalmaIbraheem@users.noreply.github.com>
+Date:   Sat Apr 13 19:15:12 2019 +0200
+
+    ngrok
+
+[33mcommit beb424111f69aadac3d67a6c5e98f5d9fa1d9779[m
+Merge: b535df7 365a4c3
+Author: ahmed nassar <ahmed.danger85@gmail.com>
+Date:   Sat Apr 13 17:54:19 2019 +0200
+
+    Merge branch 'master' of https://github.com/MhmdAbdlh/Readaholic-Android
+
+[33mcommit b535df730e99c0bef98a6bf35f558aacbf993ebe[m
+Author: ahmed nassar <ahmed.danger85@gmail.com>
+Date:   Sat Apr 13 17:46:05 2019 +0200
+
+    connecting sign up and settings to server
+
+[33mcommit 365a4c346ee4f3eedc10006655c0ed27341b727b[m
+Author: hossam ahmed <hossamahmed201515@gmail.com>
+Date:   Sat Apr 13 15:49:58 2019 +0200
+
+    phase 2 without testing
+
+[33mcommit 1566f04a79268172bce310e3e98fbb822528e1da[m
+Merge: 46883a5 0b995e3
+Author: Ahmed <ahmed.fattah98@eng-st.cu.edu.eg>
+Date:   Sat Apr 13 14:38:04 2019 +0200
+
+     mafesh sabab mokn3 ll push de
+
+[33mcommit 46883a590f1000093e1dbc99c3359cf5a1e3611e[m
+Author: Ahmed <ahmed.fattah98@eng-st.cu.edu.eg>
+Date:   Sat Apr 13 14:11:34 2019 +0200
+
+    phase 2 done exepte UI and Unit resting
+
+[33mcommit a309b36592ea7934f6201e05c912c42513b84bcf[m
+Author: SalmaIbraheem <34141325+SalmaIbraheem@users.noreply.github.com>
+Date:   Sat Apr 13 13:59:10 2019 +0200
+
+    abcdefg
+
+[33mcommit 0b995e3289591e9bd23885a7741ac0d042818f29[m
+Merge: 0de98f8 69069f8
+Author: hossam ahmed <hossamahmed201515@gmail.com>
+Date:   Sat Apr 13 03:59:13 2019 +0200
+
+    ph

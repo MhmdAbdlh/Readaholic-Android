@@ -62,7 +62,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
     private long mBackPressedTime;
     private DrawerLayout drawer;
     private ImageView ProfileImage;
@@ -73,6 +72,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         final String[] textTitle = {"   "};
         final String[] textContent = {""};
@@ -133,9 +133,9 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         pusher.connect();
 
 
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.Main_toolbar);
         setSupportActionBar(toolbar);
-
         mTabs = findViewById(R.id.Main_tabs_tablayout);
         mPages = findViewById(R.id.Main_views_viewpager);
 

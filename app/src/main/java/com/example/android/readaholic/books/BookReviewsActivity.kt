@@ -2,6 +2,7 @@ package com.example.android.readaholic.books
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.Toolbar
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
@@ -30,6 +31,8 @@ class BookReviewsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_reviews)
+        val toolbar = findViewById<View>(R.id.Main_toolbarr) as Toolbar
+        setSupportActionBar(toolbar)
         bookreviews= ArrayList()
         likedreviews= ArrayList()
         adapter= ReviewAdabterlist1()
@@ -244,7 +247,6 @@ fun feedReviewDataFromURL(bookid:Int)
                     var jsonresponse=JSONObject(response)
                     if(jsonresponse.getString("status")=="true") {
                         Toast.makeText(this, jsonresponse.getString("Message"), Toast.LENGTH_SHORT).show()
-
                     }
                 },
                 Response.ErrorListener {
