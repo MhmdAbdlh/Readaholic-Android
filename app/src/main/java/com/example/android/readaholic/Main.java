@@ -93,7 +93,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                     int t = d.getInt("type");
                     String action;
                     if(t == 0){
-                            if(d.getInt("review_user_id") == 0){
+                            if(d.getInt("review_user_id") == UserInfo.sID){
                             user = "your";
                         }else{
                             user = d.getString("review_user_name");
@@ -116,7 +116,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 }
 
 
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext(), "user."+UserInfo.sID)
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext(), "user.1")
                         .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                         .setContentTitle("Readaholic")
                         .setContentText(textContent[0])

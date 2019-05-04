@@ -140,7 +140,8 @@ public class SignIn extends AppCompatActivity {
                 String userName = userObject.getString("username");
                 String name = userObject.getString("name");
                 String imageLink = userObject.optString("image_link");
-            //    int id = userObject.getInt("id");
+
+                int id = 1;/* userObject.getInt("id");*/
                 /****************************getting user info -> close****************************/
                 //adding data to the static class to be used later
                 UserInfo.addUserInfo(userName,name,imageLink,token,tokenType);
