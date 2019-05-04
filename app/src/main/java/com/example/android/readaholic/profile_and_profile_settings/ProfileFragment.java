@@ -67,17 +67,8 @@ public class ProfileFragment extends Fragment {
     ProgressBar progressBar;
     RelativeLayout settingsLayout;
     LinearLayout ProfileContainer;
-    String authUserShowProfileResponse="{\"id\":1,\"name\":\"test\",\"username\":\"test\",\"email\":\"test@yahoo.com\"," +
-            "\"email_verified_at\":null,\"link\":null," +
-            "\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"," +
-            "\"small_image_link\":null,\"about\":null,\"age\":21,\"gender\":\"female\"," +
-            "\"country\":\"Canada\",\"city\":\"Atawwa\",\"joined_at\":\"2019-05-03\"," +
-            "\"followers_count\":-1,\"following_count\":0," +
-            "\"rating_avg\":5,\"rating_count\":21,\"book_count\":0," +
-            "\"birthday\":\"1998-02-21\",\"see_my_birthday\":\"Everyone\",\"see_my_country\":\"Everyone\"," +
-            "\"see_my_city\":\"Everyone\",\"forgot_password_token\":null," +
-            "\"verified_token\":null,\"verified\":0,\"created_at\":null,\"updated_at\":null}";
-    String UserShowProfileResponse;
+    String authUserShowProfileResponse="{\"id\":1,\"name\":\"test\",\"username\":\"test\",\"email\":\"test@yahoo.com\",\"email_verified_at\":null,\"link\":null,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"small_image_link\":null,\"about\":null,\"age\":21,\"gender\":\"female\",\"country\":\"Canada\",\"city\":\"Atawwa\",\"joined_at\":\"2019-05-03\",\"followers_count\":-2,\"following_count\":-1,\"rating_avg\":5,\"rating_count\":21,\"book_count\":0,\"birthday\":\"1998-02-21\",\"see_my_birthday\":\"Everyone\",\"see_my_country\":\"Everyone\",\"see_my_city\":\"Everyone\",\"forgot_password_token\":null,\"verified_token\":null,\"verified\":0,\"created_at\":null,\"updated_at\":null}";
+    String UserShowProfileResponse="{\"id\":1,\"name\":\"test\",\"username\":\"test\",\"email\":\"test@yahoo.com\",\"email_verified_at\":null,\"link\":null,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"small_image_link\":null,\"about\":null,\"age\":21,\"gender\":\"female\",\"country\":\"Canada\",\"city\":\"Atawwa\",\"joined_at\":\"2019-05-03\",\"followers_count\":-2,\"following_count\":-1,\"rating_avg\":5,\"rating_count\":21,\"book_count\":0,\"birthday\":\"1998-02-21\",\"see_my_birthday\":\"Everyone\",\"see_my_country\":\"Everyone\",\"see_my_city\":\"Everyone\",\"forgot_password_token\":null,\"verified_token\":null,\"verified\":0,\"created_at\":null,\"updated_at\":null}";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -248,7 +239,8 @@ public class ProfileFragment extends Fragment {
         mRequestUrl = Urls.ROOT  + "/api/showProfile?"+"token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
     mProfileUser = new Users();
-    DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(), 1024 * 1024);
+    if(!UserInfo.IsMemic)
+    {DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(), 1024 * 1024);
     BasicNetwork network = new BasicNetwork(new HurlStack());
     mRequestQueue = new RequestQueue(cache, network);
     mRequestQueue.start();
@@ -279,6 +271,24 @@ public class ProfileFragment extends Fragment {
     });
 
     mRequestQueue.add(jsonObjectRequest);
+}
+    else
+        {
+            JSONObject Response = null;
+            try {
+                Response = new JSONObject(authUserShowProfileResponse);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            ExtractUser(Response);
+            UpdateData(mProfileUser,user_id);
+
+            //Loading Fragments
+            loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId(),user_id);
+            loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId(),user_id);
+            loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId(),user_id);
+
+        }
 }
 
     /**

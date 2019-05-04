@@ -114,7 +114,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 }
 
 
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext(), "user.1")
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext(), "user."+UserInfo.sID)
                         .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                         .setContentTitle("Readaholic")
                         .setContentText(textContent[0])
