@@ -1,12 +1,16 @@
 package com.example.android.readaholic.home;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabItem;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,397 +44,15 @@ import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
-    public ArrayList<Updates> arrayOfUpadates1 = new ArrayList<Updates>();
-    UpdatesAdapter adapter = null;
-    ProgressBar loading ;
-    ListView listUpadtes;
+    public static ArrayList<Updates> arrayOfUpadates1 = new ArrayList<Updates>();
+    public static Context context;
+    private static RequestQueue queue ;
+    static UpdatesAdapter adapter = null;
+    static ProgressBar loading ;
+    static ListView listUpadtes;
+    static SwipeRefreshLayout refresh;
     View view;
-    public static String newjson ="{\n" +
-            "    \"status\": \"true\",\n" +
-            "    \"updates\": [\n" +
-            "        {\n" +
-            "            \"id\": 2,\n" +
-            "            \"body\": null,\n" +
-            "            \"rating\": 5,\n" +
-            "            \"likes_count\":66,\n" +
-            "            \"comments_count\": 77,\n" +
-            "            \"updated_at\": \"2019-03-21 00:00:00\",\n" +
-            "            \"book_id\": 1,\n" +
-            "            \"title\": \"the great book\",\n" +
-            "            \"description\": \"\",\n" +
-            "            \"img_url\": \"asfafaaf\",\n" +
-            "            \"reviews_count\": 11,\n" +
-            "            \"ratings_count\": 44,\n" +
-            "            \"ratings_avg\": 44,\n" +
-            "            \"pages_no\": 44,\n" +
-            "            \"user_id\": 2,\n" +
-            "            \"name\": \"sam\",\n" +
-            "            \"image_link\": fff,\n" +
-            "            \"author_name\": \"Dean Winchester\",\n" +
-            "            \"update_type\": 0\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"id\": 1,\n" +
-            "            \"shelf_type\": 3,\n" +
-            "            \"updated_at\": \"2019-03-15 00:00:00\",\n" +
-            "            \"likes_count\":66,\n" +
-            "            \"comments_count\": 6,\n" +
-            "            \"book_id\": 1,\n" +
-            "            \"title\": \"a\",\n" +
-            "            \"description\": \"\",\n" +
-            "            \"img_url\": \"yyy\",\n" +
-            "            \"reviews_count\": 6,\n" +
-            "            \"ratings_count\": 7,\n" +
-            "            \"ratings_avg\": 8,\n" +
-            "            \"pages_no\": null,\n" +
-            "            \"user_id\": 2,\n" +
-            "            \"name\": \"Tom\",\n" +
-            "            \"image_link\": 99,\n" +
-            "            \"author_name\": \"ghk\",\n" +
-            "            \"update_type\": 1\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"id\": 2,\n" +
-            "            \"shelf_type\": 3,\n" +
-            "            \"updated_at\": \"2019-03-01 00:00:00\",\n" +
-            "            \"likes_count\": null,\n" +
-            "            \"comments_count\": null,\n" +
-            "            \"book_id\": 1,\n" +
-            "            \"title\": \"a\",\n" +
-            "            \"description\": \"\",\n" +
-            "            \"img_url\": \"\",\n" +
-            "            \"reviews_count\": null,\n" +
-            "            \"ratings_count\": null,\n" +
-            "            \"ratings_avg\": null,\n" +
-            "            \"pages_no\": null,\n" +
-            "            \"user_id\": 3,\n" +
-            "            \"name\": \"\",\n" +
-            "            \"image_link\": null,\n" +
-            "            \"author_name\": \"a\",\n" +
-            "            \"update_type\": 1\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"updated_at\": \"2019-03-19 00:00:00\",\n" +
-            "            \"u_id\": 2,\n" +
-            "            \"user_image_link\": null,\n" +
-            "            \"user_name\": \"\",\n" +
-            "            \"followed_id\": 3,\n" +
-            "            \"followed_image_link\": null,\n" +
-            "            \"followed_name\": \"\",\n" +
-            "            \"update_type\": 2\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"id\": 2,\n" +
-            "            \"resourse_type\": 0,\n" +
-            "            \"updated_at\": null,\n" +
-            "            \"comment_body\": \"\",\n" +
-            "            \"review_id\": 1,\n" +
-            "            \"body\": null,\n" +
-            "            \"rating\": null,\n" +
-            "            \"comments_count\": null,\n" +
-            "            \"review_updated_at\": \"2019-03-03 00:00:00\",\n" +
-            "            \"book_id\": 1,\n" +
-            "            \"title\": \"a\",\n" +
-            "            \"description\": \"\",\n" +
-            "            \"img_url\": \"\",\n" +
-            "            \"reviews_count\": null,\n" +
-            "            \"ratings_count\": null,\n" +
-            "            \"ratings_avg\": null,\n" +
-            "            \"pages_no\": null,\n" +
-            "            \"user_id\": 1,\n" +
-            "            \"name\": \"\",\n" +
-            "            \"image_link\": null,\n" +
-            "            \"author_name\": \"a\",\n" +
-            "            \"update_type\": 4\n" +
-            "        },\n" +
-            "        {\n" +
-            "            \"id\": 2,\n" +
-            "            \"resourse_type\": 0,\n" +
-            "            \"updated_at\": null,\n" +
-            "            \"review_id\": 1,\n" +
-            "            \"body\": null,\n" +
-            "            \"rating\": null,\n" +
-            "            \"likes_count\": null,\n" +
-            "            \"comments_count\": null,\n" +
-            "            \"review_updated_at\": \"2019-03-03 00:00:00\",\n" +
-            "            \"book_id\": 1,\n" +
-            "            \"title\": \"a\",\n" +
-            "            \"description\": \"\",\n" +
-            "            \"img_url\": \"\",\n" +
-            "            \"reviews_count\": null,\n" +
-            "            \"ratings_count\": null,\n" +
-            "            \"ratings_avg\": null,\n" +
-            "            \"pages_no\": null,\n" +
-            "            \"user_id\": 1,\n" +
-            "            \"name\": \"\",\n" +
-            "            \"image_link\": null,\n" +
-            "            \"author_name\": \"a\",\n" +
-            "            \"update_type\": 3\n" +
-            "        }\n" +
-            "    ]\n" +
-            "}";
-    public static String jsonFile = "{\n" +
-            "   \"updates\":{\n" +
-            "      \"update\":[\n" +
-            "         {\n" +
-            "            \"id\":\"0000000\",\n" +
-            "            \"actor\":{\n" +
-            "               \"id\":\"65993249\",\n" +
-            "               \"name\":\"Salma Ibrahim\",\n" +
-            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "            },\n" +
-            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "            \"numComments\":\"11\",\n" +
-            "            \"numLikes\":\"77\",\n" +
-            "            \"action\":{\n" +
-            "               \"id\":\"5\",\n" +
-            "               \"type\":\"0\",\n" +
-            "               \"rating\":\"5\",\n" +
-            "               \"body\":\"\",\n" +
-            "               \"book\":{\n" +
-            "                  \"id\":\"31087\",\n" +
-            "                  \"title\":\"American Duchess\",\n" +
-            "\t\t\t\t  \"author\":\"Karen Harper\",\n" +
-            "                  \"imgUrl\":\"https://i.harperapps.com/covers/9780062884299/y648.jpg\",\n" +
-            "                  \"shelf\":\"\",\n" +
-            "                  \"rating\":\"\"\n" +
-            "               }\n" +
-            "            }\n" +
-            "         },\n" +
-            "\t\t {\n" +
-            "            \"id\":\"0000000\",\n" +
-            "            \"actor\":{\n" +
-            "               \"id\":\"65993249\",\n" +
-            "               \"name\":\"Salma Ibrahim\",\n" +
-            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "            },\n" +
-            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "            \"numComments\":\"11\",\n" +
-            "            \"numLikes\":\"9\",\n" +
-            "            \"action\":{\n" +
-            "               \"id\":\"5\",\n" +
-            "               \"type\":\"0\",\n" +
-            "               \"rating\":\"0\",\n" +
-            "\t\t\t   \"review\":\"salma\",\n" +
-            "               \"body\":\"\",\n" +
-            "               \"book\":{\n" +
-            "                  \"id\":\"31087\",\n" +
-            "                  \"title\":\"American Duchess\",\n" +
-            "\t\t\t\t  \"author\":\"Karen Harper\",\n" +
-            "                  \"imgUrl\":\"https://i.harperapps.com/covers/9780062884299/y648.jpg\",\n" +
-            "                  \"shelf\":\"want to read\",\n" +
-            "                  \"rating\":\"\"\n" +
-            "               }\n" +
-            "            }\n" +
-            "         },\n" +
-            "         {\n" +
-            "            \"id\":\"000001\",\n" +
-            "            \"actor\":{\n" +
-            "               \"id\":\"65993249\",\n" +
-            "               \"name\":\"Salma Ibrahim\",\n" +
-            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "            },\n" +
-            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "            \"numComments\":\"7\",\n" +
-            "            \"numLikes\":\"9\",\n" +
-            "            \"action\":{\n" +
-            "               \"id\":\"\",\n" +
-            "               \"type\":\"2\",\n" +
-            "               \"user\":{\n" +
-            "                  \"name\":\"salma\",\n" +
-            "                  \"imageLink\":\"\",\n" +
-            "                  \"ratingAvg\":\"\",\n" +
-            "                  \"ratingCount\":\"\"\n" +
-            "               }\n" +
-            "            }\n" +
-            "         },\n" +
-            "         {\n" +
-            "            \"id\":\"0000000\",\n" +
-            "            \"actor\":{\n" +
-            "               \"id\":\"65993249\",\n" +
-            "               \"name\":\"Salma Ibrahim\",\n" +
-            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "            },\n" +
-            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "            \"numComments\":\"2\",\n" +
-            "            \"numLikes\":\"12\",\n" +
-            "            \"action\":{\n" +
-            "               \"id\":\"5\",\n" +
-            "               \"type\":\"1\",\n" +
-            "               \"shelf\":\"wants to read\",\n" +
-            "               \"book\":{\n" +
-            "                  \"id\":\"31087\",\n" +
-            "                  \"title\":\"The Last Boleyn\",\n" +
-            "                  \"imgUrl\":\"\",\n" +
-            "\t\t\t\t  \"author\":\"karen\",\n" +
-            "                  \"shelf\":\"\",\n" +
-            "                  \"rating\":\"\"\n" +
-            "               }\n" +
-            "            }\n" +
-            "         },\n" +
-            "         {\n" +
-            "            \"id\":\"0000000\",\n" +
-            "            \"actor\":{\n" +
-            "               \"id\":\"65993249\",\n" +
-            "               \"name\":\"Salma Ibrahim\",\n" +
-            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "            },\n" +
-            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "                  \"numComments\":\"127\",\n" +
-            "                  \"numLikes\":\"6123\",\n" +
-            "            \"action\":{\n" +
-            "               \"id\":\"7\",\n" +
-            "               \"type\":\"3\",\n" +
-            "               \"resourceType\":\"1\",\n" +
-            "\t\t\t\t\t \"comment\":\"the best book ever <3\",\n" +
-            "               \"update\":{\n" +
-            "                  \"id\":\"0000000\",\n" +
-            "                  \"actor\":{\n" +
-            "                     \"id\":\"65993249\",\n" +
-            "                     \"name\":\"Salma Ibrahim\",\n" +
-            "                     \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "                  },\n" +
-            "                  \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "                  \"action\":{\n" +
-            "                     \"id\":\"5\",\n" +
-            "                     \"type\":\"1\",\n" +
-            "                     \"shelf\":\"wants to read\",\n" +
-            "                     \"book\":{\n" +
-            "                        \"id\":\"31087\",\n" +
-            "\t\t\t\t\t\t\"author\":\"Karen\",\n" +
-            "                        \"title\":\"The Last Boleyn\",\n" +
-            "                        \"imgUrl\":\"\",\n" +
-            "                        \"shelf\":\"\",\n" +
-            "                        \"rating\":\"\"\n" +
-            "                     }\n" +
-            "                  }\n" +
-            "               }\n" +
-            "            }\n" +
-            "         },\n" +
-            "\t\t {\n" +
-            "            \"id\":\"0000000\",\n" +
-            "            \"actor\":{\n" +
-            "               \"id\":\"65993249\",\n" +
-            "               \"name\":\"Salma Ibrahim\",\n" +
-            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "            },\n" +
-            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "                  \"numComments\":\"127\",\n" +
-            "                  \"numLikes\":\"6123\",\n" +
-            "            \"action\":{\n" +
-            "               \"id\":\"7\",\n" +
-            "               \"type\":\"3\",\n" +
-            "               \"resourceType\":\"1\",\n" +
-            "\t\t\t\t\t \"comment\":\"the best book ever <3\",\n" +
-            "               \"update\":{\"id\":\"000001\",\n" +
-            "            \"actor\":{\n" +
-            "               \"id\":\"65993249\",\n" +
-            "               \"name\":\"Salma Ibrahim\",\n" +
-            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "            },\n" +
-            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "            \"numComments\":\"7\",\n" +
-            "            \"numLikes\":\"9\",\n" +
-            "            \"action\":{\n" +
-            "               \"id\":\"\",\n" +
-            "               \"type\":\"2\",\n" +
-            "               \"user\":{\n" +
-            "                  \"name\":\"Farah\",\n" +
-            "                  \"imageLink\":\"\",\n" +
-            "                  \"ratingAvg\":\"\",\n" +
-            "                  \"ratingCount\":\"\"\n" +
-            "               }\n" +
-            "            }\n" +
-            "         }\n" +
-            "            }\n" +
-            "         },\n" +
-            "         {\n" +
-            "            \"id\":\"0000000\",\n" +
-            "            \"actor\":{\n" +
-            "               \"id\":\"65993249\",\n" +
-            "               \"name\":\"Salma Ibrahim\",\n" +
-            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "            },\n" +
-            "            \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "            \"numComments\":\"5\",\n" +
-            "            \"numLikes\":\"9\",\n" +
-            "            \"action\":{\n" +
-            "               \"id\":\"7\",\n" +
-            "               \"type\":\"4\",\n" +
-            "\t\t\t   \"comment\":\"the best book\",\n" +
-            "               \"resourceType\":\"0\",\n" +
-            "               \"body\":\"\",\n" +
-            "               \"update\":{\n" +
-            "                  \"id\":\"0000000\",\n" +
-            "                  \"actor\":{\n" +
-            "                     \"id\":\"65993249\",\n" +
-            "                     \"name\":\"Salma Ibrahim\",\n" +
-            "                     \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "                  },\n" +
-            "                  \"updated_at\":\"Fri, 08 Mar 2019 04:16:55 -0800\",\n" +
-            "                  \"action\":{\n" +
-            "                     \"id\":\"5\",\n" +
-            "                     \"type\":\"0\",\n" +
-            "                     \"rating\":\"3\",\n" +
-            "                     \"body\":\"\",\n" +
-            "                     \"book\":{\n" +
-            "                        \"id\":\"31087\",\n" +
-            "                        \"title\":\"The Last Boleyn\",\n" +
-            "\t\t\t\t\t\t\"author\":\"Harry\",\n" +
-            "                        \"imgUrl\":\"\",\n" +
-            "                        \"shelf\":\"\",\n" +
-            "                        \"rating\":\"\"\n" +
-            "                     }\n" +
-            "                  }\n" +
-            "               }\n" +
-            "            }\n" +
-            "         }, \n" +
-            "\t\t {\n" +
-            "            \"id\":\"0000000\",\n" +
-            "            \"actor\":{\n" +
-            "               \"id\":\"65993249\",\n" +
-            "               \"name\":\"Salma\",\n" +
-            "               \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "            },\n" +
-            "            \"updated_at\":\"sat at 7:00AM\",\n" +
-            "            \"numComments\":\"5\",\n" +
-            "            \"numLikes\":\"9\",\n" +
-            "            \"action\":{\n" +
-            "               \"id\":\"7\",\n" +
-            "               \"type\":\"4\",\n" +
-            "\t\t\t   \"comment\":\"the best book\",\n" +
-            "               \"resourceType\":\"0\",\n" +
-            "               \"body\":\"\",\n" +
-            "               \"update\":{\n" +
-            "                  \"id\":\"0000000\",\n" +
-            "                  \"actor\":{\n" +
-            "                     \"id\":\"65993249\",\n" +
-            "                     \"name\":\"Salma \",\n" +
-            "                     \"imageLink\":\"https://images.gr-assets.com/users/1489660298p2/65993249.jpg\"\n" +
-            "                  },\n" +
-            "                  \"updated_at\":\"Fri at 8:00PM\",\n" +
-            "                  \"action\":{\n" +
-            "                     \"id\":\"5\",\n" +
-            "                     \"type\":\"0\",\n" +
-            "                     \"rating\":\"0\",\n" +
-            "\t\t\t\t\t \"review\":\"the best book ever\",\n" +
-            "                     \"body\":\"\",\n" +
-            "                     \"book\":{\n" +
-            "                        \"id\":\"31087\",\n" +
-            "                        \"title\":\"The Last Boleyn\",\n" +
-            "\t\t\t\t\t\t\"author\":\"Harry\",\n" +
-            "                        \"imgUrl\":\"\",\n" +
-            "                        \"shelf\":\"\",\n" +
-            "                        \"rating\":\"\"\n" +
-            "                     }\n" +
-            "                  }\n" +
-            "               }\n" +
-            "            }\n" +
-            "\t\t }\n" +
-            "      ],\n" +
-            "      \"_type\":\"array\"\n" +
-            "   }\n" +
-            "}";
+    public static String jsonFile = "[{\"id\":28,\"updated_at\":\"2019-04-27 17:28:34\",\"user_id\":4,\"name\":\"Nour\",\"followed_id\":5,\"followed_name\":\"Salma\",\"update_type\":2,\"auth_user_following\":1,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"followed_image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":4,\"body\":\"NzY1KE4hwW\",\"rating\":1,\"likes_count\":0,\"comments_count\":0,\"updated_at\":\"2019-04-27 17:28:34\",\"book_id\":2,\"title\":\"Sherwood\",\"description\":\"Robin of Locksley is dead.\\n            Maid Marian doesn\\u2019t know how she\\u2019ll go on, but the people of Locksley town, persecuted by the Sheriff of Nottingham, need a protector. And the dreadful Guy of Gisborne, the Sheriff\\u2019s right hand, wishes to step into Robin\\u2019s shoes as Lord of Locksley and Marian\\u2019s fianc\\u00e9.\\n            Who is there to stop them?\\n            Marian never meant to tread in Robin\\u2019s footsteps\\u2014never intended to stand as a beacon of hope to those awaiting his triumphant return. But with a sweep of his green cloak and the flash of her sword, Marian makes the choice to become her own hero: Robin Hood. \",\"img_url\":\"https:\\/\\/kbimages1-a.akamaihd.net\\/6954f4cc-6e4e-46e3-8bc2-81b93f57a723\\/353\\/569\\/90\\/False\\/sherwood-7.jpg\",\"reviews_count\":40,\"ratings_count\":40,\"ratings_avg\":3.67,\"pages_no\":0,\"user_id\":4,\"name\":\"Nour\",\"author_name\":\"Meagan Spooner\",\"update_type\":0,\"shelf\":0,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":6,\"body\":\"amYagyPR7A\",\"rating\":5,\"likes_count\":0,\"comments_count\":0,\"updated_at\":\"2019-04-27 17:28:34\",\"book_id\":2,\"title\":\"Sherwood\",\"description\":\"Robin of Locksley is dead.\\n            Maid Marian doesn\\u2019t know how she\\u2019ll go on, but the people of Locksley town, persecuted by the Sheriff of Nottingham, need a protector. And the dreadful Guy of Gisborne, the Sheriff\\u2019s right hand, wishes to step into Robin\\u2019s shoes as Lord of Locksley and Marian\\u2019s fianc\\u00e9.\\n            Who is there to stop them?\\n            Marian never meant to tread in Robin\\u2019s footsteps\\u2014never intended to stand as a beacon of hope to those awaiting his triumphant return. But with a sweep of his green cloak and the flash of her sword, Marian makes the choice to become her own hero: Robin Hood. \",\"img_url\":\"https:\\/\\/kbimages1-a.akamaihd.net\\/6954f4cc-6e4e-46e3-8bc2-81b93f57a723\\/353\\/569\\/90\\/False\\/sherwood-7.jpg\",\"reviews_count\":40,\"ratings_count\":40,\"ratings_avg\":3.67,\"pages_no\":0,\"user_id\":3,\"name\":\"waleed\",\"author_name\":\"Meagan Spooner\",\"update_type\":0,\"shelf\":0,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":7,\"body\":\"Xtgc4FFFhU\",\"rating\":5,\"likes_count\":0,\"comments_count\":0,\"updated_at\":\"2019-04-27 17:28:34\",\"book_id\":2,\"title\":\"Sherwood\",\"description\":\"Robin of Locksley is dead.\\n            Maid Marian doesn\\u2019t know how she\\u2019ll go on, but the people of Locksley town, persecuted by the Sheriff of Nottingham, need a protector. And the dreadful Guy of Gisborne, the Sheriff\\u2019s right hand, wishes to step into Robin\\u2019s shoes as Lord of Locksley and Marian\\u2019s fianc\\u00e9.\\n            Who is there to stop them?\\n            Marian never meant to tread in Robin\\u2019s footsteps\\u2014never intended to stand as a beacon of hope to those awaiting his triumphant return. But with a sweep of his green cloak and the flash of her sword, Marian makes the choice to become her own hero: Robin Hood. \",\"img_url\":\"https:\\/\\/kbimages1-a.akamaihd.net\\/6954f4cc-6e4e-46e3-8bc2-81b93f57a723\\/353\\/569\\/90\\/False\\/sherwood-7.jpg\",\"reviews_count\":40,\"ratings_count\":40,\"ratings_avg\":3.67,\"pages_no\":0,\"user_id\":2,\"name\":\"ta7a\",\"author_name\":\"Meagan Spooner\",\"update_type\":0,\"shelf\":0,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":11,\"body\":\"gGYj6XXMKr\",\"rating\":2,\"likes_count\":0,\"comments_count\":0,\"updated_at\":\"2019-04-27 17:28:34\",\"book_id\":3,\"title\":\"Once & Future\",\"description\":\"I\\u2019ve been chased my whole life. As a fugitive refugee in the territory controlled by the tyrannical Mercer corporation, I\\u2019ve always had to hide who I am. Until I found Excalibur.\\n            Now I\\u2019m done hiding.\\n            My name is Ari Helix. I have a magic sword, a cranky wizard, and a revolution to start.   \\n            When Ari crash-lands on Old Earth and pulls a magic sword from its ancient resting place, she is revealed to be the newest reincarnation of King Arthur. Then she meets Merlin, who has aged backward over the centuries into a teenager, and together they must break the curse that keeps Arthur coming back. Their quest? Defeat the cruel, oppressive government and bring peace and equality to all humankind.\",\"img_url\":\"https:\\/\\/images-na.ssl-images-amazon.com\\/images\\/I\\/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\",\"reviews_count\":2,\"ratings_count\":2,\"ratings_avg\":3.57,\"pages_no\":0,\"user_id\":5,\"name\":\"Salma\",\"author_name\":\"Amy Rose Capetta\",\"update_type\":0,\"shelf\":0,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":13,\"body\":\"FegvKn1OEJ\",\"rating\":4,\"likes_count\":0,\"comments_count\":0,\"updated_at\":\"2019-04-27 17:28:34\",\"book_id\":2,\"title\":\"Sherwood\",\"description\":\"Robin of Locksley is dead.\\n            Maid Marian doesn\\u2019t know how she\\u2019ll go on, but the people of Locksley town, persecuted by the Sheriff of Nottingham, need a protector. And the dreadful Guy of Gisborne, the Sheriff\\u2019s right hand, wishes to step into Robin\\u2019s shoes as Lord of Locksley and Marian\\u2019s fianc\\u00e9.\\n            Who is there to stop them?\\n            Marian never meant to tread in Robin\\u2019s footsteps\\u2014never intended to stand as a beacon of hope to those awaiting his triumphant return. But with a sweep of his green cloak and the flash of her sword, Marian makes the choice to become her own hero: Robin Hood. \",\"img_url\":\"https:\\/\\/kbimages1-a.akamaihd.net\\/6954f4cc-6e4e-46e3-8bc2-81b93f57a723\\/353\\/569\\/90\\/False\\/sherwood-7.jpg\",\"reviews_count\":40,\"ratings_count\":40,\"ratings_avg\":3.67,\"pages_no\":0,\"user_id\":3,\"name\":\"waleed\",\"author_name\":\"Meagan Spooner\",\"update_type\":0,\"shelf\":0,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":15,\"body\":\"KyHGXphyYw\",\"rating\":3,\"likes_count\":0,\"comments_count\":0,\"updated_at\":\"2019-04-27 17:28:34\",\"book_id\":1,\"title\":\"The Bird King\",\"description\":\"New from the award-winning author of Alif the Unseen and writer of the Ms. Marvel series, G. Willow Wilson\\n             Set in 1491 during the reign of the last sultanate in the Iberian peninsula, \\n             The Bird King is the story of Fatima, the only remaining Circassian concubine to the sultan, and her dearest friend Hassan, the palace mapmaker. \\n              Hassan has a secret--he can draw maps of places he's never seen and bend the shape of reality.\\n              When representatives of the newly formed Spanish monarchy arrive to negotiate the sultan's surrender, Fatima befriends one of the women, not realizing that she will see Hassan's gift as sorcery and a threat to Christian Spanish rule. With their freedoms at stake,\\n               what will Fatima risk to save Hassan and escape the palace walls? As Fatima and Hassan traverse Spain with the help of a clever jinn to find safety, The Bird King asks us to consider what love is and the price of freedom at a time when the West and the Muslim world were not yet separate. \",\"img_url\":\"https:\\/\\/i5.walmartimages.com\\/asr\\/8bae6257-b3ed-43ba-b5d4-c55b6479697f_1.c6a36804e0a9cbfd0e408a4b96f8a94e.jpeg?odnHeight=560&odnWidth=560&odnBg=FFFFFF\",\"reviews_count\":0,\"ratings_count\":0,\"ratings_avg\":0,\"pages_no\":0,\"user_id\":4,\"name\":\"Nour\",\"author_name\":\"G. Willow Wilson\",\"update_type\":0,\"shelf\":3,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":17,\"body\":\"P4ZuDamEuE\",\"rating\":4,\"likes_count\":0,\"comments_count\":0,\"updated_at\":\"2019-04-27 17:28:34\",\"book_id\":2,\"title\":\"Sherwood\",\"description\":\"Robin of Locksley is dead.\\n            Maid Marian doesn\\u2019t know how she\\u2019ll go on, but the people of Locksley town, persecuted by the Sheriff of Nottingham, need a protector. And the dreadful Guy of Gisborne, the Sheriff\\u2019s right hand, wishes to step into Robin\\u2019s shoes as Lord of Locksley and Marian\\u2019s fianc\\u00e9.\\n            Who is there to stop them?\\n            Marian never meant to tread in Robin\\u2019s footsteps\\u2014never intended to stand as a beacon of hope to those awaiting his triumphant return. But with a sweep of his green cloak and the flash of her sword, Marian makes the choice to become her own hero: Robin Hood. \",\"img_url\":\"https:\\/\\/kbimages1-a.akamaihd.net\\/6954f4cc-6e4e-46e3-8bc2-81b93f57a723\\/353\\/569\\/90\\/False\\/sherwood-7.jpg\",\"reviews_count\":40,\"ratings_count\":40,\"ratings_avg\":3.67,\"pages_no\":0,\"user_id\":5,\"name\":\"Salma\",\"author_name\":\"Meagan Spooner\",\"update_type\":0,\"shelf\":0,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":18,\"body\":\"bKAWwhGGx6\",\"rating\":5,\"likes_count\":0,\"comments_count\":0,\"updated_at\":\"2019-04-27 17:28:34\",\"book_id\":2,\"title\":\"Sherwood\",\"description\":\"Robin of Locksley is dead.\\n            Maid Marian doesn\\u2019t know how she\\u2019ll go on, but the people of Locksley town, persecuted by the Sheriff of Nottingham, need a protector. And the dreadful Guy of Gisborne, the Sheriff\\u2019s right hand, wishes to step into Robin\\u2019s shoes as Lord of Locksley and Marian\\u2019s fianc\\u00e9.\\n            Who is there to stop them?\\n            Marian never meant to tread in Robin\\u2019s footsteps\\u2014never intended to stand as a beacon of hope to those awaiting his triumphant return. But with a sweep of his green cloak and the flash of her sword, Marian makes the choice to become her own hero: Robin Hood. \",\"img_url\":\"https:\\/\\/kbimages1-a.akamaihd.net\\/6954f4cc-6e4e-46e3-8bc2-81b93f57a723\\/353\\/569\\/90\\/False\\/sherwood-7.jpg\",\"reviews_count\":40,\"ratings_count\":40,\"ratings_avg\":3.67,\"pages_no\":0,\"user_id\":4,\"name\":\"Nour\",\"author_name\":\"Meagan Spooner\",\"update_type\":0,\"shelf\":0,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":19,\"body\":\"6cRMqKgoA8\",\"rating\":5,\"likes_count\":0,\"comments_count\":0,\"updated_at\":\"2019-04-27 17:28:34\",\"book_id\":3,\"title\":\"Once & Future\",\"description\":\"I\\u2019ve been chased my whole life. As a fugitive refugee in the territory controlled by the tyrannical Mercer corporation, I\\u2019ve always had to hide who I am. Until I found Excalibur.\\n            Now I\\u2019m done hiding.\\n            My name is Ari Helix. I have a magic sword, a cranky wizard, and a revolution to start.   \\n            When Ari crash-lands on Old Earth and pulls a magic sword from its ancient resting place, she is revealed to be the newest reincarnation of King Arthur. Then she meets Merlin, who has aged backward over the centuries into a teenager, and together they must break the curse that keeps Arthur coming back. Their quest? Defeat the cruel, oppressive government and bring peace and equality to all humankind.\",\"img_url\":\"https:\\/\\/images-na.ssl-images-amazon.com\\/images\\/I\\/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\",\"reviews_count\":2,\"ratings_count\":2,\"ratings_avg\":3.57,\"pages_no\":0,\"user_id\":5,\"name\":\"Salma\",\"author_name\":\"Amy Rose Capetta\",\"update_type\":0,\"shelf\":0,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":2,\"shelf_type\":2,\"updated_at\":\"2019-04-27 17:28:34\",\"likes_count\":null,\"comments_count\":null,\"book_id\":1,\"title\":\"The Bird King\",\"description\":\"New from the award-winning author of Alif the Unseen and writer of the Ms. Marvel series, G. Willow Wilson\\n             Set in 1491 during the reign of the last sultanate in the Iberian peninsula, \\n             The Bird King is the story of Fatima, the only remaining Circassian concubine to the sultan, and her dearest friend Hassan, the palace mapmaker. \\n              Hassan has a secret--he can draw maps of places he's never seen and bend the shape of reality.\\n              When representatives of the newly formed Spanish monarchy arrive to negotiate the sultan's surrender, Fatima befriends one of the women, not realizing that she will see Hassan's gift as sorcery and a threat to Christian Spanish rule. With their freedoms at stake,\\n               what will Fatima risk to save Hassan and escape the palace walls? As Fatima and Hassan traverse Spain with the help of a clever jinn to find safety, The Bird King asks us to consider what love is and the price of freedom at a time when the West and the Muslim world were not yet separate. \",\"img_url\":\"https:\\/\\/i5.walmartimages.com\\/asr\\/8bae6257-b3ed-43ba-b5d4-c55b6479697f_1.c6a36804e0a9cbfd0e408a4b96f8a94e.jpeg?odnHeight=560&odnWidth=560&odnBg=FFFFFF\",\"reviews_count\":0,\"ratings_count\":0,\"ratings_avg\":0,\"pages_no\":0,\"user_id\":3,\"name\":\"waleed\",\"author_name\":\"G. Willow Wilson\",\"update_type\":1,\"shelf\":3,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":3,\"shelf_type\":1,\"updated_at\":\"2019-04-27 17:28:34\",\"likes_count\":null,\"comments_count\":null,\"book_id\":2,\"title\":\"Sherwood\",\"description\":\"Robin of Locksley is dead.\\n            Maid Marian doesn\\u2019t know how she\\u2019ll go on, but the people of Locksley town, persecuted by the Sheriff of Nottingham, need a protector. And the dreadful Guy of Gisborne, the Sheriff\\u2019s right hand, wishes to step into Robin\\u2019s shoes as Lord of Locksley and Marian\\u2019s fianc\\u00e9.\\n            Who is there to stop them?\\n            Marian never meant to tread in Robin\\u2019s footsteps\\u2014never intended to stand as a beacon of hope to those awaiting his triumphant return. But with a sweep of his green cloak and the flash of her sword, Marian makes the choice to become her own hero: Robin Hood. \",\"img_url\":\"https:\\/\\/kbimages1-a.akamaihd.net\\/6954f4cc-6e4e-46e3-8bc2-81b93f57a723\\/353\\/569\\/90\\/False\\/sherwood-7.jpg\",\"reviews_count\":40,\"ratings_count\":40,\"ratings_avg\":3.67,\"pages_no\":0,\"user_id\":2,\"name\":\"ta7a\",\"author_name\":\"Meagan Spooner\",\"update_type\":1,\"shelf\":0,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":1,\"shelf_type\":0,\"updated_at\":\"2019-04-27 17:28:34\",\"likes_count\":null,\"comments_count\":null,\"book_id\":3,\"title\":\"Once & Future\",\"description\":\"I\\u2019ve been chased my whole life. As a fugitive refugee in the territory controlled by the tyrannical Mercer corporation, I\\u2019ve always had to hide who I am. Until I found Excalibur.\\n            Now I\\u2019m done hiding.\\n            My name is Ari Helix. I have a magic sword, a cranky wizard, and a revolution to start.   \\n            When Ari crash-lands on Old Earth and pulls a magic sword from its ancient resting place, she is revealed to be the newest reincarnation of King Arthur. Then she meets Merlin, who has aged backward over the centuries into a teenager, and together they must break the curse that keeps Arthur coming back. Their quest? Defeat the cruel, oppressive government and bring peace and equality to all humankind.\",\"img_url\":\"https:\\/\\/images-na.ssl-images-amazon.com\\/images\\/I\\/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\",\"reviews_count\":2,\"ratings_count\":2,\"ratings_avg\":3.57,\"pages_no\":0,\"user_id\":3,\"name\":\"waleed\",\"author_name\":\"Amy Rose Capetta\",\"update_type\":1,\"shelf\":0,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":4,\"shelf_type\":2,\"updated_at\":\"2019-04-27 17:28:34\",\"likes_count\":null,\"comments_count\":null,\"book_id\":4,\"title\":\"Internment\",\"description\":\"Rebellions are built on hope.\\n            Set in a horrifying near-future United States, seventeen-year-old Layla Amin and her parents are forced into an internment camp for Muslim American citizens.\\n            With the help of newly made friends also trapped within the internment camp, her boyfriend on the outside, and an unexpected alliance, Layla begins a journey to fight for freedom, leading a revolution against the internment camp's Director and his guards.\\n            Heart-racing and emotional, Internment challenges readers to fight complicit silence that exists in our society today.\",\"img_url\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"reviews_count\":0,\"ratings_count\":0,\"ratings_avg\":0,\"pages_no\":0,\"user_id\":3,\"name\":\"waleed\",\"author_name\":\"Samira Ahmed\",\"update_type\":1,\"shelf\":3,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":3,\"body\":\"4s6wvlvAf2\",\"rating\":3,\"likes_count\":0,\"comments_count\":0,\"updated_at\":\"2019-04-27 17:28:34\",\"book_id\":3,\"title\":\"Once & Future\",\"description\":\"I\\u2019ve been chased my whole life. As a fugitive refugee in the territory controlled by the tyrannical Mercer corporation, I\\u2019ve always had to hide who I am. Until I found Excalibur.\\n            Now I\\u2019m done hiding.\\n            My name is Ari Helix. I have a magic sword, a cranky wizard, and a revolution to start.   \\n            When Ari crash-lands on Old Earth and pulls a magic sword from its ancient resting place, she is revealed to be the newest reincarnation of King Arthur. Then she meets Merlin, who has aged backward over the centuries into a teenager, and together they must break the curse that keeps Arthur coming back. Their quest? Defeat the cruel, oppressive government and bring peace and equality to all humankind.\",\"img_url\":\"https:\\/\\/images-na.ssl-images-amazon.com\\/images\\/I\\/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\",\"reviews_count\":2,\"ratings_count\":2,\"ratings_avg\":3.57,\"pages_no\":0,\"user_id\":5,\"name\":\"Salma\",\"author_name\":\"Amy Rose Capetta\",\"update_type\":0,\"shelf\":0,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":1,\"updated_at\":\"2019-04-27 17:28:34\",\"user_id\":2,\"name\":\"ta7a\",\"followed_id\":1,\"followed_name\":\"test\",\"update_type\":2,\"auth_user_following\":0,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"followed_image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":3,\"updated_at\":\"2019-04-27 17:28:34\",\"user_id\":4,\"name\":\"Nour\",\"followed_id\":1,\"followed_name\":\"test\",\"update_type\":2,\"auth_user_following\":0,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"followed_image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":4,\"updated_at\":\"2019-04-27 17:28:34\",\"user_id\":5,\"name\":\"Salma\",\"followed_id\":1,\"followed_name\":\"test\",\"update_type\":2,\"auth_user_following\":0,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"followed_image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":8,\"updated_at\":\"2019-04-27 17:28:34\",\"user_id\":3,\"name\":\"waleed\",\"followed_id\":2,\"followed_name\":\"ta7a\",\"update_type\":2,\"auth_user_following\":1,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"followed_image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":9,\"updated_at\":\"2019-04-27 17:28:34\",\"user_id\":4,\"name\":\"Nour\",\"followed_id\":2,\"followed_name\":\"ta7a\",\"update_type\":2,\"auth_user_following\":1,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"followed_image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":10,\"updated_at\":\"2019-04-27 17:28:34\",\"user_id\":5,\"name\":\"Salma\",\"followed_id\":2,\"followed_name\":\"ta7a\",\"update_type\":2,\"auth_user_following\":1,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"followed_image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":14,\"updated_at\":\"2019-04-27 17:28:34\",\"user_id\":2,\"name\":\"ta7a\",\"followed_id\":3,\"followed_name\":\"waleed\",\"update_type\":2,\"auth_user_following\":1,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"followed_image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":15,\"updated_at\":\"2019-04-27 17:28:34\",\"user_id\":4,\"name\":\"Nour\",\"followed_id\":3,\"followed_name\":\"waleed\",\"update_type\":2,\"auth_user_following\":1,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"followed_image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":16,\"updated_at\":\"2019-04-27 17:28:34\",\"user_id\":5,\"name\":\"Salma\",\"followed_id\":3,\"followed_name\":\"waleed\",\"update_type\":2,\"auth_user_following\":1,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"followed_image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":20,\"updated_at\":\"2019-04-27 17:28:34\",\"user_id\":2,\"name\":\"ta7a\",\"followed_id\":4,\"followed_name\":\"Nour\",\"update_type\":2,\"auth_user_following\":1,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"followed_image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":21,\"updated_at\":\"2019-04-27 17:28:34\",\"user_id\":3,\"name\":\"waleed\",\"followed_id\":4,\"followed_name\":\"Nour\",\"update_type\":2,\"auth_user_following\":1,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"followed_image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":22,\"updated_at\":\"2019-04-27 17:28:34\",\"user_id\":5,\"name\":\"Salma\",\"followed_id\":4,\"followed_name\":\"Nour\",\"update_type\":2,\"auth_user_following\":1,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"followed_image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":26,\"updated_at\":\"2019-04-27 17:28:34\",\"user_id\":2,\"name\":\"ta7a\",\"followed_id\":5,\"followed_name\":\"Salma\",\"update_type\":2,\"auth_user_following\":1,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"followed_image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":27,\"updated_at\":\"2019-04-27 17:28:34\",\"user_id\":3,\"name\":\"waleed\",\"followed_id\":5,\"followed_name\":\"Salma\",\"update_type\":2,\"auth_user_following\":1,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"followed_image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":2,\"updated_at\":\"2019-04-27 17:28:34\",\"user_id\":3,\"name\":\"waleed\",\"followed_id\":1,\"followed_name\":\"test\",\"update_type\":2,\"auth_user_following\":0,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"followed_image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"},{\"id\":1,\"body\":\"ISbcsc8JPG\",\"rating\":5,\"likes_count\":0,\"comments_count\":0,\"updated_at\":\"2019-04-27 17:28:34\",\"book_id\":4,\"title\":\"Internment\",\"description\":\"Rebellions are built on hope.\\n            Set in a horrifying near-future United States, seventeen-year-old Layla Amin and her parents are forced into an internment camp for Muslim American citizens.\\n            With the help of newly made friends also trapped within the internment camp, her boyfriend on the outside, and an unexpected alliance, Layla begins a journey to fight for freedom, leading a revolution against the internment camp's Director and his guards.\\n            Heart-racing and emotional, Internment challenges readers to fight complicit silence that exists in our society today.\",\"img_url\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"reviews_count\":0,\"ratings_count\":0,\"ratings_avg\":0,\"pages_no\":0,\"user_id\":4,\"name\":\"Nour\",\"author_name\":\"Samira Ahmed\",\"update_type\":0,\"shelf\":3,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\"}]";
 
     TabItem mUpdtesfragment ;
     TabItem mNotificationfragment;
@@ -452,18 +74,32 @@ public class HomeFragment extends Fragment {
        // adapter = new MaterialAdapter(getContext(),MaterialList);
        // ListView list = (ListView) myview.findViewById(R.id.MaterialstList);
        // list.setAdapter(adapter);
+        //final SwipeRefreshLayout swipe = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+
         loading = (ProgressBar) view.findViewById(R.id.UpdatesActivity_loading_progbar);
         adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
 
         listUpadtes = (ListView) view.findViewById(R.id.UpadtesActivity_updateslist_listview);
         listUpadtes.setEmptyView(view.findViewById(R.id.empty));
-        listUpadtes.setAdapter(adapter);
+        refresh = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
 
         listUpadtes.setVisibility(View.GONE);
+        refresh.setVisibility(View.GONE);
         loading.setVisibility(View.VISIBLE);
+       refresh.setColorSchemeResources(R.color.colorRed);
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                (new Handler()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        request();
 
-
-
+                        refresh.setRefreshing(false);
+                    }
+                },3000);
+            }
+        });
 
         return view;
     }
@@ -480,9 +116,15 @@ public class HomeFragment extends Fragment {
      */
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = HomeFragment.context ;
+        queue = Volley.newRequestQueue(getContext());
         //arrayOfUpadates1 = onResposeAction(newjson);
         //arrayOfUpadates1 = onResposeAction1(jsonFile);
-        request();
+        if(UserInfo.IsMemic == false) {
+            request();
+        }else{
+            onResposeAction(Memic.getUpdates(UserInfo.Memicid));
+        }
        // Toast.makeText(getContext(),"salma",Toast.LENGTH_SHORT).show();
 
     }
@@ -492,32 +134,32 @@ public class HomeFragment extends Fragment {
      * in the response we call the function that create the array of updates
      *
      */
-    public void request(){
-        RequestQueue queue = Volley.newRequestQueue(getContext());
+    public String request(){
         String url = Urls.ROOT+"/api/updates?token="+ UserInfo.sToken +"&type="+UserInfo.sTokenType;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                         new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
+                        //Toast.makeText(getContext(),response,Toast.LENGTH_SHORT).show();
+                        jsonFile = response;
                         arrayOfUpadates1 = onResposeAction(response);
                         adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
                         listUpadtes.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
-                        //Toast.makeText(getContext(),response,Toast.LENGTH_SHORT).show();
-                        listUpadtes.setVisibility(View.VISIBLE);
                         loading.setVisibility(View.GONE);
+                        listUpadtes.setVisibility(View.VISIBLE);
+                        refresh.setVisibility(View.VISIBLE);
+                        Log.d(response,response);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-               Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
             }
         });
 
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
-
+        return jsonFile;
     }
 
     /**
@@ -538,26 +180,25 @@ public class HomeFragment extends Fragment {
         }
         for (int i = 0; i < updatesArray.length(); i++) {
             try {
-
                 JSONObject updateItemJson = updatesArray.getJSONObject(i);
 
                 Updates updateItem = new Updates(updateItemJson.getInt("update_type"), updateItemJson.getString("name"),updateItemJson.getString("updated_at"),9,10,updateItemJson.getInt("user_id"));
                 if(updateItemJson.getString("image_link") == null){updateItem.setmUserimg("0");}
-                updateItem.setmUserimg(updateItemJson.getString("image_link"));
+                else {
+                    updateItem.setmUserimg(updateItemJson.getString("image_link"));
+                }
                 switch (updateItem.getmTypeOfUpdates()){
                     //review or raring update
                     case 0:
                         updateItem.setmUserShelf(updateItemJson.getInt("shelf"));
-                        updateItem.setmReviewID(updateItemJson.getInt("review_id"));
+                        //updateItem.setmReviewID(updateItemJson.getInt("review_id"));
                         updateItem.setmBookCover(updateItemJson.getString("img_url"));
                         updateItem.setmBookName(updateItemJson.getString("title"));
                         updateItem.setmRatingValue(updateItemJson.getInt("rating"));
                         updateItem.setmAuthorName(updateItemJson.getString("author_name"));
                         updateItem.setmBookId(updateItemJson.getInt("book_id"));
-                        if(updateItem.getmRatingValue() == 0){
-                            //if type of only revies Disable rating value and assign review
-                            updateItem.setmReview(updateItemJson.getString("body"));
-                        }
+                        //if type of only revies Disable rating value and assign review
+                        updateItem.setmReview(updateItemJson.getString("body"));
                         break;
                      //shelves
                     case 1:
@@ -571,46 +212,23 @@ public class HomeFragment extends Fragment {
                     //follwing
                     case 2:
                         updateItem.setmNameofFollow(updateItemJson.getString("followed_name"));
-                        updateItem.setmInnerImgUrl(updateItemJson.getString("followed_image_link"));
                         updateItem.setmInnerUserId(updateItemJson.getInt("followed_id"));
                         break;
                     //liked or commented on post
                     case 3: case 4:
-                        updateItem.setmInnerUserId(updateItemJson.getInt("rev_user_id"));
                         updateItem.setmInnerUpdate(0);//always in reviews
-                        updateItem.setmNameofFollow(updateItemJson.getString("rev_user_name"));
+                        //updateItem.setmNameofFollow(updateItemJson.getString("rev_user_name"));
                         updateItem.setmInnerDate(updateItemJson.getString("review_updated_at"));
                         //type of the inner post
-                        switch (updateItem.getmInnerUpdate()) {
-                            //review or rating
-                            case 0:
-                                updateItem.setmUserShelf(updateItemJson.getInt("shelf"));
-                                updateItem.setmReviewID(updateItemJson.getInt("review_id"));
-                                updateItem.setmBookCover(updateItemJson.getString("img_url"));
-                                updateItem.setmBookName(updateItemJson.getString("title"));
-                                updateItem.setmRatingValue(updateItemJson.getInt("rating"));
-                                updateItem.setmInnerImgUrl(updateItemJson.getString("rev_user_imageLink"));
-                                updateItem.setmAuthorName(updateItemJson.getString("author_name"));
-                                updateItem.setmBookId(updateItemJson.getInt("book_id"));
-                                if (updateItem.getmRatingValue() == 0) {
-                                    updateItem.setmReview(updateItemJson.getString("body"));
-                                }
-                                break;
-                            //shelves
-                            case 1:
-                                updateItem.setmUserShelf(updateItemJson.getInt("shelf"));
-                                updateItem.setmBookCover(updateItemJson.getString("imgUrl"));
-                                updateItem.setmBookName(updateItemJson.getString("title"));
-                                updateItem.setmBookId(updateItemJson.getInt("book_id"));
-                                updateItem.setmAuthorName(updateItemJson.getString("author_name"));
-                                updateItem.setmShelf(updateItemJson.getString("shelf"));
-                                break;
-                            //follwing
-                            case 2:
-                                JSONObject user1 = updateItemJson.getJSONObject("user");
-                                updateItem.setmNameofFollow(user1.getString("name"));
-                                break;
-                        }
+                        updateItem.setmUserShelf(updateItemJson.getInt("shelf"));
+                        updateItem.setmReviewID(updateItemJson.getInt("review_id"));
+                        updateItem.setmBookCover(updateItemJson.getString("img_url"));
+                        updateItem.setmBookName(updateItemJson.getString("title"));
+                        updateItem.setmRatingValue(updateItemJson.getInt("rating"));
+                        //updateItem.setmInnerImgUrl(updateItemJson.getString("rev_user_imageLink"));
+                        updateItem.setmAuthorName(updateItemJson.getString("author_name"));
+                        updateItem.setmBookId(updateItemJson.getInt("book_id"));
+                        updateItem.setmReview(updateItemJson.getString("body"));
                         //commented on post assign comment to show it
                         if(updateItem.getmTypeOfUpdates() == 4){
                             updateItem.setmComment(updateItemJson.getString("comment_body"));
@@ -618,7 +236,7 @@ public class HomeFragment extends Fragment {
                         break;
                 }
                 arrayOfUpadates.add(updateItem);
-
+                adapter.notifyDataSetChanged();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -716,17 +334,20 @@ public class HomeFragment extends Fragment {
                         break;
                 }
                 arrayOfUpadates.add(updateItem);
+                adapter.notifyDataSetChanged();
+                listUpadtes.setAdapter(adapter);
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
         }
         return arrayOfUpadates;
     }
     @Override
     public void onResume() {
-        super.onResume();
         request();
+        super.onResume();
     }
 
 

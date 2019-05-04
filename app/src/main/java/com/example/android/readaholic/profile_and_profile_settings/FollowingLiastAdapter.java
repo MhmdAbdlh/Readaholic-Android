@@ -11,9 +11,11 @@ import android.widget.TextView;
 
 import com.example.android.readaholic.CircleTransform;
 import com.example.android.readaholic.R;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * FollowingList Adapter as adapter of followings list
@@ -92,7 +94,19 @@ public class FollowingLiastAdapter extends RecyclerView.Adapter<FollowingLiastAd
     @Override
     public void onBindViewHolder(@NonNull FollowingLiastAdapter.MyViewHolder myViewHolder, int i) {
 
-        Picasso.get().load(mUsers.get(i).getmUserImageUrl()).transform(new CircleTransform()).into(myViewHolder.userImageView);
+        final AtomicBoolean loaded = new AtomicBoolean();
+        Picasso.get().load(mUsers.get(i).getmUserImageUrl()).transform(new CircleTransform()).into(myViewHolder.userImageView, new Callback.EmptyCallback() {
+            @Override public void onSuccess() {
+                loaded.set(true);
+            }
+        });
+        if (!loaded.get()) {
+            // The image was immediately available.
+            Picasso.get().load("https://s.gr-assets.com/assets/nophoto/user/u_111x148-9394ebedbb3c6c218f64be9549657029.png").
+                    transform(new CircleTransform()).into(myViewHolder.userImageView);
+        }
+
+        //Picasso.get().load(mUsers.get(i).getmUserImageUrl()).transform(new CircleTransform()).into(myViewHolder.userImageView);
         myViewHolder.userNameTextView.setText( mUsers.get(i).getmUserName());
         myViewHolder.userBooksNumberTextView.setText( mUsers.get(i).getmUsernumberOfBooks()+" Books");
 

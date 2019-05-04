@@ -78,18 +78,5 @@
             android:layout_height="wrap_content"
             android:text="First published August 31,2005" />
 
-        <TextView
-            android:id="@+id/numberofpages"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="848  pages"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/updateddate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Laste updated March 14,2019"
-            android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>

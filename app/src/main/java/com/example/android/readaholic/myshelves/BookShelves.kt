@@ -53,7 +53,9 @@ protected var shelvetype:Int?=null
             var currentbook:BookPageInfo=booklist!![position]
             myview.bookname.text=currentbook.book_title
             myview.authorname.text=currentbook.author_name
-            myview.numbrtofratings.text=currentbook.ratings_count.toString()
+            myview.numbrtofratings.text=currentbook.ratings_count.toString()+" ratings"
+            myview.authorname.text="by "+currentbook.author_name
+            myview.ratingui.rating=currentbook.average_rating
             Picasso.get().load(currentbook.image_url).into(myview.bookimage)
             myview.bookimage.setOnClickListener {
                 Cbookdata.bookid=currentbook.bookid
@@ -109,9 +111,10 @@ protected var shelvetype:Int?=null
     fun feedBooksInfo(jsonarray: JSONArray) {
         for (i in 0..jsonarray.length() - 1) {
             var jsonobject = jsonarray.getJSONObject(i)
-            booklist!!.add(BookPageInfo(jsonobject.getString("title"), 0, jsonobject.getString("img_url"), 0, 0.toString(), 0.toString(), 0, 0, 0.toFloat()
-                    , jsonobject.getInt("ratings_count"), 0.toString(), jsonobject.getInt("ratings_count"), 0.toString(), 0.toString(), jsonobject.getInt("book_id"), jsonobject.getInt("reviews_count")))
+            booklist!!.add(BookPageInfo(jsonobject.getString("title"), jsonobject.getInt("isbn"), jsonobject.getString("img_url"), 0, 0.toString(), 0.toString(), 0, 0, jsonobject.getString("reviews_count").toFloat()
+                    , jsonobject.getInt("ratings_count"), 0.toString(), jsonobject.getInt("ratings_count"), jsonobject.getString("author_name"), 0.toString(), jsonobject.getInt("book_id"), jsonobject.getInt("reviews_count")))
         }
+
         booklistadapter!!.notifyDataSetChanged()
 
         if(booklist!!.size==0)
@@ -133,6 +136,7 @@ protected var shelvetype:Int?=null
             0->jsonobject= JSONObject("{\"status\":\"failed, no returned results for the input\",\"pages\":[]}")
         }
         feedBooksInfo(jsonobject.getJSONArray("pages"))
+
     }
 
 

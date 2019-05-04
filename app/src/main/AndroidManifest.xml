@@ -13,13 +13,25 @@
         android:roundIcon="@drawable/readholicloh"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".books.Editreview"/>
         <activity android:name=".myshelves.BookShelves" />
 
 
 
+        <activity android:name=".settings.edit_ProfilePicture.ProfilePicture"></activity>
+        <activity android:name=".BookSearch.Search"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
-        <activity android:name=".SearchableActivity">
+        <activity android:name=".home.AddShelf"></activity>
+
+
+
+
+
+
+        <activity android:name=".SearchableActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -32,19 +44,21 @@
         <activity
             android:name=".explore.ExploreActivity"
             android:theme="@style/AppTheme.NoActionBar">
-        <meta-data android:name="android.app.default_searchable"
-            android:value=".SearchableActivity" />
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchableActivity" />
         </activity>
         <activity android:name=".settings.edit_Location.LocationSettings" />
         <activity android:name=".settings.edit_Birthday.BirthdaySettings" />
         <activity android:name=".settings.edit_UserName.UserNameSettings" />
+        <activity android:name=".settings.edit_Password.password" />
         <activity android:name=".settings.Settings" />
         <activity android:name=".home.UpdatePage" />
-        <activity android:name=".home.UpdatesActivity" >
-            <meta-data android:name="android.app.default_searchable"
+        <activity android:name=".home.UpdatesActivity">
+            <meta-data
+                android:name="android.app.default_searchable"
                 android:value=".SearchableActivity" />
         </activity>
-
         <activity
             android:name=".Main"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -52,7 +66,8 @@
             android:name=".profile_and_profile_settings.Profile"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data android:name="android.app.default_searchable"
+            <meta-data
+                android:name="android.app.default_searchable"
                 android:value=".SearchableActivity" />
         </activity>
 
@@ -77,7 +92,21 @@
             android:windowSoftInputMode="adjustResize"  />
         <activity
             android:name=".books.ReviewActivity"
+
             android:windowSoftInputMode="adjustResize"            />
+
+        <service
+            android:name=".home.FirbaseManagerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+        android:name="com.google.firebase.messaging.default_notification_color"
+        android:resource="@color/colorAccent" />
+
     </application>
 
 </manifest>

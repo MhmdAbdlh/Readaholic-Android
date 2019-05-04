@@ -1,7 +1,6 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +52,7 @@ public class Followingtab_Fragment extends Fragment {
     int userId;
     int followingNum;
     private static ProgressDialog mProgressDialog;
+    ProgressBar progressBar;
     String FollowesResponse = "{\n" +
             "  \"GoodreadsResponse\": {\n" +
             "    \"Request\": {\n" +
@@ -99,7 +100,7 @@ public class Followingtab_Fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view =  inflater.inflate(R.layout.followingtab_fragment,container,false);
         Title = (TextView)view.findViewById(R.id.Followingtab_fragment_Followings_TextView);
-
+        progressBar=(ProgressBar)view.findViewById(R.id.FollowingTab_progressBar);
         mNotAvaliableTextView = (TextView) view.findViewById(R.id.Followingtab_fragment_NotAvaliableTextView);
         mNotAvaliableTextView.setVisibility(View.INVISIBLE);
 
@@ -142,7 +143,7 @@ public class Followingtab_Fragment extends Fragment {
         else
             mRequestUrl = Urls.ROOT  + "/api/following?user_id="+Integer.toString(id)+"&token="+
                     UserInfo.sToken+"&type="+ UserInfo.sTokenType;
-
+        progressBar.setVisibility(View.VISIBLE);
         //showSimpleProgressDialog(getContext(),"Loading.....","Loading Followings",false);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null,
                 new Response.Listener<JSONObject>() {
@@ -180,6 +181,7 @@ public class Followingtab_Fragment extends Fragment {
     }
     private void UpdateList()
     {
+        progressBar.setVisibility(View.INVISIBLE);
         //removeSimpleProgressDialog();
         if(mUser.isEmpty())
         {
@@ -217,45 +219,6 @@ public class Followingtab_Fragment extends Fragment {
 
     }
 
-    public static void removeSimpleProgressDialog() {
-        try {
-            if (mProgressDialog != null) {
-                if (mProgressDialog.isShowing()) {
-                    mProgressDialog.dismiss();
-                    mProgressDialog = null;
-                }
-            }
-        } catch (IllegalArgumentException ie) {
-            ie.printStackTrace();
-
-        } catch (RuntimeException re) {
-            re.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public static void showSimpleProgressDialog(Context context, String title,
-                                                String msg, boolean isCancelable) {
-        try {
-            if (mProgressDialog == null) {
-                mProgressDialog = ProgressDialog.show(context, title, msg);
-                mProgressDialog.setCancelable(isCancelable);
-            }
-
-            if (!mProgressDialog.isShowing()) {
-                mProgressDialog.show();
-            }
-
-        } catch (IllegalArgumentException ie) {
-            ie.printStackTrace();
-        } catch (RuntimeException re) {
-            re.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
     boolean followUser(int userId) {
         String mRequestUrl = Urls.ROOT + "/api/follow?" + "user_id=" + Integer.toString(userId) + "&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
         Log.e("followUserUrl",mRequestUrl);

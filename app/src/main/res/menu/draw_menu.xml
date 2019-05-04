@@ -14,6 +14,13 @@
             android:id="@+id/draw_followers_menu"
             android:icon="@drawable/ic_group"
             android:title="Followers" />
+
+        <item
+
+            android:id="@+id/draw_search_menu"
+            android:icon="@drawable/ic_search_black_24dp"
+            android:title="Search" />
+
         <item
 
             android:id="@+id/draw_explore_menu"

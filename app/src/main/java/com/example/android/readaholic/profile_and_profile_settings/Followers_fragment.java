@@ -1,5 +1,6 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -39,13 +41,14 @@ public class Followers_fragment extends Fragment {
      RecyclerView recyclerView;
      FollowersAdapter mAdapter;
      RecyclerView.LayoutManager layoutManager;
-     List<String> mUsers;
+     List<Users> mUsers;
      TextView mNotAvaliable ;
      RequestQueue mRequestQueue;
      View view;
      int userId;
      int FollowingNumber;
     int FollowersNumber;
+    ProgressBar progressBar;
      String FollowesResponse = "{\n" +
             "  \"GoodreadsResponse\": {\n" +
             "    \"Request\": {\n" +
@@ -95,7 +98,7 @@ public class Followers_fragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_followers_fragment, container, false);
         //make the TextView of not available message at first invisible.
-
+        progressBar=(ProgressBar)view.findViewById(R.id.FollowersFragment_progressBar);
         mNotAvaliable =(TextView)view.findViewById(R.id.NotAvaliableTextView);
         mNotAvaliable.setVisibility(View.INVISIBLE);
 
@@ -189,7 +192,7 @@ public class Followers_fragment extends Fragment {
             }
 
         mUsers = new ArrayList<>();
-
+        progressBar.setVisibility(View.VISIBLE);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null, new com.android.volley.Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -202,9 +205,10 @@ public class Followers_fragment extends Fragment {
                     mUsers = null ;
                 } else {
                     for (int i = 0; i < followings.length(); i++) {
-                        String userImageUrl = null;
-                        userImageUrl =(followings.optJSONObject(i).optString("image_link"));
-                        mUsers.add(userImageUrl);
+                        Users user = new Users();
+                       user.setmUserImageUrl(followings.optJSONObject(i).optString("image_link"));
+                       user.setmUserId(followings.optJSONObject(i).optInt("id"));
+                       mUsers.add(user);
                     }
                     UpdateList();
                 }
@@ -226,6 +230,7 @@ public class Followers_fragment extends Fragment {
     }
 private void UpdateList()
 {
+    progressBar.setVisibility(View.INVISIBLE);
     if(mUsers.isEmpty())
     {
         Log.e("not available ","not available in following and followers ");
@@ -241,7 +246,17 @@ private void UpdateList()
         //       recyclerView.setHasFixedSize(true);
 
         // specify an adapter
-        mAdapter = new FollowersAdapter(getContext(),mUsers);
+        mAdapter = new FollowersAdapter(getContext(), mUsers, new FollowersAdapter.customItemCLickLisenter() {
+            @Override
+            public void onItemClick(View v, int position) {
+                int userId = mUsers.get(position).getmUserId();
+                Intent profileIntent = new Intent(getContext(), Profile.class);
+                profileIntent.putExtra("user-idFromFollowingList",userId);
+                profileIntent.putExtra("followingState",true);
+                Log.e("Following_tab","following tab user id"+Integer.toString(userId));
+                startActivity(profileIntent);
+            }
+        });
         mAdapter.notifyDataSetChanged();
         recyclerView.setAdapter(mAdapter);
 

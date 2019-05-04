@@ -195,7 +195,7 @@ public class SignUp extends AppCompatActivity {
         if( email.length() == 0 || firstName.length() == 0 || birthday.length() == 0 || city.length() ==0
                 || lastName.length() == 0 || password.length() == 0 || confirmPassword.length() ==0  ) {
 
-            showMessage("Please fill all fields");
+            showMessage("Please fill all fields" , "Error");
             return false;
         }
         /*********************************checking filled -> close***********************************/
@@ -205,14 +205,14 @@ public class SignUp extends AppCompatActivity {
         if(email.length() > email.replaceAll("\\s+","").length()
         || password.length() > password.replaceAll("\\s+","").length()) {
 
-            showMessage("Email , username and password should not contain spaces");
+            showMessage("Email , username and password should not contain spaces" , "Error");
             return false;
         }
         /**********************************checking spaces -> close*******************************/
 
         /**********************************checking password -> open ******************************/
         if(!password.equals(confirmPassword)) {
-            showMessage("The two passwords you entered don't match");
+            showMessage("The two passwords you entered don't match" , "Error");
             return false;
         }
         /*********************************checking password ->close ****************************/
@@ -251,7 +251,8 @@ public class SignUp extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                      showLayout();
-                     showMessage("You signed up successfully ! please login to continue");
+                     showMessage("You signed up successfully ! please login to continue"
+                             , "Congratulations");
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -287,7 +288,7 @@ public class SignUp extends AppCompatActivity {
                     }
                 }
 
-                showMessage(message);
+                showMessage(message,"Error");
                 showLayout();
 
             }
@@ -389,13 +390,14 @@ public class SignUp extends AppCompatActivity {
 
     /**
      * showing error message to the user
-     * @param errorMessage error message to be shown
+     * @param message message to be shown
+     * @param title title of the message
      */
-    public void showMessage(String errorMessage)
+    public void showMessage(String message , String title)
     {
         AlertDialog alertDialog = new AlertDialog.Builder(SignUp.this).create();
-        alertDialog.setTitle("Error");
-        alertDialog.setMessage(errorMessage);
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
