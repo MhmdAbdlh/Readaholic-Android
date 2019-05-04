@@ -67,6 +67,7 @@ public class SignIn extends AppCompatActivity {
                     public void onResponse(String response) {
                         boolean parseResponse = parseUserData(response);
                         if(parseResponse == true){
+                            UserInfo.mIsGuest=true;
                             Intent intent = new Intent(getBaseContext(),Main.class);
                             startActivity(intent);
                             finish();

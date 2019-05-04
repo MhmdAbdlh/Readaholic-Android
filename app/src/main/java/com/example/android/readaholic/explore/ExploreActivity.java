@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.android.readaholic.BookSearch.Search;
 import com.example.android.readaholic.Main;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.SearchType;
@@ -78,6 +80,32 @@ public class ExploreActivity extends AppCompatActivity {
     private  int dpToPx(Context c, int dp) {
         Resources r = c.getResources();
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
+    }
+
+    private void setOnClickListeners()
+    {
+        //search for more books click listener
+        //////////////////////////////////////////////////////////
+        TextView searchForBooks = (TextView)findViewById(R.id.explore_searchForBooks_textView);
+        searchForBooks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getBaseContext() , Search.class);
+                //setting the search data to false to indicate that he shouldnt check for more parameters
+                intent.putExtra("search", false);
+                startActivity(intent);
+            }
+        });
+        /////////////////////////////////////////////////////////
+        TextView searchForPeople = (TextView)findViewById(R.id.explore_searchForPeople_textView);
+        searchForPeople.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            //    Intent intent = new Intent(getBaseContext() , Search.class);
+             //   startActivity(intent);
+            }
+        });
+        /////////////////////////////////////////////////////////
     }
 
 

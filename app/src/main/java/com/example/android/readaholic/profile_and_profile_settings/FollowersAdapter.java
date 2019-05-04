@@ -9,9 +9,11 @@ import android.widget.ImageView;
 
 import com.example.android.readaholic.CircleTransform;
 import com.example.android.readaholic.R;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * FollowersList Adapter as adapter of followers list
@@ -88,7 +90,19 @@ public class FollowersAdapter extends RecyclerView.Adapter<FollowersAdapter.MyVi
         // - get element from my dataset at this position
         // - replace the contents of the view with that element
         holder.viewGroup.removeAllViews();
-       Picasso.get().load(mUsers.get(position)).transform(new CircleTransform()).into(holder.UserImageView);
+        final AtomicBoolean loaded = new AtomicBoolean();
+        Picasso.get().load(mUsers.get(position)).transform(new CircleTransform()).into(holder.UserImageView, new Callback.EmptyCallback() {
+            @Override public void onSuccess() {
+                loaded.set(true);
+            }
+        });
+        if (!loaded.get()) {
+            // The image was immediately available.
+            Picasso.get().load("https://s.gr-assets.com/assets/nophoto/user/u_111x148-9394ebedbb3c6c218f64be9549657029.png").
+                    transform(new CircleTransform()).into(holder.UserImageView);
+        }
+
+        //Picasso.get().load(mUsers.get(position)).transform(new CircleTransform()).into(holder.UserImageView);
         //((MyViewHolder)holder).UserImageView.setImageResource(R.drawable.reader);
         holder.viewGroup.addView(holder.UserImageView);
     }

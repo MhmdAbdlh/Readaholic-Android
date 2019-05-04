@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
 import com.example.android.readaholic.R;
 
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class books extends Fragment {
     private BooksListsAdapter2 mWantToReadAdapter;
     private BooksListsAdapter3 mCurrentlyReadingAdapter;
     public int NumberOfBooks;
+    private RequestQueue mRequestQueue;
     /**
      * onCreateView called when the view is created
      * @param inflater inflate the layout
@@ -180,4 +182,90 @@ public class books extends Fragment {
         mWantToReadImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
 
     }
-}
+/*    private void ExtractBooks(int id)
+    {
+        DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(),1024*1024);
+        BasicNetwork network = new BasicNetwork(new HurlStack());
+        mRequestQueue = new RequestQueue(cache,network);
+        mRequestQueue.start();
+        final String mRequestUrl;
+        if(id == 0) {
+            Log.e("followingsInProfile","user id is sent equal to 0");
+            mRequestUrl =Urls.ROOT + "/api/following?" + "token=" +
+                    UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+        }
+        else
+
+        {
+       //     Log.e("followingsInProfile","user id is sent equal to  "+Integer.toString(userId));
+         //   mRequestUrl =Urls.ROOT + "/api/following?user_id="+Integer.toString(userId) + "&token=" +
+         //           UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+       //     Log.e("FollowingInProfile",mRequestUrl);
+        }
+
+        mCurrentlyReadingImageUrl = new ArrayList<>();
+        mReadImageUrl = new ArrayList<>();
+        mWantToReadImageUrl = new ArrayList<>();
+
+        //progressBar.setVisibility(View.VISIBLE);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null, new com.android.volley.Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.e("BooksInProfileRes",response.toString());
+
+
+                JSONArray followings = response.optJSONArray("following");
+                if (followings == null) {
+                //    mUsers = null ;
+                } else {
+                    for (int i = 0; i < followings.length(); i++) {
+                        String userImageUrl = null;
+                        userImageUrl =(followings.optJSONObject(i).optString("image_link"));
+                  //      mUsers.add(userImageUrl);
+                    }
+                   // UpdateList();
+                }
+
+                mRequestQueue.stop();
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    //    mUsers = null;
+                        Log.e("Volly ERROR","Error in volley request");
+
+                    }
+                });
+        mRequestQueue.add(jsonObjectRequest);
+
+    }
+    */
+    /*private void UpdateList()
+    {
+        //progressBar.setVisibility(View.INVISIBLE);
+        if(mUsers.isEmpty())
+        {
+            Log.e("not available ","not available in following and followers ");
+            mNotAvaliable.setVisibility(View.VISIBLE);
+        }
+        else {
+
+            recyclerView = (RecyclerView) view.findViewById(R.id.FollowersFragment_FollowersList_RecyclerView);
+            // use a linear layout manager
+            layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+            recyclerView.setLayoutManager(layoutManager);
+
+            //       recyclerView.setHasFixedSize(true);
+
+            // specify an adapter
+            mAdapter = new FollowersAdapter(getContext(),mUsers);
+            mAdapter.notifyDataSetChanged();
+            recyclerView.setAdapter(mAdapter);
+
+        }
+
+*/
+    }
+

@@ -14,6 +14,9 @@
         android:id="@+id/All"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/colorBackgroundWhite"
         android:orientation="vertical">
 
         <ProgressBar
@@ -21,6 +24,7 @@
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:background="@color/colorBackgroundWhite"
             android:visibility="gone" />
 
 
@@ -28,7 +32,7 @@
             android:id="@+id/whenconnection"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/reviewlist"
+            android:background="@color/colorBackgroundWhite"
             android:orientation="vertical">
 
             <ImageView
@@ -122,6 +126,7 @@
                 android:paddingBottom="3dp" />
 
             <LinearLayout
+                android:id="@+id/bookshelflayout"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginLeft="80dp"

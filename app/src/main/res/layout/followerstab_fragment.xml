@@ -42,6 +42,13 @@
             android:visibility="visible"
             android:orientation="vertical"/>
 
+        <ProgressBar
+            android:id="@+id/FollowersTab_progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
         <TextView
             android:id="@+id/FollowersTab_fragment_NotAvaliable_TextView"
             android:layout_width="wrap_content"

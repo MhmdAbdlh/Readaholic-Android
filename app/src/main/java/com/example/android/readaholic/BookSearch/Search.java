@@ -25,14 +25,22 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.R;
+import com.example.android.readaholic.books.BookPageInfo;
 import com.example.android.readaholic.contants_and_static_data.SearchType;
 import com.example.android.readaholic.contants_and_static_data.Urls;
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
+import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Search extends AppCompatActivity {
 
@@ -53,8 +61,10 @@ public class Search extends AppCompatActivity {
         if(intent.getBooleanExtra("search",false) == true)
         {
             //if a search is required get the search key and search type and make a search request
-            searchRequest(intent.getStringExtra("searchKey")
-                         ,intent.getStringExtra("searchType"));
+
+                searchRequest(intent.getStringExtra("searchKey")
+                             ,intent.getStringExtra("searchType"));
+
         }
         //////////////////////////////////////////////////////////////////////////////////////
 
@@ -95,6 +105,7 @@ public class Search extends AppCompatActivity {
                 Spinner spinner = (Spinner)findViewById(R.id.Search_searchType_spinner) ;
                 String searchType = spinner.getSelectedItem().toString() ;
                 searchRequest(query,searchType);
+
                 return true;
             }
 
@@ -110,8 +121,7 @@ public class Search extends AppCompatActivity {
      * @param searchType the type of the search user wants
      *                   it might be (Title,Genre,Author)
      */
-    private void searchRequest(String searchKey,String searchType)
-    {
+    private void searchRequest(String searchKey,String searchType)  {
         //showing the progress bar to indicate that data is loading
         Loading();
 
@@ -119,14 +129,28 @@ public class Search extends AppCompatActivity {
         Urls urlController = new Urls(this ,this.getBaseContext());
         RequestQueue queue = Volley.newRequestQueue(this);
 
-        String url =  Urls.ROOT + buildSearchParameters(searchKey,searchType) ;
+
+
+          String url =  Urls.ROOT + buildSearchParameters(searchKey,searchType) ;
+
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                    //getting the books searched by the user
+                    ArrayList<bookSearchModel> books = parseSearchResponse(response);
+                    if(books != null)
+                    {
+                        ListView list = (ListView)findViewById(R.id.Search_List);
+                        bookSearchAdapter adapter = new bookSearchAdapter(getBaseContext(),books);
+                        list.setAdapter(adapter);
+                        showLayout();
+                    } else {
+                        //if no books were found
+                        showMessage("No books found");
+                    }
 
-                    showLayout();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -167,15 +191,56 @@ public class Search extends AppCompatActivity {
 
             }
 
-        });
+        }){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+
+              //  params.put("title","the bird king");
+
+                return params;
+            }
+        };
 
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
     }
 
-    private void parseSearchResponse() {
-        
+    private ArrayList<bookSearchModel> parseSearchResponse(String response) {
+        ArrayList<bookSearchModel> books = new ArrayList<>();
+        try {
+            JSONObject root = new JSONObject(response);
+            JSONArray booksJson = root.getJSONArray("pages");
+            if(booksJson.length() == 0 )
+                return null;
+            //getting books
+          for(int i =0 ; i<booksJson.length() ; i++)
+          {
+              JSONObject bookJson = booksJson.getJSONObject(i);
+              String title = bookJson.getString("title");
+              String image = bookJson.getString("img_url");
+              String author = bookJson.getString("author_name");
+              String publicationDate = bookJson.getString("publication_date");
+              String lastUpdate = bookJson.getString("updated_at");
+              int pagesNum = bookJson.getInt("pages_no");
+              int bookId = bookJson.getInt("id");
+              int ratingCoung = bookJson.getInt("ratings_count");
+              double ratingAvg = bookJson.getDouble("ratings_avg");
+
+              books.add(new bookSearchModel(title,image,author,publicationDate
+                      ,lastUpdate,pagesNum,bookId,ratingCoung,ratingAvg));
+
+          }
+            return books;
+
+        }
+        catch (JSONException E)
+        {
+            return null;
+        }
+
+
 
     }
     private String parseErrorResponse(String response) {
@@ -259,7 +324,8 @@ public class Search extends AppCompatActivity {
         else  //searching for books by title
             parameter += Urls.SEARCH_BY_TITLE + "?title=" + searchKey;
 
-        return parameter;
+        //repacing every space with %20 for encoding
+        return (String)parameter.replace(" ","%20");
     }
 
 

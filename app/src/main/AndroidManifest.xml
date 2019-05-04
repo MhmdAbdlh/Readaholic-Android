@@ -13,9 +13,22 @@
         android:roundIcon="@drawable/readholicloh"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".settings.edit_ProfilePicture.ProfilePicture"></activity>
-        <activity android:name=".BookSearch.Search" />
-        <activity android:name=".SearchableActivity">
+        <activity android:name=".BookSearch.Search"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity android:name=".books.Editreview"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".myshelves.BookShelves"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
+
+
+        <activity android:name=".SearchableActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -24,8 +37,10 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".books.Editreview" />
-        <activity android:name=".myshelves.BookShelves" />
+
+
+
+
         <activity
             android:name=".explore.ExploreActivity"
             android:theme="@style/AppTheme.NoActionBar">
