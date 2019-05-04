@@ -161,15 +161,8 @@ fun feedReviewDataFromURL(bookid:Int)
                 val intent=Intent(baseContext,Profile::class.java)
                 intent.putExtra("user-idFromFollowingList",currentreview.userId)
                 startActivity(intent)
-
             }
-            myview.readmoretxtui.setOnClickListener {
 
-                var intent= Intent(baseContext, ReviewActivity::class.java)
-                Creviewdata.reviewid=currentreview.reviewid
-                Creviewdata.userId=currentreview.userId
-                startActivity(intent)
-            }
             myview.reviewerimage.setOnClickListener {
 
                 var intent= Intent(baseContext, Profile::class.java)
@@ -229,7 +222,7 @@ fun feedReviewDataFromURL(bookid:Int)
     }
 
     /**
-     * amke a like or unlike to the review
+     * make a like or unlike to the review
      *
      * @param reviewid
      * @return true if the action have been done
@@ -285,6 +278,12 @@ fun feedReviewDataFromURL(bookid:Int)
         return max(id,1)
 
     }
+
+    /**
+     * dummy reviews for memic part
+     *
+     * @param bookid
+     */
     fun memicReviews(bookid:Int)
     {
         var jsonresponse:JSONObject?=null

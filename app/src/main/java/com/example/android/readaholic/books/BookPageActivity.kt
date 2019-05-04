@@ -34,8 +34,6 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
      */
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         var shelftype:String=parent!!.getItemAtPosition(position).toString()
-
-        Toast.makeText(this,"position number"+position.toString(),Toast.LENGTH_SHORT).show()
         if(position!=0&&position!=4)
         {
             bookreadbtnui.text=shelftype
@@ -49,6 +47,12 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
         }
     }
 
+    /**
+     * add  the book to a given shelf
+     *
+     * @param bookid
+     * @param shelf
+     */
     fun addBookShelf(bookid:Int,shelf:Int)
     {
         val queue = Volley.newRequestQueue(this)
@@ -96,8 +100,6 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_page)
-        UserInfo.ISMemic=false
-        UserInfo.IsMemic=false
         val toolbar = findViewById<View>(R.id.Main_toolbarr) as Toolbar
         setSupportActionBar(toolbar)
         var spinneradapter: ArrayAdapter<CharSequence> =ArrayAdapter.createFromResource(this, R.array.Shelves,android.R.layout.simple_spinner_item)
@@ -148,6 +150,11 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
 
 
     }
+
+    /**
+     * update the Bookshelf UI given the book shelf
+     *
+     */
 
     fun getshelve()
     {
