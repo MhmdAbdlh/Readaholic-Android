@@ -26,7 +26,6 @@
         <activity android:name=".BookSearch.Search"
             android:theme="@style/AppTheme.NoActionBar"/>
 
-        <activity android:name=".home.AddShelf"></activity>
 
 
 
@@ -97,7 +96,8 @@
         <activity
             android:name=".books.ReviewActivity"
 
-
+            android:taskAffinity=""
+            android:excludeFromRecents="true"
             android:windowSoftInputMode="adjustResize" />
 
         <service

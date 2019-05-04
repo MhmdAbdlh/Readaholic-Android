@@ -18,6 +18,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.R;
+import com.example.android.readaholic.books.Cbookdata;
+import com.example.android.readaholic.books.Creviewdata;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.squareup.picasso.Picasso;
@@ -87,12 +89,16 @@ public class AddShelf extends AppCompatActivity {
                 }else{
                     if(id == 1){
                         Memic.book1shelf = shelf[0];
+                        Cbookdata.INSTANCE.setReviewid(shelf[0]);
                     }else if(id == 2){
                         Memic.book1shelf = shelf[0];
+                        Cbookdata.INSTANCE.setReviewid(shelf[0]);
                     }else if(id == 3){
                         Memic.book1shelf = shelf[0];
+                        Cbookdata.INSTANCE.setReviewid(shelf[0]);
                     }else if(id == 4){
                         Memic.book1shelf = shelf[0];
+                        Cbookdata.INSTANCE.setReviewid(shelf[0]);
                     }
                 }
             }

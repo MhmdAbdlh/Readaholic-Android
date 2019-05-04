@@ -74,7 +74,7 @@ public class HomeFragment extends Fragment {
 
         listUpadtes.setVisibility(View.GONE);
         refresh.setVisibility(View.GONE);
-        loading.setVisibility(View.VISIBLE);
+        //loading.setVisibility(View.VISIBLE);
        refresh.setColorSchemeResources(R.color.colorRed);
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -107,17 +107,17 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         context = HomeFragment.context ;
         queue = Volley.newRequestQueue(getContext());
-        request();
+        //request();
         //arrayOfUpadates1 = onResposeAction(newjson);
         //arrayOfUpadates1 = onResposeAction1(jsonFile);
-        /*if(UserInfo.IsMemic == false) {
+        if(UserInfo.IsMemic == false) {
             request();
         }else{
-            String s = Memic.getUpdates(UserInfo.Memicid);
+            String s = Memic.updatesid1;
             onResposeAction(s);
             showlist();
 
-        }*/
+        }
        // Toast.makeText(getContext(),"salma",Toast.LENGTH_SHORT).show();
 
     }

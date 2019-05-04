@@ -1,5 +1,9 @@
 package com.example.android.readaholic;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -9,6 +13,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -31,6 +36,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.BookSearch.Search;
 
+import com.example.android.readaholic.books.BookReview;
+import com.example.android.readaholic.books.Creviewdata;
+import com.example.android.readaholic.books.ReviewActivity;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.example.android.readaholic.explore.ExploreActivity;
@@ -80,8 +88,10 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         PusherOptions options = new PusherOptions();
         options.setCluster("eu");
         Pusher pusher = new Pusher("aa5ca7b55f8f7685a9cc", options);
-        Channel channel = pusher.subscribe("user.1");
+        Channel channel = pusher.subscribe("user."+ Integer.toString(UserInfo.sID));
         String d;
+        final int[] t = new int[1];
+        final int[] actionid = new int[1];
         channel.bind("notify", new SubscriptionEventListener() {
             @Override
             public void onEvent(String channelName, String eventName, final String data) {
@@ -90,25 +100,28 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                     JSONObject i = new JSONObject(data);
                     JSONObject d = i.getJSONObject("message");
                     String user ;
-                    int t = d.getInt("type");
+                    t[0] = d.getInt("type");
                     String action;
-                    if(t == 0){
+                    if(t[0] == 0){
                             if(d.getInt("review_user_id") == UserInfo.sID){
                             user = "your";
                         }else{
                             user = d.getString("review_user_name");
                         }
                         action = " Commented on "+user + "'s review";
-                    }else if(t == 1){
+                            actionid[0] = d.getInt("review_id");
+                    }else if(t[0] == 1){
                         if(d.getInt("review_user_id") == 0){
                             user = "your";
                         }else{
                             user = d.getString("review_user_name");
                         }
                         action = " Liked "+user + "'s review";
+                        actionid[0] = d.getInt("review_id");
                     }
                     else{
                         action = " is now following you";
+                        actionid[0] = d.getInt("user_id");
                     }
                     textContent [0]= d.getString("user_name")+action;
                 } catch (JSONException e) {
@@ -116,17 +129,54 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 }
 
 
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext(), "user.1")
-                        .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                        .setContentTitle("Readaholic")
-                        .setContentText(textContent[0])
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-                builder.setOnlyAlertOnce(true);
-                Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                builder.setSound(uri);
-                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getBaseContext());
-// notificationId is a unique int for each notification that you must define
-                notificationManager.notify(2, builder.build());
+                // Setup an intent for SecondActivity:
+                Intent secondIntent = null;
+                if(t[0] == 2){
+                    secondIntent = new Intent (getBaseContext(), Profile.class);
+                    secondIntent.putExtra("user-idFromFollowingList",actionid[0]);
+                }else{
+                    secondIntent = new Intent (getBaseContext(),ReviewActivity.class);
+                    Creviewdata.INSTANCE.setReviewid(actionid[0]);
+                }
+
+                // Pass some information to SecondActivity:
+                secondIntent.putExtra("message", "Greetings from MainActivity!");
+
+                // Create a task stack builder to manage the back stack:
+                TaskStackBuilder stackBuilder = TaskStackBuilder.create(getBaseContext());
+
+                // Add all parents of SecondActivity to the stack:
+                //stackBuilder.addParentStack (BookReview.class);
+
+                // Push the intent that starts SecondActivity onto the stack:
+                stackBuilder.addNextIntent (secondIntent);
+
+                // Obtain the PendingIntent for launching the task constructed by
+            // stackbuilder. The pending intent can be used only once (one shot):
+             int pendingIntentId = 0;
+                PendingIntent pendingIntent =
+                        stackBuilder.getPendingIntent (pendingIntentId,9);
+
+// Instantiate the builder and set notification elements, including
+// the pending intent:
+                Notification.Builder builder = new Notification.Builder (getBaseContext())
+                        .setContentIntent (pendingIntent)
+                        .setContentTitle ("Readaholic")
+                        .setContentText (textContent[0])
+                        .setSmallIcon (R.drawable.ic_notifications_black_24dp);
+
+                // Build the notification:
+                Notification notification = builder.build();
+                notification.flags |=Notification.FLAG_AUTO_CANCEL;
+
+                    // Get the notification manager:
+                NotificationManager notificationManager =
+                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                    // Publish the notification:
+                notificationManager.notify (0, notification);
+
+
             }
         });
 

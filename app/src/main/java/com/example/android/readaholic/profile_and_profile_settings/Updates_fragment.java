@@ -22,6 +22,7 @@ import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.example.android.readaholic.home.HomeFragment;
+import com.example.android.readaholic.home.Memic;
 import com.example.android.readaholic.home.Updates;
 import com.example.android.readaholic.home.UpdatesAdapter;
 
@@ -53,7 +54,12 @@ public class Updates_fragment extends Fragment {
         }else{
             userId = 0;
         }
-        request();
+        if(UserInfo.IsMemic == true) {
+            HomeFragment.onResposeAction(Memic.getProfileUpdates(userId));
+            showlist();
+        }else {
+            request();
+        }
     }
     /**
      * onCreateView called when fragment is created
@@ -156,5 +162,10 @@ public class Updates_fragment extends Fragment {
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
+    }
+    public void showlist(){
+        adapterForUpdatesList = new UpdatesAdapter(getContext(),arayOfUpdates);
+        mListOfUpdates.setAdapter(adapterForUpdatesList);
+        adapterForUpdatesList.notifyDataSetChanged();
     }
 }
