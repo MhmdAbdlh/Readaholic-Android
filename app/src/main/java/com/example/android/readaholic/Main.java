@@ -29,6 +29,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.android.readaholic.BookSearch.Search;
+
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.example.android.readaholic.explore.ExploreActivity;
@@ -60,7 +62,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
     private long mBackPressedTime;
     private DrawerLayout drawer;
     private ImageView ProfileImage;
@@ -71,6 +72,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         final String[] textTitle = {"   "};
         final String[] textContent = {""};
@@ -131,9 +133,9 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         pusher.connect();
 
 
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.Main_toolbar);
         setSupportActionBar(toolbar);
-
         mTabs = findViewById(R.id.Main_tabs_tablayout);
         mPages = findViewById(R.id.Main_views_viewpager);
 
@@ -261,6 +263,10 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             case R.id.draw_explore_menu:
                 Intent exploreIntent = new Intent(this, ExploreActivity.class);
                 startActivity(exploreIntent);
+                break;
+            case R.id.draw_search_menu:
+                Intent searchIntent = new Intent(this, Search.class);
+                startActivity(searchIntent);
                 break;
 
 

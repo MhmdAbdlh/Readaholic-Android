@@ -68,6 +68,7 @@ public class SignIn extends AppCompatActivity {
                     public void onResponse(String response) {
                         boolean parseResponse = parseUserData(response);
                         if(parseResponse == true){
+                            UserInfo.mIsGuest=false;
                             Intent intent = new Intent(getBaseContext(),Main.class);
                             startActivity(intent);
                             finish();
@@ -139,10 +140,11 @@ public class SignIn extends AppCompatActivity {
                 String userName = userObject.getString("username");
                 String name = userObject.getString("name");
                 String imageLink = userObject.optString("image_link");
+
                 int id = 1;/* userObject.getInt("id");*/
                 /****************************getting user info -> close****************************/
                 //adding data to the static class to be used later
-                UserInfo.addUserInfo(userName,name,imageLink,token,tokenType,id);
+                UserInfo.addUserInfo(userName,name,imageLink,token,tokenType);
 
                 return true;
 
@@ -273,18 +275,14 @@ public class SignIn extends AppCompatActivity {
                 //in case of mocking data
                 /**********************mocking data -> open***************************************/
 
+
 /*
-
                 //getting user name and password
-<<<<<<< HEAD
-
                 Intent intent1 = new Intent(getBaseContext(),Main.class);
                 startActivity(intent1);
 
-                /*EditText username = (EditText) findViewById(R.id.SignIn_userName_edittext);
-=======
                 EditText username = (EditText) findViewById(R.id.SignIn_email_edittext);
->>>>>>> 69069f8888ad988381b96d1750f9cde21a3e5325
+
                 EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
 
                 //checking user name and password fields
@@ -300,8 +298,8 @@ public class SignIn extends AppCompatActivity {
                         //if the user name and password dont match admin , admin show error message
                         showErrorMessage("Please check your email and password");
                     }
-                }*/
-
+                }
+*/
 
                 /**************************mocking data -> close*****************************************/
 
@@ -317,6 +315,7 @@ public class SignIn extends AppCompatActivity {
                     //checking if the user data is correct or not
                     getUserData();
                 }
+
              /***************************server connected -> close***************************************/
 
 
@@ -325,11 +324,6 @@ public class SignIn extends AppCompatActivity {
         /******************************Signin click listener -> close*********************************************/
     }
 
-   private void fillDummyData()
-    {
-        UserInfo.addUserInfo("Ahmed","Waled"
-                ,"https://unsplash.com/photos/HUBofEFQ6CA","1234567","afas",1);
-    }
 
     public String getLogInParameters() {
         String parameters = "";
@@ -338,28 +332,12 @@ public class SignIn extends AppCompatActivity {
         email = ((EditText)findViewById(R.id.SignIn_email_edittext)).getText().toString();
         String password = ((EditText)findViewById(R.id.SignIn_password_edittext)).getText().toString();
 
-
         //constructing the parameters
         parameters += "email=" + email + "&password=" + password;
-        //parameters += "email=test@yahoo.com&password=password";
         return parameters ;
     }
 
 
-    /**
-     * constructs the structure of the parameters that should be added to the url
-     * @return the parameters that should be concatenated with the root url
-     */
-    private String constructParameters()
-    {
-        //getting parameters
-        String userName = ((EditText)findViewById(R.id.SignIn_email_edittext)).getText().toString();
-        String pass = ((EditText)findViewById(R.id.SignIn_password_edittext)).getText().toString();
-        // return "?email=Ahmed@yahoo.com&password=Waled21";
-        //concatenating parameters and sending them
-
-        return "http://ffb1e410.ngrok.io/api/login?email=zachariah72@example.net&password=password" ;
-    }
 
     /**
      * testing if the user name and password are filled or not

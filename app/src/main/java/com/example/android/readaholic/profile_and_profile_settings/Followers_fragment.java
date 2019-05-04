@@ -26,6 +26,7 @@ import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -49,40 +50,9 @@ public class Followers_fragment extends Fragment {
      int FollowingNumber;
     int FollowersNumber;
     ProgressBar progressBar;
-     String FollowesResponse = "{\n" +
-            "  \"GoodreadsResponse\": {\n" +
-            "    \"Request\": {\n" +
-            "      \"authentication\": \"false\",\n" +
-            "      \"method\": \"\"\n" +
-            "    },\n" +
-            "    \"following\": {\n" +
-            "      \"-start\": \"1\",\n" +
-            "      \"-end\": \"2\",\n" +
-            "      \"-total\": \"2\",\n" +
-            "      \"user\": [\n" +
-            "        {\n" +
-            "          \"id\": \"27948863\",\n" +
-            "          \"name\": \"Ahmed Mahmoud\",\n" +
-            "          \"link\": \"https://www.goodreads.com/user/show/27948863-ahmed-mahmoud\",\n" +
-            "          \"image_url\": \"https://images.gr-assets.com/users/1551035887p3/27948863.jpg\",\n" +
-            "          \"small_image_url\": \"https://images.gr-assets.com/users/1551035887p2/27948863.jpg\",\n" +
-            "          \"friends_count\": \"27\",\n" +
-            "          \"reviews_count\": \"8\",\n" +
-            "          \"created_at\": \"Thu Mar 14 11:30:28 -0700 2019\"\n" +
-            "        },\n" +
-            "        {\n" +
-            "          \"id\": \"7004371\",\n" +
-            "          \"name\": \"Kevin Emerson\",\n" +
-            "          \"link\": \"https://www.goodreads.com/user/show/7004371-kevin-emerson\",\n" +
-            "          \"image_url\": \"https://images.gr-assets.com/users/1507144891p3/7004371.jpg\",\n" +
-            "          \"small_image_url\": \"https://images.gr-assets.com/users/1507144891p2/7004371.jpg\",\n" +
-            "          \"friends_count\": \"361\",\n" +
-            "          \"reviews_count\": \"72\"\n" +
-            "        }\n" +
-            "      ]\n" +
-            "    }\n" +
-            "  }\n" +
-            "}";
+     String FollowesResponse = "{\"following\":[{\"id\":1,\"name\":\"test\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":2,\"name\":\"ta7a\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null}],\"_start\":1,\"_end\":4,\"_total\":4}";
+    String FollowesResponseAuth="{\"following\":[{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":5,\"name\":\"Salma\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null}],\"_start\":1,\"_end\":3,\"_total\":3}";
+
 
 
     /**
@@ -193,40 +163,50 @@ public class Followers_fragment extends Fragment {
 
         mUsers = new ArrayList<>();
         progressBar.setVisibility(View.VISIBLE);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null, new com.android.volley.Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d("FollowingInProfile", "user id is "+Integer.toString(userId));
-                Log.e("FollowingInProfileRes",response.toString());
-
-
-                JSONArray followings = response.optJSONArray("following");
-                if (followings == null) {
-                    mUsers = null ;
-                } else {
-                    for (int i = 0; i < followings.length(); i++) {
-                        Users user = new Users();
-                       user.setmUserImageUrl(followings.optJSONObject(i).optString("image_link"));
-                       user.setmUserId(followings.optJSONObject(i).optInt("id"));
-                       mUsers.add(user);
-                    }
+        if(!UserInfo.IsMemic) {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null, new com.android.volley.Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    ExtractFollowers(response);
                     UpdateList();
+
+                    mRequestQueue.stop();
+
                 }
+            },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            mUsers = null;
+                            Log.e("Volly ERROR", "Error in volley request");
 
-                mRequestQueue.stop();
+                        }
+                    });
+            mRequestQueue.add(jsonObjectRequest);
+        }
+        else
+            {
+                JSONObject response =null;
+                if(id==0) {
 
+                    try {
+                        response = new JSONObject(FollowesResponseAuth);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else
+                    {
+
+                        try {
+                            response = new JSONObject(FollowesResponse);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                ExtractFollowers(response);
+                UpdateList();
             }
-        },
-                new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                mUsers = null;
-                Log.e("Volly ERROR","Error in volley request");
-
-            }
-        });
-        mRequestQueue.add(jsonObjectRequest);
-
     }
 private void UpdateList()
 {
@@ -264,4 +244,24 @@ private void UpdateList()
 
 
 }
+public void ExtractFollowers(JSONObject response)
+{
+    Log.d("FollowingInProfile", "user id is "+Integer.toString(userId));
+    Log.e("FollowingInProfileRes",response.toString());
+
+
+    JSONArray followings = response.optJSONArray("following");
+    if (followings == null) {
+        mUsers = null ;
+    } else {
+        for (int i = 0; i < followings.length(); i++) {
+            Users user = new Users();
+            user.setmUserImageUrl(followings.optJSONObject(i).optString("image_link"));
+            user.setmUserId(followings.optJSONObject(i).optInt("id"));
+            mUsers.add(user);
+        }
+    }
+
+}
+
 }

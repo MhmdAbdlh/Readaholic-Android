@@ -32,10 +32,20 @@ public class Urls {
     public static String WHO_CAN_SEE_MY_BIRTHDAY = "/api/whocanseemybirthday";
     //change country url
     public static String CHANGE_COUNTRY = "/api/changecountry";
+    //change password url
+    public static String CHANGE_PASSWORD = "/api/changepassword";
+    //change image url
+    public static String CHANGE_IMAGE = "/api/changeimage";
     //who can see my country url
     public static String WHO_CAN_SEE_MY_COUNTRY = "/api/whocanseemycountry";
     //change name
     public static String CHANGE_NAME = "/api/changename";
+    //search for books by author
+    public static String SEARCH_BY_AUTHOR = "/api/Books/book_Authorname";
+    //search for book by its title
+    public static String SEARCH_BY_TITLE = "/api/Books/book_title";
+    //search for book by its genre
+    public static String SEARCH_BY_GENRE = "/api/books/genre";
 
     public Urls(Activity activity, Context context) {
         mActivity = activity;
@@ -84,6 +94,10 @@ public class Urls {
     }
     public static String getselfbooks(String shlef_name) {
         return ROOT + "/api/shelf?shelf_name="+shlef_name+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+    }
+
+    public static String getselfbooksanotheruser(String shlef_name,String user_id) {
+        return ROOT + "/api/shelf?shelf_name="+shlef_name+"&user_id="+user_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
     }
     public static String addbooktoshelf(String shelf_id,String book_id) {
         return ROOT + "/api/shelf/add_book?shelf_id="+shelf_id+"&book_id="+book_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;

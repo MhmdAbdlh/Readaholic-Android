@@ -49,13 +49,16 @@
                 android:layout_height="175dp"
                 android:background="@color/colorSilver"
                 >
+
                 <ImageView
                     android:id="@+id/Settings_Image_ImageView"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/profileicon"/>
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="39dp"
+                    android:src="@drawable/profileicon" />
                 <TextView
+                    android:id="@+id/Settings_editPicture_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/Settings_Image_ImageView"
@@ -186,12 +189,27 @@
                     />
             </RelativeLayout>
             <View
+                android:id="@+id/Settings_locationLining"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/colorSilver"
+                android:visibility="gone"
                 ></View>
 
+            <TextView
+                android:id="@+id/Settings_editPassword_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:paddingTop="15dp"
+                android:text="Edit password"
+                android:textColor="@color/colorGreen" />
+
+
+
         </LinearLayout>
+
 
     </ScrollView>
 
