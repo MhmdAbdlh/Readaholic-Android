@@ -118,13 +118,17 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         context = HomeFragment.context ;
         queue = Volley.newRequestQueue(getContext());
+        request();
         //arrayOfUpadates1 = onResposeAction(newjson);
         //arrayOfUpadates1 = onResposeAction1(jsonFile);
-        if(UserInfo.IsMemic == false) {
+        /*if(UserInfo.IsMemic == false) {
             request();
         }else{
-            onResposeAction(Memic.getUpdates(UserInfo.Memicid));
-        }
+            String s = Memic.getUpdates(UserInfo.Memicid);
+            onResposeAction(s);
+            showlist();
+
+        }*/
        // Toast.makeText(getContext(),"salma",Toast.LENGTH_SHORT).show();
 
     }
@@ -141,7 +145,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         //Toast.makeText(getContext(),response,Toast.LENGTH_SHORT).show();
-                        jsonFile = response;
+                       // jsonFile = response;
                         arrayOfUpadates1 = onResposeAction(response);
                         adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
                         listUpadtes.setAdapter(adapter);
@@ -191,7 +195,7 @@ public class HomeFragment extends Fragment {
                     //review or raring update
                     case 0:
                         updateItem.setmUserShelf(updateItemJson.getInt("shelf"));
-                        //updateItem.setmReviewID(updateItemJson.getInt("review_id"));
+                        updateItem.setmReviewID(updateItemJson.getInt("id"));
                         updateItem.setmBookCover(updateItemJson.getString("img_url"));
                         updateItem.setmBookName(updateItemJson.getString("title"));
                         updateItem.setmRatingValue(updateItemJson.getInt("rating"));
@@ -217,18 +221,19 @@ public class HomeFragment extends Fragment {
                     //liked or commented on post
                     case 3: case 4:
                         updateItem.setmInnerUpdate(0);//always in reviews
-                        //updateItem.setmNameofFollow(updateItemJson.getString("rev_user_name"));
+                        updateItem.setmNameofFollow(updateItemJson.getString("rev_user_name"));
                         updateItem.setmInnerDate(updateItemJson.getString("review_updated_at"));
                         //type of the inner post
                         updateItem.setmUserShelf(updateItemJson.getInt("shelf"));
                         updateItem.setmReviewID(updateItemJson.getInt("review_id"));
                         updateItem.setmBookCover(updateItemJson.getString("img_url"));
                         updateItem.setmBookName(updateItemJson.getString("title"));
-                        updateItem.setmRatingValue(updateItemJson.getInt("rating"));
-                        //updateItem.setmInnerImgUrl(updateItemJson.getString("rev_user_imageLink"));
+                        updateItem.setmInnerImgUrl(updateItemJson.getString("rev_user_imageLink"));
                         updateItem.setmAuthorName(updateItemJson.getString("author_name"));
                         updateItem.setmBookId(updateItemJson.getInt("book_id"));
                         updateItem.setmReview(updateItemJson.getString("body"));
+                        updateItem.setmInnerUserId(updateItemJson.getInt("rev_user_id"));
+                        updateItem.setmRatingValue(updateItemJson.getInt("rating"));
                         //commented on post assign comment to show it
                         if(updateItem.getmTypeOfUpdates() == 4){
                             updateItem.setmComment(updateItemJson.getString("comment_body"));
@@ -236,7 +241,7 @@ public class HomeFragment extends Fragment {
                         break;
                 }
                 arrayOfUpadates.add(updateItem);
-                adapter.notifyDataSetChanged();
+                //adapter.notifyDataSetChanged();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -349,7 +354,18 @@ public class HomeFragment extends Fragment {
         request();
         super.onResume();
     }
+    /*
+    * */
+    public void showlist(){
+        listUpadtes = (ListView) view.findViewById(R.id.UpadtesActivity_updateslist_listview);
+        adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
+        listUpadtes.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        loading.setVisibility(View.GONE);
+        listUpadtes.setVisibility(View.VISIBLE);
+        refresh.setVisibility(View.VISIBLE);
 
+    }
 
 }
 

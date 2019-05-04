@@ -14,11 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".home.AddShelf"></activity>
-        <activity android:name=".books.Editreview" />
-        <activity android:name=".myshelves.BookShelves" />
-        <activity
-            android:name=".explore.ExploreActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".books.Editreview"
             android:theme="@style/AppTheme.NoActionBar"></activity>
