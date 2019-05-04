@@ -25,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.BookSearch.Search;
 import com.example.android.readaholic.Main;
 import com.example.android.readaholic.R;
+import com.example.android.readaholic.SearchableActivity;
 import com.example.android.readaholic.contants_and_static_data.SearchType;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 
@@ -44,6 +45,7 @@ public class ExploreActivity extends AppCompatActivity {
         parent_view = findViewById(R.id.parent_view);
 
         initComponent();
+        setOnClickListeners();
     }
 
 
@@ -101,8 +103,8 @@ public class ExploreActivity extends AppCompatActivity {
         searchForPeople.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            //    Intent intent = new Intent(getBaseContext() , Search.class);
-             //   startActivity(intent);
+               Intent intent = new Intent(getBaseContext() , SearchableActivity.class);
+               startActivity(intent);
             }
         });
         /////////////////////////////////////////////////////////
