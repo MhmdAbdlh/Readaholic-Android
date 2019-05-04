@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.android.readaholic.R;
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -38,8 +39,8 @@ public class NotificationAdapter extends ArrayAdapter<Notification> {
         Picasso.get().load(Item.getmImageUrl()).into(userimg);
         date.setText(Item.getmDate());
         String name;
-        if (Item.getmUserID() == 0) {
-            name = "you";
+        if (Item.getmUserID() == UserInfo.sID) {
+            name = "your";
         }else{
             name = Item.getmUserName();
         }

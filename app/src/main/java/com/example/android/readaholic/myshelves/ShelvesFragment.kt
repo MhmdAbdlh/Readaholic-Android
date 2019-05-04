@@ -15,21 +15,34 @@ import com.android.volley.toolbox.Volley
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 
-import com.example.android.readaholic.R
+
 import com.example.android.readaholic.books.BookPageActivity
 import com.example.android.readaholic.books.BookPageInfo
 import com.example.android.readaholic.books.Cbookdata
 import com.example.android.readaholic.contants_and_static_data.Urls
+import com.example.android.readaholic.contants_and_static_data.UserInfo
 import kotlinx.android.synthetic.main.activity_book_page.*
 import kotlinx.android.synthetic.main.fragment_shelves.*
 import kotlinx.android.synthetic.main.fragment_shelves.view.*
 import org.json.JSONObject
+import android.content.Intent.getIntent
+import android.content.Intent.getIntent
+
+
 
 
 class ShelvesFragment : Fragment() {
-
+        var UserID:Int?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if(!UserInfo.ISMemic)
+        {
+            getnumber(0)
+            getnumber(1)
+            getnumber(2)
+
+        }
+
     }
 
     fun setnumbers(num_books:Int,shelfname:Int)
@@ -42,15 +55,27 @@ class ShelvesFragment : Fragment() {
 
             2->view!!.Wbooknumber.text=num_books.toString()
 
-
         }
     }
 
+    /**
+     * get the number of books for every shelf
+     *
+     * @param shelftype
+     */
     fun getnumber(shelftype:Int)
     {
 
         val queue = Volley.newRequestQueue(context)
-        var url = Urls.getselfbooks(shelftype.toString())
+        var url:String=""
+        if(UserID==-1)
+        {
+             url = Urls.getselfbooks(shelftype.toString())
+        }
+        else{
+            url = Urls.getselfbooksanotheruser(shelftype.toString(),UserID.toString())
+        }
+
         val stringRequest = StringRequest(Request.Method.GET, url,
                 Response.Listener<String> { response ->
                     var jsonresponse= JSONObject(response)
@@ -65,9 +90,38 @@ class ShelvesFragment : Fragment() {
 
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        if(UserInfo.ISMemic)
+        {
+            view!!.Rcountbooks.text=0.toString()
+
+            view!!.Ccountbooks.text=2.toString()
+
+            view!!.Wbooknumber.text=1.toString()
+
+        }
+        else
+        {
+            getnumber(0)
+            getnumber(1)
+            getnumber(2)
+
+        }
+
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        var myview= inflater.inflate(R.layout.fragment_shelves, container, false)
+
+        var myview= inflater.inflate(com.example.android.readaholic.R.layout.fragment_shelves, container, false)
+        try {
+            UserID = arguments!!.getInt("USER_ID",-1)
+        } catch (e: NullPointerException) {
+            UserID = -1
+        }
+
+
         YoYo.with(Techniques.FadeIn)
                 .duration(1000)
                 .playOn(myview.Readlayout);
@@ -99,11 +153,26 @@ class ShelvesFragment : Fragment() {
             Cbookdata.shelf=2
             startActivity(intent)
         }
-        getnumber(0)
-        getnumber(1)
-        getnumber(2)
+        if(UserInfo.ISMemic)
+        {
+            myview.Rcountbooks.text=0.toString()
+
+            myview.Ccountbooks.text=2.toString()
+
+            myview.Wbooknumber.text=1.toString()
+
+        }
+        else
+        {
+            getnumber(0)
+            getnumber(1)
+            getnumber(2)
+
+        }
+
         return myview
     }
+
 
 
 }

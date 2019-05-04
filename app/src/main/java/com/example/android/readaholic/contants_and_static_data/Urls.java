@@ -15,8 +15,8 @@ public class Urls {
 
     private Activity mActivity;
     private Context mContext;
-   //public static final String ROOT = "http://972c6e5d.ngrok.io";
-   public static final String ROOT ="http://ec2-52-90-5-77.compute-1.amazonaws.com";
+   //public static final String ROOT = "http://405a0418.ngrok.io";
+  public static final String ROOT ="http://ec2-52-90-5-77.compute-1.amazonaws.com";
 
     //Login url
     public static String LOG_IN = "/api/login";
@@ -94,6 +94,10 @@ public class Urls {
     }
     public static String getselfbooks(String shlef_name) {
         return ROOT + "/api/shelf?shelf_name="+shlef_name+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+    }
+
+    public static String getselfbooksanotheruser(String shlef_name,String user_id) {
+        return ROOT + "/api/shelf?shelf_name="+shlef_name+"&user_id="+user_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
     }
     public static String addbooktoshelf(String shelf_id,String book_id) {
         return ROOT + "/api/shelf/add_book?shelf_id="+shelf_id+"&book_id="+book_id+"&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;

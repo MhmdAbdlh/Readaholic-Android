@@ -68,7 +68,7 @@ public class SignIn extends AppCompatActivity {
                     public void onResponse(String response) {
                         boolean parseResponse = parseUserData(response);
                         if(parseResponse == true){
-                            UserInfo.mIsGuest=true;
+                            UserInfo.mIsGuest=false;
                             Intent intent = new Intent(getBaseContext(),Main.class);
                             startActivity(intent);
                             finish();
@@ -140,7 +140,8 @@ public class SignIn extends AppCompatActivity {
                 String userName = userObject.getString("username");
                 String name = userObject.getString("name");
                 String imageLink = userObject.optString("image_link");
-            //    int id = userObject.getInt("id");
+
+                int id = 1;/* userObject.getInt("id");*/
                 /****************************getting user info -> close****************************/
                 //adding data to the static class to be used later
                 UserInfo.addUserInfo(userName,name,imageLink,token,tokenType);

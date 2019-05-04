@@ -72,7 +72,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
      * @param parent ViewGroup: The parent that this view will eventually be attached to.
      * @return A View corresponding to the data at the specified position.
      */
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         Item = getItem(position);
         View ListItemView = convertView;
@@ -191,7 +191,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
             likedPostType.setText("Liked");
             Picasso.get().load(Item.getmUserimg()).into(imgUrlInner);
             Picasso.get().load(Item.getmInnerImgUrl()).into(userimg);
-            innerdate.setText(Item.getmDateOfUpdates());
+            //innerdate.setText(Item.getmDateOfUpdates());
             Name.setText(Item.getmNameofFollow());
             date.setText(Item.getmDateOfUpdates());
             innerdate.setText(Item.getmInnerDate());
@@ -270,6 +270,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
          * @param v View: The view that was clicked
          */
             public void onClick(View v) {
+                Item = getItem(position);
                 if(likeButton.getText() == "Like")
                     likeButton.setText("unLike");
                 else
@@ -284,6 +285,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
              * @param v View: The view that was clicked
              */
             public void onClick(View v) {
+                Item = getItem(position);
                 Intent profileIntent = new Intent(v.getContext(), Profile.class);
                 profileIntent.putExtra("user-idFromFollowingList", Item.getmInnerUserId());
                 v.getContext().startActivity(profileIntent);
@@ -295,6 +297,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
              * @param v View: The view that was clicked
              */
             public void onClick(View v){
+                Item = getItem(position);
 
                 if(Item.getmTypeOfUpdates() == 0 ||Item.getmTypeOfUpdates() == 1 || Item.getmTypeOfUpdates() == 2 ) {
                     Intent profileIntent = new Intent(v.getContext(), Profile.class);
@@ -319,7 +322,10 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
          * when we click on the image of the user we move to the profile fragment.
          * @param v View: The view that was clicked
          */
-            public void onClick(View v){     Intent profileIntent = new Intent(v.getContext(), Profile.class);
+            public void onClick(View v){
+
+                Item = getItem(position);
+                Intent profileIntent = new Intent(v.getContext(), Profile.class);
                 profileIntent.putExtra("user-idFromFollowingList", Item.getmUserId());
                 v.getContext().startActivity(profileIntent);
             }
@@ -332,6 +338,8 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
              * @param v View: The view that was clicked
              */
             public void onClick(View v) {
+
+                Item = getItem(position);
                 //we already in update page if it equal 1
                 if (Item.getmNewActivity() != 1) {
                     Fragment fragment = new UpdatePageFragment();
@@ -349,6 +357,8 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
              * @param v View: The view that was clicked
              */
             public void onClick(View v){
+
+                Item = getItem(position);
                /* Fragment fragment = new MyBookFragment();
                 ((FragmentActivity)v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.Main_fragmentLayout,
                         fragment).commit();
@@ -374,6 +384,7 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
              * @param v View: The view that was clicked
              */
             public void onClick(View v){
+                Item = getItem(position);
                 if(Item.getmTypeOfUpdates() == 0 &&  Item.getmRatingValue() == 0) {
                     Intent i = new Intent(v.getContext(), ReviewActivity.class);
                     Creviewdata.INSTANCE.setReviewid(Item.getmReviewID());
@@ -403,6 +414,8 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
              * @param v View: The view that was clicked
              */
             public void onClick(View v){
+
+                Item = getItem(position);
                 Intent profileIntent = new Intent(v.getContext(), Profile.class);
                 profileIntent.putExtra("user-idFromFollowingList",Item.getmInnerUserId());
                 v.getContext().startActivity(profileIntent);
@@ -414,6 +427,8 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
              * @param v View: The view that was clicked
              */
             public void onClick(View v) {
+
+                Item = getItem(position);
                 Intent i = new Intent(v.getContext(), ReviewActivity.class);
                 Creviewdata.INSTANCE.setReviewid(Item.getmReviewID());
                 //i.putExtra("ReviewID",Item.getmReviewID());
@@ -437,6 +452,8 @@ public class UpdatesAdapter extends ArrayAdapter<Updates> {
         wantToRead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Item = getItem(position);
                 Intent i = new Intent(v.getContext(),AddShelf.class);
                 i.putExtra("idBook",Item.getmBookId());
                 i.putExtra("bookName",Item.getmBookName());
