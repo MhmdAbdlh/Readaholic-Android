@@ -26,6 +26,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.books.BookPageInfo;
+import com.example.android.readaholic.contants_and_static_data.DummyBooks;
 import com.example.android.readaholic.contants_and_static_data.SearchType;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
@@ -61,9 +62,13 @@ public class Search extends AppCompatActivity {
         if(intent.getBooleanExtra("search",false) == true)
         {
             //if a search is required get the search key and search type and make a search request
+                if(UserInfo.IsMemic) {
+                    mimicSearch();
+                } else {
+                    searchRequest(intent.getStringExtra("searchKey")
+                            ,intent.getStringExtra("searchType"));
+                }
 
-                searchRequest(intent.getStringExtra("searchKey")
-                             ,intent.getStringExtra("searchType"));
 
         }
         //////////////////////////////////////////////////////////////////////////////////////
@@ -102,9 +107,14 @@ public class Search extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Spinner spinner = (Spinner)findViewById(R.id.Search_searchType_spinner) ;
-                String searchType = spinner.getSelectedItem().toString() ;
-                searchRequest(query,searchType);
+                if(UserInfo.IsMemic) {
+                    mimicSearch();
+                } else {
+                    Spinner spinner = (Spinner)findViewById(R.id.Search_searchType_spinner) ;
+                    String searchType = spinner.getSelectedItem().toString() ;
+                    searchRequest(query,searchType);
+                }
+
 
                 return true;
             }
@@ -173,16 +183,10 @@ public class Search extends AppCompatActivity {
                 //if error code is 405 I should show the error message to the user provided
                 //by the backend
                 NetworkResponse networkResponse = error.networkResponse;
-                if (networkResponse != null && networkResponse.statusCode == HttpURLConnection.HTTP_BAD_METHOD) {
+                if (networkResponse != null && networkResponse.statusCode == 400) {
                     if(error.networkResponse.data!=null) {
                         //getting the error message provided by the backend
-                        try {
-                            String response = new String(error.networkResponse.data, "UTF-8");
-                            message = parseErrorResponse(response);
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        }
-
+                       message = "No books found";
                     }
                 }
 
@@ -220,7 +224,7 @@ public class Search extends AppCompatActivity {
               JSONObject bookJson = booksJson.getJSONObject(i);
               String title = bookJson.getString("title");
               String image = bookJson.getString("img_url");
-              String author = bookJson.getString("author_name");
+              String author = bookJson.optString("author_name");
               String publicationDate = bookJson.getString("publication_date");
               String lastUpdate = bookJson.getString("updated_at");
               int pagesNum = bookJson.getInt("pages_no");
@@ -249,7 +253,7 @@ public class Search extends AppCompatActivity {
         try {
 
             JSONObject root = new JSONObject(response);
-            errorMessage = root.getString("errors");
+            errorMessage = root.getString("status");
 
 
         } catch (JSONException e) {
@@ -328,5 +332,12 @@ public class Search extends AppCompatActivity {
         return (String)parameter.replace(" ","%20");
     }
 
+    private void mimicSearch()
+    {
+        ArrayList<bookSearchModel> books = parseSearchResponse(DummyBooks.book);
+        bookSearchAdapter adapter = new bookSearchAdapter(this,books);
+        ListView list = (ListView)findViewById(R.id.Search_List);
+        list.setAdapter(adapter);
+    }
 
 }

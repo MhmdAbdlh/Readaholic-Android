@@ -1,6 +1,7 @@
 package com.example.android.readaholic.settings.edit_ProfilePicture;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -71,6 +72,8 @@ public class ProfilePicture extends AppCompatActivity {
     private ProgressBar mProgressBar;
     private Uri mImageUri;
     private boolean mImageSelected;
+    private String mImagePath = "";
+    private Bitmap mBitMap;
 
 
     @Override
@@ -109,7 +112,7 @@ public class ProfilePicture extends AppCompatActivity {
             public void onClick(View v) {
                 if(mImageSelected){
                     try {
-                        changeImageRequest( mImageUri);
+                        changeImageRequest(imageToString(mBitMap));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -138,6 +141,11 @@ public class ProfilePicture extends AppCompatActivity {
                 && data != null && data.getData() != null) {
             mImageSelected = true;
             mImageUri = data.getData();
+            try {
+                mBitMap = MediaStore.Images.Media.getBitmap(getContentResolver(),mImageUri);
+            } catch (Exception e) {
+
+            }
             Picasso.get().load(mImageUri).into(mImageView);
         } else {
             mImageSelected = false;
@@ -148,15 +156,15 @@ public class ProfilePicture extends AppCompatActivity {
     /**
      * sending a request to save the location entered
      */
-    private void changeImageRequest(Uri uri) throws IOException {
+    private void changeImageRequest(String image) throws IOException {
         Urls urlController = new Urls(this,this.getBaseContext());
         RequestQueue queue = Volley.newRequestQueue(this);
 
         //converting selected image to string
-        String image = convertImageToFile(uri);
+        //String image = convertImageToFile(uri);
 
         String url = Urls.ROOT + Urls.CHANGE_IMAGE + "?" + urlController.constructTokenParameters()
-                + "&Image=" + image;
+                + "&Image=" +image ;
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -253,17 +261,17 @@ public class ProfilePicture extends AppCompatActivity {
 
     }
 
-    private String convertImageToFile(Uri uri) throws IOException {
-        // give your image file url in mCurrentPhotoPath
-        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+    /**
+     * converts image to string
+     * @param bitmap
+     * @return
+     */
+    private String imageToString(Bitmap bitmap) {
 
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        // In case you want to compress your image, here it's at 40%
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 40, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream.toByteArray();
-
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+       ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+       bitmap.compress(Bitmap.CompressFormat.JPEG , 100 ,byteArrayOutputStream);
+       byte[] imageByte = byteArrayOutputStream.toByteArray();
+       return Base64.encodeToString(imageByte,Base64.DEFAULT);
     }
-
 
 }

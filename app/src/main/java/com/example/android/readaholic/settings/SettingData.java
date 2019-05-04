@@ -2,6 +2,9 @@ package com.example.android.readaholic.settings;
 
 import com.example.android.readaholic.contants_and_static_data.WhoCanSeeContent;
 
+/**
+ * contains the data of the settings in case of connected to server
+ */
 public class SettingData {
 
     private String mName;

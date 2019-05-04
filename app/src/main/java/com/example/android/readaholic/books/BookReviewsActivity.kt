@@ -161,15 +161,8 @@ fun feedReviewDataFromURL(bookid:Int)
                 val intent=Intent(baseContext,Profile::class.java)
                 intent.putExtra("user-idFromFollowingList",currentreview.userId)
                 startActivity(intent)
-
             }
-            myview.readmoretxtui.setOnClickListener {
 
-                var intent= Intent(baseContext, ReviewActivity::class.java)
-                Creviewdata.reviewid=currentreview.reviewid
-                Creviewdata.userId=currentreview.userId
-                startActivity(intent)
-            }
             myview.reviewerimage.setOnClickListener {
 
                 var intent= Intent(baseContext, Profile::class.java)
@@ -192,7 +185,7 @@ fun feedReviewDataFromURL(bookid:Int)
                     Toast.makeText(baseContext, "Please Login To be able to like a review", Toast.LENGTH_SHORT).show()
                 }
                 else {
-                    if (likeservicies(currentreview.reviewid)||UserInfo.ISMemic) {
+                    if (UserInfo.ISMemic) {
                         if (myview.likereviewtxtui.text == "like") {
                             likes += 1
                             myview.likereviewtxtui.text = "unlike"
@@ -202,7 +195,23 @@ fun feedReviewDataFromURL(bookid:Int)
                         }
                         myview.numberoflikesreviewtxtui.text = likes.toString()
 
-                    } else {
+
+                    }
+                    else if(likeservicies(currentreview.reviewid))
+                    {
+                        if (myview.likereviewtxtui.text == "like") {
+                            likes += 1
+                            myview.likereviewtxtui.text = "unlike"
+                        } else {
+                            likes -= 1
+                            myview.likereviewtxtui.text = "like"
+                        }
+                        myview.numberoflikesreviewtxtui.text = likes.toString()
+
+                    }
+
+
+                    else {
 
                         Toast.makeText(baseContext, "Error with the server .. try again later", Toast.LENGTH_SHORT).show()
 
@@ -229,7 +238,7 @@ fun feedReviewDataFromURL(bookid:Int)
     }
 
     /**
-     * amke a like or unlike to the review
+     * make a like or unlike to the review
      *
      * @param reviewid
      * @return true if the action have been done
@@ -285,6 +294,12 @@ fun feedReviewDataFromURL(bookid:Int)
         return max(id,1)
 
     }
+
+    /**
+     * dummy reviews for memic part
+     *
+     * @param bookid
+     */
     fun memicReviews(bookid:Int)
     {
         var jsonresponse:JSONObject?=null

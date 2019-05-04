@@ -1,5 +1,8 @@
 package com.example.android.readaholic.BookSearch;
 
+/**
+ * model for searching of books
+ */
 public class bookSearchModel {
     private String title;
     private String image ;

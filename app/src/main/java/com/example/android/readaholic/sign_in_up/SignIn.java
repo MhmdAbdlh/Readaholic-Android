@@ -141,11 +141,12 @@ public class SignIn extends AppCompatActivity {
                 String name = userObject.getString("name");
                 String imageLink = userObject.optString("image_link");
 
-                int id =  userObject.getInt("id");
-                UserInfo.sID = id;
+                int id = userObject.getInt("id");
+                int verified = userObject.getInt("verified");
+            UserInfo.sID = id;
                 /****************************getting user info -> close****************************/
                 //adding data to the static class to be used later
-                UserInfo.addUserInfo(userName,name,imageLink,token,tokenType);
+                UserInfo.addUserInfo(userName,name,imageLink,token,tokenType ,id,verified);
 
                 return true;
 
@@ -165,7 +166,6 @@ public class SignIn extends AppCompatActivity {
 
             JSONObject root = new JSONObject(response);
             errorMessage = root.getString("errors");
-
 
         } catch (JSONException e) {
             errorMessage = "Please try again later";
@@ -277,44 +277,40 @@ public class SignIn extends AppCompatActivity {
                 /**********************mocking data -> open***************************************/
 
 
-/*
-                //getting user name and password
-                Intent intent1 = new Intent(getBaseContext(),Main.class);
-                startActivity(intent1);
-
-                EditText username = (EditText) findViewById(R.id.SignIn_email_edittext);
-
-                EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
-
-                //checking user name and password fields
-                if(validateFields()) {
-                    if (true) {
-                        //filling the static class with dummy data
-                      //  fillDummyData();
-                        //starting main activity
-                        Intent intent = new Intent(v.getContext(), Main.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        //if the user name and password dont match admin , admin show error message
-                        showErrorMessage("Please check your email and password");
-                    }
-                }
-*/
-
-                /**************************mocking data -> close*****************************************/
-
-
-                //in case of connected to the server
-                /**************************server connected -> open***************************************/
-
-                if(validateFields())
-
+                if(UserInfo.IsMemic)
                 {
-                    //hides the keyboard when user clicks on sign in
-                    hideSoftKeyboard(SignIn.this, v);
-                    //checking if the user data is correct or not
-                    getUserData();
+                    //in case of mimic
+                    /////////////////////////////////////////////////////////////////////////
+                    //getting user name and password
+                    Intent intent1 = new Intent(getBaseContext(),Main.class);
+
+                    EditText username = (EditText) findViewById(R.id.SignIn_email_edittext);
+                    EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
+
+                    //checking user name and password fields
+                    if(validateFields()) {
+                        if (username.getText().toString().equals("test@yahoo.com")
+                                && pass.getText().toString().equals("password")) {
+                            UserInfo.addUserInfo("test@yahoo.com","test",null,"1","bearer" , 1 , 1);
+                            Intent intent = new Intent(v.getContext(), Main.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            //if the user name and password dont match admin , admin show error message
+                            showErrorMessage("Please check your email and password");
+                        }
+                    }
+                    ///////////////////////////////////////////////////////////////////////
+                } else{
+                    //in case of not mimic
+                    ///////////////////////////////////////////////
+                    if(validateFields()) {
+                        //hides the keyboard when user clicks on sign in
+                        hideSoftKeyboard(SignIn.this, v);
+                        //checking if the user data is correct or not
+                        getUserData();
+                    }
+                    //////////////////////////////////////////////
                 }
 
              /***************************server connected -> close***************************************/

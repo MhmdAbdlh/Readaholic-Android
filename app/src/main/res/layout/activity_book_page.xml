@@ -269,10 +269,8 @@
                     android:id="@+id/bookdesctxtui"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:gravity="left"
                     android:paddingLeft="4dp"
-                    android:paddingTop="6dp"
-                    android:paddingRight="4dp"
                     android:paddingBottom="6dp"
                     android:text="empty descreption"
                     android:textSize="18sp" />

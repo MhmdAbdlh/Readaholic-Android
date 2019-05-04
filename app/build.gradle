@@ -31,9 +31,8 @@ android {
 }
 repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
-    maven{url "https://jitpack.io"}
+    maven { url "https://jitpack.io" }
 }
-
 
 
 dependencies {
@@ -104,3 +103,7 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
+
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
+}

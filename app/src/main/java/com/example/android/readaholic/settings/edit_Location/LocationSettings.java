@@ -30,7 +30,11 @@ import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Countries;
 import com.example.android.readaholic.contants_and_static_data.Urls;
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
+import com.example.android.readaholic.contants_and_static_data.WhoCanSeeContent;
+import com.example.android.readaholic.settings.SettingMimicData;
 import com.example.android.readaholic.settings.edit_Birthday.BirthdaySettings;
+import com.pusher.client.channel.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -124,7 +128,16 @@ public class LocationSettings extends AppCompatActivity {
         saveLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeLocationRequest();
+                if(UserInfo.IsMemic) {
+                    //in case of mimic data
+                    Spinner spinner = (Spinner)findViewById(R.id.Location_spinner);
+                    SettingMimicData.sLocation = spinner.getSelectedItem().toString();
+                    Toast.makeText(LocationSettings.this, "Saved", Toast.LENGTH_SHORT).show();
+                } else {
+                    //in case of connected to server
+                    changeLocationRequest();
+                }
+
             }
         });
 
@@ -133,7 +146,28 @@ public class LocationSettings extends AppCompatActivity {
         saveWhoCanSeeMyLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeWhoCanSeeMyCountryRequest();
+                if(UserInfo.IsMemic) {
+                    WhoCanSeeContent whoCanSeeContent;
+                    //getting the radio buttons for who can see my birth day
+                    /////////////////////////////////////////////////////////////////////////////////////////
+                    RadioButton everyone = ((RadioButton) findViewById(R.id.Location_everynone_RadioButton));
+                    RadioButton onlyme = ((RadioButton) findViewById(R.id.Location_onlyMe_RadioButton));
+                    /////////////////////////////////////////////////////////////////////////////////////////
+
+                    //checking which radio button is clicked
+                    ///////////////////////////////////
+                    if(everyone.isChecked()) {
+                        whoCanSeeContent = WhoCanSeeContent.EVERYONE;
+                    } else {
+                        whoCanSeeContent = WhoCanSeeContent.ONLYME;
+                    }
+                    SettingMimicData.sWhoCanSeeMyLocation = whoCanSeeContent;
+                    Toast.makeText(LocationSettings.this, "Saved", Toast.LENGTH_SHORT).show();
+                    ///////////////////////////////////
+                } else {
+                    changeWhoCanSeeMyCountryRequest();
+                }
+
             }
         });
 

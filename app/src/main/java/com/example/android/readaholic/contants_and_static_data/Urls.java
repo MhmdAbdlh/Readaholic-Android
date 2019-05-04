@@ -15,8 +15,9 @@ public class Urls {
 
     private Activity mActivity;
     private Context mContext;
-   //public static final String ROOT = "http://405a0418.ngrok.io";
-  public static final String ROOT ="http://ec2-52-90-5-77.compute-1.amazonaws.com";
+
+    public static final String ROOT ="http://ec2-52-90-5-77.compute-1.amazonaws.com";
+   // public static final String ROOT ="http://4404e3cc.nrgok.io";
 
     //Login url
     public static String LOG_IN = "/api/login";
@@ -24,6 +25,8 @@ public class Urls {
     public static String LOG_OUT = "/api/logout";
     //sign up url
     public static String SIGN_UP = "/api/signup";
+    //fogot password url
+    public static String FORGOT_PASSWORD = "/api/forgotpassword";
     //show settings url
     public static String SHOW_SETTINGS = "/api/showsetting";
     //change birthday url
@@ -53,7 +56,7 @@ public class Urls {
     }
 
     public static String getShowBook(String Bookid) {
-        return ROOT + "/api/books/show?book_id=" + Bookid + "&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+        return ROOT + "/api/books/show?book_id=" + Bookid;
 
     }
 

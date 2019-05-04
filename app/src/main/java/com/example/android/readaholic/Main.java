@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +59,7 @@ import com.pusher.client.Pusher;
 import com.pusher.client.PusherOptions;
 import com.pusher.client.channel.Channel;
 import com.pusher.client.channel.SubscriptionEventListener;
+import com.pusher.client.channel.User;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -249,6 +251,30 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.mainsearch , menu);
+        MenuItem item = menu.findItem(R.id.draw_search);
+        SearchView searchView = (SearchView)item.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                //when any genre is clicked I the clicked genre should be searched
+                Intent intent = new Intent(getBaseContext(), Search.class);  //getting Search activity intent
+                //setting the search data to true to indicate that he should search and check for more parameters
+                intent.putExtra("search", true);
+                //the key he will search for
+                intent.putExtra("searchKey" ,query);
+                //setting search type to Title
+                intent.putExtra("searchType" , "Title");
+                startActivity(intent); //starting the activity
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -294,13 +320,14 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
             case R.id.draw_logout_menu:
 
-                logoutrequest();
-                /*
-                //moc
-                Intent startIntent = new Intent(this,Start.class);
-                startActivity(startIntent);
-                finish();
-                */
+                if(UserInfo.IsMemic) {
+                    Intent startIntent = new Intent(this,Start.class);
+                    startActivity(startIntent);
+                    finish();
+                } else {
+                    logoutrequest();
+                }
+
 
                 break;
 
