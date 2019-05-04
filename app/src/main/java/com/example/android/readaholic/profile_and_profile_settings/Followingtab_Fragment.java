@@ -27,6 +27,7 @@ import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -76,6 +77,7 @@ public class Followingtab_Fragment extends Fragment {
             userId = bundle.getInt("user-id");
             followingNum = bundle.getInt("following-num");
         }
+        Log.e("followingTab",Integer.toString(userId));
         ExtractFollowingsArray(userId);
 
         return view;
@@ -109,8 +111,8 @@ public class Followingtab_Fragment extends Fragment {
                     UserInfo.sToken+"&type="+ UserInfo.sTokenType;
         progressBar.setVisibility(View.VISIBLE);
         //showSimpleProgressDialog(getContext(),"Loading.....","Loading Followings",false);
-        if(!UserInfo.IsMemic)
-        {
+        if(!UserInfo.IsMemic){
+            Log.e("followingTab"," no mimic");
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -155,6 +157,7 @@ public class Followingtab_Fragment extends Fragment {
                 UpdateList();
             }
     }
+
     private void UpdateList()
     {
         progressBar.setVisibility(View.INVISIBLE);
@@ -195,8 +198,24 @@ public class Followingtab_Fragment extends Fragment {
 
     }
 
-    public void ExtractFollowing(JSONObject response)
+    public void ExtractFollowing(JSONObject Response)
     {
+        Log.e("following tab response",Response.toString());
+
+        JSONArray followings = Response.optJSONArray("following");
+        if (followings == null) {
+            Log.e("Following tab test","following tab has null following array");
+            mUser = null;
+        } else {
+            for (int i = 0; i < followings.length(); i++) {
+                Users user = new Users();
+                user.setmUserName(followings.optJSONObject(i).optString("name"));
+                user.setmUserId(followings.optJSONObject(i).optInt("id"));
+                user.setmUserImageUrl(followings.optJSONObject(i).optString("image_link"));
+                user.setmFollowerState(true);
+                mUser.add(user);
+            }
+        }
 
     }
 }

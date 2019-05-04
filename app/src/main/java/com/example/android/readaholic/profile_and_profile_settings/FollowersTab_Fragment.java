@@ -68,14 +68,14 @@ public class FollowersTab_Fragment extends Fragment {
         mNotAvaliableTextView.setVisibility(View.INVISIBLE);
         followersTitle = (TextView) view.findViewById(R.id.FollowersTab_fragment_Followers_TextView);
         progressBar =(ProgressBar)view.findViewById(R.id.FollowersTab_progressBar);
-        Bundle bundle = getArguments();
-        if( bundle == null)
+        if( getArguments() == null)
             userId =0;
 
         else {
-            userId = bundle.getInt("user-id");
-            followersNum = bundle.getInt("followers-num");
+            userId = getArguments().getInt("user-id");
+            followersNum = getArguments().getInt("followers-num");
         }
+        Log.e("FollowersTab",Integer.toString(userId));
         ExtractFollowersArray(userId);
         return view;
     }
@@ -89,29 +89,31 @@ public class FollowersTab_Fragment extends Fragment {
     /**
      * function to extract followers array of users from response
      */
-    private void ExtractFollowersArray(int userId)
+    private void ExtractFollowersArray(int id)
     {
         followers = new ArrayList<>();
         DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(), 1024 * 1024);
         BasicNetwork network = new BasicNetwork(new HurlStack());
         mRequestQueue = new RequestQueue(cache, network);
         mRequestQueue.start();
-        String mRequestUrl;
-        if(userId == 0)
-        mRequestUrl = Urls.ROOT + "/api/followers?"+"token="+
+        final String mRequestUrl;
+        if(userId != 0)
+        mRequestUrl = Urls.ROOT + "/api/followers?user_id="+Integer.toString(userId)+"&token="+
                 UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
         else
-            mRequestUrl = Urls.ROOT + "/api/followers?user_id="+Integer.toString(userId)+"&token="+
+            mRequestUrl = Urls.ROOT + "/api/followers?"+"token="+
                     UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
         progressBar.setVisibility(View.VISIBLE);
         //showSimpleProgressDialog(getContext(),"Loading.....","Loading Followers And Followings",false);
         if(!UserInfo.IsMemic) {
+            Log.e("followersTab"," no mimic");
             final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject Response) {
+                            Log.e("followers tab response",mRequestUrl);
                             ExtractFollowers(Response);
                             UpdateList();
                         }
@@ -128,7 +130,7 @@ public class FollowersTab_Fragment extends Fragment {
         else
             {
                 JSONObject response=null;
-                if(userId!=0)
+                if(id!=0)
                 {
                     try {
                         response = new JSONObject(followersResponse);
@@ -187,7 +189,6 @@ public class FollowersTab_Fragment extends Fragment {
     public void ExtractFollowers(JSONObject Response)
     {
         Log.e("followers tab response",Response.toString());
-
         JSONArray Followers = Response.optJSONArray("followers");
         if (Followers == null) {
             Log.e("Followers tab","followers tab followers array in json is null");

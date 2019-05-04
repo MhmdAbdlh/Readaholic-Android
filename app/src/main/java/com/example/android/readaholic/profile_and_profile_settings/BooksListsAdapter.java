@@ -9,9 +9,11 @@ import android.widget.ImageView;
 
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.explore.BookModel;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * BookListsAdapter of Read Books
@@ -103,7 +105,18 @@ public class BooksListsAdapter extends RecyclerView.Adapter<BooksListsAdapter.My
         // - replace the contents of the view with that element
         holder.viewGroup.removeAllViews();
 
-       Picasso.get().load(mBooks.get(position).getmImageUrl()).into(holder.UserImageView);
+       //Picasso.get().load(mBooks.get(position).getmImageUrl()).into(holder.UserImageView);
+        final AtomicBoolean loaded = new AtomicBoolean();
+        Picasso.get().load(mBooks.get(position).getmImageUrl()).into(holder.UserImageView, new Callback.EmptyCallback() {
+            @Override public void onSuccess() {
+                loaded.set(true);
+            }
+        });
+        if (!loaded.get()) {
+            // The image was immediately available.
+        holder.UserImageView.setImageResource(R.drawable.bookcover);
+        }
+
         //((MyViewHolder)holder).UserImageView.setImageResource(R.drawable.reader);
         holder.viewGroup.addView(holder.UserImageView);
     }

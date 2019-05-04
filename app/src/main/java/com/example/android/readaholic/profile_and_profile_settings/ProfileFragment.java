@@ -68,7 +68,7 @@ public class ProfileFragment extends Fragment {
     RelativeLayout settingsLayout;
     LinearLayout ProfileContainer;
     String authUserShowProfileResponse="{\"id\":1,\"name\":\"test\",\"username\":\"test\",\"email\":\"test@yahoo.com\",\"email_verified_at\":null,\"link\":null,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"small_image_link\":null,\"about\":null,\"age\":21,\"gender\":\"female\",\"country\":\"Canada\",\"city\":\"Atawwa\",\"joined_at\":\"2019-05-03\",\"followers_count\":-2,\"following_count\":-1,\"rating_avg\":5,\"rating_count\":21,\"book_count\":0,\"birthday\":\"1998-02-21\",\"see_my_birthday\":\"Everyone\",\"see_my_country\":\"Everyone\",\"see_my_city\":\"Everyone\",\"forgot_password_token\":null,\"verified_token\":null,\"verified\":0,\"created_at\":null,\"updated_at\":null}";
-    String UserShowProfileResponse="{\"id\":1,\"name\":\"test\",\"username\":\"test\",\"email\":\"test@yahoo.com\",\"email_verified_at\":null,\"link\":null,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"small_image_link\":null,\"about\":null,\"age\":21,\"gender\":\"female\",\"country\":\"Canada\",\"city\":\"Atawwa\",\"joined_at\":\"2019-05-03\",\"followers_count\":-2,\"following_count\":-1,\"rating_avg\":5,\"rating_count\":21,\"book_count\":0,\"birthday\":\"1998-02-21\",\"see_my_birthday\":\"Everyone\",\"see_my_country\":\"Everyone\",\"see_my_city\":\"Everyone\",\"forgot_password_token\":null,\"verified_token\":null,\"verified\":0,\"created_at\":null,\"updated_at\":null}";
+    String UserShowProfileResponse="{\"id\":5,\"name\":\"Salma\",\"username\":\"Salma\",\"email\":\"Salma@yahoo.com\",\"email_verified_at\":null,\"link\":null,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"small_image_link\":null,\"about\":null,\"age\":21,\"gender\":\"female\",\"country\":\"Egypt\",\"city\":\"Cairo\",\"joined_at\":\"2019-05-03\",\"followers_count\":0,\"following_count\":0,\"rating_avg\":0,\"rating_count\":0,\"book_count\":0,\"birthday\":\"1998-02-21\",\"see_my_birthday\":\"Everyone\",\"see_my_country\":\"Everyone\",\"see_my_city\":\"Everyone\",\"forgot_password_token\":\"eyJpdiI6ImV3Qjlqb2cyVjh3UG1FbHRDS0F2YWc9PSIsInZhbHVlIjoiSVQ4elQwVVZ6YzlMOStrclJaTHBoQT09IiwibWFjIjoiMDdiNTQyY2MyMzkxMzE4ZjU2ODkyMzJiNmI5NjlmOTA4ZGUzZWI1MzQ4YTQ3YjQzODhjYmJhNzEzMzEwNGVkNCJ9\",\"verified_token\":null,\"verified\":0,\"created_at\":null,\"updated_at\":null,\"is_followed\":1}";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -116,27 +116,52 @@ public class ProfileFragment extends Fragment {
         profileSettingtofollowingState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mUser_Id !=0){
-                    if(userFollowingState == 1)//the user is following u.
-                    {
-                        userFollowingState =0;//the user  un-follow u.
-                        unfollowUser(mUser_Id);
-                        profileSettingtofollowingState.setText("FOLLOW");
-                    }
-                    else if(userFollowingState ==0)
-                    {
-                        userFollowingState =1;//the user follow u.
-                        followUser(mUser_Id);
-                        profileSettingtofollowingState.setText("FOLLOWING");
-                    }
+                if(!UserInfo.IsMemic)
+                {
+                    if(mUser_Id !=0){
+                        if(userFollowingState == 1)//the user is following u.
+                        {
+                            userFollowingState =0;//the user  un-follow u.
+                            unfollowUser(mUser_Id);
+                            profileSettingtofollowingState.setText("FOLLOW");
+                        }
+                        else if(userFollowingState ==0)
+                        {
+                            userFollowingState =1;//the user follow u.
+                            followUser(mUser_Id);
+                            profileSettingtofollowingState.setText("FOLLOWING");
+                        }
 
-            }
-                else
+                    }
+                    else
                     {
                         Intent intent = new Intent(getContext(), Settings.class);
                         startActivity(intent);
                     }
+                }
+                else
+                    {
+                        if(mUser_Id !=0){
+                            if(userFollowingState == 1)//the user is following u.
+                            {
+                                userFollowingState =0;//the user  un-follow u.
+                                profileSettingtofollowingState.setText("FOLLOW");
+                            }
+                            else if(userFollowingState ==0)
+                            {
+                                userFollowingState =1;//the user follow u.
+                                profileSettingtofollowingState.setText("FOLLOWING");
+                            }
+
+                        }
+                        else
+                        {
+                            Intent intent = new Intent(getContext(), Settings.class);
+                            startActivity(intent);
+                        }
+                    }
             }
+
         });
 
         return view;
@@ -162,7 +187,7 @@ public class ProfileFragment extends Fragment {
         // create a FragmentTransaction to begin the transaction and replace the Fragment
         FragmentTransaction fragmentTransaction = fm.beginTransaction();
         Bundle bundle = new Bundle();
-        bundle.putInt("user-id",userID);
+        bundle.putInt("user-id",mUser_Id);
         if(ID == view.findViewById(R.id.Profile_Books_Fragment).getId()) {
             bundle.putInt("books-num", mProfileUser.getmUsernumberOfBooks());
         }
@@ -184,8 +209,8 @@ public class ProfileFragment extends Fragment {
     public void UpdateData(Users user ,int id) {
         progressBar.setVisibility(View.GONE);
         ProfileContainer.setVisibility(View.VISIBLE);
-        if(UserInfo.mIsGuest ==false) {
-            if (id != 0) {
+        if(UserInfo.mIsGuest ==true) {
+            if (mUser_Id != 0) {
 
                 if (userFollowingState == 1)//user is following this profile.
                 {
@@ -232,15 +257,16 @@ public class ProfileFragment extends Fragment {
     public void requestProfileView(final int user_id)
 {
 
-    if(user_id != 0)
-    mRequestUrl =Urls.ROOT + "/api/showProfile?"+"id="+Integer.toString(user_id)+"&token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
+    if(mUser_Id != 0)
+    mRequestUrl =Urls.ROOT + "/api/showProfile?"+"id="+Integer.toString(mUser_Id)+"&token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
     else
         mRequestUrl = Urls.ROOT  + "/api/showProfile?"+"token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
     mProfileUser = new Users();
     if(!UserInfo.IsMemic)
-    {DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(), 1024 * 1024);
+    {
+        DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(), 1024 * 1024);
     BasicNetwork network = new BasicNetwork(new HurlStack());
     mRequestQueue = new RequestQueue(cache, network);
     mRequestQueue.start();
@@ -254,7 +280,7 @@ public class ProfileFragment extends Fragment {
             //Loading Fragments
             loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId(),user_id);
             loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId(),user_id);
-            loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId(),user_id);
+            //loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId(),user_id);
 
             mRequestQueue.stop();
         }
@@ -275,18 +301,28 @@ public class ProfileFragment extends Fragment {
     else
         {
             JSONObject Response = null;
-            try {
-                Response = new JSONObject(authUserShowProfileResponse);
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if(mUser_Id==0) {
+                try {
+                    Response = new JSONObject(authUserShowProfileResponse);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
+            else
+                {
+                    try {
+                        Response = new JSONObject(UserShowProfileResponse);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             ExtractUser(Response);
             UpdateData(mProfileUser,user_id);
 
             //Loading Fragments
             loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId(),user_id);
             loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId(),user_id);
-            loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId(),user_id);
+            //loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId(),user_id);
 
         }
 }
