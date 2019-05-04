@@ -138,6 +138,12 @@ public class ForgotPassword extends AppCompatActivity {
 
 
     }
+
+    /**
+     * it parses the json data provided in the user data string
+     * @param response the json data string
+     * @return it returns the the type of responses
+     */
     private String parseErrorResponse(String response) {
         String errorMessage = "";
 
@@ -207,11 +213,10 @@ public class ForgotPassword extends AppCompatActivity {
     }
 
 
-
-
-
-
-
+    /**
+     * setting the click listeners of the activity
+     * 1- Forgot password click listener
+     */
     private void setClickListeners() {
         Button button = (Button)findViewById(R.id.ForgotPassword_getPassword_btn);
         button.setOnClickListener(new View.OnClickListener() {

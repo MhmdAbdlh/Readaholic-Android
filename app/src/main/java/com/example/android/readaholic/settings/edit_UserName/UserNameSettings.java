@@ -232,6 +232,12 @@ public class UserNameSettings extends AppCompatActivity {
     //endregion
 
     //region response
+
+    /**
+     * parsing the error response
+     * @param response
+     * @return
+     */
     private String parseErrorResponse(String response) {
         String errorMessage = "";
 

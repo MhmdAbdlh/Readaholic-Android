@@ -165,7 +165,6 @@ public class SignIn extends AppCompatActivity {
             JSONObject root = new JSONObject(response);
             errorMessage = root.getString("errors");
 
-
         } catch (JSONException e) {
             errorMessage = "Please try again later";
         }

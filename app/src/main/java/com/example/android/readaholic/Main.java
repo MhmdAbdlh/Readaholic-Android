@@ -51,6 +51,7 @@ import com.pusher.client.Pusher;
 import com.pusher.client.PusherOptions;
 import com.pusher.client.channel.Channel;
 import com.pusher.client.channel.SubscriptionEventListener;
+import com.pusher.client.channel.User;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -269,13 +270,14 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
             case R.id.draw_logout_menu:
 
-                logoutrequest();
-                /*
-                //moc
-                Intent startIntent = new Intent(this,Start.class);
-                startActivity(startIntent);
-                finish();
-                */
+                if(UserInfo.IsMemic) {
+                    Intent startIntent = new Intent(this,Start.class);
+                    startActivity(startIntent);
+                    finish();
+                } else {
+                    logoutrequest();
+                }
+
 
                 break;
 
