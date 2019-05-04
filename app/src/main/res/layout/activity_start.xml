@@ -57,6 +57,13 @@
                 android:background="@drawable/button_rounded_corners_brown"
                 android:text="Log in" />
             <TextView
+                android:id="@+id/Start_forgotPassword_TextView"
+                style="@style/EditTextTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Forgot password" />
+
+            <TextView
                 android:id="@+id/Start_guest_TextView"
                 style="@style/EditTextTitle"
                 android:paddingTop="15dp"

@@ -1,6 +1,7 @@
 package com.example.android.readaholic.BookSearch;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -12,20 +13,26 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.daimajia.easing.linear.Linear;
 import com.example.android.readaholic.R;
+import com.example.android.readaholic.books.BookPageActivity;
+import com.example.android.readaholic.books.BookPageInfo;
+import com.example.android.readaholic.books.Cbookdata;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class bookSearchAdapter extends ArrayAdapter<bookSearchModel> {
+    private Context mContext;
     public bookSearchAdapter(@NonNull Context context, List<bookSearchModel> books) {
         super(context, 0,books);
+        this.mContext = context;
     }
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        bookSearchModel Item = getItem(position);
+    public View getView(int position, @Nullable final View convertView, @NonNull ViewGroup parent) {
+        final bookSearchModel Item = getItem(position);
         View ListItemView = convertView;
         if(ListItemView == null)
         {
@@ -55,6 +62,18 @@ public class bookSearchAdapter extends ArrayAdapter<bookSearchModel> {
 
 
 
+
+        LinearLayout book = (LinearLayout)ListItemView.findViewById(R.id.bookTicket_Layout);
+        book.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Cbookdata.INSTANCE.setBookid(Item.getBookId());
+                Intent intent = new Intent(mContext , BookPageActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
+
+            }
+        });
 
         return ListItemView;
 

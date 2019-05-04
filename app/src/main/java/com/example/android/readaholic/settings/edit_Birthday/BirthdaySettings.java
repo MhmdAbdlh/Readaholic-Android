@@ -33,8 +33,13 @@ import com.example.android.readaholic.Main;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Countries;
 import com.example.android.readaholic.contants_and_static_data.Urls;
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
+import com.example.android.readaholic.contants_and_static_data.WhoCanSeeContent;
+import com.example.android.readaholic.settings.SettingMimicData;
 import com.example.android.readaholic.settings.Settings;
+import com.example.android.readaholic.settings.edit_Location.LocationSettings;
 import com.example.android.readaholic.settings.edit_UserName.UserNameSettings;
+import com.pusher.client.channel.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -149,7 +154,14 @@ public class BirthdaySettings extends AppCompatActivity {
         saveBirthday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               changeBirthDayRequest();
+                if(UserInfo.IsMemic) {
+                    Button birthday = (Button)findViewById(R.id.Birthday_Button);
+                    SettingMimicData.sBirthday = birthday.getText().toString();
+                    Toast.makeText(BirthdaySettings.this, "Saved", Toast.LENGTH_SHORT).show();
+                } else {
+                    changeBirthDayRequest();
+                }
+
             }
         });
 
@@ -158,7 +170,28 @@ public class BirthdaySettings extends AppCompatActivity {
         saveWhoCanSeeMyBirthday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeWhoCanSeeMyBirthDayRequest();
+                if(UserInfo.IsMemic) {
+                    WhoCanSeeContent whoCanSeeContent;
+                    //getting the radio buttons for who can see my birth day
+                    /////////////////////////////////////////////////////////////////////////////////////////
+                    RadioButton everyone = ((RadioButton) findViewById(R.id.Birthday_everyone_RadioButton));
+                    RadioButton onlyme = ((RadioButton) findViewById(R.id.Birthday_onlyMe_RadioButton));
+                    /////////////////////////////////////////////////////////////////////////////////////////
+
+                    //checking which radio button is clicked
+                    ///////////////////////////////////
+                    if(everyone.isChecked()) {
+                        whoCanSeeContent = WhoCanSeeContent.EVERYONE;
+                    } else {
+                        whoCanSeeContent = WhoCanSeeContent.ONLYME;
+                    }
+                    SettingMimicData.sWhoCanSeeMyBirthDay =whoCanSeeContent;
+                    Toast.makeText(BirthdaySettings.this, "Saved", Toast.LENGTH_SHORT).show();
+                    ///////////////////////////////////
+                } else {
+                    changeWhoCanSeeMyBirthDayRequest();
+                }
+
             }
         });
 

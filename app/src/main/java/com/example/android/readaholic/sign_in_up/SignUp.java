@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -42,6 +43,7 @@ import com.example.android.readaholic.contants_and_static_data.Gender;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.example.android.readaholic.settings.edit_Birthday.BirthdaySettings;
+import com.pusher.client.channel.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -133,7 +135,12 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(validateFields()){
-                    signUpRequest();
+                    if(UserInfo.IsMemic) {
+                        Toast.makeText(SignUp.this, "Congratulations", Toast.LENGTH_SHORT).show();
+                    } else {
+                        signUpRequest();
+                    }
+
                 }
 
             }

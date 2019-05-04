@@ -88,7 +88,7 @@ public class books extends Fragment {
         TextView BookNumber = (TextView)mView.findViewById(R.id.BookFragment_BookNumbers_TextView);
         BookNumber.setText(Integer.toString(NumberOfBooks)+" Books");
         BookFragment_SeeMore_FrameLayout =(FrameLayout) mView.findViewById(R.id.BookFragment_SeeMore_FrameLayout);
-        if(!UserInfo.mIsGuest)
+        if(UserInfo.mIsGuest==true)
             BookFragment_SeeMore_FrameLayout.setVisibility(View.GONE);
         else
             {
@@ -97,7 +97,7 @@ public class books extends Fragment {
                     public void onClick(View v) {
                         Fragment ShelvesFragment = new ShelvesFragment();
                         Bundle bundle=new Bundle();
-                        bundle.putInt("USER_ID",user_id);
+                        UserInfo.USER_ID = user_id;
                         ShelvesFragment.setArguments(bundle);
                         getFragmentManager().beginTransaction().replace(R.id.ProfileLayout,
                                 ShelvesFragment,"ShelvesFragment").addToBackStack("FromProfileToShelves").commit();

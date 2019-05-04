@@ -27,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Urls;
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.example.android.readaholic.settings.edit_UserName.UserNameSettings;
 import com.example.android.readaholic.sign_in_up.SignUp;
 
@@ -60,8 +61,19 @@ public class password extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(validateNewPassword())
-                    saveNewPasswordRequest();
+                if(validateNewPassword()) {
+                    if(UserInfo.IsMemic) {
+                        String currentPass = ((TextView)(findViewById(R.id.Password_CurrentPass_EditTex))).getText().toString();
+                        if((currentPass.equals("admin"))){
+                            Toast.makeText(password.this, "New Password saved", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } else {
+                        saveNewPasswordRequest();
+                    }
+                }
+
+
 
             }
         });
@@ -81,24 +93,32 @@ public class password extends AppCompatActivity {
         //validating password fields
 
         //checking if any password field is empty or not
-        /********************************Checking empty fields -> open*********************************/
+       /*****************************************************************************************/
         if(currentPass.length() == 0 ||  newPass.length() == 0 || confirmPass.length() == 0 ){
             showMessage("Please fill all fields" , "Error");
             return false;
         }
-        /********************************Checking empty fields -> close******************************/
+        /*****************************************************************************************/
 
 
         //checking if there were spaces in any password field
-        /********************************Checking white spaces -> open*******************************/
+        /*****************************************************************************************/
         if(currentPass.length() > currentPass.replaceAll("\\s+","").length()
                 || newPass.length() > newPass.replaceAll("\\s+","").length()
                 || confirmPass.length() > confirmPass.replaceAll("\\s+","").length()){
 
-            showMessage("UserName or password should not contain spaces" , "Error");
+            showMessage("password should not contain spaces" , "Error");
             return false;
         }
-        /*******************************Checking white spaces -> close******************************/
+        /****************************************************************************************/
+        if(!newPass.equals(confirmPass))
+        {
+            showMessage("Your password and confirmation password do not match" , "Error");
+            return false;
+        }
+
+        //checking mismatching passwords
+        /***************************************************************************************/
         return true;
     }
 

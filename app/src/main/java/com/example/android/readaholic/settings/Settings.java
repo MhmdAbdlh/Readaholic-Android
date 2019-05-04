@@ -26,12 +26,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Urls;
+import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.example.android.readaholic.contants_and_static_data.WhoCanSeeContent;
 import com.example.android.readaholic.settings.edit_Birthday.BirthdaySettings;
 import com.example.android.readaholic.settings.edit_Location.LocationSettings;
 import com.example.android.readaholic.settings.edit_Password.password;
 import com.example.android.readaholic.settings.edit_ProfilePicture.ProfilePicture;
 import com.example.android.readaholic.settings.edit_UserName.UserNameSettings;
+import com.pusher.client.channel.User;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -46,14 +48,27 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        settingsRequest();
+        TextView changeImage = (TextView)findViewById(R.id.Settings_editPicture_textView);
+        if(UserInfo.IsMemic) {
+            //user cant change image in case of mimic
+        changeImage.setVisibility(View.INVISIBLE);
+        } else {
+            changeImage.setVisibility(View.VISIBLE);
+            settingsRequest();
+        }
+
         setClicklisteners();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        settingsRequest();
+        if(UserInfo.IsMemic) {
+            mimicSettings();
+        } else {
+            settingsRequest();
+        }
+
     }
     //region initializations
     /**
@@ -70,7 +85,13 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), UserNameSettings.class);
-                intent.putExtra("userName",mSettingData.getmName());
+                if(UserInfo.IsMemic) {
+                    //in case of mimic data
+                    intent.putExtra("userName",SettingMimicData.sName);
+                } else {
+                    //in case of connected to server
+                    intent.putExtra("userName",mSettingData.getmName());
+                }
 
                 startActivity(intent);
             }
@@ -85,8 +106,17 @@ public class Settings extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), BirthdaySettings.class);
                 //sending the birthday and who can see the birthday to the new activity
-                intent.putExtra("birthDay",mSettingData.getmBirthDay());
-                intent.putExtra("whoCanSeeMyBirthDay",mSettingData.getmWhoCanSeeMyBirthDay().toString());
+                if(UserInfo.IsMemic) {
+                    //in case of mimic data
+                    intent.putExtra("birthDay",SettingMimicData.sBirthday);
+                    intent.putExtra("whoCanSeeMyBirthDay",SettingMimicData.sWhoCanSeeMyBirthDay.toString());
+
+                } else {
+                    //in case of connected to server
+                    intent.putExtra("birthDay",mSettingData.getmBirthDay());
+                    intent.putExtra("whoCanSeeMyBirthDay",mSettingData.getmWhoCanSeeMyBirthDay().toString());
+
+                }
 
                 startActivity(intent);
             }
@@ -101,8 +131,16 @@ public class Settings extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), LocationSettings.class);
                 //sending location and who can see the location to the new activity
-                intent.putExtra("country",mSettingData.getmCountry());
-                intent.putExtra("whoCanSeeMyLocation",mSettingData.getmWhoCanSeeMyLocation().toString());
+                if(UserInfo.IsMemic) {
+                    //in case of mimic data
+                    intent.putExtra("country",SettingMimicData.sLocation);
+                    intent.putExtra("whoCanSeeMyLocation",SettingMimicData.sWhoCanSeeMyLocation.toString());
+                } else {
+                    //in case of connected to server
+                    intent.putExtra("country",mSettingData.getmCountry());
+                    intent.putExtra("whoCanSeeMyLocation",mSettingData.getmWhoCanSeeMyLocation().toString());
+
+                }
 
                 startActivity(intent);
             }
@@ -337,5 +375,19 @@ public class Settings extends AppCompatActivity {
     }
     //endregion
 
+    private void mimicSettings()
+    {
+        TextView email = (TextView)findViewById(R.id.Settings_userNameContent_TextView);
+        TextView birthDay = (TextView)findViewById(R.id.Settings_birthDayContent_TextView);
+        TextView location = (TextView)findViewById(R.id.Settings_locationContent_TextView);
+        ImageView profilePic = (ImageView)findViewById(R.id.Settings_Image_ImageView);
+
+        email.setText(SettingMimicData.sName);
+        birthDay.setText(SettingMimicData.sBirthday);
+        location.setText(SettingMimicData.sLocation);
+        profilePic.setImageResource(R.drawable.profileicon);
+
+
+    }
 
 }

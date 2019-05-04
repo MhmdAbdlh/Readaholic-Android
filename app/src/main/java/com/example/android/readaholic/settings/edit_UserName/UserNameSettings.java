@@ -30,6 +30,8 @@ import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Countries;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
+import com.example.android.readaholic.settings.SettingMimicData;
+import com.pusher.client.channel.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,7 +67,13 @@ public class UserNameSettings extends AppCompatActivity {
                 if(userName.getText().toString().trim() == "") {
                     error("please enter avalid userName");
                 } else {
-                    saveUserNameRequest();
+                    if(UserInfo.IsMemic) {
+                        SettingMimicData.sName = userName.getText().toString();
+                        Toast.makeText(UserNameSettings.this, "Saved", Toast.LENGTH_SHORT).show();
+                    } else {
+                        saveUserNameRequest();
+                    }
+
                 }
 
             }
@@ -159,6 +167,7 @@ public class UserNameSettings extends AppCompatActivity {
 
         //getting new name added by user
         String newName = ((EditText)findViewById(R.id.UserName_EditTex)).getText().toString();
+        newName = newName.replace(" " , "%20");
 
         RequestQueue queue = Volley.newRequestQueue(this);
 

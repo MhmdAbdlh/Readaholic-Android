@@ -1,8 +1,5 @@
 package com.example.android.readaholic.myshelves
-
-import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -14,25 +11,13 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
-
-
-import com.example.android.readaholic.books.BookPageActivity
-import com.example.android.readaholic.books.BookPageInfo
 import com.example.android.readaholic.books.Cbookdata
 import com.example.android.readaholic.contants_and_static_data.Urls
 import com.example.android.readaholic.contants_and_static_data.UserInfo
-import kotlinx.android.synthetic.main.activity_book_page.*
-import kotlinx.android.synthetic.main.fragment_shelves.*
 import kotlinx.android.synthetic.main.fragment_shelves.view.*
 import org.json.JSONObject
-import android.content.Intent.getIntent
-import android.content.Intent.getIntent
-
-
-
-
 class ShelvesFragment : Fragment() {
-        var UserID:Int?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(!UserInfo.ISMemic)
@@ -44,6 +29,12 @@ class ShelvesFragment : Fragment() {
         }
 
     }
+
+    /**
+     * set the number of books given shelf number
+     * @param num_books number of books
+     * @param shelfname shelf number
+     */
 
     fun setnumbers(num_books:Int,shelfname:Int)
     {
@@ -58,6 +49,15 @@ class ShelvesFragment : Fragment() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        UserInfo.USER_ID=-1
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        UserInfo.USER_ID=-1
+    }
     /**
      * get the number of books for every shelf
      *
@@ -65,15 +65,14 @@ class ShelvesFragment : Fragment() {
      */
     fun getnumber(shelftype:Int)
     {
-
         val queue = Volley.newRequestQueue(context)
         var url:String=""
-        if(UserID==-1)
+        if(UserInfo.USER_ID==-1)
         {
              url = Urls.getselfbooks(shelftype.toString())
         }
         else{
-            url = Urls.getselfbooksanotheruser(shelftype.toString(),UserID.toString())
+            url = Urls.getselfbooksanotheruser(shelftype.toString(),UserInfo.USER_ID.toString())
         }
 
         val stringRequest = StringRequest(Request.Method.GET, url,
@@ -99,7 +98,7 @@ class ShelvesFragment : Fragment() {
 
             view!!.Ccountbooks.text=2.toString()
 
-            view!!.Wbooknumber.text=1.toString()
+            view!!.Wbooknumber.text=2.toString()
 
         }
         else
@@ -115,11 +114,7 @@ class ShelvesFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
         var myview= inflater.inflate(com.example.android.readaholic.R.layout.fragment_shelves, container, false)
-        try {
-            UserID = arguments!!.getInt("USER_ID",-1)
-        } catch (e: NullPointerException) {
-            UserID = -1
-        }
+
 
 
         YoYo.with(Techniques.FadeIn)

@@ -12,6 +12,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.android.readaholic.R
 import com.example.android.readaholic.contants_and_static_data.Urls
+import com.example.android.readaholic.contants_and_static_data.UserInfo
 import kotlinx.android.synthetic.main.activity_editreview.*
 import org.json.JSONObject
 
@@ -36,6 +37,12 @@ class Editreview : AppCompatActivity() {
         else if(raitebookstarts.rating.toInt()==0)
         {
             Toast.makeText(this,"You have to rate at at least with one star", Toast.LENGTH_SHORT).show()
+        }
+        else if(UserInfo.IsMemic)
+        {
+
+            Toast.makeText(this,"You can't add a Review in a Memic Service", Toast.LENGTH_SHORT).show()
+
         }
         else{
 
