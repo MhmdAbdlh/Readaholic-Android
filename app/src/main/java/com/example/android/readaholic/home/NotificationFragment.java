@@ -1,9 +1,13 @@
 package com.example.android.readaholic.home;
 
+import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.design.widget.TabItem;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TabWidget;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -34,12 +39,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
+@VisibleForTesting
 public class NotificationFragment  extends Fragment {
 
     private ArrayList<Notification> arrayOfNotif = new ArrayList<Notification>();
     private NotificationAdapter adapter;
     private ListView listNotif;
+    static private TabWidget tabs;
     private View view;
     String jsonfile = "[\n" +
             "            {\n" +
@@ -126,6 +132,7 @@ public class NotificationFragment  extends Fragment {
      */
     public ArrayList<Notification> onResposeAction(String response) {
         JSONObject root = null;
+        int count = 0;
         String name = "hh";
         JSONArray notiArray = null;
 
@@ -145,12 +152,17 @@ public class NotificationFragment  extends Fragment {
                     notifItem.setmBookName(data.getString("book_title"));
                     notifItem.setmUserName(data.getString("review_user_name"));
                     notifItem.setmUserID(data.getInt("review_user_id"));
+                    if(notifiItemJson.getInt("read") == 0){
+                        count++;
+                    }
                 }
                 arrayOfNotif.add(notifItem);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
+        }
+        if(count != 0){
         }
         return arrayOfNotif;
     }
@@ -223,5 +235,14 @@ public class NotificationFragment  extends Fragment {
 
         // Add the request to the RequestQueue.
         queue.add(request);
+    }
+
+    /**
+     * to fill listview with arrayof Notification after request was success
+     */
+    public void showlist(){
+        adapter = new NotificationAdapter(getContext(), arrayOfNotif);
+        listNotif.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 }

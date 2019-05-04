@@ -1,6 +1,7 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,10 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -25,15 +28,18 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.example.android.readaholic.CircleTransform;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.example.android.readaholic.home.Updates;
 import com.example.android.readaholic.home.UpdatesAdapter;
+import com.example.android.readaholic.settings.Settings;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -51,7 +57,8 @@ public class ProfileFragment extends Fragment {
     private TextView profileSettingtofollowingState;
     private ImageView profilerEditToRightSign;
     private static ProgressDialog mProgressDialog;
-
+    private View upperSettings;
+    private View belowSettings;
     ArrayList<Updates> arayOfUpdates = new ArrayList<Updates>();
     private ListView mListOfUpdates;
     private UpdatesAdapter adapterForUpdatesList;
@@ -59,12 +66,21 @@ public class ProfileFragment extends Fragment {
     View view;
     ProgressBar progressBar;
     RelativeLayout settingsLayout;
+    LinearLayout ProfileContainer;
+    String authUserShowProfileResponse="{\"id\":1,\"name\":\"test\",\"username\":\"test\",\"email\":\"test@yahoo.com\",\"email_verified_at\":null,\"link\":null,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"small_image_link\":null,\"about\":null,\"age\":21,\"gender\":\"female\",\"country\":\"Canada\",\"city\":\"Atawwa\",\"joined_at\":\"2019-05-03\",\"followers_count\":-2,\"following_count\":-1,\"rating_avg\":5,\"rating_count\":21,\"book_count\":0,\"birthday\":\"1998-02-21\",\"see_my_birthday\":\"Everyone\",\"see_my_country\":\"Everyone\",\"see_my_city\":\"Everyone\",\"forgot_password_token\":null,\"verified_token\":null,\"verified\":0,\"created_at\":null,\"updated_at\":null}";
+    String UserShowProfileResponse="{\"id\":1,\"name\":\"test\",\"username\":\"test\",\"email\":\"test@yahoo.com\",\"email_verified_at\":null,\"link\":null,\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"small_image_link\":null,\"about\":null,\"age\":21,\"gender\":\"female\",\"country\":\"Canada\",\"city\":\"Atawwa\",\"joined_at\":\"2019-05-03\",\"followers_count\":-2,\"following_count\":-1,\"rating_avg\":5,\"rating_count\":21,\"book_count\":0,\"birthday\":\"1998-02-21\",\"see_my_birthday\":\"Everyone\",\"see_my_country\":\"Everyone\",\"see_my_city\":\"Everyone\",\"forgot_password_token\":null,\"verified_token\":null,\"verified\":0,\"created_at\":null,\"updated_at\":null}";
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.profile_fragment,container,false);
         mUserImage = (ImageView)view.findViewById(R.id.profileActivity_ProfilePic_ImageView);
         mUserName =(TextView)view.findViewById(R.id.ProfileActivity_UserName_TextView);
+        belowSettings =(View)view.findViewById(R.id.belowSetting);
+        ProfileContainer = (LinearLayout)view.findViewById(R.id.ProfileContainer);
+        progressBar=(ProgressBar)view.findViewById(R.id.Profile_ProgressBar);
+
+        progressBar.setVisibility(View.VISIBLE);
+
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
@@ -79,7 +95,6 @@ public class ProfileFragment extends Fragment {
         mUserBookNumber = (TextView)view.findViewById(R.id.ProfileActivity_UserBooksNumber_TextView);
         profilerEditToRightSign = (ImageView)view.findViewById(R.id.Profile_Settings_ImageView);
         profileSettingtofollowingState = (TextView)view.findViewById(R.id.Profile_Settings_TextView);
-        progressBar=(ProgressBar)view.findViewById(R.id.Profile_ProgressBar);
         settingsLayout = (RelativeLayout)view.findViewById(R.id.Profile_SeetingsLayout);
 
         bundle = this.getArguments();
@@ -97,6 +112,32 @@ public class ProfileFragment extends Fragment {
             Log.e("userid", Integer.toString(mUser_Id));
             requestProfileView(mUser_Id);
         }
+
+        profileSettingtofollowingState.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mUser_Id !=0){
+                    if(userFollowingState == 1)//the user is following u.
+                    {
+                        userFollowingState =0;//the user  un-follow u.
+                        unfollowUser(mUser_Id);
+                        profileSettingtofollowingState.setText("FOLLOW");
+                    }
+                    else if(userFollowingState ==0)
+                    {
+                        userFollowingState =1;//the user follow u.
+                        followUser(mUser_Id);
+                        profileSettingtofollowingState.setText("FOLLOWING");
+                    }
+
+            }
+                else
+                    {
+                        Intent intent = new Intent(getContext(), Settings.class);
+                        startActivity(intent);
+                    }
+            }
+        });
 
         return view;
 
@@ -142,8 +183,10 @@ public class ProfileFragment extends Fragment {
      */
     public void UpdateData(Users user ,int id) {
         progressBar.setVisibility(View.GONE);
+        ProfileContainer.setVisibility(View.VISIBLE);
         if(UserInfo.mIsGuest ==false) {
             if (id != 0) {
+
                 if (userFollowingState == 1)//user is following this profile.
                 {
                     profileSettingtofollowingState.setText(" FOLLOWING");
@@ -160,6 +203,7 @@ public class ProfileFragment extends Fragment {
         }
         else
             {
+                belowSettings.setVisibility(View.GONE);
                 settingsLayout.setVisibility(View.GONE);
             }
         final AtomicBoolean loaded = new AtomicBoolean();
@@ -187,7 +231,6 @@ public class ProfileFragment extends Fragment {
      */
     public void requestProfileView(final int user_id)
 {
-    progressBar.setVisibility(View.VISIBLE);
 
     if(user_id != 0)
     mRequestUrl =Urls.ROOT + "/api/showProfile?"+"id="+Integer.toString(user_id)+"&token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
@@ -196,7 +239,8 @@ public class ProfileFragment extends Fragment {
         mRequestUrl = Urls.ROOT  + "/api/showProfile?"+"token="+ UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
     mProfileUser = new Users();
-    DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(), 1024 * 1024);
+    if(!UserInfo.IsMemic)
+    {DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(), 1024 * 1024);
     BasicNetwork network = new BasicNetwork(new HurlStack());
     mRequestQueue = new RequestQueue(cache, network);
     mRequestQueue.start();
@@ -228,6 +272,24 @@ public class ProfileFragment extends Fragment {
 
     mRequestQueue.add(jsonObjectRequest);
 }
+    else
+        {
+            JSONObject Response = null;
+            try {
+                Response = new JSONObject(authUserShowProfileResponse);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            ExtractUser(Response);
+            UpdateData(mProfileUser,user_id);
+
+            //Loading Fragments
+            loadFragment(new books(),view.findViewById(R.id.Profile_Books_Fragment).getId(),user_id);
+            loadFragment(new Followers_fragment(),view.findViewById(R.id.Profile_Friends_Fragment).getId(),user_id);
+            loadFragment(new Updates_fragment(),view.findViewById(R.id.Profile_Updates_Fragment).getId(),user_id);
+
+        }
+}
 
     /**
      * extract user info from response.
@@ -250,6 +312,68 @@ public class ProfileFragment extends Fragment {
     return users;
 
 }
+
+    boolean followUser(int userId) {
+        mRequestUrl = Urls.ROOT + "/api/follow?" + "user_id=" + Integer.toString(userId) + "&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+        Log.e("followUserUrl",mRequestUrl);
+        DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(), 1024 * 1024);
+        BasicNetwork network = new BasicNetwork(new HurlStack());
+        mRequestQueue = new RequestQueue(cache, network);
+        mRequestQueue.start();
+        final boolean[] status = new boolean[1];
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, mRequestUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                JSONObject Response = null;
+                try {
+                    Response = new JSONObject(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                status[0] = Response.optBoolean("status");
+                Toast.makeText(getContext(),Response.optString("message"),Toast.LENGTH_SHORT).show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                status[0] = false;
+            }
+        });
+        mRequestQueue.add(stringRequest);
+
+        return status[0];
+    }
+    boolean unfollowUser(int userId) {
+        mRequestUrl = Urls.ROOT + "/api/unfollow?" + "user_id=" + Integer.toString(userId) + "&token=" + UserInfo.sToken + "&type=" + UserInfo.sTokenType;
+
+        DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(), 1024 * 1024);
+        BasicNetwork network = new BasicNetwork(new HurlStack());
+        mRequestQueue = new RequestQueue(cache, network);
+        mRequestQueue.start();
+        final boolean[] status = new boolean[1];
+        StringRequest stringRequest = new StringRequest(Request.Method.DELETE, mRequestUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                JSONObject Response = null;
+                try {
+                    Response = new JSONObject(response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                status[0] = Response.optBoolean("status");
+                Toast.makeText(getContext(),Response.optString("message"),Toast.LENGTH_SHORT).show();
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                status[0] = false;
+            }
+        });
+        mRequestQueue.add(stringRequest);
+        return status[0];
+    }
 
 
 }

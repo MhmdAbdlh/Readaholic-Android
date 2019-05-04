@@ -17,6 +17,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_weight="0"
+            android:paddingLeft="3dp"
             android:src="@drawable/profileicon"
             app:civ_border_color="#FF000000"
             app:civ_border_width="2dp"
@@ -98,34 +99,14 @@
         android:id="@+id/descriptionreviewui"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
         android:text="Descreption"
         android:textSize="24sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/readmoretxtui"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="7"
-            android:gravity="right"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:text="Read More"
-            android:textColor="@color/colorGreen"
-            android:textSize="18sp" />
-
-        <ImageButton
-            android:id="@+id/imageButton4"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
-            android:background="@color/colorBackgroundWhite"
-            app:srcCompat="@drawable/rightarrow" />
-    </LinearLayout>
+        android:orientation="horizontal" />
 
     <LinearLayout
         android:layout_width="match_parent"

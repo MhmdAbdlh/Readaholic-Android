@@ -29,7 +29,6 @@ import com.example.android.readaholic.Main;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
-import com.example.android.readaholic.profile_and_profile_settings.Users;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -69,7 +68,7 @@ public class SignIn extends AppCompatActivity {
                     public void onResponse(String response) {
                         boolean parseResponse = parseUserData(response);
                         if(parseResponse == true){
-                            UserInfo.mIsGuest=false;
+                            UserInfo.mIsGuest=true;
                             Intent intent = new Intent(getBaseContext(),Main.class);
                             startActivity(intent);
                             finish();
@@ -313,8 +312,7 @@ public class SignIn extends AppCompatActivity {
                     //////////////////////////////////////////////
                 }
 
-
-                /***************************server connected -> close***************************************/
+             /***************************server connected -> close***************************************/
 
 
             }

@@ -19,7 +19,7 @@ public class UserInfo {
     public static int sVerified ;
 
     public static Boolean mIsGuest=false;
-
+    public static Boolean ISMemic=false;
     /**
      * adding the user data
      * called when the user data is received successfully
@@ -51,7 +51,6 @@ public class UserInfo {
         sImageUrl = null;
         sToken = null;
         sTokenType = null;
-
     }
 
 

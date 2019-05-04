@@ -18,7 +18,7 @@ public class Updates implements Parcelable {
     private int mInnerUpdate;
     private int mNumOfLikes;
     private int mNumOfComments;
-    private int mRatingValue;
+    private int mRatingValue = 0;
     private String mShelf;
     private int mUserShelf;
     private String mInnerDate;

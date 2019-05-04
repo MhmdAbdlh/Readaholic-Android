@@ -3,6 +3,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -18,6 +19,7 @@ import org.json.JSONObject
 import com.android.volley.Request
 import com.android.volley.Response
 import com.example.android.readaholic.contants_and_static_data.UserInfo
+import com.example.android.readaholic.myshelves.ShelvesFragment
 
 /**
  * This Activity is for showing book information
@@ -32,8 +34,6 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
      */
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         var shelftype:String=parent!!.getItemAtPosition(position).toString()
-
-        Toast.makeText(this,"position number"+position.toString(),Toast.LENGTH_SHORT).show()
         if(position!=0&&position!=4)
         {
             bookreadbtnui.text=shelftype
@@ -47,6 +47,12 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
         }
     }
 
+    /**
+     * add  the book to a given shelf
+     *
+     * @param bookid
+     * @param shelf
+     */
     fun addBookShelf(bookid:Int,shelf:Int)
     {
         val queue = Volley.newRequestQueue(this)
@@ -94,11 +100,13 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_page)
+        val toolbar = findViewById<View>(R.id.Main_toolbarr) as Toolbar
+        setSupportActionBar(toolbar)
         var spinneradapter: ArrayAdapter<CharSequence> =ArrayAdapter.createFromResource(this, R.array.Shelves,android.R.layout.simple_spinner_item)
         spinneradapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         activitybook_sheleve_spinner1.adapter=spinneradapter
         activitybook_sheleve_spinner1.onItemSelectedListener=this
-        whenconnection.visibility=View.GONE
+
         /////////////////////////////
         bookinfo= BookPageInfo()
         bookreview= ArrayList()
@@ -106,8 +114,9 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
         {
             bookshelflayout.visibility=View.GONE
             writeareviewbtn.visibility=View.GONE
+            seeallreviewstxtui.visibility=View.GONE
         }
-        feedBookInfoFromApi()
+
         seeallreviewstxtui.setOnClickListener {
             Cbookdata.author_name=bookinfo!!.author_name
             Cbookdata.book_title=bookinfo!!.book_title
@@ -115,8 +124,16 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
             var intent=Intent(this, BookReviewsActivity::class.java)
             startActivity(intent)
         }
-        getReviewforABookforAUser()
-        getshelfname()
+        if(!UserInfo.ISMemic)
+        {
+            feedBookInfoFromApi()
+            whenconnection.visibility=View.GONE
+            getReviewforABookforAUser()
+            getshelfname()
+        }else
+        {
+            memic(Cbookdata.bookid)
+        }
 
     }
 
@@ -131,8 +148,14 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
             "CURRENTLY READING"->   Cbookdata.shelf=1
             "WANT TO READ" ->   Cbookdata.shelf=2
         }
-        Toast.makeText(this,Cbookdata.shelf.toString(),Toast.LENGTH_SHORT).show()
+
+
     }
+
+    /**
+     * update the Bookshelf UI given the book shelf
+     *
+     */
 
     fun getshelve()
     {
@@ -226,9 +249,6 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
                 }
         )
         queue.add(stringRequest)
-
-
-
 
     }
 
@@ -388,4 +408,44 @@ class BookPageActivity : AppCompatActivity() , AdapterView.OnItemSelectedListene
         seeallreviewstxtui.text=bookinfo!!.reviewscount.toString()+" community reviews"
     }
 
+
+    /**
+     * Memic the Books
+     *
+     * @param bookid
+     */
+    fun memic(bookid:Int)
+    {
+        var jsonresponse:JSONObject?=null
+        when(bookid)
+        {
+            2->jsonresponse= JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":2,\"author_name\":\"Meagan Spooner\",\"title\":\"Sherwood\",\"isbn\":9780062422330,\"img_url\":\"https://kbimages1-a.akamaihd.net/6954f4cc-6e4e-46e3-8bc2-81b93f57a723/353/569/90/False/sherwood-7.jpg\",\"publication_date\":\"2014-01-31\",\"publisher\":\"6tLlTx77mp\",\"language\":\"English\",\"description\":\"Robin of Locksley is dead.\n" +
+                    "            Maid Marian doesn’t know how she’ll go on, but the people of Locksley town, persecuted by the Sheriff of Nottingham, need a protector. And the dreadful Guy of Gisborne, the Sheriff’s right hand, wishes to step into Robin’s shoes as Lord of Locksley and Marian’s fiancé.\n" +
+                    "            Who is there to stop them?\n" +
+                    "            Marian never meant to tread in Robin’s footsteps—never intended to stand as a beacon of hope to those awaiting his triumphant return. But with a sweep of his green cloak and the flash of her sword, Marian makes the choice to become her own hero: Robin Hood. \",\"reviews_count\":4,\"ratings_count\":4,\"ratings_avg\":2.25,\"author_id\":2,\"pages_no\":0,\"created_at\":\"2019-05-03 08:40:28\",\"updated_at\":\"2019-05-03 08:40:28\",\"genre\":\"Young Adult,Retellings,Fantacy\"}]}")
+
+            3->jsonresponse= JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":3,\"author_name\":\"Amy Rose Capetta\",\"title\":\"Once & Future\",\"isbn\":9780316449274,\"img_url\":\"https://images-na.ssl-images-amazon.com/images/I/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\",\"publication_date\":\"2014-01-31\",\"publisher\":\"uqM9NUq6Hw\",\"language\":\"English\",\"description\":\"I’ve been chased my whole life. As a fugitive refugee in the territory controlled by the tyrannical Mercer corporation, I’ve always had to hide who I am. Until I found Excalibur.\n" +
+                    "            Now I’m done hiding.\n" +
+                    "            My name is Ari Helix. I have a magic sword, a cranky wizard, and a revolution to start.   \n" +
+                    "            When Ari crash-lands on Old Earth and pulls a magic sword from its ancient resting place, she is revealed to be the newest reincarnation of King Arthur. Then she meets Merlin, who has aged backward over the centuries into a teenager, and together they must break the curse that keeps Arthur coming back. Their quest? Defeat the cruel, oppressive government and bring peace and equality to all humankind.\",\"reviews_count\":3,\"ratings_count\":3,\"ratings_avg\":3,\"author_id\":3,\"pages_no\":0,\"created_at\":\"2019-05-03 08:40:28\",\"updated_at\":\"2019-05-03 08:40:28\",\"genre\":\"Young Adult,Contemporary,Fiction,\"}]}")
+
+            1->jsonresponse= JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":1,\"author_name\":\"G. Willow Wilson\",\"title\":\"The Bird King\",\"isbn\":9780802129031,\"img_url\":\"https://i5.walmartimages.com/asr/8bae6257-b3ed-43ba-b5d4-c55b6479697f_1.c6a36804e0a9cbfd0e408a4b96f8a94e.jpeg?odnHeight=560&odnWidth=560&odnBg=FFFFFF\",\"publication_date\":\"2014-01-31\",\"publisher\":\"wiHrIPJAvt\",\"language\":\"English\",\"description\":\"New from the award-winning author of Alif the Unseen and writer of the Ms. Marvel series, G. Willow Wilson\n" +
+                    "             Set in 1491 during the reign of the last sultanate in the Iberian peninsula, \n" +
+                    "             The Bird King is the story of Fatima, the only remaining Circassian concubine to the sultan, and her dearest friend Hassan, the palace mapmaker. \n" +
+                    "              Hassan has a secret--he can draw maps of places he's never seen and bend the shape of reality.\n" +
+                    "              When representatives of the newly formed Spanish monarchy arrive to negotiate the sultan's surrender, Fatima befriends one of the women, not realizing that she will see Hassan's gift as sorcery and a threat to Christian Spanish rule. With their freedoms at stake,\n" +
+                    "               what will Fatima risk to save Hassan and escape the palace walls? As Fatima and Hassan traverse Spain with the help of a clever jinn to find safety, The Bird King asks us to consider what love is and the price of freedom at a time when the West and the Muslim world were not yet separate. \",\"reviews_count\":0,\"ratings_count\":0,\"ratings_avg\":0,\"author_id\":1,\"pages_no\":0,\"created_at\":\"2019-05-03 08:40:28\",\"updated_at\":\"2019-05-03 08:40:28\",\"genre\":\"Young Adult,Historical,Fiction,Adult\"}]}")
+
+            4->jsonresponse= JSONObject("{\"status\":\"success\",\"pages\":[{\"id\":4,\"author_name\":\"Samira Ahmed\",\"title\":\"Internment\",\"isbn\":9780349003344,\"img_url\":\"https://r.wheelers.co/bk/small/978034/9780349003344.jpg\",\"publication_date\":\"2014-01-31\",\"publisher\":\"FWom1tHEid\",\"language\":\"English\",\"description\":\"Rebellions are built on hope.\n" +
+                    "            Set in a horrifying near-future United States, seventeen-year-old Layla Amin and her parents are forced into an internment camp for Muslim American citizens.\n" +
+                    "            With the help of newly made friends also trapped within the internment camp, her boyfriend on the outside, and an unexpected alliance, Layla begins a journey to fight for freedom, leading a revolution against the internment camp's Director and his guards.\n" +
+                    "            Heart-racing and emotional, Internment challenges readers to fight complicit silence that exists in our society today.\",\"reviews_count\":1,\"ratings_count\":1,\"ratings_avg\":2.67,\"author_id\":4,\"pages_no\":0,\"created_at\":\"2019-05-03 08:40:28\",\"updated_at\":\"2019-05-03 08:40:28\",\"genre\":\"Young Adult,Contemporary,Fiction,Science Fiction > Dystopia\"}]}")
+        }
+
+        //
+        feedFromApi(jsonresponse!!)
+
+    }
+
 }
+

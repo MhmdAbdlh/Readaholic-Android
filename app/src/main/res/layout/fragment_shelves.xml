@@ -48,7 +48,7 @@
             android:padding="3dp"
             android:text="Read"
             android:textColor="@color/brown"
-            android:textSize="30sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
@@ -84,7 +84,7 @@
             android:padding="3dp"
             android:text="Currently Reading"
             android:textColor="@color/brown"
-            android:textSize="30sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
@@ -119,7 +119,7 @@
             android:padding="3dp"
             android:text="Want to Read"
             android:textColor="@color/brown"
-            android:textSize="30sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView

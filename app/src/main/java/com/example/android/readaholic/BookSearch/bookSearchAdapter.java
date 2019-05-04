@@ -60,14 +60,8 @@ public class bookSearchAdapter extends ArrayAdapter<bookSearchModel> {
         TextView publishDate = (TextView)ListItemView.findViewById(R.id.publishedday);
         publishDate.setText("First published " + Item.getPublicationDate());
 
-        TextView numOfPages = (TextView)ListItemView.findViewById(R.id.numberofpages);
-        numOfPages.setText(Item.getPagesNum() + " pages");
 
-        TextView lastUpdate = (TextView)ListItemView.findViewById(R.id.updateddate);
-        lastUpdate.setText("Last updated " + Item.getLastUpdate() );
 
-        LinearLayout myrating = (LinearLayout)ListItemView.findViewById(R.id.ratedpartui);
-        myrating.setVisibility(View.GONE);
 
         LinearLayout book = (LinearLayout)ListItemView.findViewById(R.id.bookTicket_Layout);
         book.setOnClickListener(new View.OnClickListener() {

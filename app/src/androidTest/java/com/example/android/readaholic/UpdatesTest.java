@@ -44,10 +44,6 @@ public class UpdatesTest {
 
     private HomeFragment fragment = new HomeFragment();
 
-    private String Tokenhaveupdates = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9lYzItNTItOTAtNS03Ny5jb21wdXRlLTEuYW1hem9uYXdzLmNvbVwvYXBpXC9sb2dpbiIsImlhdCI6MTU1NjcwNzc5NiwiZXhwIjoxNTU2Nzk0MTk2LCJuYmYiOjE1NTY3MDc3OTYsImp0aSI6InRhNWRZcWVlRkRQdm53YVkiLCJzdWIiOjEsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.zVZ6TgV-0r9LwF8ivSkvvkt9O-DnqpdWZx6QesxeWcQ";
-    private String TokenwithNoupdates = "";
-    private String TokenType = "bearer";
-
 
     Main mainActivity;
     @Before
@@ -80,11 +76,11 @@ public class UpdatesTest {
 
     @Test
     public void UpdatesNumber() throws JSONException {
-     //  UserInfo.addUserInfo("","","",Tokenhaveupdates,TokenType);
-     //  String r = HomeFragment.request();
-     //  JSONArray arr = new JSONArray(r);
-     //  ListView l = (ListView) activityTestRule.getActivity().findViewById(R.id.UpadtesActivity_updateslist_listview);
-     //  assertEquals(l.getCount(),arr.length());
+        //UserInfo.addUserInfo("","","",Tokenhaveupdates,TokenType);
+        //String r = HomeFragment.request();
+        //JSONArray arr = new JSONArray(r);
+        ListView l = (ListView) activityTestRule.getActivity().findViewById(R.id.UpadtesActivity_updateslist_listview);
+        //assertEquals(l.getCount(),arr.length());
     }
 
     @Test

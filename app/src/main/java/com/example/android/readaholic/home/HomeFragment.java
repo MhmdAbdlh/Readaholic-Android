@@ -5,22 +5,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabItem;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -31,10 +24,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
-import com.example.android.readaholic.home.Updates;
-import com.example.android.readaholic.home.UpdatesAdapter;
-import com.example.android.readaholic.profile_and_profile_settings.Followers_fragment;
-import com.example.android.readaholic.profile_and_profile_settings.ProfileFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -118,13 +107,17 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         context = HomeFragment.context ;
         queue = Volley.newRequestQueue(getContext());
+        request();
         //arrayOfUpadates1 = onResposeAction(newjson);
         //arrayOfUpadates1 = onResposeAction1(jsonFile);
-        if(UserInfo.IsMemic == false) {
+        /*if(UserInfo.IsMemic == false) {
             request();
         }else{
-//            onResposeAction(Memic.getUpdates(UserInfo.Memicid));
-        }
+            String s = Memic.getUpdates(UserInfo.Memicid);
+            onResposeAction(s);
+            showlist();
+
+        }*/
        // Toast.makeText(getContext(),"salma",Toast.LENGTH_SHORT).show();
 
     }
@@ -141,7 +134,7 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         //Toast.makeText(getContext(),response,Toast.LENGTH_SHORT).show();
-                        jsonFile = response;
+                       // jsonFile = response;
                         arrayOfUpadates1 = onResposeAction(response);
                         adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
                         listUpadtes.setAdapter(adapter);
@@ -191,7 +184,7 @@ public class HomeFragment extends Fragment {
                     //review or raring update
                     case 0:
                         updateItem.setmUserShelf(updateItemJson.getInt("shelf"));
-                        //updateItem.setmReviewID(updateItemJson.getInt("review_id"));
+                        updateItem.setmReviewID(updateItemJson.getInt("id"));
                         updateItem.setmBookCover(updateItemJson.getString("img_url"));
                         updateItem.setmBookName(updateItemJson.getString("title"));
                         updateItem.setmRatingValue(updateItemJson.getInt("rating"));
@@ -217,18 +210,19 @@ public class HomeFragment extends Fragment {
                     //liked or commented on post
                     case 3: case 4:
                         updateItem.setmInnerUpdate(0);//always in reviews
-                        //updateItem.setmNameofFollow(updateItemJson.getString("rev_user_name"));
+                        updateItem.setmNameofFollow(updateItemJson.getString("rev_user_name"));
                         updateItem.setmInnerDate(updateItemJson.getString("review_updated_at"));
                         //type of the inner post
                         updateItem.setmUserShelf(updateItemJson.getInt("shelf"));
                         updateItem.setmReviewID(updateItemJson.getInt("review_id"));
                         updateItem.setmBookCover(updateItemJson.getString("img_url"));
                         updateItem.setmBookName(updateItemJson.getString("title"));
-                        updateItem.setmRatingValue(updateItemJson.getInt("rating"));
-                        //updateItem.setmInnerImgUrl(updateItemJson.getString("rev_user_imageLink"));
+                        updateItem.setmInnerImgUrl(updateItemJson.getString("rev_user_imageLink"));
                         updateItem.setmAuthorName(updateItemJson.getString("author_name"));
                         updateItem.setmBookId(updateItemJson.getInt("book_id"));
                         updateItem.setmReview(updateItemJson.getString("body"));
+                        updateItem.setmInnerUserId(updateItemJson.getInt("rev_user_id"));
+                        updateItem.setmRatingValue(updateItemJson.getInt("rating"));
                         //commented on post assign comment to show it
                         if(updateItem.getmTypeOfUpdates() == 4){
                             updateItem.setmComment(updateItemJson.getString("comment_body"));
@@ -236,7 +230,8 @@ public class HomeFragment extends Fragment {
                         break;
                 }
                 arrayOfUpadates.add(updateItem);
-                adapter.notifyDataSetChanged();
+
+                //adapter.notifyDataSetChanged();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -349,7 +344,18 @@ public class HomeFragment extends Fragment {
         request();
         super.onResume();
     }
+    /*
+    * */
+    public void showlist(){
+        listUpadtes = (ListView) view.findViewById(R.id.UpadtesActivity_updateslist_listview);
+        adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
+        listUpadtes.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        loading.setVisibility(View.GONE);
+        listUpadtes.setVisibility(View.VISIBLE);
+        refresh.setVisibility(View.VISIBLE);
 
+    }
 
 }
 
