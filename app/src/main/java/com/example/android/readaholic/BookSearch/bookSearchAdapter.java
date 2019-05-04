@@ -69,16 +69,11 @@ public class bookSearchAdapter extends ArrayAdapter<bookSearchModel> {
         book.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(UserInfo.mIsGuest) {
 
-                } else {
                     Cbookdata.INSTANCE.setBookid(Item.getBookId());
                     Intent intent = new Intent(mContext , BookPageActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     mContext.startActivity(intent);
-                }
-
-
             }
         });
 
