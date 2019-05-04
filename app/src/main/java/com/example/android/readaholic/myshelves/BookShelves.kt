@@ -115,16 +115,7 @@ protected var shelvetype:Int?=null
             booklist!!.add(BookPageInfo(jsonobject.getString("title"),0,jsonobject.getString("img_url"),0,0.toString(),0.toString(),0,0,0.toFloat()
                     ,jsonobject.getInt("ratings_count"),0.toString(),jsonobject.getInt("ratings_count"),0.toString(),0.toString(),jsonobject.getInt("book_id"),jsonobject.getInt("reviews_count")))
         }
-        if(booklist!!.count()==0)
-        {
 
-            NoBooksTextUI.visibility=View.VISIBLE
-            NoBooksTextUI.text="There is no books in this shelf"
-
-
-        }
-
-        booklistadapter!!.notifyDataSetChanged()
     }
 
 

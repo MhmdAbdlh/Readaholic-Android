@@ -29,6 +29,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.android.readaholic.BookSearch.Search;
+
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.example.android.readaholic.explore.ExploreActivity;
@@ -261,6 +263,10 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             case R.id.draw_explore_menu:
                 Intent exploreIntent = new Intent(this, ExploreActivity.class);
                 startActivity(exploreIntent);
+                break;
+            case R.id.draw_search_menu:
+                Intent searchIntent = new Intent(this, Search.class);
+                startActivity(searchIntent);
                 break;
 
 

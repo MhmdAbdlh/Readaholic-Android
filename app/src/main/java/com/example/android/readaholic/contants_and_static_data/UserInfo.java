@@ -13,10 +13,9 @@ public class UserInfo {
     //token required for post requests
     public static String sToken;
     public static String sTokenType;
-
     public static boolean IsMemic = false;
     public static int Memicid = 1;
-    public static int sID;
+    public static int sID = 1;
 
     public static Boolean mIsGuest=false;
 
@@ -30,13 +29,12 @@ public class UserInfo {
      * @param tokenType
      */
     public static void addUserInfo(String userName , String name , String imageUrl
-                                 , String token , String tokenType,int id ){
+                                 , String token , String tokenType ){
         sUserName = userName;
         sName = name;
         sImageUrl = imageUrl;
         sToken = token;
         sTokenType = tokenType;
-        sID = id;
     }
 
     /**

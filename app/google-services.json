@@ -1,40 +1,40 @@
 {
-  "project_info": {
-    "project_number": "217349758665",
-    "firebase_url": "https://readholic-ca0da.firebaseio.com",
-    "project_id": "readholic-ca0da",
-    "storage_bucket": "readholic-ca0da.appspot.com"
-  },
-  "client": [
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:217349758665:android:b84d169d76729d50",
-        "android_client_info": {
-          "package_name": "com.example.android.readaholic"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "217349758665-tc328ave5jhivjb8vsu8ksm2u2m7sgm6.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyB69l2isyhr3wTWvDSvZ8-mHhAMw01aTHw"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "217349758665-tc328ave5jhivjb8vsu8ksm2u2m7sgm6.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    }
-  ],
-  "configuration_version": "1"
+"project_info": {
+"project_number": "217349758665",
+"firebase_url": "https://readholic-ca0da.firebaseio.com",
+"project_id": "readholic-ca0da",
+"storage_bucket": "readholic-ca0da.appspot.com"
+},
+"client": [
+{
+"client_info": {
+"mobilesdk_app_id": "1:217349758665:android:b84d169d76729d50",
+"android_client_info": {
+"package_name": "com.example.android.readaholic"
+}
+},
+"oauth_client": [
+{
+"client_id": "217349758665-tc328ave5jhivjb8vsu8ksm2u2m7sgm6.apps.googleusercontent.com",
+"client_type": 3
+}
+],
+"api_key": [
+{
+"current_key": "AIzaSyB69l2isyhr3wTWvDSvZ8-mHhAMw01aTHw"
+}
+],
+"services": {
+"appinvite_service": {
+"other_platform_oauth_client": [
+{
+"client_id": "217349758665-tc328ave5jhivjb8vsu8ksm2u2m7sgm6.apps.googleusercontent.com",
+"client_type": 3
+}
+]
+}
+}
+}
+],
+"configuration_version": "1"
 }
