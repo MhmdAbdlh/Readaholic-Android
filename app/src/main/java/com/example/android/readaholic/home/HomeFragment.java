@@ -278,7 +278,7 @@ public class HomeFragment extends Fragment {
                         updateItem.setmUserShelf(updateItemJson.getInt("shelf"));
                         updateItem.setmReviewID(updateItemJson.getInt("id"));
                         updateItem.setmBookCover(updateItemJson.getString("img_url"));
-                        updateItem.setmBookName(updateItemJson.getString("title"));git
+                        updateItem.setmBookName(updateItemJson.getString("title"));
                         updateItem.setmRatingValue(updateItemJson.getInt("rating"));
                         updateItem.setmAuthorName(updateItemJson.getString("author_name"));
                         updateItem.setmBookId(updateItemJson.getInt("book_id"));

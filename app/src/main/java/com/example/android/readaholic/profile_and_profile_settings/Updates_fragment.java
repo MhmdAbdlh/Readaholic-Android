@@ -55,7 +55,7 @@ public class Updates_fragment extends Fragment {
             //HomeFragment.onResposeAction(Memic.getProfileUpdates(userId));
             //showlist();
         }else {
-            //request();
+            request();
         }
     }
     /**
