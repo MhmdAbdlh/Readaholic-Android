@@ -157,27 +157,9 @@ public class SearchableActivity extends AppCompatActivity {
  }
  else
      {
+         Log.e("Mimic","in mimic");
          JSONObject response = null;
-         if(query == "salma")
-         {
-             try {
-                 response = new JSONObject(salmaResult);
-             } catch (JSONException e) {
-                 e.printStackTrace();
-             }
-             ExtractResult(response);
-             numOfResult.setVisibility(View.VISIBLE);
-             numOfResult.setText(Integer.toString(numofResults) + " results to " + '"' + query + '"');
-             listView.setVisibility(View.VISIBLE);
-             progressBar.setVisibility(View.GONE);
-             CustomSearchAdapter adapter = new CustomSearchAdapter(getBaseContext(),
-                     android.R.layout.simple_dropdown_item_1line,
-                     Users);
-             listView.setAdapter(adapter);
-
-         }
-         else if(query == "waleed")
-         {
+             Log.e("Mimic","in mimic waleed");
              try {
                  response = new JSONObject(waleedREsult);
              } catch (JSONException e) {
@@ -185,7 +167,7 @@ public class SearchableActivity extends AppCompatActivity {
              }
              ExtractResult(response);
              numOfResult.setVisibility(View.VISIBLE);
-             numOfResult.setText(Integer.toString(numofResults) + " results to " + '"' + query + '"');
+             numOfResult.setText(Integer.toString(numofResults) + " results to " + '"' +  " waled " + '"');
              listView.setVisibility(View.VISIBLE);
              progressBar.setVisibility(View.GONE);
              CustomSearchAdapter adapter = new CustomSearchAdapter(getBaseContext(),
@@ -194,36 +176,10 @@ public class SearchableActivity extends AppCompatActivity {
              listView.setAdapter(adapter);
 
          }
-         else if(query == "test")
-         {
-             try {
-                 response = new JSONObject(waleedREsult);
-             } catch (JSONException e) {
-                 e.printStackTrace();
-             }
-             ExtractResult(response);
-             numOfResult.setVisibility(View.VISIBLE);
-             numOfResult.setText(Integer.toString(numofResults) + " results to " + '"' + query + '"');
-             listView.setVisibility(View.VISIBLE);
-             progressBar.setVisibility(View.GONE);
-             CustomSearchAdapter adapter = new CustomSearchAdapter(getBaseContext(),
-                     android.R.layout.simple_dropdown_item_1line,
-                     Users);
-             listView.setAdapter(adapter);
 
-         }
-         else
-             {
-                 progressBar.setVisibility(View.GONE);
-                 listView.setVisibility(View.INVISIBLE);
-                 numOfResult.setVisibility(View.GONE);
-                 noResult.setText(" 0 results to " + '"' + query + '"');
-                 noResult.setVisibility(View.VISIBLE);
-
-             }
      }
 
-    }
+
 
     public void ExtractResult(JSONObject Response) {
         Log.e("inSearch", Response.toString());

@@ -111,8 +111,8 @@ public class HomeFragment extends Fragment {
         queue = Volley.newRequestQueue(getContext());
         //request();
         //arrayOfUpadates1 = onResposeAction(newjson);
-        if(UserInfo.IsMemic == false) {
-            /*request();
+     /*   if(UserInfo.IsMemic == false) {
+            request();
             listUpadtes = (ListView) view.findViewById(R.id.UpadtesActivity_updateslist_listview);
             adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
             listUpadtes.setAdapter(adapter);
@@ -120,13 +120,13 @@ public class HomeFragment extends Fragment {
             loading.setVisibility(View.GONE);
             listUpadtes.setVisibility(View.VISIBLE);
             refresh.setVisibility(View.VISIBLE);
-*/
+
 
         }else{
             String s = Memic.updatesid1;
             arrayOfUpadates1 = onResposeAction1(s);
 
-
+*/
   /*          String s = Memic.updatesid1;
             onResposeAction(s);
             showlist();
@@ -134,7 +134,7 @@ public class HomeFragment extends Fragment {
         }
        // Toast.makeText(getContext(),"salma",Toast.LENGTH_SHORT).show();
 
-    }
+
 
     /**
      * request the json file of updates list to be displayed.
@@ -278,7 +278,7 @@ public class HomeFragment extends Fragment {
                         updateItem.setmUserShelf(updateItemJson.getInt("shelf"));
                         updateItem.setmReviewID(updateItemJson.getInt("id"));
                         updateItem.setmBookCover(updateItemJson.getString("img_url"));
-                        updateItem.setmBookName(updateItemJson.getString("title"));git
+                        updateItem.setmBookName(updateItemJson.getString("title"));
                         updateItem.setmRatingValue(updateItemJson.getInt("rating"));
                         updateItem.setmAuthorName(updateItemJson.getString("author_name"));
                         updateItem.setmBookId(updateItemJson.getInt("book_id"));
@@ -329,7 +329,7 @@ public class HomeFragment extends Fragment {
             }
 
         }
-        //listUpadtes = (ListView) getActivity().findViewById(R.id.UpadtesActivity_updateslist_listview);
+        listUpadtes = (ListView) getActivity().findViewById(R.id.UpadtesActivity_updateslist_listview);
         adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
         listUpadtes.setAdapter(adapter);
         adapter.notifyDataSetChanged();
