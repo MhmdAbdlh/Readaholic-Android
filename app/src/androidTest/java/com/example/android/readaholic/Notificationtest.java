@@ -3,26 +3,15 @@ package com.example.android.readaholic;
 import android.support.test.rule.ActivityTestRule;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.example.android.readaholic.home.Memic;
 import com.example.android.readaholic.home.NotificationFragment;
 
 import org.hamcrest.Matcher;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
 
 import static android.support.test.espresso.core.internal.deps.dagger.internal.Preconditions.checkNotNull;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static com.example.android.readaholic.R.*;
 import static org.hamcrest.EasyMock2Matchers.equalTo;
-import static org.junit.Assert.assertEquals;
 
 public class Notificationtest {
     @Rule
@@ -50,7 +39,7 @@ public class Notificationtest {
         fragmentTransaction.replace(R.id.Main_fragmentLayout,
                 fragment).commit();
     }
-    @Test
+    /*@Test
     public void testlist(){
         String response1 = Memic.getNotification(1);
         JSONArray arr = null;
@@ -146,4 +135,5 @@ public class Notificationtest {
         }
         assertEquals(textinjason,textinlist);
     }
+    */
 }
