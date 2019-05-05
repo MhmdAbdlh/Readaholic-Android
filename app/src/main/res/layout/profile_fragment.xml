@@ -57,11 +57,12 @@
 
 
             <View
+                android:id="@+id/Uppersetting"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:background="@color/colorPrimaryDark"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="8dp"
+                android:background="@color/colorPrimaryDark" />
 
             <RelativeLayout
                 android:id="@+id/Profile_SeetingsLayout"

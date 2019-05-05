@@ -89,7 +89,7 @@ public class ProfileFragment extends Fragment {
         BooksFrgament = (FrameLayout)view.findViewById(R.id.Profile_Books_Fragment);
         updatesFrgament = (FrameLayout)view.findViewById(R.id.Profile_Updates_Fragment);
         followingsFrgament = (FrameLayout)view.findViewById(R.id.Profile_Friends_Fragment);
-
+        upperSettings = (View)view.findViewById(R.id.Uppersetting);
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             mUser_Id = bundle.getInt("user-id");
@@ -176,11 +176,6 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     /**
      * loadFragment function to initialize the Fragment
