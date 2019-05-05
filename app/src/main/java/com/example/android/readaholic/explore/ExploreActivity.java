@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -85,9 +86,6 @@ public class ExploreActivity extends AppCompatActivity {
         return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics()));
     }
 
-    /**
-     * setting click listeners
-     */
     private void setOnClickListeners()
     {
         //search for more books click listener
@@ -107,13 +105,8 @@ public class ExploreActivity extends AppCompatActivity {
         searchForPeople.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(UserInfo.mIsGuest) {
-
-                } else {
-                    Intent intent = new Intent(getBaseContext() , SearchableActivity.class);
-                    startActivity(intent);
-                }
-
+               Intent intent = new Intent(getBaseContext() , SearchableActivity.class);
+               startActivity(intent);
             }
         });
         /////////////////////////////////////////////////////////

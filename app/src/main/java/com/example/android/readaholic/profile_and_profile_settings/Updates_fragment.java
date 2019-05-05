@@ -5,12 +5,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,7 +20,6 @@ import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.example.android.readaholic.home.HomeFragment;
-import com.example.android.readaholic.home.Memic;
 import com.example.android.readaholic.home.Updates;
 import com.example.android.readaholic.home.UpdatesAdapter;
 
@@ -55,10 +52,10 @@ public class Updates_fragment extends Fragment {
             userId = 0;
         }
         if(UserInfo.IsMemic == true) {
-            HomeFragment.onResposeAction(Memic.getProfileUpdates(userId));
-            showlist();
+            //HomeFragment.onResposeAction(Memic.getProfileUpdates(userId));
+            //showlist();
         }else {
-            request();
+            //request();
         }
     }
     /**

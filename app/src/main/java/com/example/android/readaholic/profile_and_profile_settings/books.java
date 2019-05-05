@@ -58,7 +58,7 @@ public class books extends Fragment {
     private BooksListsAdapter mReadAdapter;
     private BooksListsAdapter2 mWantToReadAdapter;
     private BooksListsAdapter3 mCurrentlyReadingAdapter;
-    public int NumberOfBooks;
+    public int NumberOfBooks=0;
     private RequestQueue mRequestQueue;
     private FrameLayout BookFragment_SeeMore_FrameLayout;
     private String ReadsBooksResponseAuth="{\"status\":\"success\",\"pages\":[{\"book_id\":3,\"title\":\"Once & Future\",\"id\":3,\"isbn\":9780316449274,\"img_url\":\"https:\\/\\/images-na.ssl-images-amazon.com\\/images\\/I\\/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\",\"reviews_count\":7,\"ratings_count\":7,\"author_id\":3},{\"book_id\":2,\"title\":\"Sherwood\",\"id\":2,\"isbn\":9780062422330,\"img_url\":\"https:\\/\\/kbimages1-a.akamaihd.net\\/6954f4cc-6e4e-46e3-8bc2-81b93f57a723\\/353\\/569\\/90\\/False\\/sherwood-7.jpg\",\"reviews_count\":19,\"ratings_count\":19,\"author_id\":2}]}";
@@ -67,6 +67,10 @@ public class books extends Fragment {
     private String ReadsBooksResponse="{\"status\":\"success\",\"pages\":[{\"book_id\":1,\"title\":\"The Bird King\",\"id\":1,\"isbn\":9780802129031,\"img_url\":\"https:\\/\\/i5.walmartimages.com\\/asr\\/8bae6257-b3ed-43ba-b5d4-c55b6479697f_1.c6a36804e0a9cbfd0e408a4b96f8a94e.jpeg?odnHeight=560&odnWidth=560&odnBg=FFFFFF\",\"reviews_count\":9,\"ratings_count\":9,\"author_id\":1}]}";
     private String WantsToReadBooksResponse="{\"status\":\"success\",\"pages\":[{\"book_id\":3,\"title\":\"Once & Future\",\"id\":3,\"isbn\":9780316449274,\"img_url\":\"https:\\/\\/images-na.ssl-images-amazon.com\\/images\\/I\\/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\",\"reviews_count\":7,\"ratings_count\":7,\"author_id\":3},{\"book_id\":2,\"title\":\"Sherwood\",\"id\":2,\"isbn\":9780062422330,\"img_url\":\"https:\\/\\/kbimages1-a.akamaihd.net\\/6954f4cc-6e4e-46e3-8bc2-81b93f57a723\\/353\\/569\\/90\\/False\\/sherwood-7.jpg\",\"reviews_count\":19,\"ratings_count\":19,\"author_id\":2}]}";
     private String CurrentlyReadingBooksResponse="{\"status\":\"failed, no returned results for the input\",\"pages\":[]}";
+    private String ReadsBooksResponse3="{\"status\":\"success\",\"pages\":[{\"book_id\":3,\"title\":\"Once & Future\",\"id\":3,\"isbn\":9780316449274,\"img_url\":\"https:\\/\\/images-na.ssl-images-amazon.com\\/images\\/I\\/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\",\"reviews_count\":7,\"ratings_count\":7,\"author_id\":3},{\"book_id\":2,\"title\":\"Sherwood\",\"id\":2,\"isbn\":9780062422330,\"img_url\":\"https:\\/\\/kbimages1-a.akamaihd.net\\/6954f4cc-6e4e-46e3-8bc2-81b93f57a723\\/353\\/569\\/90\\/False\\/sherwood-7.jpg\",\"reviews_count\":19,\"ratings_count\":19,\"author_id\":2}]}";
+    private String WantsToReadBooksResponse3="{\"status\":\"success\",\"pages\":[{\"book_id\":3,\"title\":\"Once & Future\",\"id\":3,\"isbn\":9780316449274,\"img_url\":\"https:\\/\\/images-na.ssl-images-amazon.com\\/images\\/I\\/51Jb2iLFuXL._SX329_BO1,204,203,200_.jpg\",\"reviews_count\":7,\"ratings_count\":7,\"author_id\":3},{\"book_id\":2,\"title\":\"Sherwood\",\"id\":2,\"isbn\":9780062422330,\"img_url\":\"https:\\/\\/kbimages1-a.akamaihd.net\\/6954f4cc-6e4e-46e3-8bc2-81b93f57a723\\/353\\/569\\/90\\/False\\/sherwood-7.jpg\",\"reviews_count\":19,\"ratings_count\":19,\"author_id\":2}]}";
+    private String CurrentlyReadingBooksResponse3="{\"status\":\"failed, no returned results for the input\",\"pages\":[]}";
+    private int user_id;
     /**
      * onCreateView called when the view is created
      * @param inflater inflate the layout
@@ -79,12 +83,12 @@ public class books extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
          mView = inflater.inflate(R.layout.fragment_books, container, false);
-         final int ID = getArguments().getInt("user-id");
+         user_id= getArguments().getInt("user-id");
          NumberOfBooks = getArguments().getInt("books-num");
         TextView BookNumber = (TextView)mView.findViewById(R.id.BookFragment_BookNumbers_TextView);
         BookNumber.setText(Integer.toString(NumberOfBooks)+" Books");
         BookFragment_SeeMore_FrameLayout =(FrameLayout) mView.findViewById(R.id.BookFragment_SeeMore_FrameLayout);
-        if(UserInfo.mIsGuest)
+        if(UserInfo.mIsGuest==true)
             BookFragment_SeeMore_FrameLayout.setVisibility(View.GONE);
         else
             {
@@ -93,7 +97,7 @@ public class books extends Fragment {
                     public void onClick(View v) {
                         Fragment ShelvesFragment = new ShelvesFragment();
                         Bundle bundle=new Bundle();
-                        bundle.putInt("USER_ID",ID);
+                        UserInfo.USER_ID = user_id;
                         ShelvesFragment.setArguments(bundle);
                         getFragmentManager().beginTransaction().replace(R.id.ProfileLayout,
                                 ShelvesFragment,"ShelvesFragment").addToBackStack("FromProfileToShelves").commit();
@@ -101,10 +105,12 @@ public class books extends Fragment {
                     }
                 });
             }
-        ExtractBooks(ID);
-
-
-        return mView;
+        ExtractBooks(user_id);
+        //updateLists();
+//        UpdateList1();
+//        UpdateList2();
+//        UpdateList3();
+      return mView;
     }
     /**
      *onCreate  called when fragment is created to get the data before view is created
@@ -114,37 +120,36 @@ public class books extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-/*        mCurrentlyReadingImageUrl = new ArrayList<>();
+        /*mCurrentlyReadingImageUrl = new ArrayList<>();
         mReadImageUrl = new ArrayList<>();
         mWantToReadImageUrl = new ArrayList<>();
+        BookModel bookModel = new BookModel();
+        bookModel.setmImageUrl("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
 
-        mCurrentlyReadingImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mCurrentlyReadingImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mCurrentlyReadingImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mCurrentlyReadingImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mCurrentlyReadingImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mCurrentlyReadingImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mCurrentlyReadingImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-
-
-
-        mReadImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mReadImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mReadImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mReadImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mReadImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mReadImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mReadImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
+        mCurrentlyReadingImageUrl.add(bookModel);
+        mCurrentlyReadingImageUrl.add(bookModel);
+        mCurrentlyReadingImageUrl.add(bookModel);
+        mCurrentlyReadingImageUrl.add(bookModel);
+        mCurrentlyReadingImageUrl.add(bookModel);
+        mCurrentlyReadingImageUrl.add(bookModel);
+        mCurrentlyReadingImageUrl.add(bookModel);
 
 
+        mReadImageUrl.add(bookModel);
+        mReadImageUrl.add(bookModel);
+        mReadImageUrl.add(bookModel);
+        mReadImageUrl.add(bookModel);
+        mReadImageUrl.add(bookModel);
+        mReadImageUrl.add(bookModel);
 
-        mWantToReadImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mWantToReadImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mWantToReadImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mWantToReadImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mWantToReadImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mWantToReadImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
-        mWantToReadImageUrl.add("https://images.gr-assets.com/users/1507144891p3/7004371.jpg");
+
+
+        mWantToReadImageUrl.add(bookModel);
+        mWantToReadImageUrl.add(bookModel);
+        mWantToReadImageUrl.add(bookModel);
+        mWantToReadImageUrl.add(bookModel);
+        mWantToReadImageUrl.add(bookModel);
+        mWantToReadImageUrl.add(bookModel);
 */
     }
     private void ExtractBooks(int id)
@@ -156,18 +161,18 @@ public class books extends Fragment {
         final String mRequestReadsUrl;
         final String mRequestWantsToReadUrl;
         final String mRequestCurrentlyReadingUrl;
-        if(id == 0) {
+        if(user_id == 0) {
              mRequestReadsUrl =Urls.getselfbooks(Integer.toString(0));
             mRequestWantsToReadUrl =Urls.getselfbooks(Integer.toString(2));
             mRequestCurrentlyReadingUrl =Urls.getselfbooks(Integer.toString(1));
         }
         else
         {
-            mRequestReadsUrl =Urls.ROOT + "/api/shelf?user_id="+Integer.toString(id)+"&shelf_name="+Integer.toString(0) + "&token=" +
+            mRequestReadsUrl =Urls.ROOT + "/api/shelf?user_id="+Integer.toString(user_id)+"&shelf_name="+Integer.toString(0) + "&token=" +
                     UserInfo.sToken + "&type=" + UserInfo.sTokenType;
-            mRequestCurrentlyReadingUrl =Urls.ROOT + "/api/shelf?user_id="+Integer.toString(id)+"&shelf_name="+Integer.toString(1) + "&token=" +
+            mRequestCurrentlyReadingUrl =Urls.ROOT + "/api/shelf?user_id="+Integer.toString(user_id)+"&shelf_name="+Integer.toString(1) + "&token=" +
                     UserInfo.sToken + "&type=" + UserInfo.sTokenType;
-            mRequestWantsToReadUrl =Urls.ROOT + "/api/shelf?user_id="+Integer.toString(id)+"&shelf_name="+Integer.toString(2) + "&token=" +
+            mRequestWantsToReadUrl =Urls.ROOT + "/api/shelf?user_id="+Integer.toString(user_id)+"&shelf_name="+Integer.toString(2) + "&token=" +
                     UserInfo.sToken + "&type=" + UserInfo.sTokenType;
         }
 
@@ -175,15 +180,16 @@ public class books extends Fragment {
         mReadImageUrl = new ArrayList<>();
         mWantToReadImageUrl = new ArrayList<>();
         //progressBar.setVisibility(View.VISIBLE);
-        if(!UserInfo.IsMemic) {
+        if(!UserInfo.IsMemic){
             JsonObjectRequest jsonObjectRequest1 = new JsonObjectRequest(Request.Method.GET, mRequestReadsUrl, null, new com.android.volley.Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     ExtractReads(response);
                     //updateLists();
                     UpdateList1();
+                    Log.e("UpdateList1","IN");
 
-                    //mRequestQueue.stop();
+                    mRequestQueue.stop();
 
                 }
             },
@@ -203,7 +209,8 @@ public class books extends Fragment {
                     ExtractCurrentlyReading(response);
                     //updateLists();
                     UpdateList2();
-                    //  mRequestQueue.stop();
+                    Log.e("UpdateList2","IN");
+                      mRequestQueue.stop();
 
                 }
             },
@@ -223,7 +230,8 @@ public class books extends Fragment {
                     ExtractWantToRead(response);
                     //updateLists();
                     UpdateList3();
-                    //mRequestQueue.stop();
+                    Log.e("UpdateList3","IN");
+                    mRequestQueue.stop();
 
                 }
             },
@@ -254,13 +262,13 @@ public class books extends Fragment {
                         e.printStackTrace();
                     }
                     try {
-                         response1 = new JSONObject(WantsToReadBooksResponseAuth);
+                         response3 = new JSONObject(WantsToReadBooksResponseAuth);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                 }
-                else
+                else if(id == 5)
                     {
                         try {
                             response1 = new JSONObject(ReadsBooksResponse);
@@ -273,20 +281,37 @@ public class books extends Fragment {
                             e.printStackTrace();
                         }
                         try {
-                             response1 = new JSONObject(WantsToReadBooksResponse);
+                             response3 = new JSONObject(WantsToReadBooksResponse);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
                     }
+
+                else
+                {
+                    try {
+                        response1 = new JSONObject(ReadsBooksResponse3);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        response2 = new JSONObject(CurrentlyReadingBooksResponse3);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        response3 = new JSONObject(WantsToReadBooksResponse3);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
                 ExtractReads(response1);
-                //updateLists();
                 UpdateList1();
                 ExtractCurrentlyReading(response2);
-                //updateLists();
                 UpdateList2();
                 ExtractWantToRead(response3);
-                //updateLists();
                 UpdateList3();
             }
     }
@@ -413,6 +438,7 @@ public class books extends Fragment {
     private void UpdateList1()
     {
 
+
         mNotAvaliableReadTextView = (TextView) mView.findViewById(R.id.BookFragment_ReadNotAvaliable_TextView);
 
         mNotAvaliableReadTextView.setVisibility(View.INVISIBLE);
@@ -422,6 +448,7 @@ public class books extends Fragment {
             mNotAvaliableReadTextView.setVisibility(View.VISIBLE);
         }
         else {
+            Log.e("updateList1","mReads not null");
             mReadRecyclerView = (RecyclerView) mView.findViewById(R.id.BookFragment_Read_RecyclerView);
 
             //mReadRecyclerView.setHasFixedSize(true);
@@ -537,70 +564,97 @@ public class books extends Fragment {
     }
 public void ExtractReads(JSONObject response)
 {
-    Log.e("BooksReads",response.toString());
-    if(response.optString("status") =="success") {
-        JSONArray pages = response.optJSONArray("pages");
-        if (pages == null) {
-            mReadImageUrl = null;
-        } else {
-            for (int i = 0; i < pages.length(); i++) {
-                BookModel book = new BookModel();
-                book.setmImageUrl(pages.optJSONObject(i).optString("img_url"));
-                book.setmId(pages.optJSONObject(i).optInt("id"));
-                mReadImageUrl.add(book);
-            }
-        }
-    }
-    else
+    if(response ==null)
         mReadImageUrl=null;
+    else {
+        Log.e("BooksReads", response.toString());
 
-}
-    public void ExtractWantToRead(JSONObject response)
-    {
-        Log.e("BooksWantToReadReading",response.toString());
-        if(response.optString("status") =="success") {
-            JSONArray pages = response.optJSONArray("pages");
+        //if (response.optString("status") == "success") {
+            Log.e("ExtractReads", "success");
+            JSONArray pages = null;
+            try {
+                pages = response.getJSONArray("pages");
+            } catch (JSONException e) {
+                pages=null;
+            }
             if (pages == null) {
-                mWantToReadImageUrl = null;
+                mReadImageUrl = null;
             } else {
                 for (int i = 0; i < pages.length(); i++) {
                     BookModel book = new BookModel();
                     book.setmImageUrl(pages.optJSONObject(i).optString("img_url"));
                     book.setmId(pages.optJSONObject(i).optInt("id"));
-                    mWantToReadImageUrl.add(book);
+                    mReadImageUrl.add(book);
                 }
-
+                NumberOfBooks+=pages.length();
             }
-        }
-        else
-        {
+        //}
+         //else if (response.optString("status") == "failed, no returned results for the input")
+           // mReadImageUrl = null;
+    }
+}
+    public void ExtractWantToRead(JSONObject response)
+    {
+        if(response ==null)
             mWantToReadImageUrl=null;
+        else {
+            Log.e("BooksWantToReadReading", response.toString());
+            //if (response.optString("status") == "success") {
+                Log.e("ExtractWantToRead", "success");
+                JSONArray pages = null;
+                try {
+                    pages = response.getJSONArray("pages");
+                } catch (JSONException e) {
+                    pages=null;
+                }
+                if (pages == null) {
+                    mWantToReadImageUrl = null;
+                } else {
+                    for (int i = 0; i < pages.length(); i++) {
+                        BookModel book = new BookModel();
+                        book.setmImageUrl(pages.optJSONObject(i).optString("img_url"));
+                        book.setmId(pages.optJSONObject(i).optInt("id"));
+                        mWantToReadImageUrl.add(book);
+                    }
+                    NumberOfBooks+=pages.length();
+                }
+            //} else if (response.optString("status") == "failed, no returned results for the input") {
+              //  mWantToReadImageUrl = null;
+            //}
         }
-
     }
 
     public void ExtractCurrentlyReading(JSONObject response)
     {
-        Log.e("BooksCurrentlyReading",response.toString());
-        if(response.optString("status") =="success") {
-            JSONArray pages = response.optJSONArray("pages");
-            if (pages == null) {
-                mCurrentlyReadingImageUrl = null;
-            } else {
-                for (int i = 0; i < pages.length(); i++) {
-                    BookModel book = new BookModel();
-                    book.setmImageUrl(pages.optJSONObject(i).optString("img_url"));
-                    book.setmId(pages.optJSONObject(i).optInt("id"));
-                    mCurrentlyReadingImageUrl.add(book);
-                }
-
-            }
-        }
-        else
-        {
+        if(response ==null)
             mCurrentlyReadingImageUrl=null;
-        }
+        else {
+            Log.e("BooksCurrentlyReading", response.toString());
+            //if (response.optString("status") == "success") {
+                Log.e("ExtractCurrentlyReading", "success");
+                JSONArray pages = null;
+                try {
+                    pages = response.getJSONArray("pages");
+                } catch (JSONException e) {
+                    pages=null;
+                }
+                if (pages == null) {
+                    mCurrentlyReadingImageUrl = null;
+                } else {
+                    for (int i = 0; i < pages.length(); i++) {
+                        BookModel book = new BookModel();
+                        book.setmImageUrl(pages.optJSONObject(i).optString("img_url"));
+                        book.setmId(pages.optJSONObject(i).optInt("id"));
+                        mCurrentlyReadingImageUrl.add(book);
+                    }
+                    NumberOfBooks+=pages.length();
 
+                }
+            //} else if (response.optString("status") == "failed, no returned results for the input") {
+              //  mCurrentlyReadingImageUrl = null;
+            //}
+
+        }
     }
 
 }

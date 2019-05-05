@@ -26,10 +26,12 @@
         android:layout_marginLeft="100dp"
         android:backgroundTint="@color/colorGray" />
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp">
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/FollowersTab_fragment_FollowersList_RecyclerView"

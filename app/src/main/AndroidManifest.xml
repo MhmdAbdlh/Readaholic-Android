@@ -20,7 +20,6 @@
         <activity android:name=".BookSearch.Search"
             android:theme="@style/AppTheme.NoActionBar"/>
 
-
         <activity android:name=".sign_in_up.ForgotPassword"></activity>
         <activity
             android:name=".books.Editreview"

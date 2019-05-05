@@ -50,9 +50,9 @@ public class Followers_fragment extends Fragment {
      int FollowingNumber;
     int FollowersNumber;
     ProgressBar progressBar;
-     String FollowesResponse = "{\"following\":[{\"id\":1,\"name\":\"test\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":2,\"name\":\"ta7a\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null}],\"_start\":1,\"_end\":4,\"_total\":4}";
-    String FollowesResponseAuth="{\"following\":[{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":5,\"name\":\"Salma\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null}],\"_start\":1,\"_end\":3,\"_total\":3}";
-
+     String FollowesResponseAuth = "{\"following\":[{\"id\":1,\"name\":\"test\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":2,\"name\":\"ta7a\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null}],\"_start\":1,\"_end\":4,\"_total\":4}";
+    String FollowesResponse="{\"following\":[{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":5,\"name\":\"Salma\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null}],\"_start\":1,\"_end\":3,\"_total\":3}";
+    String FollowesResponse3="{\"following\":[{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":5,\"name\":\"Salma\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null}],\"_start\":1,\"_end\":3,\"_total\":3}";
 
 
     /**
@@ -195,7 +195,7 @@ public class Followers_fragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-                else
+                else if(id==5)
                     {
 
                         try {
@@ -204,6 +204,15 @@ public class Followers_fragment extends Fragment {
                             e.printStackTrace();
                         }
                     }
+                else
+                {
+                    try {
+                        response = new JSONObject(FollowesResponse3);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
                 ExtractFollowers(response);
                 UpdateList();
             }

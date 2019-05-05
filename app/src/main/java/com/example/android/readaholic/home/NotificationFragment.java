@@ -1,22 +1,17 @@
 package com.example.android.readaholic.home;
 
-import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
-import android.support.design.widget.TabItem;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TabWidget;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -123,12 +118,15 @@ public class NotificationFragment  extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(UserInfo.IsMemic == true){
-         onResposeAction(Memic.notifiupdatesid1);
-         showlist();
-        }else {
+        if(UserInfo.IsMemic == false){
+         //onResposeAction(Memic.notifiupdatesid1);
+
+        /*    listNotif = (ListView) view.findViewById(R.id.Notificationfragment_list_listview);
+            adapter = new NotificationAdapter(getContext(), arrayOfNotif);
+            listNotif.setAdapter(adapter);
+            adapter.notifyDataSetChanged();        }else {
             Request();
-        }
+        */}
     }
 
     public void onResume(){
@@ -253,9 +251,5 @@ public class NotificationFragment  extends Fragment {
      */
     public void showlist(){
 
-        listNotif = (ListView) view.findViewById(R.id.Notificationfragment_list_listview);
-        adapter = new NotificationAdapter(getContext(), arrayOfNotif);
-        listNotif.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
     }
 }

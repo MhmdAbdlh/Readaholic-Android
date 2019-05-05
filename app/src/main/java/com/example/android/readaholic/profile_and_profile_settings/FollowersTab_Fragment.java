@@ -52,7 +52,7 @@ public class FollowersTab_Fragment extends Fragment {
      ProgressBar progressBar;
      String followersResponse="{\"followers\":[{\"id\":1,\"name\":\"test\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":0},{\"id\":2,\"name\":\"ta7a\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0,\"is_followed\":0},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0,\"is_followed\":1},{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":1},{\"id\":6,\"name\":\"TheLeader\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":0},{\"id\":7,\"name\":\"Mohamed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":0}],\"_start\":1,\"_end\":6,\"_total\":6}";
      String followersResponseAuth="{\"followers\":[{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0,\"is_followed\":1},{\"id\":5,\"name\":\"Salma\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":1},{\"id\":6,\"name\":\"TheLeader\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":0},{\"id\":7,\"name\":\"Mohamed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":0}],\"_start\":1,\"_end\":4,\"_total\":4}";
-
+    String followersResponse3="{\"followers\":[{\"id\":1,\"name\":\"test\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":0},{\"id\":2,\"name\":\"ta7a\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0,\"is_followed\":0},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0,\"is_followed\":1},{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":1},{\"id\":6,\"name\":\"TheLeader\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":0},{\"id\":7,\"name\":\"Mohamed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null,\"is_followed\":0}],\"_start\":1,\"_end\":6,\"_total\":6}";
      /**
      * onCreateView called when the view is created
      * @param inflater inflate the layout
@@ -68,14 +68,14 @@ public class FollowersTab_Fragment extends Fragment {
         mNotAvaliableTextView.setVisibility(View.INVISIBLE);
         followersTitle = (TextView) view.findViewById(R.id.FollowersTab_fragment_Followers_TextView);
         progressBar =(ProgressBar)view.findViewById(R.id.FollowersTab_progressBar);
-        Bundle bundle = getArguments();
-        if( bundle == null)
+        if( getArguments() == null)
             userId =0;
 
         else {
-            userId = bundle.getInt("user-id");
-            followersNum = bundle.getInt("followers-num");
+            userId = getArguments().getInt("user-id");
+            followersNum = getArguments().getInt("followers-num");
         }
+        Log.e("FollowersTab",Integer.toString(userId));
         ExtractFollowersArray(userId);
         return view;
     }
@@ -89,29 +89,31 @@ public class FollowersTab_Fragment extends Fragment {
     /**
      * function to extract followers array of users from response
      */
-    private void ExtractFollowersArray(int userId)
+    public void ExtractFollowersArray(int id)
     {
         followers = new ArrayList<>();
         DiskBasedCache cache = new DiskBasedCache(getContext().getCacheDir(), 1024 * 1024);
         BasicNetwork network = new BasicNetwork(new HurlStack());
         mRequestQueue = new RequestQueue(cache, network);
         mRequestQueue.start();
-        String mRequestUrl;
-        if(userId == 0)
-        mRequestUrl = Urls.ROOT + "/api/followers?"+"token="+
+        final String mRequestUrl;
+        if(userId != 0)
+        mRequestUrl = Urls.ROOT + "/api/followers?user_id="+Integer.toString(userId)+"&token="+
                 UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
         else
-            mRequestUrl = Urls.ROOT + "/api/followers?user_id="+Integer.toString(userId)+"&token="+
+            mRequestUrl = Urls.ROOT + "/api/followers?"+"token="+
                     UserInfo.sToken+"&type="+ UserInfo.sTokenType;
 
         progressBar.setVisibility(View.VISIBLE);
         //showSimpleProgressDialog(getContext(),"Loading.....","Loading Followers And Followings",false);
         if(!UserInfo.IsMemic) {
+            Log.e("followersTab"," no mimic");
             final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject Response) {
+                            Log.e("followers tab response",mRequestUrl);
                             ExtractFollowers(Response);
                             UpdateList();
                         }
@@ -128,7 +130,7 @@ public class FollowersTab_Fragment extends Fragment {
         else
             {
                 JSONObject response=null;
-                if(userId!=0)
+                if(id==3)
                 {
                     try {
                         response = new JSONObject(followersResponse);
@@ -136,7 +138,7 @@ public class FollowersTab_Fragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-                else
+                else if(id ==0)
                     {
 
                         try {
@@ -146,6 +148,15 @@ public class FollowersTab_Fragment extends Fragment {
                         }
 
                     }
+                else
+                {
+                    try {
+                        response = new JSONObject(followersResponseAuth);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
                 ExtractFollowers(response);
                 UpdateList();
             }
@@ -187,7 +198,6 @@ public class FollowersTab_Fragment extends Fragment {
     public void ExtractFollowers(JSONObject Response)
     {
         Log.e("followers tab response",Response.toString());
-
         JSONArray Followers = Response.optJSONArray("followers");
         if (Followers == null) {
             Log.e("Followers tab","followers tab followers array in json is null");

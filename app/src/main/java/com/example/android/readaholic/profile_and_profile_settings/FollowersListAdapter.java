@@ -170,6 +170,7 @@ public class FollowersListAdapter extends RecyclerView.Adapter<FollowersListAdap
                     @Override
                     public void onClick(View v) {
 
+                        if(!UserInfo.IsMemic){
                         if (mUsers.get(i).ismFollowerState())//the user is following u.
                         {
                             mUsers.get(i).setmFollowerState(false);//the user  un-follow u.
@@ -186,6 +187,24 @@ public class FollowersListAdapter extends RecyclerView.Adapter<FollowersListAdap
                             /// TODO: post Request to change the list of followings
                         }
 
+                    }
+                        else
+                            {
+                                if (mUsers.get(i).ismFollowerState())//the user is following u.
+                                {
+                                    mUsers.get(i).setmFollowerState(false);//the user  un-follow u.
+                                    myViewHolder.userFollowingStatusButton.setText("FOLLOW");
+                                    myViewHolder.userFollowingStatusButton.setTextColor(ContextCompat.getColor(mcontext, R.color.colorBlack));
+
+                                    /// TODO: post Request to change the list of followings
+                                } else if (!mUsers.get(i).ismFollowerState()) {
+                                    mUsers.get(i).setmFollowerState(true);//the user follow u.
+                                    myViewHolder.userFollowingStatusButton.setText("FOLLOWING");
+                                    myViewHolder.userFollowingStatusButton.setTextColor(ContextCompat.getColor(mcontext, R.color.colorWhite));
+                                    /// TODO: post Request to change the list of followings
+                                }
+
+                            }
                     }
                 });
             }

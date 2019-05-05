@@ -2,10 +2,13 @@ package com.example.android.readaholic.profile_and_profile_settings;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,6 +30,7 @@ import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,10 +52,12 @@ public class Followingtab_Fragment extends Fragment {
     View view;
     int userId;
     int followingNum;
+    private SwipeRefreshLayout swipeView;
     private static ProgressDialog mProgressDialog;
     ProgressBar progressBar;
     String FollowingResponse ="{\"following\":[{\"id\":1,\"name\":\"test\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":2,\"name\":\"ta7a\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null}],\"_start\":1,\"_end\":4,\"_total\":4}";
     String FollowingResponseAuth="{\"following\":[{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":5,\"name\":\"Salma\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null}],\"_start\":1,\"_end\":3,\"_total\":3}";
+    String FollowingResponse3="{\"following\":[{\"id\":4,\"name\":\"Nour\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null},{\"id\":3,\"name\":\"waleed\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":4,\"currently_reading\":\"Internment\",\"book_image\":\"https:\\/\\/r.wheelers.co\\/bk\\/small\\/978034\\/9780349003344.jpg\",\"pages\":0},{\"id\":5,\"name\":\"Salma\",\"image_link\":\"http:\\/\\/ec2-52-90-5-77.compute-1.amazonaws.com\\/storage\\/avatars\\/default.jpg\",\"book_id\":null,\"currently_reading\":null,\"book_image\":null,\"pages\":null}],\"_start\":1,\"_end\":3,\"_total\":3}";
     /**
      * onCreateView called when the view is created
      * @param inflater inflate the layout
@@ -68,6 +74,29 @@ public class Followingtab_Fragment extends Fragment {
         mNotAvaliableTextView = (TextView) view.findViewById(R.id.Followingtab_fragment_NotAvaliableTextView);
         mNotAvaliableTextView.setVisibility(View.INVISIBLE);
 
+        swipeView = (SwipeRefreshLayout)view. findViewById(R.id.swipeRefresh);
+
+        swipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    (new Handler()).postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ExtractFollowingsArray(userId);
+                            swipeView.setRefreshing(false);
+                        }
+                    },3000);
+                }
+
+                }
+        );
+
+            swipeView.setColorSchemeColors(Color.GRAY, Color.GREEN, Color.BLUE,
+                    Color.RED, Color.CYAN);
+            swipeView.setDistanceToTriggerSync(20);// in dips
+            swipeView.setSize(SwipeRefreshLayout.DEFAULT);// LARGE also can be used
+
+
 
         Bundle bundle = getArguments();
         if(bundle == null)
@@ -76,6 +105,7 @@ public class Followingtab_Fragment extends Fragment {
             userId = bundle.getInt("user-id");
             followingNum = bundle.getInt("following-num");
         }
+        Log.e("followingTab",Integer.toString(userId));
         ExtractFollowingsArray(userId);
 
         return view;
@@ -109,8 +139,8 @@ public class Followingtab_Fragment extends Fragment {
                     UserInfo.sToken+"&type="+ UserInfo.sTokenType;
         progressBar.setVisibility(View.VISIBLE);
         //showSimpleProgressDialog(getContext(),"Loading.....","Loading Followings",false);
-        if(!UserInfo.IsMemic)
-        {
+        if(!UserInfo.IsMemic){
+            Log.e("followingTab"," no mimic");
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, mRequestUrl, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -133,7 +163,7 @@ public class Followingtab_Fragment extends Fragment {
         else
             {
                 JSONObject Response =null;
-                if(id!=0)
+                if(id==5)
                 {
                     try {
                         Response = new JSONObject(FollowingResponse);
@@ -142,7 +172,7 @@ public class Followingtab_Fragment extends Fragment {
                     }
 
                 }
-                else
+                else if(id==0)
                     {
 
                         try {
@@ -151,10 +181,20 @@ public class Followingtab_Fragment extends Fragment {
                             e.printStackTrace();
                         }
                     }
+                else
+                {
+                    try {
+                        Response = new JSONObject(FollowingResponse3);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
                 ExtractFollowing(Response);
                 UpdateList();
             }
     }
+
     private void UpdateList()
     {
         progressBar.setVisibility(View.INVISIBLE);
@@ -195,8 +235,24 @@ public class Followingtab_Fragment extends Fragment {
 
     }
 
-    public void ExtractFollowing(JSONObject response)
+    public void ExtractFollowing(JSONObject Response)
     {
+        Log.e("following tab response",Response.toString());
+
+        JSONArray followings = Response.optJSONArray("following");
+        if (followings == null) {
+            Log.e("Following tab test","following tab has null following array");
+            mUser = null;
+        } else {
+            for (int i = 0; i < followings.length(); i++) {
+                Users user = new Users();
+                user.setmUserName(followings.optJSONObject(i).optString("name"));
+                user.setmUserId(followings.optJSONObject(i).optInt("id"));
+                user.setmUserImageUrl(followings.optJSONObject(i).optString("image_link"));
+                user.setmFollowerState(true);
+                 mUser.add(user);
+            }
+        }
 
     }
 }
