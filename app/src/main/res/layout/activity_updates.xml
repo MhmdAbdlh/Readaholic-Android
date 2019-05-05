@@ -12,7 +12,6 @@
         android:layout_width="50dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:visibility="gone"
         />
 <android.support.v4.widget.SwipeRefreshLayout
     android:layout_width="match_parent"
@@ -24,7 +23,6 @@
         android:layout_height="wrap_content"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
-        android:visibility="gone"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp">

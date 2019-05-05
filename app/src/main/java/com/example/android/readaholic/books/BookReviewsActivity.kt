@@ -37,7 +37,7 @@ class BookReviewsActivity : AppCompatActivity() {
         likedreviews= ArrayList()
         adapter= ReviewAdabterlist1()
         list.adapter=adapter
-        swiperefresh.setOnRefreshListener {
+        swiperefresh1.setOnRefreshListener {
             bookreviews!!.clear()
             if (UserInfo.ISMemic)
             {
@@ -46,7 +46,7 @@ class BookReviewsActivity : AppCompatActivity() {
             else{
                 feedReviewDataFromURL(Cbookdata.bookid)
             }
-            swiperefresh.isRefreshing=false
+            swiperefresh1.isRefreshing=false
 
         }
         if (UserInfo.ISMemic)

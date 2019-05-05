@@ -74,6 +74,7 @@ dependencies {
     testImplementation "org.robolectric:shadows-supportv4:3.8"
     implementation 'com.android.support:cardview-v7:28.0.0'
     implementation 'com.google.firebase:firebase-messaging:17.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 }
 
 dependencies {
