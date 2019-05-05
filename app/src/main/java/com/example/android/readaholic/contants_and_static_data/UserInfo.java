@@ -21,7 +21,7 @@ public class UserInfo {
 
     public static boolean IsMemic = false;
 
-    public static Boolean ISMemic = IsMemic;
+    public static Boolean ISMemic = false;
     /**
      * adding the user data
      * called when the user data is received successfully

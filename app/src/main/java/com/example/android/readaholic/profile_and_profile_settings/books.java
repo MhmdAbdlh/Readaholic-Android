@@ -288,7 +288,7 @@ public class books extends Fragment {
 
                     }
 
-                else if(id == 3)
+                else
                 {
                     try {
                         response1 = new JSONObject(ReadsBooksResponse3);

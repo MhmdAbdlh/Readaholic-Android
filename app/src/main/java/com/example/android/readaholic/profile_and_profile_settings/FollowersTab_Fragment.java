@@ -148,7 +148,7 @@ public class FollowersTab_Fragment extends Fragment {
                         }
 
                     }
-                else if(id==3)
+                else
                 {
                     try {
                         response = new JSONObject(followersResponseAuth);

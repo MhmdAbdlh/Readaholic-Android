@@ -204,7 +204,7 @@ public class Followers_fragment extends Fragment {
                             e.printStackTrace();
                         }
                     }
-                else if(id==3)
+                else
                 {
                     try {
                         response = new JSONObject(FollowesResponse3);

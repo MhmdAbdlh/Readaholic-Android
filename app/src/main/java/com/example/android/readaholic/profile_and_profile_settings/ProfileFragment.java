@@ -241,6 +241,7 @@ public class ProfileFragment extends Fragment {
                 BooksFrgament.setVisibility(View.GONE);
                 updatesFrgament.setVisibility(View.GONE);
                 followingsFrgament.setVisibility(View.GONE);
+            upperSettings.setVisibility(View.GONE);
             }
         final AtomicBoolean loaded = new AtomicBoolean();
         Picasso.get().load(user.getmUserImageUrl()).transform(new CircleTransform()).into(mUserImage, new Callback.EmptyCallback() {
@@ -327,7 +328,7 @@ public class ProfileFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-            else if(mUser_Id==3)
+            else if(mUser_Id!=5)
             {
                 try {
                     Response = new JSONObject(UserShowProfileResponse3);

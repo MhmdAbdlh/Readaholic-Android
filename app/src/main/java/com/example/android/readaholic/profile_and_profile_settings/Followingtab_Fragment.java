@@ -181,7 +181,7 @@ public class Followingtab_Fragment extends Fragment {
                             e.printStackTrace();
                         }
                     }
-                else if(id==3)
+                else
                 {
                     try {
                         Response = new JSONObject(FollowingResponse3);
