@@ -95,6 +95,23 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onActivityCreated(@NonNull Bundle saved){
+        super.onActivityCreated(saved);
+
+        queue = Volley.newRequestQueue(getContext());
+        //request();
+        //arrayOfUpadates1 = onResposeAction(newjson);
+        if(UserInfo.IsMemic == false) {
+            request();
+
+        }else {
+            String s = Memic.updatesid1;
+            arrayOfUpadates1 = onResposeAction1(s);
+            showlist();
+
+        }
+    }
 
 
     @Override
@@ -108,10 +125,10 @@ public class HomeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = HomeFragment.context ;
-        queue = Volley.newRequestQueue(getContext());
+      /*  queue = Volley.newRequestQueue(getContext());
         //request();
         //arrayOfUpadates1 = onResposeAction(newjson);
-     /*   if(UserInfo.IsMemic == false) {
+       if(UserInfo.IsMemic == false) {
             request();
             listUpadtes = (ListView) view.findViewById(R.id.UpadtesActivity_updateslist_listview);
             adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
@@ -122,11 +139,11 @@ public class HomeFragment extends Fragment {
             refresh.setVisibility(View.VISIBLE);
 
 
-        }else{
-            String s = Memic.updatesid1;
-            arrayOfUpadates1 = onResposeAction1(s);
+        }else {
+           String s = Memic.updatesid1;
+           arrayOfUpadates1 = onResposeAction1(s);
 
-*/
+       }*/
   /*          String s = Memic.updatesid1;
             onResposeAction(s);
             showlist();
@@ -252,7 +269,7 @@ public class HomeFragment extends Fragment {
         }
         return arrayOfUpadates;
     }
-    public ArrayList<Updates> onResposeAction1(String response){
+    static public ArrayList<Updates> onResposeAction1(String response){
         ArrayList<Updates> arrayOfUpadates = new ArrayList<Updates>();
         JSONObject root = null;
         String name = "hh";
@@ -329,13 +346,7 @@ public class HomeFragment extends Fragment {
             }
 
         }
-        listUpadtes = (ListView) getActivity().findViewById(R.id.UpadtesActivity_updateslist_listview);
-        adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
-        listUpadtes.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-        loading.setVisibility(View.GONE);
-        listUpadtes.setVisibility(View.VISIBLE);
-        refresh.setVisibility(View.VISIBLE);
+
 
         return arrayOfUpadates1;
     }
@@ -348,7 +359,13 @@ public class HomeFragment extends Fragment {
     * */
     public void showlist(){
        // listUpadtes = (ListView) getView().findViewById(R.id.UpadtesActivity_updateslist_listview);
-
+        listUpadtes = (ListView) getActivity().findViewById(R.id.UpadtesActivity_updateslist_listview);
+        adapter = new UpdatesAdapter(getContext(), arrayOfUpadates1);
+        listUpadtes.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        loading.setVisibility(View.GONE);
+        listUpadtes.setVisibility(View.VISIBLE);
+        refresh.setVisibility(View.VISIBLE);
 
     }
 

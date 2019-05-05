@@ -1,6 +1,7 @@
 package com.example.android.readaholic.profile_and_profile_settings;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +21,7 @@ import com.example.android.readaholic.R;
 import com.example.android.readaholic.contants_and_static_data.Urls;
 import com.example.android.readaholic.contants_and_static_data.UserInfo;
 import com.example.android.readaholic.home.HomeFragment;
+import com.example.android.readaholic.home.Memic;
 import com.example.android.readaholic.home.Updates;
 import com.example.android.readaholic.home.UpdatesAdapter;
 
@@ -51,13 +53,14 @@ public class Updates_fragment extends Fragment {
         }else{
             userId = 0;
         }
-        if(UserInfo.IsMemic == true) {
+       /* if(UserInfo.IsMemic == true) {
             //HomeFragment.onResposeAction(Memic.getProfileUpdates(userId));
             //showlist();
         }else {
             request();
-        }
+        }*/
     }
+
     /**
      * onCreateView called when fragment is created
      * @param inflater to inflate layout
@@ -116,6 +119,19 @@ public class Updates_fragment extends Fragment {
 
     }
 
+    @Override
+    public void onActivityCreated(@NonNull Bundle saved) {
+        super.onActivityCreated(saved);
+        if(UserInfo.IsMemic == true) {
+            if(userId == 0){
+                userId = 1;
+            }
+            HomeFragment.onResposeAction1(Memic.getProfileUpdates(userId));
+            showlist();
+        }else {
+            request();
+        }
+    }
     private void request() {
         RequestQueue queue = Volley.newRequestQueue(getContext());
         String url = Urls.ROOT+"/api/updates?user_id="+userId+"&token="+ UserInfo.sToken +"&type="+UserInfo.sTokenType;
@@ -161,6 +177,7 @@ public class Updates_fragment extends Fragment {
         listView.setLayoutParams(params);
     }
     public void showlist(){
+       mListOfUpdates = (ListView) getActivity().findViewById(R.id.Profile_updateslist_listview);
         adapterForUpdatesList = new UpdatesAdapter(getContext(),arayOfUpdates);
         mListOfUpdates.setAdapter(adapterForUpdatesList);
         adapterForUpdatesList.notifyDataSetChanged();

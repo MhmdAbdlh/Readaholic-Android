@@ -19,9 +19,9 @@ public class UserInfo {
     public static int sVerified ;
     public static Boolean mIsGuest=false;
 
-    public static boolean IsMemic = true;
+    public static boolean IsMemic = false;
 
-    public static Boolean ISMemic = true;
+    public static Boolean ISMemic = false;
     /**
      * adding the user data
      * called when the user data is received successfully

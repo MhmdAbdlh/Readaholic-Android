@@ -114,7 +114,20 @@ public class NotificationFragment  extends Fragment {
         });
         return view;
     }
+    @Override
+    public void onActivityCreated(@NonNull Bundle saved) {
+        super.onActivityCreated(saved);
+        if(UserInfo.IsMemic == true){
+            onResposeAction(Memic.notifiupdatesid1);
 
+           listNotif = (ListView) view.findViewById(R.id.Notificationfragment_list_listview);
+            adapter = new NotificationAdapter(getContext(), arrayOfNotif);
+            listNotif.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        }else {
+            Request();
+        }
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
