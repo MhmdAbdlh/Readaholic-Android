@@ -52,7 +52,7 @@ public class Notificationtest {
     }
     @Test
     public void testlist(){
-        String response1 = Memic.getNotification(1);
+        String response1 = Memic.notifiupdatesid1;
         JSONArray arr = null;
         startFragment();
         activityTestRule.getActivity().findViewById(id.UpdatesActivity_loading_progbar).setVisibility(View.GONE);

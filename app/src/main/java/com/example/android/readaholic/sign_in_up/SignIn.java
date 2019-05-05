@@ -282,7 +282,7 @@ public class SignIn extends AppCompatActivity {
                     //in case of mimic
                     /////////////////////////////////////////////////////////////////////////
                     //getting user name and password
-                    Intent intent1 = new Intent(getBaseContext(),Main.class);
+                    //Intent intent1 = new Intent(getBaseContext(),Main.class);
 
                     EditText username = (EditText) findViewById(R.id.SignIn_email_edittext);
                     EditText pass = (EditText)findViewById(R.id.SignIn_password_edittext);
@@ -292,7 +292,9 @@ public class SignIn extends AppCompatActivity {
                         if (username.getText().toString().equals("test@yahoo.com")
                                 && pass.getText().toString().equals("password")) {
                             UserInfo.addUserInfo("test@yahoo.com","test",null,"1","bearer" , 1 , 1);
-                            Intent intent = new Intent(v.getContext(), Main.class);
+                            UserInfo.mIsGuest=false;
+                            hideSoftKeyboard(SignIn.this, v);
+                            Intent intent = new Intent(getBaseContext(),Main.class);
                             startActivity(intent);
                             finish();
                         } else {

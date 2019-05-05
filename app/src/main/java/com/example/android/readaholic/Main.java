@@ -321,7 +321,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
             case R.id.draw_logout_menu:
 
                 if(UserInfo.IsMemic) {
-                    Intent startIntent = new Intent(this,Start.class);
+                    Intent startIntent = new Intent(getBaseContext(),Start.class);
                     startActivity(startIntent);
                     finish();
                 } else {
